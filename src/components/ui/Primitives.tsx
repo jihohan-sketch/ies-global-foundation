@@ -80,7 +80,9 @@ export function Eyebrow({
         className,
       )}
     >
-      <span aria-hidden className="h-px w-8 bg-current opacity-50" />
+      {/* `shrink-0` keeps the rule at its intended 32px; as a decorative element
+          it should not be the thing that gives way when space is tight. */}
+      <span aria-hidden className="h-px w-8 shrink-0 bg-current opacity-50" />
       {children}
     </p>
   )
