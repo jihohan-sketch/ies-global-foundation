@@ -1,5 +1,6 @@
 /**
- * Regenerates public/sitemap.xml from the site's routes and content.
+ * Regenerates public/sitemap.xml and public/robots.txt from the site's routes
+ * and content.
  *
  * Run with `npm run sitemap` (it also runs automatically before `npm run build`).
  *
@@ -11,9 +12,10 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import { resolveOrigin } from './site-origin.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
-const ORIGIN = process.env.SITE_ORIGIN ?? 'https://iesglobalfoundation.org'
+const ORIGIN = resolveOrigin()
 
 /** Static routes, with their relative crawl priority. */
 const staticRoutes = [
@@ -74,4 +76,11 @@ ${urls
 `
 
 writeFileSync(join(root, 'public/sitemap.xml'), xml)
-console.log(`sitemap.xml written — ${urls.length} URLs (${ORIGIN})`)
+
+/* Generated alongside the sitemap so the two can never disagree about the origin. */
+writeFileSync(
+  join(root, 'public/robots.txt'),
+  `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`,
+)
+
+console.log(`sitemap.xml + robots.txt written — ${urls.length} URLs (${ORIGIN})`)

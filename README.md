@@ -175,6 +175,39 @@ Vercel (`vercel.json`):
 { "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }] }
 ```
 
+### Site origin
+
+The canonical link, `og:url`, `og:image`, JSON-LD, `sitemap.xml` and
+`robots.txt` all need an absolute URL. That origin is resolved once, at build
+time, by `scripts/site-origin.mjs`:
+
+| Source | When it applies |
+|---|---|
+| `SITE_ORIGIN` | Explicit override — set this once the real domain is live |
+| `VERCEL_PROJECT_PRODUCTION_URL` | Vercel production builds |
+| `VERCEL_URL` | Vercel preview builds |
+| `https://iesglobalfoundation.org` | Local builds, which are never crawled |
+
+So a Vercel deploy advertises its own URL with no configuration. Once
+`iesglobalfoundation.org` is registered and pointed at the deployment, set
+`SITE_ORIGIN` in the Vercel project's environment variables and redeploy.
+
+This matters because the failure is silent: a canonical pointing at a domain
+that does not resolve tells search engines the real page lives elsewhere, and an
+unreachable `og:image` means no preview card when the link is shared. The site
+itself looks perfectly fine either way.
+
+Note that the origin must always be absolute — Vite resolves URLs in
+`index.html` as build assets, so a root-relative `/` makes it try to read the
+project directory and the build fails.
+
+### Contact form
+
+`VITE_CONTACT_ENDPOINT` sets where the contact form POSTs. Unset, the form falls
+back to opening a pre-filled mail draft, so it never silently drops a message.
+`VITE_`-prefixed variables are **baked into the client bundle and publicly
+readable** — fine for an endpoint URL, never for a secret.
+
 ---
 
 ## Accessibility

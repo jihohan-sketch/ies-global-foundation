@@ -4,8 +4,9 @@ import { site } from '@/content/site'
 interface SeoOptions {
   title: string
   description: string
-  /** Path only, e.g. "/about". Combined with `site.url` for the canonical tag. */
+  /** Path only, e.g. "/about". Combined with the live origin for the canonical tag. */
   path?: string
+  /** Absolute URL. Defaults to the OG image on the origin currently serving the page. */
   image?: string
   type?: 'website' | 'article'
   /** ISO date, set for news articles. */
@@ -41,13 +42,22 @@ export function useSeo({
   title,
   description,
   path = '',
-  image = `${site.url}/og-image.svg`,
+  image,
   type = 'website',
   publishedTime,
 }: SeoOptions) {
   useEffect(() => {
     const fullTitle = title.includes(site.name) ? title : `${title} — ${site.name}`
-    const url = `${site.url}${path}`
+    /*
+     * Derived from the live location rather than a build-time constant, so the
+     * canonical stays self-referential on whatever domain is serving the page —
+     * the vercel.app URL today, the real domain once it is pointed here. The
+     * static tags in index.html are what crawlers actually read; these keep the
+     * client-side navigations consistent with them.
+     */
+    const origin = window.location.origin
+    const url = `${origin}${path}`
+    const imageUrl = image ?? `${origin}/og-image.svg`
 
     document.title = fullTitle
 
@@ -56,10 +66,10 @@ export function useSeo({
     setMeta('meta[property="og:description"]', 'property', 'og:description', description)
     setMeta('meta[property="og:url"]', 'property', 'og:url', url)
     setMeta('meta[property="og:type"]', 'property', 'og:type', type)
-    setMeta('meta[property="og:image"]', 'property', 'og:image', image)
+    setMeta('meta[property="og:image"]', 'property', 'og:image', imageUrl)
     setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', fullTitle)
     setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', description)
-    setMeta('meta[name="twitter:image"]', 'name', 'twitter:image', image)
+    setMeta('meta[name="twitter:image"]', 'name', 'twitter:image', imageUrl)
     setLink('canonical', url)
 
     const publishedEl = document.head.querySelector('meta[property="article:published_time"]')
