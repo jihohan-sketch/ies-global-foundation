@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="IES Global Foundation — Building Ethical Leaders Across Borders">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0D294D"/>
+      <stop offset="55%" stop-color="#071A33"/>
+      <stop offset="100%" stop-color="#071A33"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="78%" cy="42%" r="42%">
+      <stop offset="0%" stop-color="#C8A96B" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#C8A96B" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" fill="none" stroke="#AAB4C2" stroke-opacity="0.08" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Schematic globe -->
+  <g transform="translate(910 315)" fill="none" stroke="#8EB8E8" stroke-opacity="0.30" stroke-width="1.2">
+    <circle r="196" stroke="#AAB4C2" stroke-opacity="0.34"/>
+    <ellipse rx="196" ry="66"/>
+    <ellipse rx="196" ry="132"/>
+    <ellipse rx="66" ry="196"/>
+    <ellipse rx="132" ry="196"/>
+    <line x1="-196" y1="0" x2="196" y2="0"/>
+  </g>
+  <g transform="translate(910 315)" fill="#C8A96B">
+    <circle cx="118" cy="-42" r="6"/>
+    <circle cx="-96" cy="-18" r="6"/>
+    <circle cx="-8" cy="-88" r="6"/>
+  </g>
+  <g transform="translate(910 315)" fill="none" stroke="#C8A96B" stroke-opacity="0.5" stroke-width="1.4">
+    <path d="M118 -42 Q 60 -110 -8 -88"/>
+    <path d="M-8 -88 Q -70 -70 -96 -18"/>
+  </g>
+
+  <!-- Wordmark: official mark, authored on a 100-unit grid (see LogoMark.tsx) -->
+  <g transform="translate(80 86) scale(0.78)" fill="none" stroke-width="8" stroke-linecap="round">
+    <path d="M17.09 69A38 38 0 0 1 75.92 22.21" stroke="#F7F9FC"/>
+    <path d="M87.98 51.33A38 38 0 0 1 25.57 79.11" stroke="#F7F9FC"/>
+    <path d="M14.35 68.16A51.5 51.5 0 0 0 86.16 35.39" stroke="#C8A96B"/>
+  </g>
+
+  <text x="80" y="300" font-family="Georgia, 'Times New Roman', serif" font-size="70" fill="#F7F9FC">Building Ethical</text>
+  <text x="80" y="380" font-family="Georgia, 'Times New Roman', serif" font-size="70" fill="#F7F9FC">Leaders <tspan fill="#C8A96B" font-style="italic">Across Borders</tspan></text>
+
+  <line x1="80" y1="430" x2="560" y2="430" stroke="#AAB4C2" stroke-opacity="0.3" stroke-width="1"/>
+
+  <text x="80" y="472" font-family="Helvetica, Arial, sans-serif" font-size="21" fill="#AAB4C2" font-weight="300">IES Global Foundation</text>
+  <text x="80" y="512" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#AAB4C2" letter-spacing="3" opacity="0.8">KOREA · UNITED STATES · UNITED KINGDOM</text>
+  <text x="80" y="554" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#C8A96B" letter-spacing="3" opacity="0.9">FOUNDED APRIL 2023</text>
+</svg>

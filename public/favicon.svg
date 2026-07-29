@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="IES Global Foundation">
+  <rect width="64" height="64" fill="#071A33"/>
+  <!--
+    The mark is authored on a 100-unit grid (see LogoMark.tsx). Here it is scaled
+    to 0.56 and centred on the tile, which leaves roughly 6px of clear space on
+    each side — enough that the ring does not touch the edge at 16px.
+  -->
+  <g transform="translate(4 4) scale(0.56)" fill="none" stroke-width="8" stroke-linecap="round">
+    <path d="M17.09 69A38 38 0 0 1 75.92 22.21" stroke="#F7F9FC"/>
+    <path d="M87.98 51.33A38 38 0 0 1 25.57 79.11" stroke="#F7F9FC"/>
+    <path d="M14.35 68.16A51.5 51.5 0 0 0 86.16 35.39" stroke="#C8A96B"/>
+  </g>
+</svg>
