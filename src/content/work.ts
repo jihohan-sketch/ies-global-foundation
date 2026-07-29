@@ -7,7 +7,7 @@ export const pillars: Pillar[] = [
     title: 'Education',
     summary:
       'Creating opportunities for students to explore ethics, leadership, public policy, debate, philosophy, technology, and global affairs.',
-    body: 'Most students are given plenty of opportunities to perform academically and very few to think seriously about difficult questions without a grade attached. IES builds settings where that thinking is the point — structured discussions, forums, and workshops in which students engage real ethical and political problems and are expected to defend their reasoning.',
+    body: 'Students get plenty of chances to perform academically and few to think seriously about hard questions without a grade attached. IES builds settings where that thinking is the point, and where students defend their reasoning.',
     points: [
       'Moderated ethics discussions and public forums',
       'Debate, philosophy, and public policy sessions',
@@ -20,7 +20,7 @@ export const pillars: Pillar[] = [
     title: 'Well-Being',
     summary:
       'Supporting young people and communities through service, mentorship, inclusion, and initiatives that promote personal and social well-being.',
-    body: 'Ethical reflection that never leaves the seminar room is incomplete. This pillar covers the work IES does with and for communities — mentorship, service partnerships, and inclusion initiatives — alongside attention to the well-being of the students inside the organization itself.',
+    body: 'Reflection that never leaves the seminar room is incomplete. This pillar covers the work IES does with communities — mentorship, service partnerships, inclusion — and the well-being of its own students.',
     points: [
       'Children’s center programs and mentorship',
       'Volunteer and community outreach initiatives',
@@ -33,7 +33,7 @@ export const pillars: Pillar[] = [
     title: 'Civil Responsibility and Governance',
     summary:
       'Encouraging informed civic participation, ethical decision-making, responsible leadership, and constructive engagement with social institutions.',
-    body: 'Students are citizens before they are voters. This pillar develops the habits that make civic participation substantive rather than symbolic: understanding how institutions actually work, engaging them constructively, and taking responsibility for decisions and their consequences.',
+    body: 'Students are citizens before they are voters. This pillar builds the habits that make participation substantive rather than symbolic: understanding how institutions work, engaging them, and owning the consequences.',
     points: [
       'Governance and policy education',
       'Student-led civic campaigns and petitions',
@@ -49,7 +49,7 @@ export const workCategories: WorkCategory[] = [
     id: 'education-and-ethics',
     title: 'Education and Ethics',
     summary:
-      'Structured settings where students engage difficult questions directly — in discussion, in argument, and in writing. Sessions are student-led and moderated, with preparation expected from participants rather than passive attendance.',
+      'Structured settings where students engage hard questions directly — in discussion, argument, and writing. Sessions are student-led, with preparation expected rather than passive attendance.',
     examples: [
       'Ethics discussions on contested contemporary issues',
       'Public forums open to students across schools',
@@ -63,7 +63,7 @@ export const workCategories: WorkCategory[] = [
     id: 'community-service',
     title: 'Community Service',
     summary:
-      'Sustained relationships with community organizations rather than one-off volunteering. Programs are designed around what partner organizations actually need, and are measured by whether students show up consistently over time.',
+      'Sustained relationships with community organizations rather than one-off volunteering. Programs are built around what partners actually need, and measured by whether students keep showing up.',
     examples: [
       'Children’s center educational programs',
       'Mentorship for younger students',
@@ -76,7 +76,7 @@ export const workCategories: WorkCategory[] = [
     id: 'leadership-development',
     title: 'Leadership Development',
     summary:
-      'Real responsibility with real consequences. Students who take on IES roles run programs, manage teams, represent the organization to partners, and answer for the results — the closest thing to institutional experience available at this stage.',
+      'Real responsibility with real consequences. Students in IES roles run programs, manage teams, represent the organization, and answer for the results.',
     examples: [
       'Executive and national branch leadership roles',
       'Chapter leadership and officer positions',
@@ -89,7 +89,7 @@ export const workCategories: WorkCategory[] = [
     id: 'civic-responsibility',
     title: 'Civic Responsibility',
     summary:
-      'Programs that treat students as participants in public life. The emphasis is on understanding institutions well enough to engage them constructively, and on distinguishing informed advocacy from performance.',
+      'Programs that treat students as participants in public life — understanding institutions well enough to engage them, and telling informed advocacy from performance.',
     examples: [
       'Policy awareness sessions',
       'Student petitions and campaigns',
@@ -102,7 +102,7 @@ export const workCategories: WorkCategory[] = [
     id: 'global-collaboration',
     title: 'Global Collaboration',
     summary:
-      'The work that only an international network can do. Cross-branch programming puts students from Korea, the United States, and the United Kingdom in the same conversation, where local assumptions get tested against other contexts.',
+      'The work only an international network can do. Cross-branch programming puts students from three countries in the same conversation, where local assumptions get tested.',
     examples: [
       'Cross-branch events and joint sessions',
       'International panels and forums',

@@ -35,7 +35,7 @@ export default function GlobalNetwork() {
       <PageHero
         eyebrow="Global Network"
         title="One Foundation. Multiple National Branches."
-        lead="IES brings together students across countries through a shared commitment to ethical leadership, education, service, and meaningful civic engagement. Each branch operates within its own national context while sharing the same mission, identity, and standards."
+        lead="Students across three countries, joined by one commitment to ethical leadership. Each branch works in its own context, to the same standards."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Global Network' }]}
       />
 

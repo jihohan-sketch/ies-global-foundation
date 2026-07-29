@@ -18,7 +18,7 @@ export default function OurWork() {
       <PageHero
         eyebrow="Our Work"
         title="From Reflection to Action"
-        lead="IES combines ethical inquiry with practical leadership. Our work spans educational forums, service initiatives, youth leadership programs, international partnerships, and student-led civic engagement."
+        lead="Ethical inquiry joined to practical leadership: forums, service, leadership programs, partnerships, and student-led civic engagement."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Our Work' }]}
       />
 
@@ -105,7 +105,7 @@ export default function OurWork() {
             <SectionHeading
               eyebrow="Photography"
               title="Real programs, documented."
-              lead="Photographs on this site come from IES events, chapter sessions, and service work. We do not use stock imagery to represent our programs."
+              lead="Photographs come from IES events, chapter sessions, and service work. We do not use stock imagery."
             />
             <p className="mt-8 max-w-2xl text-sm leading-relaxed font-light text-mist/70">
               To add photography for a work area, place the image in

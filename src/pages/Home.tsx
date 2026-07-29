@@ -72,9 +72,8 @@ export default function Home() {
 
             <Reveal delay={220}>
               <p className="text-lead mt-9 max-w-xl font-light text-mist">
-                The IES Global Foundation connects students, schools, and national branches
-                through education, service, civic responsibility, and international
-                collaboration.
+                Connecting students, schools, and national branches through education,
+                service, and international collaboration.
               </p>
             </Reveal>
 
@@ -128,9 +127,9 @@ export default function Home() {
                 youth network.
               </p>
               <p className="leading-relaxed font-light text-mist">
-                Through national branches, school chapters, educational programs, and
-                community initiatives, IES creates opportunities for young people to think
-                deeply, lead responsibly, and serve meaningfully. {site.headquartersStatement}
+                Through branches, chapters, and community initiatives, IES gives young
+                people room to think deeply, lead responsibly, and serve.{' '}
+                {site.headquartersStatement}
               </p>
               <div className="pt-4">
                 <Button to="/about" variant="ghost" arrow>
@@ -149,7 +148,7 @@ export default function Home() {
             <SectionHeading
               eyebrow="Global Presence"
               title="One Foundation. Three National Branches."
-              lead="Our national branches bring the mission of IES into their own communities while remaining connected through one shared international vision."
+              lead="Each branch brings the mission into its own community, connected by one international vision."
             />
           </Reveal>
 
@@ -163,9 +162,9 @@ export default function Home() {
 
           <Reveal delay={200}>
             <p className="mt-10 max-w-2xl text-sm leading-relaxed font-light text-mist/80">
-              The Global Foundation does not replace the national branches. It connects them —
-              providing international coordination, shared standards, and cross-border
-              programming while each branch operates within its own national context.
+              The Global Foundation does not replace the branches. It connects them —
+              coordination, shared standards, and cross-border programming, while each works
+              in its own national context.
             </p>
           </Reveal>
         </Container>
@@ -308,7 +307,7 @@ export default function Home() {
             <SectionHeading
               eyebrow="Our Work"
               title="From Reflection to Action"
-              lead="IES combines ethical inquiry with practical leadership. Our work includes educational forums, service initiatives, youth leadership programs, international partnerships, and student-led civic engagement."
+              lead="Ethical inquiry joined to practical leadership: forums, service, leadership programs, partnerships, and student-led civic engagement."
             />
           </Reveal>
 

@@ -28,7 +28,7 @@ export const site = {
     'An international youth-led foundation connecting national branches through education, service, and civic responsibility.',
 
   mission:
-    'The IES Global Foundation empowers young people to lead with integrity, engage with complex social and ethical issues, and create meaningful change through education, service, and international collaboration.',
+    'IES helps young people lead with integrity, engage difficult ethical questions, and create change through education, service, and collaboration.',
 
   missionShort:
     'Building ethical leaders through education, service, and global collaboration.',
@@ -37,20 +37,20 @@ export const site = {
   missionMotto: 'Turn dialogue into service.',
 
   vision:
-    'We envision an international network of young leaders who approach global challenges with intellectual curiosity, civic responsibility, empathy, and ethical judgment.',
+    'An international network of young leaders who meet global challenges with curiosity, responsibility, empathy, and ethical judgment.',
 
   /** Used verbatim wherever the Korea / Foundation relationship is described. */
   headquartersStatement:
-    'IES Korea serves as the organization’s original branch and primary operational headquarters, while the IES Global Foundation coordinates its international network.',
+    'IES Korea is the original branch and operational headquarters. The Global Foundation coordinates the international network.',
 
   /** Shown beneath every statistics block. */
   statisticsNote:
-    'Figures are current as of the latest organizational reporting period and are reviewed by national branch leadership.',
+    'Figures are current as of the latest reporting period, reviewed by branch leadership.',
 
   copyright: '© 2026 IES Global Foundation. All rights reserved.',
 
   legalNote:
-    'The Interscholastic Ethics Society is a student-led nonprofit organization founded in Seoul, South Korea. The IES Global Foundation coordinates its international network of national branches. National branches are organizational units of that network rather than separately incorporated entities.',
+    'The Interscholastic Ethics Society is a student-led nonprofit founded in Seoul, South Korea. The IES Global Foundation coordinates its international network of national branches, which are organizational units of that network rather than separately incorporated entities.',
 } as const
 
 /**
@@ -61,24 +61,24 @@ export const threeAs = [
   {
     title: 'Applied Ethics',
     subtitle: 'Ideas into Action',
-    body: 'Ethical reasoning is only finished when it changes what someone does. Every IES forum is designed to end in a commitment, not a conclusion.',
+    body: 'Ethical reasoning is finished only when it changes what someone does. Every forum ends in a commitment, not a conclusion.',
   },
   {
     title: 'Academic Vitality',
     subtitle: 'Fostering Intellectual Curiosity',
-    body: 'Students are expected to prepare, to argue from evidence, and to take difficult questions seriously rather than settle them quickly.',
+    body: 'Students prepare, argue from evidence, and take hard questions seriously rather than settle them quickly.',
   },
   {
     title: 'Advancing Equity',
     subtitle: 'Advocating for a Fair Future',
-    body: 'Equity determines which communities our programs serve and how leadership within IES is earned and shared across branches.',
+    body: 'Equity shapes which communities we serve, and how leadership is earned and shared.',
   },
 ] as const
 
 export const values = {
   primary: {
     title: 'Equity',
-    body: 'Equity is the value that organizes everything else we do. It shapes who we invite into the room, which communities our programs serve, and how leadership within IES is earned and shared across branches.',
+    body: 'Equity organizes everything else. It shapes who we invite in, which communities we serve, and how leadership is earned and shared.',
   },
   supporting: [
     { title: 'Integrity', body: 'Doing careful, honest work — especially when no one is checking.' },

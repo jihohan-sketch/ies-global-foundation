@@ -32,7 +32,7 @@ export default function News() {
       <PageHero
         eyebrow="News & Updates"
         title="From across the network"
-        lead="Announcements, leadership appointments, event recaps, partnerships, program launches, and organizational updates from the Global Foundation and its national branches."
+        lead="Announcements, appointments, event recaps, partnerships, and program launches from across the network."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'News' }]}
       />
 
@@ -110,9 +110,9 @@ export default function News() {
               <Eyebrow>Media Inquiries</Eyebrow>
               <div>
                 <p className="leading-relaxed font-light text-mist">
-                  Journalists and editors seeking comment, interviews, or organizational
-                  statements should contact the Foundation’s media address. Requests involving
-                  students under 18 are handled in line with our participant safety policy.
+                  Journalists seeking comment or interviews should contact the Foundation’s
+                  media address. Requests involving students under 18 follow our participant
+                  safety policy.
                 </p>
                 <a
                   href="mailto:theiesociety@gmail.com"

@@ -21,7 +21,7 @@ export default function About() {
       <PageHero
         eyebrow="About IES"
         title="An international youth organization built around ethical leadership."
-        lead="IES began in Korea in April 2023. It is now a network of national branches, school chapters, and student leaders working across three countries toward the same mission."
+        lead="IES began in Korea in April 2023. It is now a network of branches, chapters, and student leaders across three countries."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]}
       />
 
@@ -218,7 +218,7 @@ export default function About() {
             <SectionHeading
               eyebrow="Organizational Structure"
               title="How the network fits together."
-              lead="The Global Foundation provides international direction, shared branding, branch coordination, cross-border programming, and partnership development. National branches manage their own local initiatives while remaining aligned with the Foundation’s mission and standards."
+              lead="The Global Foundation sets international direction and coordinates branches. Each branch runs its own local work within that shared mission and standard."
             />
           </Reveal>
 

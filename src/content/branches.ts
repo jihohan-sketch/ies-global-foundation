@@ -20,7 +20,7 @@ export const branches: Branch[] = [
     summary:
       'Where IES began in April 2023, and the branch that carries the largest share of the organization’s programming, chapters, and day-to-day operations.',
     intro:
-      'IES Korea is the original national branch of IES and the organization’s primary operational headquarters. Founded in Seoul on 20 April 2023, it is the largest student-led ethics organization in South Korea and holds the deepest institutional history, the largest chapter network, and the programs that established the model now used across the network. Work developed in Korea — ethics forums, policy advocacy, and sustained community service partnerships — is regularly adapted by the newer branches.',
+      'The original branch and the organization’s operational headquarters. Founded in Seoul on 20 April 2023, it is the largest student-led ethics organization in South Korea, with the deepest history, the largest chapter network, and the programs the rest of the network now works from — ethics forums, policy advocacy, and sustained service partnerships.',
     established: '20 April 2023',
     headquarters: 'Seoul, Republic of Korea',
     status: 'Headquarters',
@@ -98,7 +98,7 @@ export const branches: Branch[] = [
     summary:
       'Extends the IES mission into U.S. schools and communities, with a growth strategy built around school outreach, chapter formation, and partnerships.',
     intro:
-      'IES United States brings the IES mission into the American educational context. The branch is led by two co-presidents and is focused on building a durable base of school chapters, developing a U.S. programming calendar, and forming partnerships with schools, universities, and community organizations. It operates within its own national context while holding to the mission, standards, and identity shared across the network.',
+      'Brings the IES mission into the American educational context. Led by two co-presidents, the branch is building a durable base of school chapters, a U.S. programming calendar, and partnerships with schools, universities, and community organizations — to the standards shared across the network.',
     established: 'Established as a national branch under the IES Global Foundation',
     headquarters: 'United States',
     status: 'Active',
@@ -155,7 +155,7 @@ export const branches: Branch[] = [
     summary:
       'The newest national branch, focused on establishing founding chapters, recruiting student leadership, and building relationships with U.K. schools.',
     intro:
-      'IES UK Society is the newest national branch in the network. Its current priority is foundational: recruiting capable student leaders, establishing the first chapters, and building relationships with schools that want to give students a serious setting for ethical inquiry and civic engagement. The branch operates under the same mission and standards as the rest of the network, adapted to the U.K. school system.',
+      'The newest branch in the network. The current priority is foundational: recruiting student leaders, establishing the first chapters, and building relationships with schools that want a serious setting for ethical inquiry — the same standards as the rest of the network, adapted to the U.K. school system.',
     established: 'Established as a national branch under the IES Global Foundation',
     headquarters: 'United Kingdom',
     status: 'Establishing',

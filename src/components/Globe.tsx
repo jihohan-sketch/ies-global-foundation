@@ -315,8 +315,13 @@ export function Globe({
           s.rotation += diff * Math.min(1, dt * 2.6)
         }
       } else if (!reduced) {
-        // Slow, continuous drift — roughly one revolution every two minutes.
-        s.rotation += dt * 3
+        /*
+         * Degrees per second. 8°/s is one revolution every 45s — slow enough to
+         * read as a planet turning, fast enough that a few seconds of looking
+         * makes the movement obvious. The interactive globe stays slower, since
+         * there the markers are targets the visitor has to click.
+         */
+        s.rotation += dt * (interactive ? 3 : 8)
       }
       if (s.rotation > 360) s.rotation -= 360
       if (s.rotation < -360) s.rotation += 360

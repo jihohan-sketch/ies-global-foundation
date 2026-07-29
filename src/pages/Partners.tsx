@@ -40,7 +40,7 @@ export default function Partners() {
             <SectionHeading
               eyebrow="Who We Work With"
               title="Eight kinds of collaboration"
-              lead="Each partnership is scoped in writing, and each is held to the same conduct and participant safety standards as our own programming."
+              lead="Each partnership is scoped in writing and held to the same safety and conduct standards as our own programs."
             />
           </Reveal>
 
@@ -73,7 +73,7 @@ export default function Partners() {
             <SectionHeading
               eyebrow="Organizations We Work With"
               title="Named collaborations"
-              lead="IES programming is delivered alongside community organizations, academic institutions, and public bodies. These are the relationships behind our service and advocacy work."
+              lead="We work alongside community organizations, academic institutions, and public bodies — the relationships behind our service work."
             />
           </Reveal>
 

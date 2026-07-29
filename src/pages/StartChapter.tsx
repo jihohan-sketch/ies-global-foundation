@@ -18,7 +18,7 @@ export default function StartChapter() {
       <PageHero
         eyebrow="Start a Chapter"
         title="Bring IES to your school."
-        lead="Establishing a chapter is the most demanding way into IES and the one with the most ownership. Here is exactly what the process involves."
+        lead="The most demanding way into IES, and the one with the most ownership. Here is what it involves."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Start a Chapter' }]}
       />
 
@@ -29,7 +29,7 @@ export default function StartChapter() {
             <SectionHeading
               eyebrow="The Process"
               title="Seven steps, in order"
-              lead="Nothing here is designed to slow you down for its own sake. Each step exists because chapters that skip it tend not to survive their first year."
+              lead="Each step exists because chapters that skip it tend not to survive their first year."
             />
           </Reveal>
 
@@ -56,7 +56,7 @@ export default function StartChapter() {
             <SectionHeading
               eyebrow="Chapter Expectations"
               title="What an IES chapter agrees to"
-              lead="These are the conditions of carrying the IES name. Chapters that cannot meet them are supported first, and closed if the situation does not improve."
+              lead="The conditions of carrying the IES name. Chapters that fall short are supported first, and closed if that does not work."
             />
           </Reveal>
 

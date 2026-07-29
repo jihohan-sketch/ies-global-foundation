@@ -22,7 +22,7 @@ export default function Contact() {
       <PageHero
         eyebrow="Contact"
         title="Reach the right team."
-        lead="Inquiries are routed to the Global Foundation or to the relevant national branch. If you already know which branch you need, contact them directly."
+        lead="Inquiries are routed to the Foundation or the relevant branch. If you know which branch you need, contact them directly."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Contact' }]}
       />
 
