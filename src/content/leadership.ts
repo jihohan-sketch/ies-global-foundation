@@ -55,10 +55,10 @@ export const people: Person[] = [
   {
     id: 'sean-han',
     name: 'Sean Han',
-    title: 'Marketing Lead',
+    title: 'Head of Marketing',
     tier: 'global',
     photo: '/leadership/sean-han.jpg',
-    bio: 'Sean Han leads marketing for the Global Foundation — brand, website, and social channels across all three branches.',
+    bio: 'Sean Han leads marketing for the Global Foundation, responsible for how IES presents itself across Korea, the United States, and the United Kingdom. The remit covers the organization’s brand, this website, and its social channels, together with the approval process every public statement passes through before publication. Much of the work is consistency: a chapter in Seoul, a founding team in the United States, and a branch in London all describe the same organization, and it should read that way to a school deciding whether to work with IES. They also set the standards branches follow in building their own communications.',
     responsibilities: [
       'Brand consistency across branches and chapters',
       'Website and social content management',
@@ -154,7 +154,7 @@ export const globalOffices: {
     ],
   },
   {
-    title: 'Marketing Lead',
+    title: 'Head of Marketing',
     scope: 'Brand and digital presence',
     responsibilities: [
       'Brand consistency across branches and chapters',

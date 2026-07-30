@@ -116,6 +116,15 @@ export default function Leadership() {
                           Appointment to be confirmed.
                         </p>
                       )}
+
+                      {/* Officers of the Foundation have no PersonCard anywhere
+                          else on the site, so without this their biography would
+                          never be rendered at all. */}
+                      {holder && (
+                        <p className="mt-5 text-[0.875rem] leading-relaxed font-light text-mist">
+                          {holder.bio}
+                        </p>
+                      )}
                     </div>
 
                     <ul className="mt-5 space-y-2">
