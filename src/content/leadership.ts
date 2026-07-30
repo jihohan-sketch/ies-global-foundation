@@ -26,7 +26,7 @@ export const people: Person[] = [
       'Executive Representative, Shin-Kang Foundation',
       'Student, Seoul International School',
     ],
-    bio: 'Joseph Hahmmin Kang co-founded IES in Seoul on 20 April 2023 and served as Co-President through August 2025, then as the organization’s 2nd President from October 2025 to January 2026. That work has focused on defining what IES stands for, establishing the standards that branches and chapters operate under, and building the structure that allows students in different countries to work toward the same mission. They continue to guide the organization’s long-term development and international coordination.',
+    bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 2nd President to January 2026. Set the standards branches and chapters now operate under.',
     responsibilities: [
       'Organizational direction and long-term strategy',
       'Mission, standards, and institutional identity',
@@ -42,7 +42,7 @@ export const people: Person[] = [
     tier: 'founding',
     photo: '/leadership/jaesuh-joshua-shin.jpg',
     affiliations: ['Chairman, Shin-Kang Foundation', 'Student, Seoul Foreign School'],
-    bio: 'Jaesuh Joshua Shin co-founded IES in Seoul on 20 April 2023, served as Co-President through August 2025, and was the organization’s 1st President from August to October 2025. Their contributions span the design of IES programming, the growth of the school chapter network, and the operational practices that keep activity consistent across a widening set of schools and countries. They remain involved in organizational planning and in supporting national branches as they establish their own programs and leadership teams.',
+    bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 1st President to October 2025. Designed IES programming and grew the school chapter network.',
     responsibilities: [
       'Program design and organizational planning',
       'School chapter development',
@@ -53,11 +53,12 @@ export const people: Person[] = [
 
   /* -------------------------------------------- Global Foundation officers */
   {
-    id: 'jiho-han',
-    name: 'Jiho Han',
-    title: 'Vice President of Marketing',
+    id: 'sean-han',
+    name: 'Sean Han',
+    title: 'Marketing Lead',
     tier: 'global',
-    bio: 'Jiho Han serves as Vice President of Marketing for the Global Foundation, responsible for how IES presents itself across branches and chapters. The role covers brand consistency, the organization’s website and social channels, and the approval process that keeps published material accurate. With the network now spanning three countries, much of the work is making sure a chapter in one country and a branch in another describe the same organization in the same terms.',
+    photo: '/leadership/sean-han.jpg',
+    bio: 'Sean Han leads marketing for the Global Foundation — brand, website, and social channels across all three branches.',
     responsibilities: [
       'Brand consistency across branches and chapters',
       'Website and social content management',
@@ -73,7 +74,7 @@ export const people: Person[] = [
     title: '3rd President, IES Korea',
     tier: 'national',
     branch: 'korea',
-    bio: 'Ryan Jimyung Cha has served as the organization’s 3rd President since January 2026, leading IES Korea — the original national branch and primary operational headquarters. They lead national programming, oversee the branch’s school chapters, and work with chapter leaders to keep activity consistent across participating schools. Because IES Korea carries the largest share of the organization’s day-to-day operations, the role also involves close coordination with the Global Foundation on standards, cross-border programming, and the development of the wider network.',
+    bio: '3rd President since January 2026, leading IES Korea — the original branch and operational headquarters. Runs national programming and the Korean chapter network.',
     responsibilities: [
       'National leadership of IES Korea',
       'Oversight of Korean school chapters',
@@ -89,7 +90,7 @@ export const people: Person[] = [
     title: 'Co-President, IES United States',
     tier: 'national',
     branch: 'united-states',
-    bio: 'Aden Lee serves as Co-President of IES United States, sharing responsibility for the branch’s national strategy and growth. The role centers on establishing founding school chapters, supporting the students who lead them, and adapting IES programming to the American school context without departing from the standards shared across the network. They work alongside the branch’s other co-president and with the Global Foundation on branch development and cross-border initiatives.',
+    bio: 'Co-President of IES United States. Focused on establishing founding chapters and adapting IES programming to American schools without loosening shared standards.',
     responsibilities: [
       'National strategy for IES United States',
       'Chapter formation and school outreach',
@@ -103,7 +104,7 @@ export const people: Person[] = [
     title: 'Co-President, IES United States',
     tier: 'national',
     branch: 'united-states',
-    bio: 'Onew Choi serves as Co-President of IES United States, working with the branch’s other co-president on national leadership and expansion. Their responsibilities include developing the branch’s programming calendar, building relationships with schools and community organizations, and creating clear pathways for U.S.-based students to take on meaningful responsibility within IES. They also represent the branch in cross-branch collaboration with IES Korea and IES UK Society.',
+    bio: 'Co-President of IES United States. Builds the branch’s programming calendar and its relationships with schools and community organizations.',
     responsibilities: [
       'National programming and events',
       'School and community partnerships',
@@ -119,7 +120,7 @@ export const people: Person[] = [
     title: 'President, IES UK Society',
     tier: 'national',
     branch: 'united-kingdom',
-    bio: 'Jimin Lee serves as President of IES UK Society, the newest branch in the network. The role is currently foundational: recruiting a national leadership team, establishing the first U.K. school chapters, and building relationships with schools that want a serious setting for ethical inquiry and civic engagement. They lead the branch’s early programming and work with the Global Foundation to ensure U.K. activity meets the network’s standards from the outset.',
+    bio: 'President of IES UK Society, the newest branch. Recruiting the first national officers and founding chapters, and leading the branch’s early programming.',
     responsibilities: [
       'National leadership of IES UK Society',
       'Founding chapter establishment',
@@ -153,14 +154,14 @@ export const globalOffices: {
     ],
   },
   {
-    title: 'Vice President of Marketing',
+    title: 'Marketing Lead',
     scope: 'Brand and digital presence',
     responsibilities: [
       'Brand consistency across branches and chapters',
       'Website and social content management',
       'Publication approval workflow',
     ],
-    holder: 'jiho-han',
+    holder: 'sean-han',
   },
   {
     title: 'Director of Partnerships',
@@ -175,11 +176,10 @@ export const globalOffices: {
 
 export const leadershipIntro = {
   founding:
-    'IES was founded in Seoul on 20 April 2023 by two students, who led it jointly as co-presidents and then each served a term as president. They remain responsible for the organization’s direction, standards, and international development.',
+    'Founded in Seoul on 20 April 2023 by two students, who led it jointly and then each served a term as president.',
   global:
-    'The Global Foundation is responsible for international coordination, cross-border initiatives, global partnerships, branding, branch development, and future expansion. Offices are filled as the organization grows; those not yet appointed are shown as pending rather than filled for appearance.',
-  national:
-    'Each national branch is led by students in that country. National leadership manages local programming, chapters, and outreach while remaining aligned with the Foundation’s mission and standards.',
+    'The Foundation handles international coordination, partnerships, branding, and branch development. Offices are filled as we grow — unfilled ones are shown as pending, not padded out.',
+  national: 'Each branch is led by students in that country, to the same shared standards.',
 }
 
 export const foundingLeadership = people.filter((p) => p.tier === 'founding')

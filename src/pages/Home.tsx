@@ -127,8 +127,6 @@ export default function Home() {
                 youth network.
               </p>
               <p className="leading-relaxed font-light text-mist">
-                Through branches, chapters, and community initiatives, IES gives young
-                people room to think deeply, lead responsibly, and serve.{' '}
                 {site.headquartersStatement}
               </p>
               <div className="pt-4">
@@ -162,9 +160,8 @@ export default function Home() {
 
           <Reveal delay={200}>
             <p className="mt-10 max-w-2xl text-sm leading-relaxed font-light text-mist/80">
-              The Global Foundation does not replace the branches. It connects them —
-              coordination, shared standards, and cross-border programming, while each works
-              in its own national context.
+              The Foundation does not replace the branches. It connects them — shared
+              standards and cross-border programming, each in its own national context.
             </p>
           </Reveal>
         </Container>
@@ -218,9 +215,8 @@ export default function Home() {
               <span className="text-gold italic">meaningful action.</span>
             </h2>
             <p className="text-lead mx-auto mt-10 max-w-2xl font-light text-mist">
-              IES combines intellectual engagement, leadership development, community service,
-              and international collaboration — because ethical reflection that never leaves
-              the seminar room is incomplete, and service without reflection is thin.
+              Reflection that never leaves the seminar room is incomplete, and service
+              without reflection is thin.
             </p>
           </Reveal>
 
@@ -310,7 +306,7 @@ export default function Home() {
             <SectionHeading
               eyebrow="Our Work"
               title="From Reflection to Action"
-              lead="Ethical inquiry joined to practical leadership: forums, service, leadership programs, partnerships, and student-led civic engagement."
+              lead="Forums, service, leadership programs, partnerships, and student-led civic engagement."
             />
           </Reveal>
 
@@ -353,7 +349,7 @@ export default function Home() {
               <SectionHeading
                 eyebrow="Leadership"
                 title="Students holding real responsibility."
-                lead="IES is led by students at every level — founding leadership, the Global Foundation, and each national branch."
+                lead="Students lead at every level — founding, Foundation, and each national branch."
                 className="max-w-2xl"
               />
               <Button to="/leadership" variant="secondary">
