@@ -21,6 +21,11 @@ export const people: Person[] = [
     koreanName: '강함민',
     title: 'Co-Founder · 2nd President',
     tier: 'founding',
+    photo: '/leadership/joseph-hahmmin-kang.jpg',
+    affiliations: [
+      'Executive Representative, Shin-Kang Foundation',
+      'Student, Seoul International School',
+    ],
     bio: 'Joseph Hahmmin Kang co-founded IES in Seoul on 20 April 2023 and served as Co-President through August 2025, then as the organization’s 2nd President from October 2025 to January 2026. That work has focused on defining what IES stands for, establishing the standards that branches and chapters operate under, and building the structure that allows students in different countries to work toward the same mission. They continue to guide the organization’s long-term development and international coordination.',
     responsibilities: [
       'Organizational direction and long-term strategy',
@@ -35,6 +40,8 @@ export const people: Person[] = [
     koreanName: '신재서',
     title: 'Co-Founder · 1st President',
     tier: 'founding',
+    photo: '/leadership/jaesuh-joshua-shin.jpg',
+    affiliations: ['Chairman, Shin-Kang Foundation', 'Student, Seoul Foreign School'],
     bio: 'Jaesuh Joshua Shin co-founded IES in Seoul on 20 April 2023, served as Co-President through August 2025, and was the organization’s 1st President from August to October 2025. Their contributions span the design of IES programming, the growth of the school chapter network, and the operational practices that keep activity consistent across a widening set of schools and countries. They remain involved in organizational planning and in supporting national branches as they establish their own programs and leadership teams.',
     responsibilities: [
       'Program design and organizational planning',

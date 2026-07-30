@@ -75,6 +75,12 @@ export interface Person {
   branch?: BranchSlug
   /** Path or URL to a headshot. Falls back to a monogram when omitted. */
   photo?: string
+  /**
+   * Roles held outside IES — a school, or a position in another organisation.
+   * Listed because they are matters of public record on the person's own
+   * profile, not to borrow standing from them.
+   */
+  affiliations?: string[]
   /** 60–100 words. */
   bio: string
   responsibilities: string[]

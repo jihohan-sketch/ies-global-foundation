@@ -82,6 +82,16 @@ export function PersonCard({ person, branchName }: { person: Person; branchName?
         </div>
       </div>
 
+      {person.affiliations && person.affiliations.length > 0 && (
+        <ul className="mt-5 space-y-1">
+          {person.affiliations.map((item) => (
+            <li key={item} className="text-[0.8125rem] font-light text-mist/80">
+              {item}
+            </li>
+          ))}
+        </ul>
+      )}
+
       <p className="mt-6 text-[0.9375rem] leading-relaxed font-light text-mist">
         {person.bio}
       </p>
