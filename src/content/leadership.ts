@@ -44,6 +44,20 @@ export const people: Person[] = [
     ],
   },
 
+  /* -------------------------------------------- Global Foundation officers */
+  {
+    id: 'jiho-han',
+    name: 'Jiho Han',
+    title: 'Vice President of Marketing',
+    tier: 'global',
+    bio: 'Jiho Han serves as Vice President of Marketing for the Global Foundation, responsible for how IES presents itself across branches and chapters. The role covers brand consistency, the organization’s website and social channels, and the approval process that keeps published material accurate. With the network now spanning three countries, much of the work is making sure a chapter in one country and a branch in another describe the same organization in the same terms.',
+    responsibilities: [
+      'Brand consistency across branches and chapters',
+      'Website and social content management',
+      'Publication approval workflow',
+    ],
+  },
+
   /* ---------------------------------------------------- National — IES Korea */
   {
     id: 'ryan-cha',
@@ -123,15 +137,6 @@ export const globalOffices: {
   holder?: string
 }[] = [
   {
-    title: 'Founding Global Chair',
-    scope: 'Organizational direction',
-    responsibilities: [
-      'Long-term direction of the Foundation',
-      'Guardianship of mission and standards',
-      'Oversight of branch development',
-    ],
-  },
-  {
     title: 'Director of Global Operations',
     scope: 'International coordination',
     responsibilities: [
@@ -148,6 +153,7 @@ export const globalOffices: {
       'Website and social content management',
       'Publication approval workflow',
     ],
+    holder: 'jiho-han',
   },
   {
     title: 'Director of Partnerships',
@@ -170,5 +176,6 @@ export const leadershipIntro = {
 }
 
 export const foundingLeadership = people.filter((p) => p.tier === 'founding')
+export const globalLeadership = people.filter((p) => p.tier === 'global')
 export const nationalLeadership = people.filter((p) => p.tier === 'national')
 export const personById = (id: string) => people.find((p) => p.id === id)

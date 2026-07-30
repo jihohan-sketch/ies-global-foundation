@@ -11,6 +11,7 @@ import {
   nationalLeadership,
   personById,
 } from '@/content/leadership'
+import { initials } from '@/lib/utils'
 import { useSeo } from '@/lib/seo'
 
 export default function Leadership() {
@@ -79,10 +80,37 @@ export default function Leadership() {
 
                     <div className="mt-6 border-t border-mist/12 pt-5">
                       {holder ? (
-                        <p className="text-[0.9375rem] font-light text-paper/90">
-                          {holder.name}
-                          <span className="text-mist"> — {holder.title}</span>
-                        </p>
+                        /* Same photo-or-monogram treatment as PersonCard, at a
+                           smaller size — a filled office should read as a person
+                           holding it, not as a line of text. */
+                        <div className="flex items-center gap-4">
+                          {holder.photo ? (
+                            <img
+                              src={holder.photo}
+                              alt=""
+                              loading="lazy"
+                              className="h-12 w-12 shrink-0 rounded-full object-cover grayscale-[0.25]"
+                            />
+                          ) : (
+                            <span
+                              aria-hidden
+                              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold/35 font-serif text-sm text-gold"
+                            >
+                              {initials(holder.name)}
+                            </span>
+                          )}
+                          <p className="min-w-0 text-[0.9375rem] font-light text-paper/90">
+                            {holder.name}
+                            {holder.koreanName && (
+                              <span className="ml-2 font-light text-mist">
+                                {holder.koreanName}
+                              </span>
+                            )}
+                            <span className="mt-0.5 block text-[0.8125rem] text-mist">
+                              {holder.title}
+                            </span>
+                          </p>
+                        </div>
                       ) : (
                         <p className="text-[0.8125rem] font-light text-mist/70 italic">
                           Appointment to be confirmed.

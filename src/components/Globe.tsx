@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { prefersReducedMotion } from '@/lib/utils'
+import { LAND } from '@/content/coastlines'
 import type { GeoPoint } from '@/content/types'
 
 export interface GlobeMarker extends GeoPoint {
@@ -21,98 +22,11 @@ interface GlobeProps {
 
 const DEG = Math.PI / 180
 
-/**
- * Continent outlines in [lon, lat] pairs.
- *
- * Still a generalised coastline rather than survey data — the globe is a brand
- * element, not a cartographic reference. Vertices are spaced closely enough that
- * the major landmasses and the larger islands are recognisable at speed; no
- * borders are drawn and no territorial claim is implied.
- */
-const LAND: [number, number][][] = [
-  // Africa
-  [
-    [-5.9, 35.8], [0, 36.5], [8, 37], [11, 33.5], [15, 31.5], [20, 30.5], [25, 31.5],
-    [32, 31.3], [34, 28], [37, 22], [39, 15], [43, 12], [47, 11.5], [51, 11.5],
-    [51, 5], [45, 2], [41, -2], [40, -8], [40, -15], [35, -19], [35, -24], [32, -26],
-    [28, -32], [22, -34], [18, -34], [17, -29], [14, -23], [12, -17], [13, -9],
-    [12, -6], [9, -1], [9.5, 4], [5, 4], [0, 5.5], [-4, 5], [-8, 4.5], [-13, 9],
-    [-16, 12], [-17, 14.7], [-16, 20], [-14, 25], [-11, 28], [-9, 32],
-  ],
-  // Europe + Asia
-  [
-    [-9.5, 43], [-9, 38.7], [-6, 37], [-2, 36.7], [0, 39], [3, 41.8], [7, 43.5],
-    [12, 44], [18, 40.5], [16, 43], [19, 42.5], [23, 40], [26, 40.5], [28, 41],
-    [35, 42], [41, 43], [38, 45], [31, 46.5], [28, 45], [30, 46], [33, 45.5],
-    [38, 44], [40, 43], [48, 42], [50, 44], [52, 41], [54, 37], [56, 27], [57, 25],
-    [52, 27], [48, 30], [44, 37], [36, 37], [34, 31], [35, 36], [30, 36], [28, 37],
-    [26, 39], [23, 38], [19, 40], [15, 38], [12, 38], [10, 44], [4, 43], [-1, 46],
-    [-4, 48], [0, 49], [4, 52], [7, 53], [8, 57], [10, 58], [12, 55], [19, 55],
-    [21, 57], [24, 59], [27, 60], [22, 66], [25, 71], [33, 70], [41, 68], [55, 68],
-    [68, 73], [75, 73], [80, 73], [90, 76], [105, 78], [113, 74], [130, 72],
-    [141, 73], [150, 70], [160, 70], [170, 69], [180, 66], [170, 60], [163, 58],
-    [155, 52], [143, 44], [136, 35], [122, 31], [121, 25], [110, 21], [106, 10],
-    [100, 2], [99, 8], [95, 16], [90, 22], [85, 20], [80, 15], [77, 8], [73, 20],
-    [68, 24], [62, 25], [57, 25], [52, 27], [48, 30], [44, 37], [40, 40], [35, 37],
-    [28, 45], [20, 40], [12, 38], [3, 43],
-  ],
-  // North America
-  [
-    [-168, 65], [-164, 68], [-160, 71], [-150, 70], [-140, 70], [-128, 70],
-    [-120, 70], [-110, 68], [-100, 68], [-92, 70], [-85, 70], [-80, 66], [-75, 63],
-    [-68, 60], [-64, 57], [-60, 55], [-56, 51], [-60, 47], [-66, 45], [-70, 42],
-    [-74, 40], [-76, 37], [-75, 35], [-81, 31], [-81, 26], [-83, 29], [-88, 30],
-    [-90, 29], [-94, 29], [-97, 26], [-97, 22], [-95, 18], [-91, 18], [-88, 16],
-    [-92, 15], [-96, 16], [-101, 17], [-105, 21], [-109, 24], [-113, 27], [-115, 30],
-    [-118, 34], [-122, 37], [-124, 40], [-124, 46], [-128, 51], [-130, 55],
-    [-135, 58], [-142, 60], [-150, 60], [-158, 57], [-162, 60], [-165, 62],
-  ],
-  // South America
-  [
-    [-80, 9], [-75, 11], [-70, 11], [-64, 10], [-60, 8], [-55, 6], [-52, 5],
-    [-50, 0], [-45, -2], [-40, -3], [-38, -6], [-35, -8], [-37, -12], [-39, -16],
-    [-40, -20], [-44, -23], [-48, -25], [-52, -30], [-58, -35], [-62, -40],
-    [-64, -43], [-65, -45], [-68, -50], [-70, -52], [-75, -52], [-74, -47],
-    [-73, -42], [-73, -37], [-71, -30], [-70, -23], [-71, -18], [-75, -14],
-    [-79, -8], [-81, -5], [-80, -2], [-79, 2], [-77, 7],
-  ],
-  // Australia
-  [
-    [113, -22], [114, -26], [115, -33], [118, -35], [125, -32], [130, -31],
-    [135, -35], [138, -35], [141, -38], [147, -38], [150, -37], [152, -32],
-    [153, -28], [153, -25], [149, -21], [146, -19], [143, -14], [142, -11],
-    [140, -17], [137, -16], [135, -12], [132, -11], [130, -12], [127, -14],
-    [122, -17], [118, -20],
-  ],
-  // Greenland
-  [
-    [-45, 60], [-42, 63], [-38, 65], [-30, 68], [-25, 71], [-22, 73], [-20, 76],
-    [-22, 80], [-30, 82], [-40, 83], [-50, 82], [-58, 79], [-58, 76], [-55, 72],
-    [-53, 68], [-50, 64],
-  ],
-  // Madagascar
-  [[49, -12], [50, -15], [50, -18], [48, -22], [47, -25], [45, -25], [44, -21], [44, -17], [46, -15], [48, -13]],
-  // Great Britain
-  [[-5, 50], [0, 51], [1, 53], [-1, 54], [-3, 55], [-2, 57], [-4, 58], [-5, 57], [-6, 55], [-3, 54], [-4, 53], [-5, 51]],
-  // Ireland
-  [[-10, 52], [-8, 52], [-6, 52], [-6, 54], [-7, 55], [-10, 54]],
-  // Japan
-  [[131, 31], [132, 34], [136, 35], [139, 35], [141, 39], [142, 42], [145, 43], [143, 44], [140, 42], [138, 37], [135, 34], [131, 33], [130, 32]],
-  // Borneo
-  [[109, 2], [113, 3], [117, 5], [119, 3], [117, 0], [116, -3], [113, -3], [110, -1]],
-  // Sumatra
-  [[95, 5], [98, 3], [101, 1], [104, -2], [106, -6], [103, -5], [100, -1], [96, 3]],
-  // Java
-  [[105, -6], [110, -7], [114, -8], [112, -8.5], [107, -7.5]],
-  // New Guinea
-  [[131, -1], [136, -2], [141, -3], [146, -6], [150, -9], [147, -9], [143, -8], [138, -8], [134, -5], [131, -3]],
-  // New Zealand
-  [[173, -35], [176, -38], [178, -39], [176, -41], [174, -41], [173, -43], [170, -45], [167, -46], [169, -44], [171, -41], [172, -38]],
-  // Iceland
-  [[-24, 65], [-20, 66], [-16, 66], [-14, 65], [-18, 64], [-22, 64]],
-]
-
 const TILT = 16 * DEG
+
+/** Sub-pixel spacing below which two consecutive rim points are treated as the
+ *  same point. In CSS pixels — the context is pre-scaled by devicePixelRatio. */
+const RIM_EPSILON = 0.75
 
 /**
  * Unit light direction in screen space (x right, y down, z toward the viewer).
@@ -418,20 +332,40 @@ export function Globe({
         drawPath(pts)
       }
 
-      /* ---- Schematic landmasses ---- */
+      /* ---- Coastlines ---- */
       for (const polygon of LAND) {
-        // Points on the far side are pushed out to the rim so the silhouette
-        // stays closed as a shape rotates across the horizon.
-        const projected = polygon.map(([lon, lat]) => {
+        /*
+         * Points on the far side are pushed out to the rim so the silhouette
+         * stays closed as a shape rotates across the horizon.
+         *
+         * Consecutive hidden vertices routinely collapse onto the same rim
+         * coordinate — Antarctica spans every meridian, so most of its ring is
+         * behind the globe at any rotation. Dropping the coincident ones costs
+         * nothing visually and keeps the path short.
+         */
+        const projected: Projected[] = []
+        for (const [lon, lat] of polygon) {
           const p = project(lat, lon, s.rotation, radius, cx, cy)
-          if (p.depth > 0) return p
+          if (p.depth > 0) {
+            projected.push(p)
+            continue
+          }
           const dx = p.x - cx
           const dy = p.y - cy
           const len = Math.hypot(dx, dy) || 1
-          return { x: cx + (dx / len) * radius, y: cy + (dy / len) * radius, depth: p.depth }
-        })
+          const rim = {
+            x: cx + (dx / len) * radius,
+            y: cy + (dy / len) * radius,
+            depth: p.depth,
+          }
+          const prev = projected[projected.length - 1]
+          if (prev && prev.depth <= 0 && Math.hypot(rim.x - prev.x, rim.y - prev.y) < RIM_EPSILON) {
+            continue
+          }
+          projected.push(rim)
+        }
 
-        if (projected.every((p) => p.depth <= 0)) continue
+        if (projected.length < 3 || projected.every((p) => p.depth <= 0)) continue
 
         /*
          * Shade each mass by how squarely it faces the light. The surface normal
@@ -455,6 +389,8 @@ export function Globe({
         // Never fully black: the unlit side stays legible as silhouette.
         const lit = 0.4 + 0.6 * lambert
 
+        // Filled silhouette, closed through the rim. The hidden run collapses
+        // onto the rim circle, so it encloses no area and costs nothing here.
         ctx.beginPath()
         projected.forEach((p, i) => (i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)))
         ctx.closePath()
@@ -462,6 +398,31 @@ export function Globe({
         // backdrop's 0.18 intensity these values leave gold text at 4.9:1.
         ctx.fillStyle = `rgba(150, 190, 235, ${alpha(0.26 * lit)})`
         ctx.fill()
+
+        /*
+         * Stroke the near-side coastline only. A segment running along the rim
+         * is the horizon rather than a shore, and because every partially
+         * hidden landmass closes across the same few pixels of limb, stroking
+         * those segments stacks a dozen translucent arcs on one spot. Measured
+         * on the 0.18 backdrop, that drove the brightest pixel from 3.95:1
+         * against mist text to 1.76:1; skipping them puts it at 4.08:1, just
+         * above where the hand-drawn outlines sat. It costs nothing visually —
+         * the fill already carries the silhouette out to the edge.
+         */
+        ctx.beginPath()
+        let pen = false
+        for (let i = 0; i <= projected.length; i++) {
+          const p = projected[i % projected.length]
+          if (p.depth <= 0) {
+            pen = false
+            continue
+          }
+          if (pen) ctx.lineTo(p.x, p.y)
+          else {
+            ctx.moveTo(p.x, p.y)
+            pen = true
+          }
+        }
         ctx.strokeStyle = `rgba(168, 202, 240, ${alpha(0.65 * lit)})`
         ctx.lineWidth = 1
         ctx.stroke()

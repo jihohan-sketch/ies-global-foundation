@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Natural Earth source cached by scripts/generate-coastlines.mjs
+.cache
