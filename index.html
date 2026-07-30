@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <!-- iOS ignores SVG here and falls back to a screenshot of the page, so the
+         touch icon has to be a raster file at the size Apple asks for. -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#071A33" />
 
     <title>IES Global Foundation — Building Ethical Leaders Across Borders</title>
@@ -23,14 +25,32 @@
       content="An international youth-led foundation connecting national branches in Korea, the United States, and the United Kingdom."
     />
     <meta property="og:url" content="__SITE_ORIGIN__/" />
-    <meta property="og:image" content="__SITE_ORIGIN__/og-image.svg" />
+    <!--
+      PNG, not SVG: no major platform (Facebook, X, LinkedIn, Slack, iMessage)
+      renders an SVG preview — they drop the card image entirely. Declaring the
+      dimensions lets a scraper lay the card out on first fetch instead of
+      waiting until it has downloaded the file. public/og-image.svg remains the
+      editable source; regenerate the PNG from it after any change.
+    -->
+    <meta property="og:image" content="__SITE_ORIGIN__/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="IES Global Foundation — Building Ethical Leaders Across Borders"
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="IES Global Foundation" />
     <meta
       name="twitter:description"
       content="One Global Foundation. Multiple National Branches. Building ethical leaders through education, service, and global collaboration."
     />
-    <meta name="twitter:image" content="__SITE_ORIGIN__/og-image.svg" />
+    <meta name="twitter:image" content="__SITE_ORIGIN__/og-image.png" />
+    <meta
+      name="twitter:image:alt"
+      content="IES Global Foundation — Building Ethical Leaders Across Borders"
+    />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

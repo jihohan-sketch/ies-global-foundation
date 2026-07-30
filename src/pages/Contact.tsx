@@ -6,6 +6,16 @@ import { ContactForm } from '@/components/sections/ContactForm'
 import { branchContacts, contactChannels, socials } from '@/content/site'
 import { useSeo } from '@/lib/seo'
 
+/**
+ * Every channel currently resolves to the same mailbox (see the note on
+ * `PRIMARY_EMAIL` in content/site.ts), so the subject line is what actually
+ * routes a message. Pre-filling it turns seven identical links into seven
+ * useful ones without inventing addresses that do not exist yet.
+ */
+function mailtoFor(label: string, email: string) {
+  return `mailto:${email}?subject=${encodeURIComponent(`IES — ${label}`)}`
+}
+
 export default function Contact() {
   useSeo({
     title: 'Contact',
@@ -42,18 +52,26 @@ export default function Contact() {
             <div>
               <Reveal>
                 <Eyebrow>Direct Contacts</Eyebrow>
+                {/* Stated once, up front. Without it, seeing the same address
+                    under four headings reads as an oversight rather than a
+                    small team being straight about how it operates. */}
+                <p className="mt-5 max-w-md text-sm leading-relaxed font-light text-mist/80">
+                  IES is student-run and every inquiry reaches the same team. Choosing a
+                  category below fills in the subject line so your message gets to the
+                  right person faster.
+                </p>
               </Reveal>
 
               <div className="mt-8 space-y-px">
                 {contactChannels.map((channel, i) => (
-                  <Reveal key={channel.email} delay={i * 70}>
+                  <Reveal key={channel.label} delay={i * 70}>
                     <div className="border-t border-mist/15 py-6">
                       <h3 className="font-serif text-lg">{channel.label}</h3>
                       <p className="mt-1.5 text-sm font-light text-mist">
                         {channel.description}
                       </p>
                       <a
-                        href={`mailto:${channel.email}`}
+                        href={mailtoFor(channel.label, channel.email)}
                         className="mt-3 inline-block text-[0.9375rem] text-gold underline underline-offset-6 transition-colors hover:text-gold-300"
                       >
                         {channel.email}
@@ -71,12 +89,12 @@ export default function Contact() {
 
               <div className="mt-6 space-y-px">
                 {branchContacts.map((channel, i) => (
-                  <Reveal key={channel.email} delay={i * 70}>
+                  <Reveal key={channel.label} delay={i * 70}>
                     <div className="border-t border-mist/15 py-5">
                       <div className="flex flex-wrap items-baseline justify-between gap-2">
                         <h4 className="font-serif text-base">{channel.label}</h4>
                         <a
-                          href={`mailto:${channel.email}`}
+                          href={mailtoFor(channel.label, channel.email)}
                           className="text-sm text-gold underline underline-offset-6 transition-colors hover:text-gold-300"
                         >
                           {channel.email}

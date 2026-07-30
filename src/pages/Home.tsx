@@ -180,7 +180,10 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={120}>
-              <dl className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+              {/* Three across, not five: `736,000+` is the widest figure in the
+                  set and overruns a fifth of this column between 1024px and
+                  1400px, colliding with the figure beside it. */}
+              <dl className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
                 {headlineStats.map((stat) => (
                   <div key={stat.label}>
                     <dt className="sr-only">{stat.label}</dt>
@@ -210,10 +213,10 @@ export default function Home() {
         <Container className="relative">
           <Reveal className="text-center">
             <Eyebrow className="justify-center">Our Mission</Eyebrow>
-            <p className="text-h1 mx-auto mt-10 max-w-4xl font-serif leading-[1.15]">
+            <h2 className="text-h1 mx-auto mt-10 max-w-4xl font-serif leading-[1.15]">
               We help young people turn ethical reflection into{' '}
               <span className="text-gold italic">meaningful action.</span>
-            </p>
+            </h2>
             <p className="text-lead mx-auto mt-10 max-w-2xl font-light text-mist">
               IES combines intellectual engagement, leadership development, community service,
               and international collaboration — because ethical reflection that never leaves
@@ -245,9 +248,9 @@ export default function Home() {
           <div className="grid gap-14 lg:grid-cols-[1fr_1.25fr] lg:gap-24">
             <Reveal>
               <Eyebrow>Core Value</Eyebrow>
-              <p className="mt-8 font-serif text-[clamp(3.5rem,9vw,7rem)] leading-none text-gold">
+              <h2 className="mt-8 font-serif text-[clamp(3.5rem,9vw,7rem)] leading-none text-gold">
                 {values.primary.title}
-              </p>
+              </h2>
               <p className="mt-8 max-w-md leading-relaxed font-light text-mist">
                 {values.primary.body}
               </p>

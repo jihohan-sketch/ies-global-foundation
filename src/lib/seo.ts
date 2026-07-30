@@ -57,7 +57,7 @@ export function useSeo({
      */
     const origin = window.location.origin
     const url = `${origin}${path}`
-    const imageUrl = image ?? `${origin}/og-image.svg`
+    const imageUrl = image ?? `${origin}/og-image.png`
 
     document.title = fullTitle
 
