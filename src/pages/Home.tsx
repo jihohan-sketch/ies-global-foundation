@@ -358,7 +358,9 @@ export default function Home() {
             </div>
           </Reveal>
 
-          <div className="mt-16 grid gap-6 md:grid-cols-3">
+          {/* 3-up only from lg — at md the cards are too narrow for a portrait
+              and a full name side by side. */}
+          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {leadershipPreview.map((person, i) => (
               <Reveal key={person.id} delay={i * 110}>
                 <PersonCard person={person} />

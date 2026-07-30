@@ -56,12 +56,12 @@ export function PersonCard({ person, branchName }: { person: Person; branchName?
             src={person.photo}
             alt=""
             loading="lazy"
-            className="h-16 w-16 shrink-0 rounded-full object-cover grayscale-[0.25]"
+            className="h-20 w-20 shrink-0 rounded-full object-cover grayscale-[0.25] sm:h-24 sm:w-24"
           />
         ) : (
           <span
             aria-hidden
-            className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-gold/35 font-serif text-lg text-gold"
+            className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full border border-gold/35 font-serif text-xl text-gold sm:h-24 sm:w-24"
           >
             {initials(person.name)}
           </span>

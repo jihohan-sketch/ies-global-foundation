@@ -89,12 +89,12 @@ export default function Leadership() {
                               src={holder.photo}
                               alt=""
                               loading="lazy"
-                              className="h-12 w-12 shrink-0 rounded-full object-cover grayscale-[0.25]"
+                              className="h-16 w-16 shrink-0 rounded-full object-cover grayscale-[0.25]"
                             />
                           ) : (
                             <span
                               aria-hidden
-                              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold/35 font-serif text-sm text-gold"
+                              className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-gold/35 font-serif text-base text-gold"
                             >
                               {initials(holder.name)}
                             </span>
