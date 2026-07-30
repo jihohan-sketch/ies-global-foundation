@@ -49,71 +49,81 @@ export function BranchCard({ branch, index }: { branch: Branch; index: number })
 
 export function PersonCard({ person, branchName }: { person: Person; branchName?: string }) {
   return (
-    <Card className="h-full p-8">
-      <div className="flex items-center gap-5">
-        {person.photo ? (
-          <img
-            src={person.photo}
-            alt=""
-            loading="lazy"
-            className="h-20 w-20 shrink-0 rounded-full object-cover grayscale-[0.25] sm:h-24 sm:w-24"
-          />
-        ) : (
-          <span
-            aria-hidden
-            className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full border border-gold/35 font-serif text-xl text-gold sm:h-24 sm:w-24"
-          >
-            {initials(person.name)}
-          </span>
-        )}
-        <div className="min-w-0">
-          <h3 className="font-serif text-xl leading-tight">
-            {person.name}
-            {person.koreanName && (
-              <span className="ml-2 text-base font-light text-mist">{person.koreanName}</span>
-            )}
-          </h3>
-          <p className="mt-1.5 text-[0.8125rem] font-medium tracking-wide text-gold">
-            {person.title}
-          </p>
-          {branchName && (
-            <p className="mt-0.5 text-xs font-light text-mist">{branchName}</p>
-          )}
-        </div>
-      </div>
-
-      {person.affiliations && person.affiliations.length > 0 && (
-        <ul className="mt-5 space-y-1">
-          {person.affiliations.map((item) => (
-            <li key={item} className="text-[0.8125rem] font-light text-mist/80">
-              {item}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <p className="mt-6 text-[0.9375rem] leading-relaxed font-light text-mist">
-        {person.bio}
-      </p>
-
-      {person.responsibilities.length > 0 && (
-        <div className="mt-6 border-t border-mist/12 pt-6">
-          <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
-            Responsibilities
-          </p>
-          <ul className="mt-3 space-y-2">
-            {person.responsibilities.map((item) => (
-              <li
-                key={item}
-                className="flex gap-3 text-[0.875rem] font-light text-paper/78"
+    /* @container, not a viewport breakpoint: the same card sits in a two-up
+       grid on Leadership and a three-up grid on Home, so it has to decide
+       between portrait-beside-text and portrait-above-text from its own
+       width rather than the window's. */
+    <Card className="@container h-full overflow-hidden">
+      <div className="flex h-full flex-col">
+        <div className="flex flex-col @md:flex-row">
+          {/* Square and uncropped — the source files are 512×512, so this is
+              the whole photograph at close to native size, bled to the card
+              edge rather than punched into an avatar circle. */}
+          <div className="shrink-0 @md:w-[38%] @md:max-w-[17rem]">
+            {person.photo ? (
+              <img
+                src={person.photo}
+                alt=""
+                loading="lazy"
+                className="aspect-square w-full object-cover"
+              />
+            ) : (
+              <div
+                aria-hidden
+                className="flex aspect-square w-full items-center justify-center border-b border-mist/12 bg-navy-700/60 @md:border-r @md:border-b-0"
               >
-                <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-gold/60" />
-                {item}
-              </li>
-            ))}
-          </ul>
+                <span className="font-serif text-4xl text-gold/70">{initials(person.name)}</span>
+              </div>
+            )}
+          </div>
+
+          <div className="min-w-0 flex-1 p-8">
+            <h3 className="font-serif text-xl leading-tight">
+              {person.name}
+              {person.koreanName && (
+                <span className="ml-2 text-base font-light text-mist">{person.koreanName}</span>
+              )}
+            </h3>
+            <p className="mt-1.5 text-[0.8125rem] font-medium tracking-wide text-gold">
+              {person.title}
+            </p>
+            {branchName && <p className="mt-0.5 text-xs font-light text-mist">{branchName}</p>}
+
+            {person.affiliations && person.affiliations.length > 0 && (
+              <ul className="mt-5 space-y-1">
+                {person.affiliations.map((item) => (
+                  <li key={item} className="text-[0.8125rem] font-light text-mist/80">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <p className="mt-6 text-[0.9375rem] leading-relaxed font-light text-mist">
+              {person.bio}
+            </p>
+          </div>
         </div>
-      )}
+
+        {/* Full card width rather than tucked into the text column: a long list
+            would otherwise stretch the right side while the square portrait
+            leaves the left side empty. */}
+        {person.responsibilities.length > 0 && (
+          <div className="mt-auto border-t border-mist/12 p-8">
+            <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+              Responsibilities
+            </p>
+            <ul className="mt-3 grid gap-2 @2xl:grid-cols-2 @2xl:gap-x-8">
+              {person.responsibilities.map((item) => (
+                <li key={item} className="flex gap-3 text-[0.875rem] font-light text-paper/78">
+                  <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-gold/60" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </Card>
   )
 }

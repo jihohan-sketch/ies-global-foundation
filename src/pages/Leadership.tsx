@@ -80,49 +80,48 @@ export default function Leadership() {
 
                     <div className="mt-6 border-t border-mist/12 pt-5">
                       {holder ? (
-                        /* Same photo-or-monogram treatment as PersonCard, at a
-                           smaller size — a filled office should read as a person
-                           holding it, not as a line of text. */
-                        <div className="flex items-center gap-4">
+                        /* Same square, uncropped portrait as PersonCard at a
+                           smaller size, with the name and biography set beside
+                           it — a filled office should read as a person holding
+                           it, not as a line of text. Officers have no
+                           PersonCard anywhere else on the site, so without this
+                           their biography would never be rendered at all. */
+                        <div className="flex flex-col gap-5 sm:flex-row">
                           {holder.photo ? (
                             <img
                               src={holder.photo}
                               alt=""
                               loading="lazy"
-                              className="h-16 w-16 shrink-0 rounded-full object-cover grayscale-[0.25]"
+                              className="aspect-square w-28 shrink-0 self-start rounded-[3px] object-cover sm:w-32"
                             />
                           ) : (
                             <span
                               aria-hidden
-                              className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-gold/35 font-serif text-base text-gold"
+                              className="flex aspect-square w-28 shrink-0 items-center justify-center self-start rounded-[3px] border border-gold/35 font-serif text-2xl text-gold sm:w-32"
                             >
                               {initials(holder.name)}
                             </span>
                           )}
-                          <p className="min-w-0 text-[0.9375rem] font-light text-paper/90">
-                            {holder.name}
-                            {holder.koreanName && (
-                              <span className="ml-2 font-light text-mist">
-                                {holder.koreanName}
+                          <div className="min-w-0">
+                            <p className="text-[0.9375rem] font-light text-paper/90">
+                              {holder.name}
+                              {holder.koreanName && (
+                                <span className="ml-2 font-light text-mist">
+                                  {holder.koreanName}
+                                </span>
+                              )}
+                              <span className="mt-0.5 block text-[0.8125rem] text-mist">
+                                {holder.title}
                               </span>
-                            )}
-                            <span className="mt-0.5 block text-[0.8125rem] text-mist">
-                              {holder.title}
-                            </span>
-                          </p>
+                            </p>
+                            <p className="mt-4 text-[0.875rem] leading-relaxed font-light text-mist">
+                              {holder.bio}
+                            </p>
+                          </div>
                         </div>
                       ) : (
                         <p className="text-[0.8125rem] font-light text-mist/70 italic">
                           Appointment to be confirmed.
-                        </p>
-                      )}
-
-                      {/* Officers of the Foundation have no PersonCard anywhere
-                          else on the site, so without this their biography would
-                          never be rendered at all. */}
-                      {holder && (
-                        <p className="mt-5 text-[0.875rem] leading-relaxed font-light text-mist">
-                          {holder.bio}
                         </p>
                       )}
                     </div>
@@ -173,7 +172,7 @@ export default function Leadership() {
                     </div>
                   </Reveal>
 
-                  <div className="mt-8 grid gap-6 md:grid-cols-2">
+                  <div className="mt-8 grid gap-6 lg:grid-cols-2">
                     {leaders.map((person, i) => (
                       <Reveal key={person.id} delay={i * 110}>
                         <PersonCard person={person} branchName={branch.name} />

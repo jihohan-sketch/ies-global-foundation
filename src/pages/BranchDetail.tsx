@@ -119,7 +119,7 @@ export default function BranchDetail() {
               <h2 className="text-h2 mt-6">Who leads {branch.name}</h2>
             </Reveal>
 
-            <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-14 grid gap-6 lg:grid-cols-2">
               {leaders.map((person, i) => (
                 <Reveal key={person.id} delay={i * 110}>
                   <PersonCard person={person} branchName={branch.name} />
