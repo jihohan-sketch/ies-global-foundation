@@ -145,15 +145,6 @@ export const globalOffices: {
   holder?: string
 }[] = [
   {
-    title: 'Director of Global Operations',
-    scope: 'International coordination',
-    responsibilities: [
-      'Coordination between national branches',
-      'Operational standards and reporting cycles',
-      'Cross-border programming logistics',
-    ],
-  },
-  {
     title: 'Head of Marketing',
     scope: 'Brand and digital presence',
     responsibilities: [
@@ -162,15 +153,6 @@ export const globalOffices: {
       'Publication approval workflow',
     ],
     holder: 'sean-han',
-  },
-  {
-    title: 'Director of Partnerships',
-    scope: 'Institutional relationships',
-    responsibilities: [
-      'Relationships with schools, universities, and nonprofits',
-      'Partnership agreements and expectations',
-      'Support for branch-level partnerships',
-    ],
   },
 ]
 
