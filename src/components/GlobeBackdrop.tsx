@@ -17,8 +17,9 @@ import { Globe } from '@/components/Globe'
  *      raising this, and note that the lit ocean gradient is the dominant term,
  *      not the landmasses.
  *
- * The globe drifts about one revolution every two minutes and freezes under
- * `prefers-reduced-motion`, both handled inside `Globe`.
+ * The globe drifts one revolution every 45s, handled inside `Globe`. It keeps
+ * turning under `prefers-reduced-motion` — a deliberate exception to the site's
+ * usual handling of that setting.
  */
 export function GlobeBackdrop() {
   return (

@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef } from 'react'
-import { prefersReducedMotion } from '@/lib/utils'
 import { LAND } from '@/content/coastlines'
 import type { GeoPoint } from '@/content/types'
 
@@ -178,14 +177,11 @@ export function Globe({
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const reduced = prefersReducedMotion()
     let width = 0
     let height = 0
     let frame = 0
     let last = performance.now()
     let pulse = 0
-    let lastDrawnRotation = Number.NaN
-    let needsRedraw = true
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
@@ -197,8 +193,6 @@ export function Globe({
       canvas.style.width = `${width}px`
       canvas.style.height = `${height}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      // Resizing clears the canvas, so the next tick has to repaint.
-      needsRedraw = true
     }
 
     const resizeObserver = new ResizeObserver(resize)
@@ -228,35 +222,21 @@ export function Globe({
         } else {
           s.rotation += diff * Math.min(1, dt * 2.6)
         }
-      } else if (!reduced) {
+      } else {
         /*
          * Degrees per second. 8°/s is one revolution every 45s — slow enough to
          * read as a planet turning, fast enough that a few seconds of looking
          * makes the movement obvious. The interactive globe stays slower, since
          * there the markers are targets the visitor has to click.
+         *
+         * Deliberately not gated on `prefers-reduced-motion`: the rotation is
+         * the point of the element, and the site owner asked for it to run for
+         * everyone. Every other motion on the site still honours the setting.
          */
         s.rotation += dt * (interactive ? 3 : 8)
       }
       if (s.rotation > 360) s.rotation -= 360
       if (s.rotation < -360) s.rotation += 360
-
-      /*
-       * Under reduced motion the drift is off, so once the globe has settled
-       * every frame would be identical. Interactive globes are excluded: their
-       * hover state is resolved inside the draw pass and would stop updating.
-       */
-      if (
-        reduced &&
-        !interactive &&
-        !needsRedraw &&
-        s.targetRotation === null &&
-        s.rotation === lastDrawnRotation
-      ) {
-        frame = requestAnimationFrame(draw)
-        return
-      }
-      needsRedraw = false
-      lastDrawnRotation = s.rotation
 
       const cx = width / 2
       const cy = height / 2
