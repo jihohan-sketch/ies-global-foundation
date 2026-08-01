@@ -66,6 +66,12 @@ export default function Leadership() {
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {globalOffices.map((office, i) => {
               const holder = office.holder ? personById(office.holder) : undefined
+              /* One person can hold more than one office. Their biography is
+                 about them rather than about any single office, so it is
+                 printed once — on the first office they appear under — and the
+                 later cards identify them by name and portrait alone. */
+              const isFirstOfficeForHolder =
+                globalOffices.findIndex((o) => o.holder === office.holder) === i
               return (
                 <Reveal key={office.title} delay={i * 100}>
                   <Card className="h-full p-8">
@@ -114,9 +120,11 @@ export default function Leadership() {
                                 {holder.title}
                               </span>
                             </p>
-                            <p className="mt-4 text-[0.875rem] leading-relaxed font-light text-mist">
-                              {holder.bio}
-                            </p>
+                            {isFirstOfficeForHolder && (
+                              <p className="mt-4 text-[0.875rem] leading-relaxed font-light text-mist">
+                                {holder.bio}
+                              </p>
+                            )}
                           </div>
                         </div>
                       ) : (

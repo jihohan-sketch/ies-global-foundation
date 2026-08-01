@@ -55,11 +55,13 @@ export const people: Person[] = [
   {
     id: 'sean-han',
     name: 'Sean Han',
-    title: 'Head of Marketing',
+    title: 'Vice President · Head of Marketing',
     tier: 'global',
     photo: '/leadership/sean-han.jpg',
-    bio: 'Sean Han leads marketing for the Global Foundation, responsible for how IES presents itself across Korea, the United States, and the United Kingdom. The remit covers the organization’s brand, this website, and its social channels, together with the approval process every public statement passes through before publication. Much of the work is consistency: a chapter in Seoul, a founding team in the United States, and a branch in London all describe the same organization, and it should read that way to a school deciding whether to work with IES. They also set the standards branches follow in building their own communications.',
+    bio: 'Sean Han is Vice President of the Global Foundation and its Head of Marketing. As Vice President they support the Foundation’s officers and the national branches on organizational matters. As Head of Marketing they are responsible for how IES presents itself across Korea, the United States, and the United Kingdom: the organization’s brand, this website, and its social channels, together with the approval process every public statement passes through before publication. Much of that work is consistency — a chapter in Seoul, a founding team in the United States, and a branch in London all describe the same organization, and it should read that way to a school deciding whether to work with IES. They also set the standards branches follow in building their own communications.',
     responsibilities: [
+      'Deputy leadership of the Global Foundation',
+      'Coordination across the Foundation’s offices',
       'Brand consistency across branches and chapters',
       'Website and social content management',
       'Publication approval workflow',
@@ -144,6 +146,16 @@ export const globalOffices: {
   responsibilities: string[]
   holder?: string
 }[] = [
+  {
+    title: 'Vice President',
+    scope: 'Foundation leadership',
+    responsibilities: [
+      'Deputy leadership of the Global Foundation',
+      'Coordination across the Foundation’s offices',
+      'Support for national branch leadership',
+    ],
+    holder: 'sean-han',
+  },
   {
     title: 'Head of Marketing',
     scope: 'Brand and digital presence',
