@@ -14,6 +14,21 @@ import {
 import { initials } from '@/lib/utils'
 import { useSeo } from '@/lib/seo'
 
+/*
+ * One person can hold several offices. Rendering one card per office then
+ * repeats their portrait, name and biography, which reads as a duplication bug
+ * rather than as two posts — so offices sharing a holder are shown as a single
+ * card. Unfilled offices always stand on their own.
+ */
+const officeGroups = globalOffices.reduce<(typeof globalOffices)[]>((groups, office) => {
+  const existing = office.holder
+    ? groups.find((group) => group[0].holder === office.holder)
+    : undefined
+  if (existing) existing.push(office)
+  else groups.push([office])
+  return groups
+}, [])
+
 export default function Leadership() {
   useSeo({
     title: 'Leadership',
@@ -64,22 +79,17 @@ export default function Leadership() {
           </Reveal>
 
           <div className="mt-14 grid gap-6 md:grid-cols-2">
-            {globalOffices.map((office, i) => {
-              const holder = office.holder ? personById(office.holder) : undefined
-              /* One person can hold more than one office. Their biography is
-                 about them rather than about any single office, so it is
-                 printed once — on the first office they appear under — and the
-                 later cards identify them by name and portrait alone. */
-              const isFirstOfficeForHolder =
-                globalOffices.findIndex((o) => o.holder === office.holder) === i
+            {officeGroups.map((group, i) => {
+              const holder = group[0].holder ? personById(group[0].holder) : undefined
+              const officeTitle = group.map((office) => office.title).join(' · ')
               return (
-                <Reveal key={office.title} delay={i * 100}>
+                <Reveal key={officeTitle} delay={i * 100}>
                   <Card className="h-full p-8">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <h3 className="font-serif text-xl">{office.title}</h3>
+                        <h3 className="font-serif text-xl">{officeTitle}</h3>
                         <p className="mt-1.5 text-[0.75rem] font-medium tracking-[0.14em] text-gold uppercase">
-                          {office.scope}
+                          {group.map((office) => office.scope).join(' · ')}
                         </p>
                       </div>
                     </div>
@@ -116,15 +126,17 @@ export default function Leadership() {
                                   {holder.koreanName}
                                 </span>
                               )}
-                              <span className="mt-0.5 block text-[0.8125rem] text-mist">
-                                {holder.title}
-                              </span>
+                              {/* Only when it says something the heading above
+                                  does not — otherwise it is the same line twice. */}
+                              {holder.title !== officeTitle && (
+                                <span className="mt-0.5 block text-[0.8125rem] text-mist">
+                                  {holder.title}
+                                </span>
+                              )}
                             </p>
-                            {isFirstOfficeForHolder && (
-                              <p className="mt-4 text-[0.875rem] leading-relaxed font-light text-mist">
-                                {holder.bio}
-                              </p>
-                            )}
+                            <p className="mt-4 text-[0.875rem] leading-relaxed font-light text-mist">
+                              {holder.bio}
+                            </p>
                           </div>
                         </div>
                       ) : (
@@ -135,7 +147,7 @@ export default function Leadership() {
                     </div>
 
                     <ul className="mt-5 space-y-2">
-                      {office.responsibilities.map((item) => (
+                      {group.flatMap((office) => office.responsibilities).map((item) => (
                         <li
                           key={item}
                           className="flex gap-3 text-[0.875rem] font-light text-mist"
