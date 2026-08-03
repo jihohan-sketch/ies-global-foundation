@@ -214,11 +214,11 @@
 .reveal {
   opacity: 0;
   transform: translateY(18px);
-  /* 1.15s, not the old 0.9s: the brief is that copy should arrive slowly
-     enough to be watched arriving. */
+  /* 2s, up from the original 0.9s: the brief is that copy should arrive slowly
+     enough to be watched arriving, not merely appear. */
   transition:
-    opacity 1.15s var(--ease-out-quint),
-    transform 1.15s var(--ease-out-quint);
+    opacity 2s var(--ease-out-quint),
+    transform 2s var(--ease-out-quint);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
 }
