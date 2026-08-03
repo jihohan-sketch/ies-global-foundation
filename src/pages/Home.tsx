@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Globe, type GlobeMarker } from '@/components/Globe'
 import { Button, Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
+import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
 import { StatBlock } from '@/components/ui/Counter'
 import { BranchCard, PersonCard } from '@/components/sections/Cards'
 import { CallToAction } from '@/components/sections/CallToAction'
@@ -150,13 +151,15 @@ export default function Home() {
             />
           </Reveal>
 
-          <div className="mt-16 grid gap-6 md:grid-cols-3">
+          <ScrollRail label="the national branches" className="mt-16">
             {branches.map((branch, i) => (
-              <Reveal key={branch.slug} delay={i * 110}>
-                <BranchCard branch={branch} index={i} />
-              </Reveal>
+              <RailItem key={branch.slug}>
+                <Reveal delay={i * 110} className="h-full">
+                  <BranchCard branch={branch} index={i} />
+                </Reveal>
+              </RailItem>
             ))}
-          </div>
+          </ScrollRail>
 
           <Reveal delay={200}>
             <p className="mt-10 max-w-2xl text-sm leading-relaxed font-light text-mist/80">
@@ -220,9 +223,10 @@ export default function Home() {
             </p>
           </Reveal>
 
-          <div className="mt-20 grid gap-6 md:grid-cols-3">
+          <ScrollRail label="the organizational pillars" className="mt-20">
             {pillars.map((pillar, i) => (
-              <Reveal key={pillar.id} delay={i * 120}>
+              <RailItem key={pillar.id}>
+                <Reveal delay={i * 120} className="h-full">
                 <Card className="h-full p-8 sm:p-10">
                   <span className="font-serif text-sm text-[var(--accent)]">
                     {String(i + 1).padStart(2, '0')}
@@ -232,9 +236,10 @@ export default function Home() {
                     {pillar.summary}
                   </p>
                 </Card>
-              </Reveal>
+                </Reveal>
+              </RailItem>
             ))}
-          </div>
+          </ScrollRail>
         </Container>
       </Section>
 
