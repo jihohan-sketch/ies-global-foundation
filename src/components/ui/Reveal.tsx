@@ -5,15 +5,25 @@ interface RevealProps {
   children: ReactNode
   /** Stagger in milliseconds. */
   delay?: number
+  /** Where the element travels in from. Defaults to a rise from below. */
+  from?: 'bottom' | 'left' | 'right'
   className?: string
   as?: ElementType
 }
 
 /**
- * Gentle fade-and-rise on first scroll into view. Disabled automatically by the
- * `prefers-reduced-motion` rule in index.css, which also makes content visible.
+ * Fade-and-travel on first scroll into view, once per element.
+ *
+ * Note that this intentionally still runs under `prefers-reduced-motion` — see
+ * the carve-out in index.css for why, and for how to undo it.
  */
-export function Reveal({ children, delay = 0, className, as: Tag = 'div' }: RevealProps) {
+export function Reveal({
+  children,
+  delay = 0,
+  from = 'bottom',
+  className,
+  as: Tag = 'div',
+}: RevealProps) {
   const ref = useRef<HTMLElement>(null)
   const [visible, setVisible] = useState(false)
 
@@ -45,6 +55,7 @@ export function Reveal({ children, delay = 0, className, as: Tag = 'div' }: Reve
       ref={ref}
       className={cx('reveal', className)}
       data-visible={visible}
+      data-from={from === 'bottom' ? undefined : from}
       style={{ '--reveal-delay': `${delay}ms` } as React.CSSProperties}
     >
       {children}

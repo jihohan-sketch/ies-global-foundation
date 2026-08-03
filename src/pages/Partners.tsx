@@ -1,5 +1,6 @@
 import { Card, Container, Eyebrow, Section, SectionHeading, Button } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
+import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
 import {
@@ -77,9 +78,10 @@ export default function Partners() {
             />
           </Reveal>
 
-          <div className="mt-14 grid gap-6 lg:grid-cols-3">
+          <ScrollRail label="partner organizations" className="mt-14">
             {namedPartners.map((group, i) => (
-              <Reveal key={group.group} delay={i * 100}>
+              <RailItem key={group.group}>
+                <Reveal delay={i * 100} className="h-full">
                 <Card className="h-full p-8">
                   <h3 className="font-serif text-xl text-[var(--accent)]">{group.group}</h3>
                   <p className="mt-3 text-[0.875rem] leading-relaxed font-light text-mist">
@@ -96,9 +98,10 @@ export default function Partners() {
                     ))}
                   </ul>
                 </Card>
-              </Reveal>
+                </Reveal>
+              </RailItem>
             ))}
-          </div>
+          </ScrollRail>
 
           <Reveal delay={200}>
             <p className="mt-10 max-w-3xl text-sm leading-relaxed font-light text-mist/70">

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Container, Eyebrow, Section } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
+import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
 import { PageHero } from '@/components/sections/PageHero'
 import { ArticleCard } from '@/components/sections/Cards'
 import { CallToAction } from '@/components/sections/CallToAction'
@@ -89,13 +90,15 @@ export default function News() {
 
               {/* ------------------------------------------------- The rest */}
               {rest.length > 0 && (
-                <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <ScrollRail label="more updates" className="mt-6">
                   {rest.map((article, i) => (
-                    <Reveal key={article.slug} delay={i * 80}>
-                      <ArticleCard article={article} />
-                    </Reveal>
+                    <RailItem key={article.slug}>
+                      <Reveal delay={i * 80} className="h-full">
+                        <ArticleCard article={article} />
+                      </Reveal>
+                    </RailItem>
                   ))}
-                </div>
+                </ScrollRail>
               )}
             </>
           )}

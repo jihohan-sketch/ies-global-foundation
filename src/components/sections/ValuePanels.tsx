@@ -33,6 +33,7 @@ export function ValuePanels() {
     <section aria-label="The Three A’s">
       {threeAs.map((item, index) => {
         const panel = PANELS[index % PANELS.length]
+        const side = index % 2 === 0 ? 'left' : 'right'
         return (
           <div
             key={item.title}
@@ -57,8 +58,12 @@ export function ValuePanels() {
             </span>
 
             <Container size="wide" className="relative">
+              {/* Each line enters from the side, alternating panel to panel so
+                  scrolling the three does not feel like the same move repeated.
+                  The stagger is wide (0 → 420ms) because the point is to watch
+                  the lines arrive one after another, not all at once. */}
               <div className="mx-auto max-w-3xl text-center">
-                <Reveal>
+                <Reveal from={side}>
                   <p
                     className="text-[0.6875rem] font-medium tracking-[0.24em] uppercase"
                     style={{ color: panel.accent }}
@@ -68,7 +73,7 @@ export function ValuePanels() {
                   </p>
                 </Reveal>
 
-                <Reveal delay={90}>
+                <Reveal from={side} delay={140}>
                   <h3
                     className="mt-8 font-serif leading-[0.95] text-paper"
                     style={{ fontSize: 'clamp(2.75rem, 8vw, 6.5rem)', letterSpacing: '-0.02em' }}
@@ -77,7 +82,7 @@ export function ValuePanels() {
                   </h3>
                 </Reveal>
 
-                <Reveal delay={160}>
+                <Reveal from={side} delay={280}>
                   <p
                     className="mt-6 text-[0.75rem] font-medium tracking-[0.2em] uppercase"
                     style={{ color: panel.accent }}
@@ -86,7 +91,7 @@ export function ValuePanels() {
                   </p>
                 </Reveal>
 
-                <Reveal delay={230}>
+                <Reveal from={side} delay={420}>
                   <p className="text-lead mx-auto mt-10 max-w-2xl leading-relaxed font-light text-mist">
                     {item.body}
                   </p>

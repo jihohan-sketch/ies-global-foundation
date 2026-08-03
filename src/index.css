@@ -214,11 +214,24 @@
 .reveal {
   opacity: 0;
   transform: translateY(18px);
+  /* 1.15s, not the old 0.9s: the brief is that copy should arrive slowly
+     enough to be watched arriving. */
   transition:
-    opacity 0.9s var(--ease-out-quint),
-    transform 0.9s var(--ease-out-quint);
+    opacity 1.15s var(--ease-out-quint),
+    transform 1.15s var(--ease-out-quint);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
+}
+
+/* Directional variants. The travel is longer than the default rise (64px vs
+   18px) because a slide has to read as coming *from* somewhere; at 18px it
+   just looks like a nudge. */
+.reveal[data-from='left'] {
+  transform: translateX(-64px);
+}
+
+.reveal[data-from='right'] {
+  transform: translateX(64px);
 }
 
 .reveal[data-visible='true'] {
@@ -231,13 +244,21 @@
     scroll-behavior: auto;
   }
 
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  *,
+  /*
+   * `.reveal` is deliberately exempt from the blanket rule below, and from the
+   * usual honouring of this setting.
+   *
+   * The site owner asked for the scroll reveals to run for everyone, the same
+   * call already made for the globe. It is a real accessibility trade-off:
+   * someone who set "reduce motion" because motion makes them ill will still
+   * get these. Kept as narrow as possible — the reveals are opacity/transform
+   * only, they run once per element and never loop, and every other animation
+   * on the site still collapses to nothing here.
+   *
+   * To restore the default behaviour, delete the `:not(.reveal)` below and
+   * re-add a `.reveal { transition: none }` rule inside this block.
+   */
+  *:not(.reveal),
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
