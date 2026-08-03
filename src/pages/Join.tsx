@@ -35,13 +35,13 @@ export default function Join() {
                   id={pathway.id}
                   className="grid gap-8 border-t border-mist/15 py-12 lg:grid-cols-[auto_1fr_1.1fr_auto] lg:gap-14"
                 >
-                  <span className="font-serif text-sm text-gold/70">
+                  <span className="font-serif text-sm text-[var(--accent)]/70">
                     {String(i + 1).padStart(2, '0')}
                   </span>
 
                   <div>
                     <h2 className="text-h3">{pathway.title}</h2>
-                    <p className="mt-3 text-[0.75rem] font-medium tracking-[0.14em] text-gold uppercase">
+                    <p className="mt-3 text-[0.75rem] font-medium tracking-[0.14em] text-[var(--accent)] uppercase">
                       {pathway.audience}
                     </p>
                   </div>
@@ -56,7 +56,7 @@ export default function Join() {
                           key={point}
                           className="flex gap-3 text-[0.9375rem] font-light text-paper/80"
                         >
-                          <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-gold/60" />
+                          <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                           {point}
                         </li>
                       ))}
@@ -106,14 +106,14 @@ export default function Join() {
                   </p>
                   <a
                     href={`mailto:${branch.contactEmail}`}
-                    className="mt-6 inline-block text-sm text-gold underline underline-offset-6 transition-colors hover:text-gold-300"
+                    className="mt-6 inline-block text-sm text-[var(--accent)] underline underline-offset-6 transition-colors hover:text-[var(--accent)]"
                   >
                     {branch.contactEmail}
                   </a>
                   <div className="mt-6 border-t border-mist/12 pt-5">
                     <Link
                       to={`/global-network/${branch.slug}`}
-                      className="text-[0.6875rem] font-medium tracking-[0.16em] text-paper/75 uppercase transition-colors hover:text-gold"
+                      className="text-[0.6875rem] font-medium tracking-[0.16em] text-paper/75 uppercase transition-colors hover:text-[var(--accent)]"
                     >
                       Branch profile →
                     </Link>

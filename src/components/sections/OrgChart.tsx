@@ -19,8 +19,8 @@ export function OrgChart({ className }: { className?: string }) {
     <div className={cx('relative', className)}>
       {/* -------------------------------------------------- Foundation */}
       <div className="mx-auto max-w-md">
-        <div className="border border-gold/45 bg-navy-700/50 px-8 py-7 text-center">
-          <p className="text-[0.625rem] font-medium tracking-[0.22em] text-gold uppercase">
+        <div className="border border-[var(--accent)]/45 bg-navy-700/50 px-8 py-7 text-center">
+          <p className="text-[0.625rem] font-medium tracking-[0.22em] text-[var(--accent)] uppercase">
             International Coordination
           </p>
           <p className="mt-3 font-serif text-[1.375rem]">IES Global Foundation</p>
@@ -46,9 +46,9 @@ export function OrgChart({ className }: { className?: string }) {
 
             <Link
               to={`/global-network/${branch.slug}`}
-              className="group w-full border border-mist/22 bg-navy-700/35 px-6 py-6 text-center transition-colors duration-300 hover:border-gold/50"
+              className="group w-full border border-mist/22 bg-navy-700/35 px-6 py-6 text-center transition-colors duration-300 hover:border-[var(--accent)]/50"
             >
-              <p className="font-serif text-lg transition-colors group-hover:text-gold-300">
+              <p className="font-serif text-lg transition-colors group-hover:text-[var(--accent)]">
                 {branch.name}
               </p>
               <p className="mt-2 text-[0.6875rem] font-medium tracking-[0.14em] text-mist uppercase">

@@ -50,7 +50,7 @@ export function LegalPage({ document }: { document: LegalDocument }) {
                           key={item}
                           className="flex gap-4 leading-relaxed font-light text-paper/80"
                         >
-                          <span aria-hidden className="mt-3 h-px w-4 shrink-0 bg-gold/60" />
+                          <span aria-hidden className="mt-3 h-px w-4 shrink-0 bg-[var(--accent)]/60" />
                           {item}
                         </li>
                       ))}
@@ -66,7 +66,7 @@ export function LegalPage({ document }: { document: LegalDocument }) {
               Questions about this policy can be sent to{' '}
               <a
                 href="mailto:theiesociety@gmail.com"
-                className="text-gold underline underline-offset-6 hover:text-gold-300"
+                className="text-[var(--accent)] underline underline-offset-6 hover:text-[var(--accent)]"
               >
                 theiesociety@gmail.com
               </a>

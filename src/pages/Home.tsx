@@ -66,7 +66,7 @@ export default function Home() {
               <h1 className="text-display mt-8">
                 Building Ethical
                 <br />
-                Leaders <span className="text-gold italic">Across Borders</span>
+                Leaders <span className="text-[var(--accent)] italic">Across Borders</span>
               </h1>
             </Reveal>
 
@@ -196,7 +196,7 @@ export default function Home() {
           <Reveal delay={200}>
             <p className="mt-14 border-t border-navy/12 pt-6 text-xs font-light text-navy-700/60">
               {site.statisticsNote}{' '}
-              <Link to="/impact" className="text-navy underline underline-offset-4 hover:text-gold">
+              <Link to="/impact" className="text-navy underline underline-offset-4 hover:text-[var(--accent)]">
                 See the full impact report
               </Link>
               .
@@ -212,7 +212,7 @@ export default function Home() {
             <Eyebrow className="justify-center">Our Mission</Eyebrow>
             <h2 className="text-h1 mx-auto mt-10 max-w-4xl font-serif leading-[1.15]">
               We help young people turn ethical reflection into{' '}
-              <span className="text-gold italic">meaningful action.</span>
+              <span className="text-[var(--accent)] italic">meaningful action.</span>
             </h2>
             <p className="text-lead mx-auto mt-10 max-w-2xl font-light text-mist">
               Reflection that never leaves the seminar room is incomplete, and service
@@ -224,7 +224,7 @@ export default function Home() {
             {pillars.map((pillar, i) => (
               <Reveal key={pillar.id} delay={i * 120}>
                 <Card className="h-full p-8 sm:p-10">
-                  <span className="font-serif text-sm text-gold">
+                  <span className="font-serif text-sm text-[var(--accent)]">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <h3 className="text-h3 mt-6">{pillar.title}</h3>
@@ -244,7 +244,7 @@ export default function Home() {
           <div className="grid gap-14 lg:grid-cols-[1fr_1.25fr] lg:gap-24">
             <Reveal>
               <Eyebrow>Core Value</Eyebrow>
-              <h2 className="mt-8 font-serif text-[clamp(3.5rem,9vw,7rem)] leading-none text-gold">
+              <h2 className="mt-8 font-serif text-[clamp(3.5rem,9vw,7rem)] leading-none text-[var(--accent)]">
                 {values.primary.title}
               </h2>
               <p className="mt-8 max-w-md leading-relaxed font-light text-mist">
@@ -284,9 +284,9 @@ export default function Home() {
             {threeAs.map((item, i) => (
               <Reveal key={item.title} delay={i * 110}>
                 <Card className="h-full p-8 sm:p-10">
-                  <span className="font-serif text-4xl text-gold/80">A{i + 1}</span>
+                  <span className="font-serif text-4xl text-[var(--accent)]/80">A{i + 1}</span>
                   <h3 className="text-h3 mt-6">{item.title}</h3>
-                  <p className="mt-2 text-[0.8125rem] font-medium tracking-[0.12em] text-gold uppercase">
+                  <p className="mt-2 text-[0.8125rem] font-medium tracking-[0.12em] text-[var(--accent)] uppercase">
                     {item.subtitle}
                   </p>
                   <p className="mt-5 text-[0.9375rem] leading-relaxed font-light text-mist">
@@ -317,11 +317,11 @@ export default function Home() {
                   to={item.href}
                   className="group grid grid-cols-[auto_1fr] items-center gap-6 border-b border-mist/15 py-7 transition-colors hover:bg-navy-700/40 sm:grid-cols-[4rem_1fr_auto] sm:gap-10 sm:px-4"
                 >
-                  <span className="font-serif text-sm text-gold/70">
+                  <span className="font-serif text-sm text-[var(--accent)]/70">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <span>
-                    <span className="block font-serif text-[1.375rem] transition-colors group-hover:text-gold-300 sm:text-[1.6rem]">
+                    <span className="block font-serif text-[1.375rem] transition-colors group-hover:text-[var(--accent)] sm:text-[1.6rem]">
                       {item.title}
                     </span>
                     <span className="mt-2 block max-w-xl text-[0.9375rem] font-light text-mist">
@@ -330,7 +330,7 @@ export default function Home() {
                   </span>
                   <span
                     aria-hidden
-                    className="col-start-2 text-mist transition-all duration-300 group-hover:translate-x-1 group-hover:text-gold sm:col-start-3"
+                    className="col-start-2 text-mist transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--accent)] sm:col-start-3"
                   >
                     →
                   </span>

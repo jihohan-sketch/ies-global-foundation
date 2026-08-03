@@ -72,7 +72,7 @@ export default function Impact() {
                 <Card className="p-8 sm:p-10">
                   <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
                     <div>
-                      <span className="text-[0.625rem] font-medium tracking-[0.2em] text-gold uppercase">
+                      <span className="text-[0.625rem] font-medium tracking-[0.2em] text-[var(--accent)] uppercase">
                         {story.branch}
                       </span>
                       <h3 className="text-h3 mt-4">{story.title}</h3>
@@ -120,7 +120,7 @@ export default function Impact() {
             {/* Vertical spine */}
             <span
               aria-hidden
-              className="absolute top-2 bottom-2 left-[7px] w-px bg-gradient-to-b from-gold/45 via-mist/20 to-transparent sm:left-[9px]"
+              className="absolute top-2 bottom-2 left-[7px] w-px bg-gradient-to-b from-[var(--accent)]/45 via-mist/20 to-transparent sm:left-[9px]"
             />
 
             {timeline.map((entry, i) => (
@@ -131,7 +131,7 @@ export default function Impact() {
                     className={cx(
                       'absolute top-2 left-0 block rounded-full border transition-colors sm:left-0.5',
                       entry.milestone
-                        ? 'h-4 w-4 border-gold bg-gold/25'
+                        ? 'h-4 w-4 border-[var(--accent)] bg-[var(--accent)]/25'
                         : 'h-2.5 w-2.5 translate-x-[3px] border-mist/50 bg-navy',
                     )}
                   />
@@ -139,7 +139,7 @@ export default function Impact() {
                   <time
                     className={cx(
                       'text-[0.75rem] font-medium tracking-[0.14em] uppercase',
-                      entry.milestone ? 'text-gold' : 'text-mist/70',
+                      entry.milestone ? 'text-[var(--accent)]' : 'text-mist/70',
                     )}
                   >
                     {entry.date}

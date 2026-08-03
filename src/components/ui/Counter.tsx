@@ -74,7 +74,7 @@ export function StatBlock({
       />
       <span
         className={`mt-3 text-[0.8125rem] font-medium tracking-[0.14em] uppercase ${
-          tone === 'dark' ? 'text-gold' : 'text-navy-600'
+          tone === 'dark' ? 'text-[var(--accent)]' : 'text-navy-600'
         }`}
       >
         {stat.label}

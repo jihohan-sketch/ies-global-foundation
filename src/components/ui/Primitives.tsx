@@ -67,8 +67,10 @@ export function Eyebrow({
   className?: string
   tone?: 'gold' | 'mist' | 'navy'
 }) {
+  /* `gold` is the section accent rather than a literal gold: on most routes it
+     resolves to gold anyway, and Layout re-points it per section. */
   const tones = {
-    gold: 'text-gold',
+    gold: 'text-[var(--accent)]',
     mist: 'text-mist',
     navy: 'text-navy-600',
   }

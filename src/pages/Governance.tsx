@@ -76,7 +76,7 @@ export default function Governance() {
             {governance.principles.map((principle, i) => (
               <Reveal key={principle.title} delay={i * 90}>
                 <div className="grid gap-6 border-t border-mist/15 py-9 lg:grid-cols-[auto_1fr_1.4fr] lg:gap-14">
-                  <span className="font-serif text-sm text-gold/70">
+                  <span className="font-serif text-sm text-[var(--accent)]/70">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <h3 className="font-serif text-[1.375rem] leading-snug">{principle.title}</h3>
@@ -92,17 +92,17 @@ export default function Governance() {
               <p className="mt-6 leading-relaxed font-light text-mist">{site.legalNote}</p>
               <p className="mt-4 leading-relaxed font-light text-mist">
                 Related policies:{' '}
-                <Link to="/privacy" className="text-gold underline underline-offset-6 hover:text-gold-300">
+                <Link to="/privacy" className="text-[var(--accent)] underline underline-offset-6 hover:text-[var(--accent)]">
                   Privacy Policy
                 </Link>
                 ,{' '}
-                <Link to="/terms" className="text-gold underline underline-offset-6 hover:text-gold-300">
+                <Link to="/terms" className="text-[var(--accent)] underline underline-offset-6 hover:text-[var(--accent)]">
                   Terms of Use
                 </Link>
                 , and{' '}
                 <Link
                   to="/participant-safety"
-                  className="text-gold underline underline-offset-6 hover:text-gold-300"
+                  className="text-[var(--accent)] underline underline-offset-6 hover:text-[var(--accent)]"
                 >
                   Participant Safety
                 </Link>

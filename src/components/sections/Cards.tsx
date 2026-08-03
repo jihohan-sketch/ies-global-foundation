@@ -16,22 +16,24 @@ export function BranchCard({ branch, index }: { branch: Branch; index: number })
           <span className="font-serif text-sm text-mist/60">
             {String(index + 1).padStart(2, '0')}
           </span>
-          <span className="border border-gold/35 px-3 py-1 text-[0.625rem] font-medium tracking-[0.16em] text-gold uppercase">
+          <span className="border border-[var(--accent)]/35 px-3 py-1 text-[0.625rem] font-medium tracking-[0.16em] text-[var(--accent)] uppercase">
             {branch.status}
           </span>
         </div>
 
-        <h3 className="text-h3 mt-8 transition-colors duration-300 group-hover:text-gold-300">
+        <h3 className="text-h3 mt-8 transition-colors duration-300 group-hover:text-[var(--accent)]">
           {branch.name}
         </h3>
 
-        <p className="mt-3 text-sm font-medium tracking-wide text-gold/85">{branch.role}</p>
+        <p className="mt-3 text-sm font-medium tracking-wide text-[var(--accent)]/85">
+          {branch.role}
+        </p>
 
         <p className="mt-5 flex-1 text-[0.9375rem] leading-relaxed font-light text-mist">
           {branch.summary}
         </p>
 
-        <span className="mt-8 inline-flex items-center gap-2 text-[0.75rem] font-medium tracking-[0.14em] text-paper/85 uppercase transition-colors group-hover:text-gold">
+        <span className="mt-8 inline-flex items-center gap-2 text-[0.75rem] font-medium tracking-[0.14em] text-paper/85 uppercase transition-colors group-hover:text-[var(--accent)]">
           View branch
           <span
             aria-hidden
@@ -72,7 +74,7 @@ export function PersonCard({ person, branchName }: { person: Person; branchName?
                 aria-hidden
                 className="flex aspect-square w-full items-center justify-center border-b border-mist/12 bg-navy-700/60 @md:border-r @md:border-b-0"
               >
-                <span className="font-serif text-4xl text-gold/70">{initials(person.name)}</span>
+                <span className="font-serif text-4xl text-[var(--accent)]/70">{initials(person.name)}</span>
               </div>
             )}
           </div>
@@ -84,7 +86,7 @@ export function PersonCard({ person, branchName }: { person: Person; branchName?
                 <span className="ml-2 text-base font-light text-mist">{person.koreanName}</span>
               )}
             </h3>
-            <p className="mt-1.5 text-[0.8125rem] font-medium tracking-wide text-gold">
+            <p className="mt-1.5 text-[0.8125rem] font-medium tracking-wide text-[var(--accent)]">
               {person.title}
             </p>
             {branchName && <p className="mt-0.5 text-xs font-light text-mist">{branchName}</p>}
@@ -116,7 +118,7 @@ export function PersonCard({ person, branchName }: { person: Person; branchName?
             <ul className="mt-3 grid gap-2 @2xl:grid-cols-2 @2xl:gap-x-8">
               {person.responsibilities.map((item) => (
                 <li key={item} className="flex gap-3 text-[0.875rem] font-light text-paper/78">
-                  <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-gold/60" />
+                  <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                   {item}
                 </li>
               ))}
@@ -158,7 +160,7 @@ export function ArticleCard({
 
         <div className="flex flex-1 flex-col p-7 sm:p-8">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[0.6875rem] font-medium tracking-[0.16em] uppercase">
-            <span className="text-gold">{article.category}</span>
+            <span className="text-[var(--accent)]">{article.category}</span>
             <span aria-hidden className="h-px w-5 bg-mist/30" />
             <time dateTime={article.date} className="font-light text-mist normal-case">
               {formatDate(article.date)}
@@ -166,7 +168,7 @@ export function ArticleCard({
           </div>
 
           <h3
-            className={`mt-5 font-serif leading-snug transition-colors duration-300 group-hover:text-gold-300 ${
+            className={`mt-5 font-serif leading-snug transition-colors duration-300 group-hover:text-[var(--accent)] ${
               featured ? 'text-h3' : 'text-[1.3rem]'
             }`}
           >

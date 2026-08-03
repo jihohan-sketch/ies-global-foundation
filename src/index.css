@@ -15,8 +15,40 @@
   --color-gold: #c8a96b; /* Warm gold      */
   --color-gold-300: #dcc59a;
   --color-mist: #aab4c2; /* Muted gray     */
-  --color-sky: #8eb8e8; /* Optional light blue */
+}
 
+/*
+ * `static`, because these three are only ever read through `var(--accent)` at
+ * runtime — no utility class names them. Tailwind drops theme variables no
+ * class references, which silently left `--accent` resolving to nothing on the
+ * sage and clay routes until this block was split out.
+ */
+@theme static {
+  /* --- Section accents ---
+   * Gold stays the brand colour: the logo, buttons and focus ring never move
+   * off it. These three are section identity only — eyebrows, hairline marks
+   * and small labels — so a page reads as its own place without the site
+   * turning into a different design per route.
+   *
+   * All four are measured against both dark grounds, since `deep` sections
+   * paint navy-700 rather than navy:
+   *
+   *                  on navy #071a33   on navy-700 #0d294d
+   *   gold  #c8a96b        7.8:1              6.5:1
+   *   sky   #8eb8e8        8.4:1              7.1:1
+   *   sage  #8fbfa8        8.5:1              7.1:1
+   *   clay  #d99878        7.2:1              6.0:1
+   *
+   * Anything added here needs to clear 4.5:1 on navy-700, the tighter of the
+   * two. Light `paper` sections are unaffected — their eyebrows use the navy
+   * tone, not the accent.
+   */
+  --color-sky: #8eb8e8; /* Cool blue  — network, governance, contact */
+  --color-sage: #8fbfa8; /* Muted green — work, impact                */
+  --color-clay: #d99878; /* Warm clay   — news, partners, joining     */
+}
+
+@theme {
   /* --- Typography --- */
   --font-serif:
     'Cormorant Garamond', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
@@ -62,6 +94,9 @@
     /* Hairline used for the site's thin-border language */
     --rule: color-mix(in srgb, var(--color-mist) 22%, transparent);
     --rule-strong: color-mix(in srgb, var(--color-mist) 34%, transparent);
+    /* The section accent in force. Layout re-points this per route; gold is
+       the fallback, so anything rendered outside a route keeps today's look. */
+    --accent: var(--color-gold);
   }
 
   * {

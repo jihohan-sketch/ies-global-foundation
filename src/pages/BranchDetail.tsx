@@ -81,7 +81,7 @@ export default function BranchDetail() {
             {branch.sections.map((section, i) => (
               <Reveal key={section.title} delay={i * 90}>
                 <div className="grid gap-8 border-t border-mist/15 py-12 lg:grid-cols-[auto_1fr_1fr] lg:gap-16">
-                  <span className="font-serif text-sm text-gold/70">
+                  <span className="font-serif text-sm text-[var(--accent)]/70">
                     {String(i + 1).padStart(2, '0')}
                   </span>
 
@@ -96,7 +96,7 @@ export default function BranchDetail() {
                             key={item}
                             className="flex gap-3 text-[0.9375rem] font-light text-paper/80"
                           >
-                            <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-gold/60" />
+                            <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                             {item}
                           </li>
                         ))}

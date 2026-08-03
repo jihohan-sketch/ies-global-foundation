@@ -72,7 +72,7 @@ export default function Contact() {
                       </p>
                       <a
                         href={mailtoFor(channel.label, channel.email)}
-                        className="mt-3 inline-block text-[0.9375rem] text-gold underline underline-offset-6 transition-colors hover:text-gold-300"
+                        className="mt-3 inline-block text-[0.9375rem] text-[var(--accent)] underline underline-offset-6 transition-colors hover:text-[var(--accent)]"
                       >
                         {channel.email}
                       </a>
@@ -82,7 +82,7 @@ export default function Contact() {
               </div>
 
               <Reveal delay={200}>
-                <h3 className="mt-12 text-[0.6875rem] font-sans font-medium tracking-[0.24em] text-gold uppercase">
+                <h3 className="mt-12 text-[0.6875rem] font-sans font-medium tracking-[0.24em] text-[var(--accent)] uppercase">
                   National Branches
                 </h3>
               </Reveal>
@@ -95,7 +95,7 @@ export default function Contact() {
                         <h4 className="font-serif text-base">{channel.label}</h4>
                         <a
                           href={mailtoFor(channel.label, channel.email)}
-                          className="text-sm text-gold underline underline-offset-6 transition-colors hover:text-gold-300"
+                          className="text-sm text-[var(--accent)] underline underline-offset-6 transition-colors hover:text-[var(--accent)]"
                         >
                           {channel.email}
                         </a>
@@ -110,7 +110,7 @@ export default function Contact() {
 
               <Reveal delay={260}>
                 <Card className="mt-10 p-7">
-                  <h3 className="text-[0.6875rem] font-sans font-medium tracking-[0.24em] text-gold uppercase">
+                  <h3 className="text-[0.6875rem] font-sans font-medium tracking-[0.24em] text-[var(--accent)] uppercase">
                     Follow IES
                   </h3>
                   <div className="mt-5 flex flex-wrap gap-3">
@@ -120,7 +120,7 @@ export default function Contact() {
                         href={social.href}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className="border border-mist/25 px-4 py-2 text-[0.6875rem] font-medium tracking-[0.16em] text-paper/80 uppercase transition-colors hover:border-gold/60 hover:text-gold"
+                        className="border border-mist/25 px-4 py-2 text-[0.6875rem] font-medium tracking-[0.16em] text-paper/80 uppercase transition-colors hover:border-[var(--accent)]/60 hover:text-[var(--accent)]"
                       >
                         {social.label}
                       </a>

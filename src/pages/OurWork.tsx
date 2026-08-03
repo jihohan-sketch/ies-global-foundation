@@ -33,7 +33,7 @@ export default function OurWork() {
             {pillars.map((pillar, i) => (
               <Reveal key={pillar.id} delay={i * 110}>
                 <Card className="h-full p-8">
-                  <h2 className="font-serif text-xl text-gold">{pillar.title}</h2>
+                  <h2 className="font-serif text-xl text-[var(--accent)]">{pillar.title}</h2>
                   <p className="mt-4 text-[0.9375rem] leading-relaxed font-light text-mist">
                     {pillar.summary}
                   </p>
@@ -57,7 +57,7 @@ export default function OurWork() {
             <Container size="wide">
               <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
                 <Reveal className={alternate ? 'lg:order-2' : undefined}>
-                  <span className="font-serif text-sm text-gold/70">
+                  <span className="font-serif text-sm text-[var(--accent)]/70">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <h2 className="text-h2 mt-6">{category.title}</h2>
@@ -84,7 +84,7 @@ export default function OurWork() {
                             key={example}
                             className="flex items-start gap-4 border-t border-mist/12 py-4 text-[0.9375rem] font-light text-paper/85"
                           >
-                            <span aria-hidden className="mt-3 h-px w-4 shrink-0 bg-gold/60" />
+                            <span aria-hidden className="mt-3 h-px w-4 shrink-0 bg-[var(--accent)]/60" />
                             {example}
                           </li>
                         ))}

@@ -158,8 +158,8 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
 
   if (status === 'success') {
     return (
-      <div className="border border-gold/40 bg-gold/6 p-10 text-center" role="status">
-        <p className="font-serif text-h3 text-gold">Message sent</p>
+      <div className="border border-[var(--accent)]/40 bg-[var(--accent)]/6 p-10 text-center" role="status">
+        <p className="font-serif text-h3 text-[var(--accent)]">Message sent</p>
         <p className="mx-auto mt-5 max-w-md leading-relaxed font-light text-mist">
           Thank you for getting in touch. Inquiries are directed to the relevant branch or team,
           and we aim to respond within a few working days.
@@ -170,7 +170,7 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
             mountedAt.current = Date.now()
             setStatus('idle')
           }}
-          className="mt-8 text-[0.75rem] font-medium tracking-[0.14em] text-paper/80 uppercase underline underline-offset-8 transition-colors hover:text-gold"
+          className="mt-8 text-[0.75rem] font-medium tracking-[0.14em] text-paper/80 uppercase underline underline-offset-8 transition-colors hover:text-[var(--accent)]"
         >
           Send another message
         </button>
@@ -250,7 +250,7 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
       <div>
         <label htmlFor="message" className={labelClass}>
           Message{' '}
-          <span aria-hidden className="text-gold">
+          <span aria-hidden className="text-[var(--accent)]">
             *
           </span>
         </label>
@@ -295,7 +295,7 @@ const labelClass =
    Placeholder sits at /75 — /45 measured 2.67:1 against the field, under AA,
    and /70 still fell short against the lighter focused background. */
 const inputClass =
-  'w-full border border-mist/22 bg-navy-700/30 px-5 py-3.5 text-[0.9375rem] font-light text-paper placeholder:text-mist/75 transition-colors duration-300 focus:border-gold/70 focus:bg-navy-700/50'
+  'w-full border border-mist/22 bg-navy-700/30 px-5 py-3.5 text-[0.9375rem] font-light text-paper placeholder:text-mist/75 transition-colors duration-300 focus:border-[var(--accent)]/70 focus:bg-navy-700/50'
 
 const invalidInputClass = 'border-red-400/70 bg-red-400/5'
 
@@ -338,7 +338,7 @@ function Field({
       <label htmlFor={name} className={labelClass}>
         {label}{' '}
         {required && (
-          <span aria-hidden className="text-gold">
+          <span aria-hidden className="text-[var(--accent)]">
             *
           </span>
         )}

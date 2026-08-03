@@ -159,7 +159,7 @@ export default function About() {
             {pillars.map((pillar, i) => (
               <Reveal key={pillar.id} delay={i * 110}>
                 <div className="grid gap-8 border-t border-mist/15 py-10 lg:grid-cols-[auto_1fr_1fr] lg:gap-16">
-                  <span className="font-serif text-sm text-gold">
+                  <span className="font-serif text-sm text-[var(--accent)]">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <div>
@@ -176,7 +176,7 @@ export default function About() {
                           key={point}
                           className="flex gap-3 text-[0.9375rem] font-light text-mist"
                         >
-                          <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-gold/60" />
+                          <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                           {point}
                         </li>
                       ))}
@@ -239,7 +239,7 @@ export default function About() {
                     'Branch development and responsible future expansion',
                   ].map((item) => (
                     <li key={item} className="flex gap-3 text-[0.9375rem] font-light text-mist">
-                      <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-gold/60" />
+                      <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                       {item}
                     </li>
                   ))}
@@ -257,7 +257,7 @@ export default function About() {
                     'Meeting IES conduct and participant safety standards',
                   ].map((item) => (
                     <li key={item} className="flex gap-3 text-[0.9375rem] font-light text-mist">
-                      <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-gold/60" />
+                      <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                       {item}
                     </li>
                   ))}

@@ -88,7 +88,7 @@ export default function Leadership() {
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <h3 className="font-serif text-xl">{officeTitle}</h3>
-                        <p className="mt-1.5 text-[0.75rem] font-medium tracking-[0.14em] text-gold uppercase">
+                        <p className="mt-1.5 text-[0.75rem] font-medium tracking-[0.14em] text-[var(--accent)] uppercase">
                           {group.map((office) => office.scope).join(' · ')}
                         </p>
                       </div>
@@ -97,11 +97,9 @@ export default function Leadership() {
                     <div className="mt-6 border-t border-mist/12 pt-5">
                       {holder ? (
                         /* Same square, uncropped portrait as PersonCard at a
-                           smaller size, with the name and biography set beside
-                           it — a filled office should read as a person holding
-                           it, not as a line of text. Officers have no
-                           PersonCard anywhere else on the site, so without this
-                           their biography would never be rendered at all. */
+                           smaller size, with the name set beside it — a filled
+                           office should read as a person holding it, not as a
+                           line of text. */
                         <div className="flex flex-col gap-5 sm:flex-row">
                           {holder.photo ? (
                             <img
@@ -113,7 +111,7 @@ export default function Leadership() {
                           ) : (
                             <span
                               aria-hidden
-                              className="flex aspect-square w-28 shrink-0 items-center justify-center self-start rounded-[3px] border border-gold/35 font-serif text-2xl text-gold sm:w-32"
+                              className="flex aspect-square w-28 shrink-0 items-center justify-center self-start rounded-[3px] border border-[var(--accent)]/35 font-serif text-2xl text-[var(--accent)] sm:w-32"
                             >
                               {initials(holder.name)}
                             </span>
@@ -134,9 +132,16 @@ export default function Leadership() {
                                 </span>
                               )}
                             </p>
-                            <p className="mt-4 text-[0.875rem] leading-relaxed font-light text-mist">
-                              {holder.bio}
-                            </p>
+                            {/* Only officers whose sole appearance is this card
+                                carry their biography here. A founder or a
+                                national officer already has a PersonCard
+                                further up or down the same page, and printing
+                                the same paragraph twice reads as a bug. */}
+                            {holder.tier === 'global' && (
+                              <p className="mt-4 text-[0.875rem] leading-relaxed font-light text-mist">
+                                {holder.bio}
+                              </p>
+                            )}
                           </div>
                         </div>
                       ) : (
@@ -152,7 +157,7 @@ export default function Leadership() {
                           key={item}
                           className="flex gap-3 text-[0.875rem] font-light text-mist"
                         >
-                          <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-gold/60" />
+                          <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                           {item}
                         </li>
                       ))}
@@ -186,7 +191,7 @@ export default function Leadership() {
                   <Reveal>
                     <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-mist/15 pb-5">
                       <h3 className="text-h3">{branch.name}</h3>
-                      <span className="text-[0.6875rem] font-medium tracking-[0.16em] text-gold uppercase">
+                      <span className="text-[0.6875rem] font-medium tracking-[0.16em] text-[var(--accent)] uppercase">
                         {branch.status}
                       </span>
                     </div>

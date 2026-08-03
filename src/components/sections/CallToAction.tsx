@@ -22,7 +22,7 @@ export function CallToAction({
     <section className="relative border-t border-mist/12 py-24 sm:py-32">
       <Container className="relative text-center">
         <Reveal>
-          <p className="text-[0.6875rem] font-medium tracking-[0.24em] text-gold uppercase">
+          <p className="text-[0.6875rem] font-medium tracking-[0.24em] text-[var(--accent)] uppercase">
             {eyebrow}
           </p>
           <h2 className="text-h2 mt-7 mx-auto max-w-3xl">{title}</h2>

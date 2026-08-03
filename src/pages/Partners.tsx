@@ -48,7 +48,7 @@ export default function Partners() {
             {partnerCategories.map((category, i) => (
               <Reveal key={category.title} delay={i * 70}>
                 <Card className="h-full p-7">
-                  <h3 className="font-serif text-lg text-gold">{category.title}</h3>
+                  <h3 className="font-serif text-lg text-[var(--accent)]">{category.title}</h3>
                   <p className="mt-4 text-[0.9375rem] leading-relaxed font-light text-mist">
                     {category.description}
                   </p>
@@ -81,7 +81,7 @@ export default function Partners() {
             {namedPartners.map((group, i) => (
               <Reveal key={group.group} delay={i * 100}>
                 <Card className="h-full p-8">
-                  <h3 className="font-serif text-xl text-gold">{group.group}</h3>
+                  <h3 className="font-serif text-xl text-[var(--accent)]">{group.group}</h3>
                   <p className="mt-3 text-[0.875rem] leading-relaxed font-light text-mist">
                     {group.note}
                   </p>
@@ -176,7 +176,7 @@ export default function Partners() {
             {partnershipProcess.map((step, i) => (
               <Reveal key={step.title} delay={i * 100}>
                 <div className="border-t border-mist/18 pt-6">
-                  <span className="font-serif text-sm text-gold">
+                  <span className="font-serif text-sm text-[var(--accent)]">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <h3 className="mt-4 font-serif text-xl">{step.title}</h3>

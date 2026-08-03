@@ -80,7 +80,7 @@ export default function GlobalNetwork() {
                         className={cx(
                           'w-full border px-6 py-5 text-left transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]',
                           selected
-                            ? 'border-gold/55 bg-navy-700/70'
+                            ? 'border-[var(--accent)]/55 bg-navy-700/70'
                             : 'border-mist/18 bg-navy-700/25 hover:border-mist/40 hover:bg-navy-700/45',
                         )}
                       >
@@ -88,7 +88,7 @@ export default function GlobalNetwork() {
                           <span
                             className={cx(
                               'font-serif text-xl transition-colors',
-                              selected ? 'text-gold-300' : 'text-paper',
+                              selected ? 'text-[var(--accent)]' : 'text-paper',
                             )}
                           >
                             {branch.name}
@@ -160,22 +160,22 @@ export default function GlobalNetwork() {
                   to={`/global-network/${branch.slug}`}
                   className="group grid gap-6 border-t border-mist/15 py-10 transition-colors hover:bg-navy/40 lg:grid-cols-[auto_1fr_1.2fr_auto] lg:items-start lg:gap-12 lg:px-4"
                 >
-                  <span className="font-serif text-sm text-gold/70">
+                  <span className="font-serif text-sm text-[var(--accent)]/70">
                     {String(i + 1).padStart(2, '0')}
                   </span>
 
                   <div>
-                    <h3 className="text-h3 transition-colors group-hover:text-gold-300">
+                    <h3 className="text-h3 transition-colors group-hover:text-[var(--accent)]">
                       {branch.name}
                     </h3>
-                    <p className="mt-2 text-sm text-gold/85">{branch.status}</p>
+                    <p className="mt-2 text-sm text-[var(--accent)]/85">{branch.status}</p>
                   </div>
 
                   <p className="leading-relaxed font-light text-mist">{branch.summary}</p>
 
                   <span
                     aria-hidden
-                    className="text-mist transition-all duration-300 group-hover:translate-x-1 group-hover:text-gold"
+                    className="text-mist transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--accent)]"
                   >
                     →
                   </span>

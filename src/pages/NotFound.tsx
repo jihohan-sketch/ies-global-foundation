@@ -35,7 +35,7 @@ export default function NotFound() {
               <li key={item.href}>
                 <Link
                   to={item.href}
-                  className="text-[0.9375rem] font-light text-paper/75 transition-colors hover:text-gold"
+                  className="text-[0.9375rem] font-light text-paper/75 transition-colors hover:text-[var(--accent)]"
                 >
                   {item.label}
                 </Link>

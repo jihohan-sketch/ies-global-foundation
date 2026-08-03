@@ -19,14 +19,11 @@ export const people: Person[] = [
     id: 'joseph-hahmmin-kang',
     name: 'Joseph Hahmmin Kang',
     koreanName: '강함민',
-    title: 'Co-Founder · 2nd President',
+    title: 'Co-Founder · Vice Chairman · Director of Global Operations',
     tier: 'founding',
     photo: '/leadership/joseph-hahmmin-kang.jpg',
-    affiliations: [
-      'Executive Representative, Shin-Kang Foundation',
-      'Student, Seoul International School',
-    ],
-    bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 2nd President to January 2026. Set the standards branches and chapters now operate under.',
+    affiliations: ['Student, Seoul International School'],
+    bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 2nd President to January 2026, setting the standards branches and chapters now operate under. Now Vice Chairman of the Global Foundation and its Director of Global Operations, holding the organization to those standards and coordinating the work that runs between the national branches.',
     responsibilities: [
       'Organizational direction and long-term strategy',
       'Mission, standards, and institutional identity',
@@ -41,7 +38,7 @@ export const people: Person[] = [
     title: 'Co-Founder · 1st President',
     tier: 'founding',
     photo: '/leadership/jaesuh-joshua-shin.jpg',
-    affiliations: ['Chairman, Shin-Kang Foundation', 'Student, Seoul Foreign School'],
+    affiliations: ['Student, Seoul Foreign School'],
     bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 1st President to October 2025. Designed IES programming and grew the school chapter network.',
     responsibilities: [
       'Program design and organizational planning',
@@ -55,12 +52,12 @@ export const people: Person[] = [
   {
     id: 'sean-han',
     name: 'Sean Han',
-    title: 'Vice President · Head of Marketing',
+    title: 'President · Director of Global Marketing',
     tier: 'global',
     photo: '/leadership/sean-han.jpg',
-    bio: 'Sean Han is Vice President of the Global Foundation and its Head of Marketing. As Vice President they support the Foundation’s officers and the national branches on organizational matters. As Head of Marketing they are responsible for how IES presents itself across Korea, the United States, and the United Kingdom: the organization’s brand, this website, and its social channels, together with the approval process every public statement passes through before publication. Much of that work is consistency — a chapter in Seoul, a founding team in the United States, and a branch in London all describe the same organization, and it should read that way to a school deciding whether to work with IES. They also set the standards branches follow in building their own communications.',
+    bio: 'Sean Han is President of the Global Foundation and its Director of Global Marketing. As President they lead the Foundation’s offices and its work with the national branches. As Director of Global Marketing they are responsible for how IES presents itself across Korea, the United States, and the United Kingdom: the organization’s brand, this website, and its social channels, together with the approval process every public statement passes through before publication. Much of that work is consistency — a chapter in Seoul, a founding team in the United States, and a branch in London all describe the same organization, and it should read that way to a school deciding whether to work with IES. They also set the standards branches follow in building their own communications.',
     responsibilities: [
-      'Deputy leadership of the Global Foundation',
+      'Executive leadership of the Global Foundation',
       'Coordination across the Foundation’s offices',
       'Brand consistency across branches and chapters',
       'Website and social content management',
@@ -147,17 +144,17 @@ export const globalOffices: {
   holder?: string
 }[] = [
   {
-    title: 'Vice President',
+    title: 'President',
     scope: 'Foundation leadership',
     responsibilities: [
-      'Deputy leadership of the Global Foundation',
+      'Executive leadership of the Global Foundation',
       'Coordination across the Foundation’s offices',
       'Support for national branch leadership',
     ],
     holder: 'sean-han',
   },
   {
-    title: 'Head of Marketing',
+    title: 'Director of Global Marketing',
     scope: 'Brand and digital presence',
     responsibilities: [
       'Brand consistency across branches and chapters',
@@ -165,6 +162,26 @@ export const globalOffices: {
       'Publication approval workflow',
     ],
     holder: 'sean-han',
+  },
+  {
+    title: 'Vice Chairman',
+    scope: 'Foundation governance',
+    responsibilities: [
+      'Governance and long-term direction of the Foundation',
+      'Continuity with the standards IES was founded on',
+      'Support for the President and the national branches',
+    ],
+    holder: 'joseph-hahmmin-kang',
+  },
+  {
+    title: 'Director of Global Operations',
+    scope: 'International coordination',
+    responsibilities: [
+      'Coordination between national branches',
+      'Operational standards and reporting cycles',
+      'Cross-border programming logistics',
+    ],
+    holder: 'joseph-hahmmin-kang',
   },
 ]
 

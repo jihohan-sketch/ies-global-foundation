@@ -14,12 +14,12 @@ function Block({ block }: { block: ArticleBlock }) {
       return <h2 className="text-h3 mt-14 mb-6 first:mt-0">{block.text}</h2>
     case 'quote':
       return (
-        <blockquote className="my-12 border-l border-gold/50 pl-8">
+        <blockquote className="my-12 border-l border-[var(--accent)]/50 pl-8">
           <p className="font-serif text-[clamp(1.375rem,2.4vw,1.75rem)] leading-[1.4] text-paper/95 italic">
             {block.text}
           </p>
           {block.attribution && (
-            <cite className="mt-5 block text-[0.75rem] font-medium tracking-[0.16em] text-gold uppercase not-italic">
+            <cite className="mt-5 block text-[0.75rem] font-medium tracking-[0.16em] text-[var(--accent)] uppercase not-italic">
               {block.attribution}
             </cite>
           )}
@@ -30,7 +30,7 @@ function Block({ block }: { block: ArticleBlock }) {
         <ul className="my-8 space-y-3">
           {block.items.map((item) => (
             <li key={item} className="flex gap-4 leading-relaxed font-light text-mist">
-              <span aria-hidden className="mt-3 h-px w-4 shrink-0 bg-gold/60" />
+              <span aria-hidden className="mt-3 h-px w-4 shrink-0 bg-[var(--accent)]/60" />
               {item}
             </li>
           ))}
@@ -71,7 +71,7 @@ export default function NewsArticle() {
             <nav aria-label="Breadcrumb" className="mb-8">
               <ol className="flex flex-wrap items-center gap-2 text-xs font-light text-mist">
                 <li>
-                  <Link to="/" className="transition-colors hover:text-gold">
+                  <Link to="/" className="transition-colors hover:text-[var(--accent)]">
                     Home
                   </Link>
                 </li>
@@ -79,7 +79,7 @@ export default function NewsArticle() {
                   /
                 </li>
                 <li>
-                  <Link to="/news" className="transition-colors hover:text-gold">
+                  <Link to="/news" className="transition-colors hover:text-[var(--accent)]">
                     News
                   </Link>
                 </li>
@@ -88,7 +88,7 @@ export default function NewsArticle() {
 
             <Reveal>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[0.6875rem] font-medium tracking-[0.18em] uppercase">
-                <span className="text-gold">{article.category}</span>
+                <span className="text-[var(--accent)]">{article.category}</span>
                 <span aria-hidden className="h-px w-6 bg-mist/30" />
                 <time dateTime={article.date} className="font-light text-mist normal-case">
                   {formatDate(article.date)}
@@ -134,7 +134,7 @@ export default function NewsArticle() {
                 </p>
                 <Link
                   to="/news"
-                  className="text-[0.75rem] font-medium tracking-[0.14em] text-paper/80 uppercase transition-colors hover:text-gold"
+                  className="text-[0.75rem] font-medium tracking-[0.14em] text-paper/80 uppercase transition-colors hover:text-[var(--accent)]"
                 >
                   ← All news
                 </Link>

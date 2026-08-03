@@ -53,7 +53,7 @@ export default function News() {
                   className={cx(
                     'inline-flex min-h-11 items-center border px-4 py-2 text-[0.75rem] font-medium tracking-[0.08em] transition-all duration-300',
                     filter === category
-                      ? 'border-gold/60 bg-gold/10 text-gold'
+                      ? 'border-[var(--accent)]/60 bg-[var(--accent)]/10 text-[var(--accent)]'
                       : 'border-mist/20 text-paper/70 hover:border-mist/45 hover:text-paper',
                   )}
                 >
@@ -116,7 +116,7 @@ export default function News() {
                 </p>
                 <a
                   href="mailto:theiesociety@gmail.com"
-                  className="mt-6 inline-block font-serif text-xl text-gold underline underline-offset-8 transition-colors hover:text-gold-300"
+                  className="mt-6 inline-block font-serif text-xl text-[var(--accent)] underline underline-offset-8 transition-colors hover:text-[var(--accent)]"
                 >
                   theiesociety@gmail.com
                 </a>
