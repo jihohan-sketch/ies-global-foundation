@@ -18,11 +18,22 @@ export function PinnedPan({
   children,
   label,
   className,
+  vhPerPanel = 160,
 }: {
   children: ReactNode[]
   /** Names the section for assistive tech. */
   label: string
   className?: string
+  /**
+   * Viewport heights of scrolling spent crossing each panel — the pan's speed
+   * dial. Higher is slower: the horizontal travel is fixed by the track width,
+   * so stretching the scroll distance stretches the time it takes to cross.
+   *
+   * This is the one knob that trades directly against page length. At 160 the
+   * three values cost about five screens of scroll; at 70 they cost two and a
+   * half but go past quickly enough to feel like a jump cut.
+   */
+  vhPerPanel?: number
 }) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
@@ -71,14 +82,9 @@ export function PinnedPan({
       ref={wrapRef}
       aria-label={label}
       className={cx('relative', className)}
-      /*
-       * 70vh of scroll per panel, not a full viewport each plus a spare. At
-       * 100vh the three values cost four screens of scrolling for ninety words
-       * — the pan stopped feeling deliberate and started feeling like the page
-       * had stalled. 70 keeps the travel readable while cutting the section's
-       * height by a little over a third.
-       */
-      style={{ height: `${children.length * 70 + 30}vh` }}
+      /* Plus 30vh of run-out so the last panel can be read before the section
+         releases, rather than sliding away as it lands. */
+      style={{ height: `${children.length * vhPerPanel + 30}vh` }}
     >
       <div className="sticky top-0 flex h-screen w-full items-center overflow-hidden">
         <div
