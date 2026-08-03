@@ -6,10 +6,11 @@ import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
 import { StatBlock } from '@/components/ui/Counter'
 import { BranchCard, PersonCard } from '@/components/sections/Cards'
 import { CallToAction } from '@/components/sections/CallToAction'
+import { ValuePanels } from '@/components/sections/ValuePanels'
 import { branches } from '@/content/branches'
 import { headlineStats } from '@/content/impact'
 import { foundingLeadership, nationalLeadership } from '@/content/leadership'
-import { site, threeAs, values } from '@/content/site'
+import { site, values } from '@/content/site'
 import { featuredWork, pillars } from '@/content/work'
 import { useSeo } from '@/lib/seo'
 
@@ -285,24 +286,10 @@ export default function Home() {
             />
           </Reveal>
 
-          <div className="mt-14 grid gap-6 md:grid-cols-3">
-            {threeAs.map((item, i) => (
-              <Reveal key={item.title} delay={i * 110}>
-                <Card className="h-full p-8 sm:p-10">
-                  <span className="font-serif text-4xl text-[var(--accent)]/80">A{i + 1}</span>
-                  <h3 className="text-h3 mt-6">{item.title}</h3>
-                  <p className="mt-2 text-[0.8125rem] font-medium tracking-[0.12em] text-[var(--accent)] uppercase">
-                    {item.subtitle}
-                  </p>
-                  <p className="mt-5 text-[0.9375rem] leading-relaxed font-light text-mist">
-                    {item.body}
-                  </p>
-                </Card>
-              </Reveal>
-            ))}
-          </div>
         </Container>
       </Section>
+
+      <ValuePanels />
 
       {/* =================================================== FEATURED WORK */}
       <Section>
