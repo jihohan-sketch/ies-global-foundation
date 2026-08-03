@@ -18,7 +18,7 @@ export function PinnedPan({
   children,
   label,
   className,
-  vhPerPanel = 160,
+  vhPerPanel = 260,
 }: {
   children: ReactNode[]
   /** Names the section for assistive tech. */
@@ -29,9 +29,11 @@ export function PinnedPan({
    * dial. Higher is slower: the horizontal travel is fixed by the track width,
    * so stretching the scroll distance stretches the time it takes to cross.
    *
-   * This is the one knob that trades directly against page length. At 160 the
-   * three values cost about five screens of scroll; at 70 they cost two and a
-   * half but go past quickly enough to feel like a jump cut.
+   * This is the one knob that trades directly against page length. At 260 the
+   * three values cost about eight screens of scroll and cross very gradually;
+   * at 70 they cost two and a half but go past fast enough to feel like a jump
+   * cut. Roughly: ratio of vertical scroll to horizontal travel is ~2.0 at 260,
+   * ~1.2 at 160, ~0.4 at 70.
    */
   vhPerPanel?: number
 }) {
