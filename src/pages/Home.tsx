@@ -152,15 +152,16 @@ export default function Home() {
             />
           </Reveal>
 
-          <ScrollRail label="the national branches" className="mt-16">
+          {/* Three items: a grid, not a rail. A rail with exactly three cards
+              clips the third at the container edge, which reads as a broken
+              layout rather than as an invitation to scroll. */}
+          <div className="mt-16 grid gap-6 md:grid-cols-3">
             {branches.map((branch, i) => (
-              <RailItem key={branch.slug}>
-                <Reveal delay={i * 110} className="h-full">
-                  <BranchCard branch={branch} index={i} />
-                </Reveal>
-              </RailItem>
+              <Reveal key={branch.slug} delay={i * 110} className="h-full">
+                <BranchCard branch={branch} index={i} />
+              </Reveal>
             ))}
-          </ScrollRail>
+          </div>
 
           <Reveal delay={200}>
             <p className="mt-10 max-w-2xl text-sm leading-relaxed font-light text-mist/80">
@@ -224,10 +225,9 @@ export default function Home() {
             </p>
           </Reveal>
 
-          <ScrollRail label="the organizational pillars" className="mt-20">
+          <div className="mt-20 grid gap-6 md:grid-cols-3">
             {pillars.map((pillar, i) => (
-              <RailItem key={pillar.id}>
-                <Reveal delay={i * 120} className="h-full">
+              <Reveal key={pillar.id} delay={i * 120} className="h-full">
                 <Card className="h-full p-8 sm:p-10">
                   <span className="font-serif text-sm text-[var(--accent)]">
                     {String(i + 1).padStart(2, '0')}
@@ -237,10 +237,9 @@ export default function Home() {
                     {pillar.summary}
                   </p>
                 </Card>
-                </Reveal>
-              </RailItem>
+              </Reveal>
             ))}
-          </ScrollRail>
+          </div>
         </Container>
       </Section>
 

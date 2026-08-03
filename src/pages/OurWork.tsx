@@ -1,6 +1,5 @@
 import { Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
-import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
 import { pillars, workCategories } from '@/content/work'
@@ -30,20 +29,18 @@ export default function OurWork() {
             <Eyebrow>Organizational Pillars</Eyebrow>
           </Reveal>
 
-          <ScrollRail label="the organizational pillars" className="mt-10">
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
             {pillars.map((pillar, i) => (
-              <RailItem key={pillar.id}>
-                <Reveal delay={i * 110} className="h-full">
-                  <Card className="h-full p-8">
-                    <h2 className="font-serif text-xl text-[var(--accent)]">{pillar.title}</h2>
-                    <p className="mt-4 text-[0.9375rem] leading-relaxed font-light text-mist">
-                      {pillar.summary}
-                    </p>
-                  </Card>
-                </Reveal>
-              </RailItem>
+              <Reveal key={pillar.id} delay={i * 110} className="h-full">
+                <Card className="h-full p-8">
+                  <h2 className="font-serif text-xl text-[var(--accent)]">{pillar.title}</h2>
+                  <p className="mt-4 text-[0.9375rem] leading-relaxed font-light text-mist">
+                    {pillar.summary}
+                  </p>
+                </Card>
+              </Reveal>
             ))}
-          </ScrollRail>
+          </div>
         </Container>
       </Section>
 

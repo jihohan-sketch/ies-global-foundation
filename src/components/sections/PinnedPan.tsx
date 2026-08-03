@@ -71,8 +71,14 @@ export function PinnedPan({
       ref={wrapRef}
       aria-label={label}
       className={cx('relative', className)}
-      /* One viewport of scroll per panel, plus one to read the last one. */
-      style={{ height: `${(children.length + 1) * 100}vh` }}
+      /*
+       * 70vh of scroll per panel, not a full viewport each plus a spare. At
+       * 100vh the three values cost four screens of scrolling for ninety words
+       * — the pan stopped feeling deliberate and started feeling like the page
+       * had stalled. 70 keeps the travel readable while cutting the section's
+       * height by a little over a third.
+       */
+      style={{ height: `${children.length * 70 + 30}vh` }}
     >
       <div className="sticky top-0 flex h-screen w-full items-center overflow-hidden">
         <div

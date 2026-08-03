@@ -44,10 +44,13 @@ export function Section({
     deep: 'bg-navy-700 text-paper',
     paper: 'bg-paper text-navy',
   }
+  /* Trimmed roughly a quarter off each step. The old scale left several
+     screens of near-empty navy between sections on the longer pages; the
+     rhythm survives the cut, the dead space does not. */
   const sizes = {
-    compact: 'py-16 sm:py-20',
-    default: 'py-20 sm:py-28 lg:py-32',
-    tall: 'py-24 sm:py-32 lg:py-40',
+    compact: 'py-12 sm:py-16',
+    default: 'py-16 sm:py-20 lg:py-24',
+    tall: 'py-20 sm:py-24 lg:py-28',
   }
   return (
     <section id={id} className={cx('relative', tones[tone], sizes[size], className)}>
