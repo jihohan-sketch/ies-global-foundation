@@ -132,16 +132,17 @@ export default function Leadership() {
                                 </span>
                               )}
                             </p>
-                            {/* Only officers whose sole appearance is this card
-                                carry their biography here. A founder or a
-                                national officer already has a PersonCard
-                                further up or down the same page, and printing
-                                the same paragraph twice reads as a bug. */}
-                            {holder.tier === 'global' && (
-                              <p className="mt-4 text-[0.875rem] leading-relaxed font-light text-mist">
-                                {holder.bio}
-                              </p>
-                            )}
+                            {/* Officers whose sole appearance is this card carry
+                                their biography here. A founder already has a
+                                PersonCard further up the same page, so repeating
+                                that paragraph would read as a bug — they get the
+                                office's own note instead, which describes the
+                                post rather than the person's history. */}
+                            <p className="mt-4 text-[0.875rem] leading-relaxed font-light text-mist">
+                              {holder.tier === 'global'
+                                ? holder.bio
+                                : group.map((office) => office.holderNote).find(Boolean)}
+                            </p>
                           </div>
                         </div>
                       ) : (

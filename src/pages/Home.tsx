@@ -315,34 +315,38 @@ export default function Home() {
             />
           </Reveal>
 
-          <div className="mt-16 border-t border-mist/15">
+          {/* Five items against a container that fits three, so this one always
+              has somewhere to scroll. */}
+          <ScrollRail label="what IES does" className="mt-16">
             {featuredWork.map((item, i) => (
-              <Reveal key={item.title} delay={i * 70}>
-                <Link
-                  to={item.href}
-                  className="group grid grid-cols-[auto_1fr] items-center gap-6 border-b border-mist/15 py-7 transition-colors hover:bg-navy-700/40 sm:grid-cols-[4rem_1fr_auto] sm:gap-10 sm:px-4"
-                >
-                  <span className="font-serif text-sm text-[var(--accent)]/70">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span>
-                    <span className="block font-serif text-[1.375rem] transition-colors group-hover:text-[var(--accent)] sm:text-[1.6rem]">
-                      {item.title}
-                    </span>
-                    <span className="mt-2 block max-w-xl text-[0.9375rem] font-light text-mist">
-                      {item.body}
-                    </span>
-                  </span>
-                  <span
-                    aria-hidden
-                    className="col-start-2 text-mist transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--accent)] sm:col-start-3"
-                  >
-                    →
-                  </span>
-                </Link>
-              </Reveal>
+              <RailItem key={item.title}>
+                <Reveal delay={i * 70} className="h-full">
+                  <Card interactive className="group h-full">
+                    <Link to={item.href} className="flex h-full flex-col p-8">
+                      <span className="font-serif text-sm text-[var(--accent)]/70">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <span className="mt-6 block font-serif text-[1.375rem] leading-snug transition-colors duration-300 group-hover:text-[var(--accent)]">
+                        {item.title}
+                      </span>
+                      <span className="mt-4 block flex-1 text-[0.9375rem] leading-relaxed font-light text-mist">
+                        {item.body}
+                      </span>
+                      <span className="mt-8 inline-flex items-center gap-2 text-[0.75rem] font-medium tracking-[0.14em] text-paper/85 uppercase transition-colors group-hover:text-[var(--accent)]">
+                        Explore
+                        <span
+                          aria-hidden
+                          className="transition-transform duration-300 group-hover:translate-x-1"
+                        >
+                          →
+                        </span>
+                      </span>
+                    </Link>
+                  </Card>
+                </Reveal>
+              </RailItem>
             ))}
-          </div>
+          </ScrollRail>
         </Container>
       </Section>
 

@@ -35,11 +35,11 @@ export const people: Person[] = [
     id: 'jaesuh-joshua-shin',
     name: 'Jaesuh Joshua Shin',
     koreanName: '신재서',
-    title: 'Co-Founder · 1st President',
+    title: 'Co-Founder · Vice Chairman',
     tier: 'founding',
     photo: '/leadership/jaesuh-joshua-shin.jpg',
     affiliations: ['Student, Seoul Foreign School'],
-    bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 1st President to October 2025. Designed IES programming and grew the school chapter network.',
+    bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 1st President to October 2025, designing IES programming and growing the school chapter network. Now Vice Chairman of the Global Foundation.',
     responsibilities: [
       'Program design and organizational planning',
       'School chapter development',
@@ -142,6 +142,13 @@ export const globalOffices: {
   scope: string
   responsibilities: string[]
   holder?: string
+  /**
+   * Shown in place of the holder's biography when that holder already has a
+   * PersonCard elsewhere on the Leadership page — the founders do. Their
+   * founding biography covers how IES started; this covers what the office
+   * they now hold actually does, so the card says something new.
+   */
+  holderNote?: string
 }[] = [
   {
     title: 'President',
@@ -172,6 +179,8 @@ export const globalOffices: {
       'Support for the President and the national branches',
     ],
     holder: 'joseph-hahmmin-kang',
+    holderNote:
+      'As Vice Chairman, Kang holds the organization to the standards he set as president — the conduct rules, the chapter guidelines, and the reporting each branch answers to. As Director of Global Operations he runs the work that crosses borders: coordination between Korea, the United States, and the United Kingdom, the reporting cycle the branches keep to, and the logistics behind programming that runs in more than one country at once. The role exists because three branches working to one set of standards need someone accountable for whether that is actually happening.',
   },
   {
     title: 'Director of Global Operations',
@@ -182,6 +191,18 @@ export const globalOffices: {
       'Cross-border programming logistics',
     ],
     holder: 'joseph-hahmmin-kang',
+  },
+  {
+    title: 'Vice Chairman',
+    scope: 'Foundation governance',
+    responsibilities: [
+      'Governance and long-term direction of the Foundation',
+      'Programme design and the standards new work is held to',
+      'Support for the President and the national branches',
+    ],
+    holder: 'jaesuh-joshua-shin',
+    holderNote:
+      'As Vice Chairman, Shin carries the programming he designed as first president into the Foundation’s governance — the forum formats, the school chapter model, and the standards that decide what is allowed to carry the IES name. He advises the President and the national branches on new programming, and on whether a chapter or a branch is ready for what it is asking to take on.',
   },
 ]
 

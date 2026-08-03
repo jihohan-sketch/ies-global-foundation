@@ -154,11 +154,12 @@ function RailButton({
 /**
  * One card in a rail.
  *
- * Narrow screens get a fixed width, so the next card peeks past the right edge —
- * the cheapest possible signal that the rail scrolls at all. From `lg` the items
- * flex instead, filling the row like the grid they replaced; a short rail then
- * stops overflowing, which also drops its arrows. Same markup, no media-query
- * duplication, and nothing scrolls that does not need to.
+ * Fixed width at every breakpoint, deliberately. An earlier version let items
+ * flex to fill from `lg`, which made a short rail stop overflowing and render
+ * as an ordinary row on a wide screen — tidy, and completely invisible as a
+ * rail. Holding the width means the track overflows whenever the content is
+ * genuinely wider than the container, at any screen size, and the next card
+ * always peeks past the right edge.
  */
 export function RailItem({
   children,
@@ -168,13 +169,7 @@ export function RailItem({
   className?: string
 }) {
   return (
-    <div
-      className={cx(
-        'w-[82vw] max-w-[26rem] shrink-0 snap-start sm:w-[22rem]',
-        'lg:w-auto lg:min-w-[19rem] lg:flex-1 lg:shrink',
-        className,
-      )}
-    >
+    <div className={cx('w-[82vw] max-w-[24rem] shrink-0 snap-start sm:w-[24rem]', className)}>
       {children}
     </div>
   )
