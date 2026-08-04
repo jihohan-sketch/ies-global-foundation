@@ -18,6 +18,13 @@ interface GlobeProps {
    * information that is only reachable by turning it.
    */
   draggable?: boolean
+  /**
+   * Makes the globe lean toward the cursor as it moves anywhere on the page.
+   * Tracked on the window rather than the canvas, so the ambient globe can
+   * follow the pointer while staying `pointer-events-none` and letting every
+   * click through to the content above it.
+   */
+  followPointer?: boolean
   /** Marker id to rotate into view and highlight. */
   activeId?: string | null
   onSelect?: (id: string) => void
@@ -43,6 +50,20 @@ const SPIN_FLOOR = 1.5
 
 /** Pointer travel, in CSS pixels, past which a press is a drag and not a click. */
 const CLICK_SLOP = 4
+
+/**
+ * How far the cursor can lean the globe, in degrees, at the point where it is a
+ * full radius away from the centre. Large enough that moving the mouse across
+ * the page visibly swings the sphere, small enough that the drift underneath
+ * still reads as the globe's own movement rather than a jitter.
+ */
+const FOLLOW_ROTATION = 34
+const FOLLOW_TILT = 18
+
+/** How quickly the lean catches up to the cursor, per second. Fast enough that
+ *  the globe reads as tracking the cursor, with just enough lag to look like
+ *  something with weight rather than a cursor-locked sprite. */
+const FOLLOW_EASE = 6.5
 
 /** Sub-pixel spacing below which two consecutive rim points are treated as the
  *  same point. In CSS pixels — the context is pre-scaled by devicePixelRatio. */
@@ -130,6 +151,7 @@ export function Globe({
   markers,
   interactive = false,
   draggable = false,
+  followPointer = false,
   activeId = null,
   onSelect,
   className,
@@ -167,6 +189,13 @@ export function Globe({
     idle: RESUME_DELAY + 1,
     /** Radius of the last frame — drag distance is measured against it. */
     radius: 1,
+    /** Lean the cursor is asking for, and the eased value actually applied.
+     *  Kept apart from `rotation`/`tilt` so the drift and any drag stay
+     *  untouched underneath: the lean is an offset laid over them. */
+    followTargetRot: 0,
+    followTargetTilt: 0,
+    followRot: 0,
+    followTilt: 0,
   })
 
   const activeRef = useRef(activeId)
@@ -194,6 +223,57 @@ export function Globe({
     state.current.targetTilt = TILT
     state.current.spin = 0
   }, [activeId])
+
+  /*
+   * Cursor tracking for `followPointer`.
+   *
+   * Listening on the window rather than the canvas is what lets the ambient
+   * globe respond at all: it sits behind every page under `pointer-events-none`
+   * and would otherwise never see a pointer event. It also means the lean
+   * starts before the cursor reaches the sphere, which is the point — the globe
+   * turns toward where you are on the page.
+   *
+   * Mouse and pen only. On a touchscreen the pointer is wherever the last tap
+   * landed, so following it would knock the globe sideways on every scroll.
+   */
+  useEffect(() => {
+    if (!followPointer) return
+
+    const s = state.current
+
+    const onMove = (event: PointerEvent) => {
+      if (event.pointerType === 'touch') return
+      const wrap = wrapRef.current
+      if (!wrap) return
+      const rect = wrap.getBoundingClientRect()
+      if (rect.width === 0 || rect.height === 0) return
+
+      // Offset from the globe's centre, in radii, clamped to the disc so a
+      // cursor far off to one side leans no harder than one at the limb.
+      const reach = Math.min(rect.width, rect.height) / 2
+      const nx = Math.max(-1, Math.min(1, (event.clientX - (rect.x + rect.width / 2)) / reach))
+      const ny = Math.max(-1, Math.min(1, (event.clientY - (rect.y + rect.height / 2)) / reach))
+
+      s.followTargetRot = nx * FOLLOW_ROTATION
+      s.followTargetTilt = ny * FOLLOW_TILT
+    }
+
+    // Cursor gone from the window entirely: unwind to the resting framing.
+    const onOut = (event: PointerEvent) => {
+      if (event.relatedTarget) return
+      s.followTargetRot = 0
+      s.followTargetTilt = 0
+    }
+
+    window.addEventListener('pointermove', onMove, { passive: true })
+    window.addEventListener('pointerout', onOut, { passive: true })
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerout', onOut)
+      s.followTargetRot = 0
+      s.followTargetTilt = 0
+    }
+  }, [followPointer])
 
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLCanvasElement>) => {
@@ -354,10 +434,11 @@ export function Globe({
         }
 
         /*
-         * Degrees per second. 8°/s is one revolution every 45s — slow enough to
-         * read as a planet turning, fast enough that a few seconds of looking
-         * makes the movement obvious. The interactive globe stays slower, since
-         * there the markers are targets the visitor has to click.
+         * Degrees per second. 13°/s is one revolution every 28s: at the
+         * backdrop's 0.18 intensity a slower drift was there but not legible —
+         * the sphere is faint enough that a few degrees of movement reads as
+         * nothing at all. The interactive globe stays much slower, since there
+         * the markers are targets the visitor has to click.
          *
          * Deliberately not gated on `prefers-reduced-motion`: the rotation is
          * the point of the element, and the site owner asked for it to run for
@@ -370,7 +451,7 @@ export function Globe({
          */
         const resumed = Math.max(0, s.idle - RESUME_DELAY)
         const blend = Math.min(1, resumed)
-        s.rotation += dt * (interactive ? 3 : 8) * blend
+        s.rotation += dt * (interactive ? 4 : 13) * blend
       }
       if (s.rotation > 360) s.rotation -= 360
       if (s.rotation < -360) s.rotation += 360
@@ -385,12 +466,24 @@ export function Globe({
         }
       }
 
+      /*
+       * The cursor's lean rides on top of everything above. Easing it here, in
+       * the frame loop rather than in the pointer handler, is what makes the
+       * globe trail the cursor instead of snapping to it — and it keeps
+       * following through after the pointer stops moving.
+       */
+      const catchUp = Math.min(1, dt * FOLLOW_EASE)
+      s.followRot += (s.followTargetRot - s.followRot) * catchUp
+      s.followTilt += (s.followTargetTilt - s.followTilt) * catchUp
+
       const cx = width / 2
       const cy = height / 2
       const radius = Math.min(width, height) / 2 - Math.min(width, height) * 0.06
       // Drag distance is scaled by the radius, so the handlers need this too.
       s.radius = Math.max(1, radius)
-      const tilt = s.tilt
+      // What the frame is actually drawn with: the globe's own state plus lean.
+      const rotation = s.rotation + s.followRot
+      const tilt = Math.max(-TILT_LIMIT, Math.min(TILT_LIMIT, s.tilt + s.followTilt))
 
       ctx.clearRect(0, 0, width, height)
       if (radius <= 0) {
@@ -434,7 +527,7 @@ export function Globe({
         let drawing = false
         ctx.beginPath()
         for (const p of points) {
-          const proj = project(p.lat, p.lon, s.rotation, radius, cx, cy, tilt)
+          const proj = project(p.lat, p.lon, rotation, radius, cx, cy, tilt)
           if (proj.depth <= 0.005) {
             drawing = false
             continue
@@ -475,7 +568,7 @@ export function Globe({
          */
         const projected: Projected[] = []
         for (const [lon, lat] of polygon) {
-          const p = project(lat, lon, s.rotation, radius, cx, cy, tilt)
+          const p = project(lat, lon, rotation, radius, cx, cy, tilt)
           if (p.depth > 0) {
             projected.push(p)
             continue
@@ -568,8 +661,8 @@ export function Globe({
           const head = (pulse * 0.16 + (i + j) * 0.27) % 1
 
           for (let k = 0; k < points.length - 1; k++) {
-            const a = project(points[k].lat, points[k].lon, s.rotation, radius, cx, cy, tilt)
-            const b = project(points[k + 1].lat, points[k + 1].lon, s.rotation, radius, cx, cy, tilt)
+            const a = project(points[k].lat, points[k].lon, rotation, radius, cx, cy, tilt)
+            const b = project(points[k + 1].lat, points[k + 1].lon, rotation, radius, cx, cy, tilt)
             if (a.depth <= 0.01 || b.depth <= 0.01) continue
 
             const t = k / (points.length - 1)
@@ -591,7 +684,7 @@ export function Globe({
       const active = activeRef.current
 
       for (const marker of activeMarkers) {
-        const p = project(marker.lat, marker.lon, s.rotation, radius, cx, cy, tilt)
+        const p = project(marker.lat, marker.lon, rotation, radius, cx, cy, tilt)
         if (p.depth <= 0.02) continue
 
         hits.push({ id: marker.id, x: p.x, y: p.y })
@@ -782,3 +875,4 @@ export function Globe({
     </div>
   )
 }
+

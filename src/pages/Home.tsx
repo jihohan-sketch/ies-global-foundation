@@ -47,6 +47,7 @@ export default function Home() {
           <Globe
             markers={markers}
             draggable
+            followPointer
             intensity={1}
             className="h-[min(140vw,54rem)] w-[min(140vw,54rem)] opacity-45 sm:opacity-55 lg:opacity-100"
           />

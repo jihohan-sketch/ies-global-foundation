@@ -20,6 +20,11 @@ import { Globe } from '@/components/Globe'
  * The globe drifts one revolution every 45s, handled inside `Globe`. It keeps
  * turning under `prefers-reduced-motion` — a deliberate exception to the site's
  * usual handling of that setting.
+ *
+ * It also leans toward the cursor. The wrapper below stays `pointer-events-none`
+ * so nothing on any page becomes harder to click; `followPointer` tracks the
+ * cursor on the window instead, which is the only way a layer this far back can
+ * respond to it at all.
  */
 export function GlobeBackdrop() {
   return (
@@ -29,6 +34,7 @@ export function GlobeBackdrop() {
     >
       <Globe
         markers={[]}
+        followPointer
         intensity={0.18}
         className="h-[min(115vmin,62rem)] w-[min(115vmin,62rem)]"
       />
