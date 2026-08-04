@@ -9,8 +9,15 @@ export interface GlobeMarker extends GeoPoint {
 
 interface GlobeProps {
   markers: GlobeMarker[]
-  /** Enables hover/click on markers. */
+  /** Enables hover/click on markers. Implies `draggable`. */
   interactive?: boolean
+  /**
+   * Lets the visitor turn the globe by dragging it, without making the markers
+   * hoverable targets. For the decorative globes, which stay `aria-hidden`: the
+   * drag adds nothing a screen reader could use, and the sphere carries no
+   * information that is only reachable by turning it.
+   */
+  draggable?: boolean
   /** Marker id to rotate into view and highlight. */
   activeId?: string | null
   onSelect?: (id: string) => void
@@ -21,7 +28,21 @@ interface GlobeProps {
 
 const DEG = Math.PI / 180
 
-const TILT = 16 * DEG
+/** Resting camera tilt, in degrees. Dragging vertically moves away from it. */
+const TILT = 16
+
+/** How far the tilt may be dragged from the equator, in degrees. Stopping short
+ *  of the poles keeps the graticule readable and the markers from crowding. */
+const TILT_LIMIT = 72
+
+/** Seconds of stillness after a drag before the globe picks its drift back up. */
+const RESUME_DELAY = 1.6
+
+/** Below this many degrees per second the throw is considered spent. */
+const SPIN_FLOOR = 1.5
+
+/** Pointer travel, in CSS pixels, past which a press is a drag and not a click. */
+const CLICK_SLOP = 4
 
 /** Sub-pixel spacing below which two consecutive rim points are treated as the
  *  same point. In CSS pixels — the context is pre-scaled by devicePixelRatio. */
@@ -48,6 +69,7 @@ function project(
   radius: number,
   cx: number,
   cy: number,
+  tilt: number,
 ): Projected {
   const phi = lat * DEG
   const lambda = (lon + rotation) * DEG
@@ -55,12 +77,14 @@ function project(
   const sinPhi = Math.sin(phi)
   const cosL = Math.cos(lambda)
   const sinL = Math.sin(lambda)
+  const cosT = Math.cos(tilt * DEG)
+  const sinT = Math.sin(tilt * DEG)
 
-  const depth = Math.sin(TILT) * sinPhi + Math.cos(TILT) * cosPhi * cosL
+  const depth = sinT * sinPhi + cosT * cosPhi * cosL
 
   return {
     x: cx + radius * cosPhi * sinL,
-    y: cy - radius * (Math.cos(TILT) * sinPhi - Math.sin(TILT) * cosPhi * cosL),
+    y: cy - radius * (cosT * sinPhi - sinT * cosPhi * cosL),
     depth,
   }
 }
@@ -105,6 +129,7 @@ function interpolateArc(a: GeoPoint, b: GeoPoint, steps: number): GeoPoint[] {
 export function Globe({
   markers,
   interactive = false,
+  draggable = false,
   activeId = null,
   onSelect,
   className,
@@ -113,14 +138,35 @@ export function Globe({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const wrapRef = useRef<HTMLDivElement>(null)
 
+  // Picking markers implies being able to turn the globe to reach them.
+  const canDrag = draggable || interactive
+
   // Mutable animation state kept out of React to avoid re-rendering per frame.
   const state = useRef({
     rotation: -120,
     targetRotation: null as number | null,
+    tilt: TILT,
     hovered: null as string | null,
     pointer: null as { x: number; y: number } | null,
     /** Screen positions of near-side markers, refreshed each frame. */
     hits: [] as { id: string; x: number; y: number }[],
+    /** Live drag, or null when the pointer is not held down. */
+    drag: null as { x: number; y: number; travel: number } | null,
+    /** Distance the last press travelled — read by the click handler, which
+     *  fires after the drag has already been torn down. */
+    dragTravel: 0,
+    /** Degrees per second carried over from a flick, decaying to nothing. */
+    spin: 0,
+    /** Timestamp of the last drag movement, for judging whether a release was
+     *  a throw or a stop. */
+    lastMove: 0,
+    /** Tilt to ease back to when a marker is flown into view. */
+    targetTilt: null as number | null,
+    /** Seconds of stillness since the last drag ended. Starts past the delay
+     *  and its ramp so the globe is already drifting on the first frame. */
+    idle: RESUME_DELAY + 1,
+    /** Radius of the last frame — drag distance is measured against it. */
+    radius: 1,
   })
 
   const activeRef = useRef(activeId)
@@ -143,29 +189,96 @@ export function Globe({
     while (target - current > 180) target -= 360
     while (target - current < -180) target += 360
     state.current.targetRotation = target
+    // A marker that was picked from the list should arrive at the framing the
+    // globe was designed around, however far the visitor had tipped it.
+    state.current.targetTilt = TILT
+    state.current.spin = 0
   }, [activeId])
+
+  const handlePointerDown = useCallback(
+    (event: React.PointerEvent<HTMLCanvasElement>) => {
+      if (!canDrag) return
+      event.currentTarget.setPointerCapture(event.pointerId)
+      const s = state.current
+      s.drag = { x: event.clientX, y: event.clientY, travel: 0 }
+      s.dragTravel = 0
+      // A hand on the globe overrides both the drift and any pending flyto.
+      s.spin = 0
+      s.targetRotation = null
+      s.targetTilt = null
+      event.currentTarget.style.cursor = 'grabbing'
+    },
+    [canDrag],
+  )
 
   const handlePointerMove = useCallback(
     (event: React.PointerEvent<HTMLCanvasElement>) => {
-      if (!interactive) return
+      if (!canDrag) return
       const rect = event.currentTarget.getBoundingClientRect()
-      state.current.pointer = {
+      const s = state.current
+      s.pointer = {
         x: event.clientX - rect.left,
         y: event.clientY - rect.top,
       }
+
+      if (!s.drag) return
+
+      const dx = event.clientX - s.drag.x
+      const dy = event.clientY - s.drag.y
+      s.drag.x = event.clientX
+      s.drag.y = event.clientY
+      s.drag.travel += Math.hypot(dx, dy)
+      s.dragTravel = s.drag.travel
+
+      /*
+       * A drag across one radius turns the globe a quarter turn, so the surface
+       * roughly keeps pace with the pointer near the centre of the disc.
+       */
+      const perPixel = 90 / s.radius
+      s.rotation += dx * perPixel
+      s.tilt = Math.max(-TILT_LIMIT, Math.min(TILT_LIMIT, s.tilt + dy * perPixel))
+      // Feed the frame loop a throw to carry on with once the pointer lifts.
+      s.spin = dx * perPixel * 12
+      s.lastMove = event.timeStamp
+      s.idle = 0
     },
-    [interactive],
+    [canDrag],
+  )
+
+  const handlePointerUp = useCallback(
+    (event: React.PointerEvent<HTMLCanvasElement>) => {
+      const s = state.current
+      if (!s.drag) return
+      s.drag = null
+      s.idle = 0
+      // Letting go after holding still is a placement, not a throw — only a
+      // release that follows fresh movement carries momentum.
+      if (event.timeStamp - s.lastMove > 90) s.spin = 0
+      if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+        event.currentTarget.releasePointerCapture(event.pointerId)
+      }
+      event.currentTarget.style.cursor = s.hovered ? 'pointer' : 'grab'
+    },
+    [],
   )
 
   const handlePointerLeave = useCallback(() => {
+    // Pointer capture keeps a drag alive past the edge of the canvas, and
+    // reports the crossing as a leave. The hand is still down, so ignore it.
+    if (state.current.drag) return
     state.current.pointer = null
     state.current.hovered = null
-    if (canvasRef.current) canvasRef.current.style.cursor = 'default'
-  }, [])
+    if (canvasRef.current) {
+      canvasRef.current.style.cursor = canDrag ? 'grab' : 'default'
+    }
+  }, [canDrag])
 
   const handleClick = useCallback(() => {
     if (!interactive || !onSelect) return
-    const hovered = state.current.hovered
+    const s = state.current
+    // A press that travelled is a spin, not a pick.
+    if (s.dragTravel > CLICK_SLOP) return
+    const hovered = s.hovered
     if (hovered) onSelect(hovered)
   }, [interactive, onSelect])
 
@@ -214,7 +327,10 @@ export function Globe({
 
       const s = state.current
 
-      if (s.targetRotation !== null) {
+      if (s.drag) {
+        // The pointer owns the rotation outright while it is held down.
+        s.idle = 0
+      } else if (s.targetRotation !== null) {
         const diff = s.targetRotation - s.rotation
         if (Math.abs(diff) < 0.15) {
           s.rotation = s.targetRotation
@@ -223,6 +339,20 @@ export function Globe({
           s.rotation += diff * Math.min(1, dt * 2.6)
         }
       } else {
+        s.idle += dt
+
+        /*
+         * A flick keeps going and bleeds off, so letting go mid-drag feels like
+         * releasing something with mass rather than dropping it.
+         */
+        if (Math.abs(s.spin) > SPIN_FLOOR) {
+          s.rotation += s.spin * dt
+          s.spin *= Math.exp(-dt * 2.4)
+          s.idle = 0
+        } else {
+          s.spin = 0
+        }
+
         /*
          * Degrees per second. 8°/s is one revolution every 45s — slow enough to
          * read as a planet turning, fast enough that a few seconds of looking
@@ -232,15 +362,35 @@ export function Globe({
          * Deliberately not gated on `prefers-reduced-motion`: the rotation is
          * the point of the element, and the site owner asked for it to run for
          * everyone. Every other motion on the site still honours the setting.
+         *
+         * After a drag the drift fades back in over the following second rather
+         * than snapping on, so the globe the visitor just placed stays put for a
+         * beat before it starts turning again. Where they left it is kept — the
+         * drift resumes from that longitude and tilt, it does not spring home.
          */
-        s.rotation += dt * (interactive ? 3 : 8)
+        const resumed = Math.max(0, s.idle - RESUME_DELAY)
+        const blend = Math.min(1, resumed)
+        s.rotation += dt * (interactive ? 3 : 8) * blend
       }
       if (s.rotation > 360) s.rotation -= 360
       if (s.rotation < -360) s.rotation += 360
 
+      if (s.targetTilt !== null && !s.drag) {
+        const diff = s.targetTilt - s.tilt
+        if (Math.abs(diff) < 0.05) {
+          s.tilt = s.targetTilt
+          s.targetTilt = null
+        } else {
+          s.tilt += diff * Math.min(1, dt * 2.6)
+        }
+      }
+
       const cx = width / 2
       const cy = height / 2
       const radius = Math.min(width, height) / 2 - Math.min(width, height) * 0.06
+      // Drag distance is scaled by the radius, so the handlers need this too.
+      s.radius = Math.max(1, radius)
+      const tilt = s.tilt
 
       ctx.clearRect(0, 0, width, height)
       if (radius <= 0) {
@@ -284,7 +434,7 @@ export function Globe({
         let drawing = false
         ctx.beginPath()
         for (const p of points) {
-          const proj = project(p.lat, p.lon, s.rotation, radius, cx, cy)
+          const proj = project(p.lat, p.lon, s.rotation, radius, cx, cy, tilt)
           if (proj.depth <= 0.005) {
             drawing = false
             continue
@@ -325,7 +475,7 @@ export function Globe({
          */
         const projected: Projected[] = []
         for (const [lon, lat] of polygon) {
-          const p = project(lat, lon, s.rotation, radius, cx, cy)
+          const p = project(lat, lon, s.rotation, radius, cx, cy, tilt)
           if (p.depth > 0) {
             projected.push(p)
             continue
@@ -418,8 +568,8 @@ export function Globe({
           const head = (pulse * 0.16 + (i + j) * 0.27) % 1
 
           for (let k = 0; k < points.length - 1; k++) {
-            const a = project(points[k].lat, points[k].lon, s.rotation, radius, cx, cy)
-            const b = project(points[k + 1].lat, points[k + 1].lon, s.rotation, radius, cx, cy)
+            const a = project(points[k].lat, points[k].lon, s.rotation, radius, cx, cy, tilt)
+            const b = project(points[k + 1].lat, points[k + 1].lon, s.rotation, radius, cx, cy, tilt)
             if (a.depth <= 0.01 || b.depth <= 0.01) continue
 
             const t = k / (points.length - 1)
@@ -441,7 +591,7 @@ export function Globe({
       const active = activeRef.current
 
       for (const marker of activeMarkers) {
-        const p = project(marker.lat, marker.lon, s.rotation, radius, cx, cy)
+        const p = project(marker.lat, marker.lon, s.rotation, radius, cx, cy, tilt)
         if (p.depth <= 0.02) continue
 
         hits.push({ id: marker.id, x: p.x, y: p.y })
@@ -487,7 +637,9 @@ export function Globe({
       if (interactive) {
         const pointer = s.pointer
         let hovered: string | null = null
-        if (pointer) {
+        // While the globe is being turned, the pointer is a handle rather than
+        // a cursor: nothing under it should light up or claim the click.
+        if (pointer && !s.drag) {
           for (const hit of hits) {
             if (Math.hypot(hit.x - pointer.x, hit.y - pointer.y) < 22) {
               hovered = hit.id
@@ -497,7 +649,7 @@ export function Globe({
         }
         if (hovered !== s.hovered) {
           s.hovered = hovered
-          canvas.style.cursor = hovered ? 'pointer' : 'default'
+          if (!s.drag) canvas.style.cursor = hovered ? 'pointer' : 'grab'
         }
       }
 
@@ -595,15 +747,33 @@ export function Globe({
     <div ref={wrapRef} className={className}>
       <canvas
         ref={canvasRef}
+        onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
         onPointerLeave={handlePointerLeave}
         onClick={handleClick}
-        className="block h-full w-full"
+        // `touch-none` hands vertical drags to the globe instead of the page;
+        // without it a touch spin scrolls the article behind it.
+        /*
+         * `pointer-events-auto` because the decorative globes sit inside
+         * `pointer-events-none` wrappers — the canvas opts itself back in so it
+         * can be grabbed, while the rest of the wrapper stays transparent to
+         * clicks aimed at the copy over it.
+         *
+         * `touch-pan-y` rather than `touch-none`: a horizontal swipe turns the
+         * globe, a vertical one still scrolls the page. Tilting is a
+         * pointer-only gesture as a result, which is the right trade for a
+         * canvas this large on a phone.
+         */
+        className={`block h-full w-full${
+          canDrag ? ' pointer-events-auto cursor-grab touch-pan-y' : ''
+        }`}
         aria-hidden={!interactive}
         role={interactive ? 'img' : undefined}
         aria-label={
           interactive
-            ? `Rotating globe showing the IES national branches: ${markers
+            ? `Rotating globe showing the IES national branches, draggable to turn: ${markers
                 .map((m) => m.label)
                 .join(', ')}`
             : undefined

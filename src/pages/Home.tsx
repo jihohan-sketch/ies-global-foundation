@@ -46,20 +46,25 @@ export default function Home() {
         >
           <Globe
             markers={markers}
+            draggable
             intensity={1}
             className="h-[min(140vw,54rem)] w-[min(140vw,54rem)] opacity-45 sm:opacity-55 lg:opacity-100"
           />
         </div>
 
         {/* Kept, unlike the other overlays: this one earns its place by holding
-            the headline legible over the globe rather than decorating it. */}
+            the headline legible over the globe rather than decorating it. It
+            must not eat pointer events — the globe beneath it is draggable. */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-[linear-gradient(to_right,rgba(7,26,51,0.92)_0%,rgba(7,26,51,0.7)_45%,transparent_80%)]"
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(7,26,51,0.92)_0%,rgba(7,26,51,0.7)_45%,transparent_80%)]"
         />
 
-        <Container size="wide" className="relative">
-          <div className="max-w-2xl">
+        {/* The container spans the full hero, so left as-is it would swallow
+            every drag aimed at the globe on its right. Only the copy column
+            takes pointer events back. */}
+        <Container size="wide" className="pointer-events-none relative">
+          <div className="pointer-events-auto max-w-2xl">
             <Reveal>
               <Eyebrow>Founded 20 April 2023 · Korea · United States · United Kingdom</Eyebrow>
             </Reveal>

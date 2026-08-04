@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { footerNav, legalNav, site, socials } from '@/content/site'
+import { branchSites, footerNav, legalNav, site, socials } from '@/content/site'
 import { Container, Rule } from '@/components/ui/Primitives'
 import { Logo } from './Logo'
 
@@ -55,6 +55,35 @@ export function Footer() {
               </div>
             ))}
           </div>
+        </div>
+
+        <Rule />
+
+        {/* ----------------------------------------------- Branch websites */}
+        {/* The branches run their own sites; the Network column above links to
+            their pages here, this band links out to the sites themselves. */}
+        <div className="flex flex-col gap-5 py-8 lg:flex-row lg:items-baseline lg:gap-10">
+          <h2 className="text-[0.6875rem] font-sans font-medium tracking-[0.24em] whitespace-nowrap text-gold uppercase">
+            Branch Websites
+          </h2>
+          <ul className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:gap-x-10 sm:gap-y-3">
+            {branchSites.map((branchSite) => (
+              <li key={branchSite.href}>
+                <a
+                  href={branchSite.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="group inline-flex items-baseline gap-2 text-sm font-light text-paper/72 transition-colors hover:text-paper"
+                >
+                  {branchSite.label}
+                  <span className="text-xs text-mist/60 transition-colors group-hover:text-gold">
+                    {branchSite.domain}
+                    <span aria-hidden> ↗</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <Rule />

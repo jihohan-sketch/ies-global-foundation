@@ -196,7 +196,24 @@ export const socials: SocialLink[] = [
     href: 'https://www.linkedin.com/company/interscholastic-ethics-society',
   },
   { label: 'YouTube', href: 'https://www.youtube.com/@InterscholasticEthicsSocie-r8w' },
-  { label: 'IES Korea Website', href: 'https://ie-society.com/' },
+]
+
+/**
+ * Each national branch's own site, as supplied by the organization.
+ *
+ * These are separate properties, run by the branches themselves — they are
+ * listed as outbound links, never framed as part of this site. `domain` is
+ * shown alongside the branch name so a visitor can see where a link goes
+ * before following it.
+ */
+export const branchSites: { label: string; href: string; domain: string }[] = [
+  { label: 'IES Korea', href: 'https://ie-society.com/', domain: 'ie-society.com' },
+  { label: 'IES United States', href: 'https://iesusa.space/', domain: 'iesusa.space' },
+  {
+    label: 'IES United Kingdom',
+    href: 'https://iesunitedkingdom.lovable.app/',
+    domain: 'iesunitedkingdom.lovable.app',
+  },
 ]
 
 /** Membership application form published by IES Korea. */

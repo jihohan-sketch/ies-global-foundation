@@ -3,7 +3,7 @@ import { Card, Container, Eyebrow, Section } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { ContactForm } from '@/components/sections/ContactForm'
-import { branchContacts, contactChannels, socials } from '@/content/site'
+import { branchContacts, branchSites, contactChannels, socials } from '@/content/site'
 import { useSeo } from '@/lib/seo'
 
 /**
@@ -126,6 +126,30 @@ export default function Contact() {
                       </a>
                     ))}
                   </div>
+
+                  {/* IES Korea's own site used to sit among the chips above.
+                      It belongs with the other branch sites instead. */}
+                  <h3 className="mt-8 text-[0.6875rem] font-sans font-medium tracking-[0.24em] text-[var(--accent)] uppercase">
+                    Branch Websites
+                  </h3>
+                  <ul className="mt-5 space-y-2.5">
+                    {branchSites.map((branchSite) => (
+                      <li key={branchSite.href}>
+                        <a
+                          href={branchSite.href}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          className="group inline-flex items-baseline gap-2 text-sm font-light text-paper/80 transition-colors hover:text-paper"
+                        >
+                          {branchSite.label}
+                          <span className="text-xs text-mist/70 transition-colors group-hover:text-[var(--accent)]">
+                            {branchSite.domain}
+                            <span aria-hidden> ↗</span>
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </Card>
               </Reveal>
             </div>
