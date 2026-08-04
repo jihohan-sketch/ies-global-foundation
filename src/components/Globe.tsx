@@ -23,8 +23,13 @@ interface GlobeProps {
    * Tracked on the window rather than the canvas, so the ambient globe can
    * follow the pointer while staying `pointer-events-none` and letting every
    * click through to the content above it.
+   *
+   * A number scales the lean; `true` means full strength. Anywhere the markers
+   * are meant to be hovered, keep this well under 1: the lean moves the globe
+   * away from the approaching cursor, and at full strength a pin slides out
+   * from under it faster than it can be caught.
    */
-  followPointer?: boolean
+  followPointer?: boolean | number
   /** Marker id to rotate into view and highlight. */
   activeId?: string | null
   onSelect?: (id: string) => void
@@ -57,13 +62,13 @@ const CLICK_SLOP = 4
  * the page visibly swings the sphere, small enough that the drift underneath
  * still reads as the globe's own movement rather than a jitter.
  */
-const FOLLOW_ROTATION = 34
-const FOLLOW_TILT = 18
+const FOLLOW_ROTATION = 62
+const FOLLOW_TILT = 27
 
 /** How quickly the lean catches up to the cursor, per second. Fast enough that
  *  the globe reads as tracking the cursor, with just enough lag to look like
  *  something with weight rather than a cursor-locked sprite. */
-const FOLLOW_EASE = 6.5
+const FOLLOW_EASE = 8.5
 
 /** Sub-pixel spacing below which two consecutive rim points are treated as the
  *  same point. In CSS pixels — the context is pre-scaled by devicePixelRatio. */
@@ -163,6 +168,9 @@ export function Globe({
   // Picking markers implies being able to turn the globe to reach them.
   const canDrag = draggable || interactive
 
+  // `true` is full strength; a number scales the lean.
+  const followStrength = followPointer === true ? 1 : followPointer === false ? 0 : followPointer
+
   // Mutable animation state kept out of React to avoid re-rendering per frame.
   const state = useRef({
     rotation: -120,
@@ -237,7 +245,7 @@ export function Globe({
    * landed, so following it would knock the globe sideways on every scroll.
    */
   useEffect(() => {
-    if (!followPointer) return
+    if (!followStrength) return
 
     const s = state.current
 
@@ -254,8 +262,8 @@ export function Globe({
       const nx = Math.max(-1, Math.min(1, (event.clientX - (rect.x + rect.width / 2)) / reach))
       const ny = Math.max(-1, Math.min(1, (event.clientY - (rect.y + rect.height / 2)) / reach))
 
-      s.followTargetRot = nx * FOLLOW_ROTATION
-      s.followTargetTilt = ny * FOLLOW_TILT
+      s.followTargetRot = nx * FOLLOW_ROTATION * followStrength
+      s.followTargetTilt = ny * FOLLOW_TILT * followStrength
     }
 
     // Cursor gone from the window entirely: unwind to the resting framing.
@@ -273,7 +281,7 @@ export function Globe({
       s.followTargetRot = 0
       s.followTargetTilt = 0
     }
-  }, [followPointer])
+  }, [followStrength])
 
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLCanvasElement>) => {
@@ -337,9 +345,9 @@ export function Globe({
       if (event.currentTarget.hasPointerCapture(event.pointerId)) {
         event.currentTarget.releasePointerCapture(event.pointerId)
       }
-      event.currentTarget.style.cursor = s.hovered ? 'pointer' : 'grab'
+      event.currentTarget.style.cursor = s.hovered && interactive ? 'pointer' : 'grab'
     },
-    [],
+    [interactive],
   )
 
   const handlePointerLeave = useCallback(() => {
@@ -451,7 +459,15 @@ export function Globe({
          */
         const resumed = Math.max(0, s.idle - RESUME_DELAY)
         const blend = Math.min(1, resumed)
-        s.rotation += dt * (interactive ? 4 : 13) * blend
+        /*
+         * The drift all but stops while the cursor is on the globe. At 13°/s a
+         * marker crosses about 90px a second, which makes a pin something you
+         * chase rather than something you point at; slowing down the moment
+         * the visitor's cursor arrives makes the labels reachable, and reads
+         * as the globe noticing the attention.
+         */
+        const attention = s.pointer ? 0.15 : 1
+        s.rotation += dt * (interactive ? 4 : 13) * blend * attention
       }
       if (s.rotation > 360) s.rotation -= 360
       if (s.rotation < -360) s.rotation += 360
@@ -715,7 +731,11 @@ export function Globe({
         ctx.fillStyle = `rgba(220, 197, 154, ${fade})`
         ctx.fill()
 
-        if (interactive && (isActive || s.hovered === marker.id)) {
+        // Named on hover wherever the canvas can see the pointer at all, not
+        // just where the markers are selectable — a pin the visitor is pointing
+        // at should say which branch it is even on the hero, where there is
+        // nothing to click.
+        if (canDrag && (isActive || s.hovered === marker.id)) {
           ctx.font =
             '500 12px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
           ctx.textAlign = 'center'
@@ -727,7 +747,7 @@ export function Globe({
       s.hits = hits
 
       /* ---- Hover detection ---- */
-      if (interactive) {
+      if (canDrag) {
         const pointer = s.pointer
         let hovered: string | null = null
         // While the globe is being turned, the pointer is a handle rather than
@@ -742,7 +762,8 @@ export function Globe({
         }
         if (hovered !== s.hovered) {
           s.hovered = hovered
-          if (!s.drag) canvas.style.cursor = hovered ? 'pointer' : 'grab'
+          // Only a marker that actually goes somewhere gets the pointer cursor.
+          if (!s.drag) canvas.style.cursor = hovered && interactive ? 'pointer' : 'grab'
         }
       }
 
@@ -834,7 +855,7 @@ export function Globe({
       resizeObserver.disconnect()
       visibilityObserver.disconnect()
     }
-  }, [interactive, intensity])
+  }, [interactive, canDrag, intensity])
 
   return (
     <div ref={wrapRef} className={className}>
