@@ -35,6 +35,7 @@ export function GlobeBackdrop() {
       <Globe
         markers={[]}
         followPointer
+        maxDpr={1.25}
         intensity={0.18}
         className="h-[min(115vmin,62rem)] w-[min(115vmin,62rem)]"
       />

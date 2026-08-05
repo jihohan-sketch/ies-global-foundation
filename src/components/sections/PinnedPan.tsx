@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
 import { cx } from '@/lib/utils'
 
 /*
@@ -12,13 +12,21 @@ import { cx } from '@/lib/utils'
  * wherever the scroll position says it should be.
  *
  * Height is derived from the panel count so the pan distance and the scroll
- * distance always agree: each panel gets one viewport of scroll to cross.
+ * distance always agree: each panel gets its share of scroll to cross.
+ *
+ * Everything below is built around one rule: a scroll frame must not read
+ * layout and must not re-render. The offset used to live in React state, which
+ * meant every frame reconciled three full-screen panels; the frame also called
+ * `getBoundingClientRect()` and `scrollWidth` after writing a transform, which
+ * forces the browser to redo layout it had just done. Both are gone — the
+ * geometry is measured only when it can actually change, and a frame does
+ * nothing but arithmetic and one transform write.
  */
 export function PinnedPan({
   children,
   label,
   className,
-  vhPerPanel = 260,
+  vhPerPanel = 120,
 }: {
   children: ReactNode[]
   /** Names the section for assistive tech. */
@@ -29,17 +37,15 @@ export function PinnedPan({
    * dial. Higher is slower: the horizontal travel is fixed by the track width,
    * so stretching the scroll distance stretches the time it takes to cross.
    *
-   * This is the one knob that trades directly against page length. At 260 the
-   * three values cost about eight screens of scroll and cross very gradually;
-   * at 70 they cost two and a half but go past fast enough to feel like a jump
-   * cut. Roughly: ratio of vertical scroll to horizontal travel is ~2.0 at 260,
-   * ~1.2 at 160, ~0.4 at 70.
+   * This is the one knob that trades directly against page length. At 120 the
+   * three values cost under four screens of scroll and the panel keeps pace
+   * with the wheel; at 260 they cost eight and the section reads as stuck,
+   * since two turns of the wheel buy one screen of movement.
    */
   vhPerPanel?: number
 }) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
-  const [offset, setOffset] = useState(0)
 
   useEffect(() => {
     const wrap = wrapRef.current
@@ -47,20 +53,33 @@ export function PinnedPan({
     if (!wrap || !track) return
 
     let frame = 0
+    /** Geometry, in document coordinates. Refreshed only on layout changes. */
+    let top = 0
+    let travel = 0
+    let distance = 0
+    let applied = -1
+
+    const measure = () => {
+      top = wrap.getBoundingClientRect().top + window.scrollY
+      travel = wrap.offsetHeight - window.innerHeight
+      distance = Math.max(0, track.scrollWidth - window.innerWidth)
+    }
+
     const update = () => {
       frame = 0
-      const rect = wrap.getBoundingClientRect()
-      const distance = track.scrollWidth - window.innerWidth
-      if (distance <= 0) {
-        setOffset(0)
+      if (distance <= 0 || travel <= 0) {
+        track.style.transform = 'translate3d(0px, 0, 0)'
         return
       }
       // 0 when the top of the section reaches the top of the viewport, 1 when
       // its bottom does. Clamped so the track parks at both ends instead of
       // overshooting while the section is off screen.
-      const travel = rect.height - window.innerHeight
-      const progress = travel <= 0 ? 0 : Math.min(1, Math.max(0, -rect.top / travel))
-      setOffset(progress * distance)
+      const progress = Math.min(1, Math.max(0, (window.scrollY - top) / travel))
+      const offset = Math.round(progress * distance)
+      // Nothing moved: skip the write rather than dirtying a composited layer.
+      if (offset === applied) return
+      applied = offset
+      track.style.transform = `translate3d(${-offset}px, 0, 0)`
     }
 
     // rAF-coalesced: scroll fires far more often than the screen refreshes, and
@@ -69,13 +88,32 @@ export function PinnedPan({
       if (!frame) frame = requestAnimationFrame(update)
     }
 
+    const onResize = () => {
+      measure()
+      applied = -1
+      onScroll()
+    }
+
+    measure()
     update()
+
+    /*
+     * A resize is not the only thing that moves this section. Images and web
+     * fonts landing above it shift its top, and the reveal animations on the
+     * way down change the height of what precedes it — so watch the box itself
+     * rather than trusting the numbers taken at mount.
+     */
+    const resizeObserver = new ResizeObserver(onResize)
+    resizeObserver.observe(wrap)
+    resizeObserver.observe(document.documentElement)
+
     window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
+    window.addEventListener('resize', onResize)
     return () => {
       if (frame) cancelAnimationFrame(frame)
+      resizeObserver.disconnect()
       window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
+      window.removeEventListener('resize', onResize)
     }
   }, [children.length])
 
@@ -92,7 +130,7 @@ export function PinnedPan({
         <div
           ref={trackRef}
           className="flex will-change-transform"
-          style={{ transform: `translate3d(${-offset}px, 0, 0)` }}
+          style={{ transform: 'translate3d(0px, 0, 0)' }}
         >
           {children}
         </div>

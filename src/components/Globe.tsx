@@ -36,6 +36,17 @@ interface GlobeProps {
   className?: string
   /** 0–1. Lower values keep the globe as a background element. */
   intensity?: number
+  /**
+   * Ceiling on the device-pixel ratio the canvas is rendered at.
+   *
+   * The cost of a frame is almost entirely fill: four full-disc gradients plus
+   * every landmass, repainted at dpr² pixels. On a 2× display a full-size
+   * ambient globe is close to four million pixels a frame, which is fine on its
+   * own and not fine underneath a section that is also panning. Dropping the
+   * ceiling is the cheapest way to buy that back on a globe soft enough that
+   * nobody can tell — it is not a knob to touch on a foreground one.
+   */
+  maxDpr?: number
 }
 
 const DEG = Math.PI / 180
@@ -166,6 +177,7 @@ export function Globe({
   onSelect,
   className,
   intensity = 1,
+  maxDpr = 2,
 }: GlobeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -408,7 +420,7 @@ export function Globe({
     let pulse = 0
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr)
       const rect = wrap.getBoundingClientRect()
       width = rect.width
       height = rect.height
@@ -878,7 +890,7 @@ export function Globe({
       resizeObserver.disconnect()
       visibilityObserver.disconnect()
     }
-  }, [interactive, canDrag, intensity])
+  }, [interactive, canDrag, intensity, maxDpr])
 
   return (
     <div ref={wrapRef} className={className}>
