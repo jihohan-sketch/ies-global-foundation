@@ -212,6 +212,9 @@ export function Globe({
   const markersRef = useRef(markers)
   markersRef.current = markers
 
+  const onSelectRef = useRef(onSelect)
+  onSelectRef.current = onSelect
+
   /* Rotate a selected marker to face the viewer. */
   useEffect(() => {
     if (!activeId) return
@@ -256,11 +259,22 @@ export function Globe({
       const rect = wrap.getBoundingClientRect()
       if (rect.width === 0 || rect.height === 0) return
 
-      // Offset from the globe's centre, in radii, clamped to the disc so a
-      // cursor far off to one side leans no harder than one at the limb.
+      // Offset from the globe's centre, in radii.
       const reach = Math.min(rect.width, rect.height) / 2
-      const nx = Math.max(-1, Math.min(1, (event.clientX - (rect.x + rect.width / 2)) / reach))
-      const ny = Math.max(-1, Math.min(1, (event.clientY - (rect.y + rect.height / 2)) / reach))
+      const nx = (event.clientX - (rect.x + rect.width / 2)) / reach
+      const ny = (event.clientY - (rect.y + rect.height / 2)) / reach
+
+      /*
+       * Only the sphere itself responds. Leaning to a cursor anywhere on the
+       * page made the globe twitch at every stray movement — over a paragraph
+       * of text, on the way to the nav — which is motion the visitor never
+       * asked for. Off the disc it unwinds to rest instead.
+       */
+      if (Math.hypot(nx, ny) > 1) {
+        s.followTargetRot = 0
+        s.followTargetTilt = 0
+        return
+      }
 
       s.followTargetRot = nx * FOLLOW_ROTATION * followStrength
       s.followTargetTilt = ny * FOLLOW_TILT * followStrength
@@ -345,9 +359,9 @@ export function Globe({
       if (event.currentTarget.hasPointerCapture(event.pointerId)) {
         event.currentTarget.releasePointerCapture(event.pointerId)
       }
-      event.currentTarget.style.cursor = s.hovered && interactive ? 'pointer' : 'grab'
+      event.currentTarget.style.cursor = s.hovered && onSelect ? 'pointer' : 'grab'
     },
-    [interactive],
+    [onSelect],
   )
 
   const handlePointerLeave = useCallback(() => {
@@ -362,13 +376,15 @@ export function Globe({
   }, [canDrag])
 
   const handleClick = useCallback(() => {
-    if (!interactive || !onSelect) return
+    // Keyed to `onSelect` rather than `interactive`: the hero globe is not a
+    // marker-picking control, but its pins still lead somewhere.
+    if (!canDrag || !onSelect) return
     const s = state.current
     // A press that travelled is a spin, not a pick.
     if (s.dragTravel > CLICK_SLOP) return
     const hovered = s.hovered
     if (hovered) onSelect(hovered)
-  }, [interactive, onSelect])
+  }, [canDrag, onSelect])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -763,7 +779,7 @@ export function Globe({
         if (hovered !== s.hovered) {
           s.hovered = hovered
           // Only a marker that actually goes somewhere gets the pointer cursor.
-          if (!s.drag) canvas.style.cursor = hovered && interactive ? 'pointer' : 'grab'
+          if (!s.drag) canvas.style.cursor = hovered && onSelectRef.current ? 'pointer' : 'grab'
         }
       }
 

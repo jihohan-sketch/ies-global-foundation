@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Globe, type GlobeMarker } from '@/components/Globe'
 import { Button, Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
@@ -22,6 +22,8 @@ const markers: GlobeMarker[] = branches.map((branch) => ({
 }))
 
 export default function Home() {
+  const navigate = useNavigate()
+
   useSeo({
     title: 'IES Global Foundation — Building Ethical Leaders Across Borders',
     description:
@@ -42,7 +44,11 @@ export default function Home() {
         {/* Globe sits behind the copy on small screens, beside it on large.
             Its lean toward the cursor is gentler than the backdrop's: the
             branch pins here are hover targets, and a strong lean slides them
-            out from under the cursor before it can reach them. */}
+            out from under the cursor before it can reach them.
+
+            The pins open their branch page. That is a mouse-only affordance on
+            an aria-hidden canvas, so it stays an extra route to pages the
+            Network section and the footer already link in text. */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 flex items-center justify-center lg:left-auto lg:w-[58%] lg:justify-end lg:pr-[2vw]"
@@ -50,6 +56,7 @@ export default function Home() {
           <Globe
             markers={markers}
             draggable
+            onSelect={(slug) => navigate(`/global-network/${slug}`)}
             followPointer={0.25}
             intensity={1}
             className="h-[min(140vw,54rem)] w-[min(140vw,54rem)] opacity-45 sm:opacity-55 lg:opacity-100"
