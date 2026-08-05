@@ -18,18 +18,6 @@ interface GlobeProps {
    * information that is only reachable by turning it.
    */
   draggable?: boolean
-  /**
-   * Makes the globe lean toward the cursor as it moves anywhere on the page.
-   * Tracked on the window rather than the canvas, so the ambient globe can
-   * follow the pointer while staying `pointer-events-none` and letting every
-   * click through to the content above it.
-   *
-   * A number scales the lean; `true` means full strength. Anywhere the markers
-   * are meant to be hovered, keep this well under 1: the lean moves the globe
-   * away from the approaching cursor, and at full strength a pin slides out
-   * from under it faster than it can be caught.
-   */
-  followPointer?: boolean | number
   /** Marker id to rotate into view and highlight. */
   activeId?: string | null
   onSelect?: (id: string) => void
@@ -66,20 +54,6 @@ const SPIN_FLOOR = 1.5
 
 /** Pointer travel, in CSS pixels, past which a press is a drag and not a click. */
 const CLICK_SLOP = 4
-
-/**
- * How far the cursor can lean the globe, in degrees, at the point where it is a
- * full radius away from the centre. Large enough that moving the mouse across
- * the page visibly swings the sphere, small enough that the drift underneath
- * still reads as the globe's own movement rather than a jitter.
- */
-const FOLLOW_ROTATION = 62
-const FOLLOW_TILT = 27
-
-/** How quickly the lean catches up to the cursor, per second. Fast enough that
- *  the globe reads as tracking the cursor, with just enough lag to look like
- *  something with weight rather than a cursor-locked sprite. */
-const FOLLOW_EASE = 8.5
 
 /** Margin left between the sphere and the edge of its box, as a fraction of the
  *  box's short side. Both the drawing and the hit test for "over the globe"
@@ -172,7 +146,6 @@ export function Globe({
   markers,
   interactive = false,
   draggable = false,
-  followPointer = false,
   activeId = null,
   onSelect,
   className,
@@ -184,9 +157,6 @@ export function Globe({
 
   // Picking markers implies being able to turn the globe to reach them.
   const canDrag = draggable || interactive
-
-  // `true` is full strength; a number scales the lean.
-  const followStrength = followPointer === true ? 1 : followPointer === false ? 0 : followPointer
 
   // Mutable animation state kept out of React to avoid re-rendering per frame.
   const state = useRef({
@@ -214,13 +184,6 @@ export function Globe({
     idle: RESUME_DELAY + 1,
     /** Radius of the last frame — drag distance is measured against it. */
     radius: 1,
-    /** Lean the cursor is asking for, and the eased value actually applied.
-     *  Kept apart from `rotation`/`tilt` so the drift and any drag stay
-     *  untouched underneath: the lean is an offset laid over them. */
-    followTargetRot: 0,
-    followTargetTilt: 0,
-    followRot: 0,
-    followTilt: 0,
   })
 
   const activeRef = useRef(activeId)
@@ -251,70 +214,6 @@ export function Globe({
     state.current.targetTilt = TILT
     state.current.spin = 0
   }, [activeId])
-
-  /*
-   * Cursor tracking for `followPointer`.
-   *
-   * Listening on the window rather than the canvas is what lets the ambient
-   * globe respond at all: it sits behind every page under `pointer-events-none`
-   * and would otherwise never see a pointer event. The lean itself is still
-   * limited to the sphere — see the disc test in `onMove`.
-   *
-   * Mouse and pen only. On a touchscreen the pointer is wherever the last tap
-   * landed, so following it would knock the globe sideways on every scroll.
-   */
-  useEffect(() => {
-    if (!followStrength) return
-
-    const s = state.current
-
-    const onMove = (event: PointerEvent) => {
-      if (event.pointerType === 'touch') return
-      // A hand on the globe turns it directly. Letting the lean chase the same
-      // pointer would move it twice over for one gesture.
-      if (s.drag) return
-      const wrap = wrapRef.current
-      if (!wrap) return
-      const rect = wrap.getBoundingClientRect()
-      if (rect.width === 0 || rect.height === 0) return
-
-      // Offset from the globe's centre, in radii of the sphere as drawn.
-      const reach = Math.min(rect.width, rect.height) * (0.5 - SPHERE_INSET)
-      const nx = (event.clientX - (rect.x + rect.width / 2)) / reach
-      const ny = (event.clientY - (rect.y + rect.height / 2)) / reach
-
-      /*
-       * Only the sphere itself responds. Leaning to a cursor anywhere on the
-       * page made the globe twitch at every stray movement — over a paragraph
-       * of text, on the way to the nav — which is motion the visitor never
-       * asked for. Off the disc it unwinds to rest instead.
-       */
-      if (Math.hypot(nx, ny) > 1) {
-        s.followTargetRot = 0
-        s.followTargetTilt = 0
-        return
-      }
-
-      s.followTargetRot = nx * FOLLOW_ROTATION * followStrength
-      s.followTargetTilt = ny * FOLLOW_TILT * followStrength
-    }
-
-    // Cursor gone from the window entirely: unwind to the resting framing.
-    const onOut = (event: PointerEvent) => {
-      if (event.relatedTarget) return
-      s.followTargetRot = 0
-      s.followTargetTilt = 0
-    }
-
-    window.addEventListener('pointermove', onMove, { passive: true })
-    window.addEventListener('pointerout', onOut, { passive: true })
-    return () => {
-      window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('pointerout', onOut)
-      s.followTargetRot = 0
-      s.followTargetTilt = 0
-    }
-  }, [followStrength])
 
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLCanvasElement>) => {
@@ -517,24 +416,13 @@ export function Globe({
         }
       }
 
-      /*
-       * The cursor's lean rides on top of everything above. Easing it here, in
-       * the frame loop rather than in the pointer handler, is what makes the
-       * globe trail the cursor instead of snapping to it — and it keeps
-       * following through after the pointer stops moving.
-       */
-      const catchUp = Math.min(1, dt * FOLLOW_EASE)
-      s.followRot += (s.followTargetRot - s.followRot) * catchUp
-      s.followTilt += (s.followTargetTilt - s.followTilt) * catchUp
-
       const cx = width / 2
       const cy = height / 2
       const radius = Math.min(width, height) * (0.5 - SPHERE_INSET)
       // Drag distance is scaled by the radius, so the handlers need this too.
       s.radius = Math.max(1, radius)
-      // What the frame is actually drawn with: the globe's own state plus lean.
-      const rotation = s.rotation + s.followRot
-      const tilt = Math.max(-TILT_LIMIT, Math.min(TILT_LIMIT, s.tilt + s.followTilt))
+      const rotation = s.rotation
+      const tilt = s.tilt
 
       ctx.clearRect(0, 0, width, height)
       if (radius <= 0) {

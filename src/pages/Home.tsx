@@ -42,9 +42,8 @@ export default function Home() {
           shared backdrop is masked out here rather than doubling up. */}
       <section className="relative flex min-h-dvh items-center overflow-hidden bg-navy pt-32 pb-20">
         {/* Globe sits behind the copy on small screens, beside it on large.
-            Its lean toward the cursor is gentler than the backdrop's: the
-            branch pins here are hover targets, and a strong lean slides them
-            out from under the cursor before it can reach them.
+            It turns on its own and under a drag, and does nothing on hover
+            beyond naming the pin under the cursor.
 
             The pins open their branch page. That is a mouse-only affordance on
             an aria-hidden canvas, so it stays an extra route to pages the
@@ -57,7 +56,6 @@ export default function Home() {
             markers={markers}
             draggable
             onSelect={(slug) => navigate(`/global-network/${slug}`)}
-            followPointer={0.25}
             intensity={1}
             className="h-[min(140vw,54rem)] w-[min(140vw,54rem)] opacity-45 sm:opacity-55 lg:opacity-100"
           />

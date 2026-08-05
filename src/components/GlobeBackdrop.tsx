@@ -21,10 +21,9 @@ import { Globe } from '@/components/Globe'
  * turning under `prefers-reduced-motion` — a deliberate exception to the site's
  * usual handling of that setting.
  *
- * It also leans toward the cursor. The wrapper below stays `pointer-events-none`
- * so nothing on any page becomes harder to click; `followPointer` tracks the
- * cursor on the window instead, which is the only way a layer this far back can
- * respond to it at all.
+ * It does not respond to the cursor. The wrapper stays `pointer-events-none` so
+ * nothing on any page becomes harder to click, which also means this globe
+ * cannot be dragged — the hero's globe is the one the visitor turns by hand.
  */
 export function GlobeBackdrop() {
   return (
@@ -34,7 +33,6 @@ export function GlobeBackdrop() {
     >
       <Globe
         markers={[]}
-        followPointer
         maxDpr={1.25}
         intensity={0.18}
         className="h-[min(115vmin,62rem)] w-[min(115vmin,62rem)]"
