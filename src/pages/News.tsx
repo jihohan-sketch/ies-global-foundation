@@ -73,6 +73,12 @@ export default function News() {
             {filter === ALL ? '' : ` in ${filter}`}
           </p>
 
+          {/* The filter row is the only thing between the page title and the
+              article headings, and it is not a heading — which left the list
+              reachable only by jumping from h1 straight to an h3. Named here
+              instead of shown: the section needs a level, not a label. */}
+          <h2 className="sr-only">Articles</h2>
+
           {filtered.length === 0 ? (
             <Reveal>
               <p className="py-24 text-center font-light text-mist">
@@ -110,7 +116,9 @@ export default function News() {
         <Container size="wide">
           <Reveal>
             <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
-              <Eyebrow>Media Inquiries</Eyebrow>
+              <h2>
+                <Eyebrow>Media Inquiries</Eyebrow>
+              </h2>
               <div>
                 <p className="leading-relaxed font-light text-mist">
                   Journalists seeking comment or interviews should contact the Foundation’s

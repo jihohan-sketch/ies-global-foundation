@@ -25,8 +25,27 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  /* Close the drawer on navigation. */
-  useEffect(() => setOpen(false), [location.pathname])
+  /* Close the drawer on navigation — keyed on the location's key, not its
+     pathname. Tapping the entry for the page you are already on is a
+     navigation the visitor expects to dismiss the menu, but the pathname does
+     not change, so the drawer stayed open over the page with body scroll still
+     locked behind it. */
+  useEffect(() => setOpen(false), [location.key])
+
+  /* The drawer is hidden by CSS at the desktop breakpoint, but hiding it does
+     not close it: `open` stayed true, the scroll lock stayed on, and the toggle
+     that would undo it is hidden too. Anyone who opened the menu on a narrow
+     window and then widened it was left on a page that would not scroll. */
+  useEffect(() => {
+    // Tailwind's `xl`, where the header switches to the inline nav.
+    const desktop = window.matchMedia('(min-width: 80rem)')
+    const onChange = () => {
+      if (desktop.matches) setOpen(false)
+    }
+    onChange()
+    desktop.addEventListener('change', onChange)
+    return () => desktop.removeEventListener('change', onChange)
+  }, [])
 
   /* Lock scroll behind the mobile drawer. */
   useEffect(() => {

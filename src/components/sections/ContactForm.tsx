@@ -91,13 +91,6 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
       return
     }
 
-    // 2 — time-on-form
-    if (Date.now() - mountedAt.current < 3000) {
-      setError('Please take a moment to complete the form before submitting.')
-      setStatus('error')
-      return
-    }
-
     const payload = {
       name: (data.get('name') as string)?.trim(),
       email: (data.get('email') as string)?.trim(),
@@ -121,6 +114,19 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
         const control = formRef.current?.elements.namedItem(firstInvalid)
         if (control instanceof HTMLElement) control.focus()
       }
+      return
+    }
+
+    /*
+     * 2 — time-on-form, checked last on purpose. It used to run before
+     * validation, so anyone who hit Send quickly on an empty form was told to
+     * "take a moment" while the fields that were actually wrong went unmarked.
+     * A person always gets told what is wrong with their form first; this only
+     * ever stands between a *complete* submission and the endpoint.
+     */
+    if (Date.now() - mountedAt.current < 3000) {
+      setError('Please take a moment to complete the form before submitting.')
+      setStatus('error')
       return
     }
 
