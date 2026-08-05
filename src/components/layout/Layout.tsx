@@ -10,7 +10,14 @@ function ScrollManager() {
 
   useEffect(() => {
     if (hash) {
-      const target = document.querySelector(hash)
+      /*
+       * By id, not by selector. `querySelector('#4-pillars')` throws — a hash
+       * only has to be a valid element id, and plenty of valid ids (leading
+       * digit, a colon, a space) are not valid CSS selectors. The throw
+       * happened inside this effect, which took the whole page down with it:
+       * any inbound link carrying such a hash rendered a blank site.
+       */
+      const target = document.getElementById(decodeURIComponent(hash.slice(1)))
       if (target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' })
         return

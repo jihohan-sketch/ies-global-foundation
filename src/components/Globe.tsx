@@ -70,6 +70,11 @@ const FOLLOW_TILT = 27
  *  something with weight rather than a cursor-locked sprite. */
 const FOLLOW_EASE = 8.5
 
+/** Margin left between the sphere and the edge of its box, as a fraction of the
+ *  box's short side. Both the drawing and the hit test for "over the globe"
+ *  derive the radius from this, so they cannot drift apart. */
+const SPHERE_INSET = 0.06
+
 /** Sub-pixel spacing below which two consecutive rim points are treated as the
  *  same point. In CSS pixels — the context is pre-scaled by devicePixelRatio. */
 const RIM_EPSILON = 0.75
@@ -240,9 +245,8 @@ export function Globe({
    *
    * Listening on the window rather than the canvas is what lets the ambient
    * globe respond at all: it sits behind every page under `pointer-events-none`
-   * and would otherwise never see a pointer event. It also means the lean
-   * starts before the cursor reaches the sphere, which is the point — the globe
-   * turns toward where you are on the page.
+   * and would otherwise never see a pointer event. The lean itself is still
+   * limited to the sphere — see the disc test in `onMove`.
    *
    * Mouse and pen only. On a touchscreen the pointer is wherever the last tap
    * landed, so following it would knock the globe sideways on every scroll.
@@ -254,13 +258,16 @@ export function Globe({
 
     const onMove = (event: PointerEvent) => {
       if (event.pointerType === 'touch') return
+      // A hand on the globe turns it directly. Letting the lean chase the same
+      // pointer would move it twice over for one gesture.
+      if (s.drag) return
       const wrap = wrapRef.current
       if (!wrap) return
       const rect = wrap.getBoundingClientRect()
       if (rect.width === 0 || rect.height === 0) return
 
-      // Offset from the globe's centre, in radii.
-      const reach = Math.min(rect.width, rect.height) / 2
+      // Offset from the globe's centre, in radii of the sphere as drawn.
+      const reach = Math.min(rect.width, rect.height) * (0.5 - SPHERE_INSET)
       const nx = (event.clientX - (rect.x + rect.width / 2)) / reach
       const ny = (event.clientY - (rect.y + rect.height / 2)) / reach
 
@@ -510,7 +517,7 @@ export function Globe({
 
       const cx = width / 2
       const cy = height / 2
-      const radius = Math.min(width, height) / 2 - Math.min(width, height) * 0.06
+      const radius = Math.min(width, height) * (0.5 - SPHERE_INSET)
       // Drag distance is scaled by the radius, so the handlers need this too.
       s.radius = Math.max(1, radius)
       // What the frame is actually drawn with: the globe's own state plus lean.
