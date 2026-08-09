@@ -137,70 +137,99 @@ export interface GalleryItem {
  * as variety.
  */
 export function GalleryRail({ items }: { items: GalleryItem[] }) {
+  /* Rendered twice, which is what makes the loop seamless: the rail wraps by
+     subtracting half its scroll width, so the second half has to repeat the
+     first. The copies are hidden from assistive technology and taken out of the
+     tab order — a screen reader should hear thirteen programmes, not twenty-six,
+     and `aria-hidden` on something still focusable is its own bug. */
+  const loop = [...items, ...items]
+
   return (
     /* Not "what IES does" — the home page already has a rail under that label,
        and two regions sharing one name is indistinguishable to a screen reader. */
-    <ScrollRail label="programme photographs" autoAdvance intervalMs={4500}>
-      {items.map((item, i) => (
-        <RailItem key={item.id} size="wide">
-          {/* Deliberately not wrapped in `Reveal`.
-              A scroll reveal keys off intersection with the viewport, which is
-              the wrong signal for something that arrives by the rail scrolling
-              sideways: cards that have never been in view sit at opacity 0, and
-              their fade-in transition stalls when the rail brings them in. The
-              rail's own movement is the animation here — it does not need a
-              second one fighting it. */}
-          <Link
-            to={item.href}
-            className="group block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
-          >
-            <figure className="overflow-hidden border border-mist/18 bg-navy-700/45 transition-colors duration-300 group-hover:border-gold/45">
-              <img
-                src={item.src}
-                alt={item.alt}
-                /* The first three are in view on arrival; the rest wait until the
-                   rail reaches them. */
-                loading={i < 3 ? 'eager' : 'lazy'}
-                decoding="async"
-                className="w-full object-cover"
-                style={{ aspectRatio: '3 / 2' }}
-              />
-              <figcaption className="border-t border-mist/12 p-6">
-                <span className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
-                  {item.kind}
-                </span>
-                <span className="mt-3 block font-serif text-[1.1875rem] leading-snug transition-colors duration-300 group-hover:text-[var(--accent)]">
-                  {item.title}
-                </span>
-              </figcaption>
-            </figure>
-          </Link>
-        </RailItem>
-      ))}
+    <ScrollRail label="programme photographs" autoAdvance="continuous" pxPerSecond={38}>
+      {loop.map((item, index) => {
+        const i = index % items.length
+        const duplicate = index >= items.length
+        return (
+          <RailItem key={`${item.id}-${index}`} size="wide">
+            {/* Deliberately not wrapped in `Reveal`.
+                A scroll reveal keys off intersection with the viewport, which is
+                the wrong signal for something that arrives by the rail scrolling
+                sideways: cards that have never been in view sit at opacity 0, and
+                their fade-in transition stalls when the rail brings them in. The
+                rail's own movement is the animation here — it does not need a
+                second one fighting it. */}
+            <Link
+              to={item.href}
+              aria-hidden={duplicate || undefined}
+              tabIndex={duplicate ? -1 : undefined}
+              className="group block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
+            >
+              <figure className="overflow-hidden border border-mist/18 bg-navy-700/45 transition-colors duration-300 group-hover:border-gold/45">
+                <img
+                  src={item.src}
+                  alt={duplicate ? '' : item.alt}
+                  /* The first three are in view on arrival; the rest wait until
+                     the rail reaches them. The second copy is never the first
+                     thing seen, so all of it can wait. */
+                  loading={!duplicate && i < 3 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  className="w-full object-cover"
+                  style={{ aspectRatio: '3 / 2' }}
+                />
+                <figcaption className="border-t border-mist/12 p-6">
+                  <span className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+                    {item.kind}
+                  </span>
+                  <span className="mt-3 block font-serif text-[1.1875rem] leading-snug transition-colors duration-300 group-hover:text-[var(--accent)]">
+                    {item.title}
+                  </span>
+                </figcaption>
+              </figure>
+            </Link>
+          </RailItem>
+        )
+      })}
     </ScrollRail>
   )
 }
 
-/** The gallery with its own heading, as it appears on the home page. */
+/**
+ * The gallery as it appears on the home page.
+ *
+ * No display headline. The photographs are the statement, and a band of real
+ * documentary images reads as evidence on its own — a large caption over the top
+ * of it only competes. What is left is a label, one line of provenance, and the
+ * route to the full record.
+ *
+ * The heading still exists for the document outline, just not visibly: removing
+ * it outright would leave a whole section of the page unnamed in a screen
+ * reader's list of headings.
+ */
 export function GallerySection({ items }: { items: GalleryItem[] }) {
   if (items.length === 0) return null
   return (
-    <Section tone="deep" className="border-b border-mist/12" size="compact">
+    <Section tone="deep" className="border-y border-mist/12" size="compact">
       <Container size="wide">
+        <h2 className="sr-only">Programmes and activities</h2>
+
         <Reveal>
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div className="max-w-2xl">
-              <Eyebrow>In Practice</Eyebrow>
-              <h2 className="text-h2 mt-6">What this actually looks like</h2>
-            </div>
-            <p className="max-w-sm text-[0.9375rem] leading-relaxed font-light text-mist">
-              Every photograph was taken at the programme it shows. Pick one to read what
-              happened.
+          <div className="flex flex-wrap items-baseline justify-between gap-x-10 gap-y-4">
+            <Eyebrow>Programmes</Eyebrow>
+            <p className="text-[0.9375rem] font-light text-mist">
+              Photographed at the programmes themselves, across {items.length} initiatives.{' '}
+              <Link
+                to="/our-work"
+                className="text-paper underline decoration-mist/40 underline-offset-4 transition-colors hover:text-[var(--accent)] hover:decoration-[var(--accent)]"
+              >
+                See the full record
+              </Link>
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-12">
+        <div className="mt-10">
           <GalleryRail items={items} />
         </div>
       </Container>

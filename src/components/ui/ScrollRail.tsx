@@ -25,35 +25,60 @@ export function ScrollRail({
   className,
   autoAdvance = false,
   intervalMs = 4500,
+  pxPerSecond = 40,
 }: {
   children: ReactNode
   /** Names the region for screen readers — say what is in the rail. */
   label: string
   className?: string
   /**
-   * Advance the rail on a timer, looping back to the start at the end.
+   * Move the rail on its own.
    *
-   * Comes with a real pause control, which is not decoration: WCAG 2.2.2 gives
-   * anyone the right to stop motion that runs for more than five seconds. It
-   * also stops on hover, on focus inside the track, and while the rail is off
-   * screen, and it never starts at all under `prefers-reduced-motion` — a
-   * carousel that keeps moving while someone is reading it is a bug.
+   * `'step'` jumps a card at a time on a timer. `'continuous'` drifts at a
+   * constant speed instead, which is what a gallery wants — a stepped rail
+   * spends most of its life motionless and then lurches, and reads as stiff.
+   *
+   * Continuous mode has two requirements the caller has to meet:
+   *   - **render the children twice.** The wrap works by subtracting half the
+   *     scroll width, which is seamless only if the second half repeats the
+   *     first. Mark the copies `aria-hidden` and take them out of the tab order.
+   *   - accept that scroll snapping is off. Snap points fight a continuous
+   *     `scrollLeft`, dragging it back to the nearest card every frame.
+   *
+   * Either mode comes with a real pause control, which is not decoration: WCAG
+   * 2.2.2 gives anyone the right to stop motion that runs for more than five
+   * seconds. It also holds on hover, on focus inside the track, and while the
+   * rail is off screen.
+   *
+   * On `prefers-reduced-motion` it keeps moving anyway. That is the site owner's
+   * call, the same one already made for the scroll reveals and the globe, and it
+   * is a real trade-off rather than an oversight: continuous drift is the form of
+   * motion most likely to affect someone with vestibular sensitivity, and the
+   * pause button is the whole of their mitigation. To restore the default,
+   * initialise `playing` to `!prefersReducedMotion()` below.
    */
-  autoAdvance?: boolean
+  autoAdvance?: false | 'step' | 'continuous'
+  /** `'step'` mode only. */
   intervalMs?: number
+  /** `'continuous'` mode only. Calm is the point; 40 is roughly a card every 12s. */
+  pxPerSecond?: number
 }) {
   const trackRef = useRef<HTMLDivElement>(null)
   const [atStart, setAtStart] = useState(true)
   const [atEnd, setAtEnd] = useState(false)
   const [overflowing, setOverflowing] = useState(false)
-  /* Null until mount: the reduced-motion query cannot be read during render on
-     the server, and starting "playing" then correcting would flash motion at
-     exactly the people who asked for none. */
+  const continuous = autoAdvance === 'continuous'
+  /* Null until mount so the buttons render nothing until the mode is settled;
+     see the note on `autoAdvance` about reduced motion. */
   const [playing, setPlaying] = useState<boolean | null>(null)
   /* Two independent reasons to hold the timer, kept apart on purpose: a single
      flag lets the viewport observer overwrite a hover pause and start the rail
      moving under the cursor. */
-  const [onScreen, setOnScreen] = useState(false)
+  /* Starts true, and the observer below only ever takes it away. Starting false
+     and waiting to be told otherwise meant a single missed callback left the rail
+     motionless forever, with nothing on screen to explain why. Failing open costs
+     at most a few frames of off-screen work. */
+  const [onScreen, setOnScreen] = useState(true)
   const [interacting, setInteracting] = useState(false)
 
   const sync = useCallback(() => {
@@ -114,10 +139,11 @@ export function ScrollRail({
     track.scrollBy({ left: direction * distance, behavior })
   }, [])
 
-  /* Decide once, on mount, whether the timer is allowed to run at all. */
+  /* Starts moving on mount regardless of `prefers-reduced-motion` — see the note
+     on `autoAdvance` for whose call that is and how to reverse it. */
   useEffect(() => {
     if (!autoAdvance) return
-    setPlaying(!prefersReducedMotion())
+    setPlaying(true)
   }, [autoAdvance])
 
   /* Only advance while on screen. The rail sits below the fold on arrival, and a
@@ -140,11 +166,62 @@ export function ScrollRail({
     return () => observer.disconnect()
   }, [autoAdvance])
 
+  const running = autoAdvance && playing === true && !interacting && onScreen && overflowing
+
+  /* Stepped mode: one card per tick. */
   useEffect(() => {
-    if (!autoAdvance || playing !== true || interacting || !onScreen || !overflowing) return
+    if (!running || continuous) return
     const timer = window.setInterval(() => step(1, true), intervalMs)
     return () => window.clearInterval(timer)
-  }, [autoAdvance, playing, interacting, onScreen, overflowing, intervalMs, step])
+  }, [running, continuous, intervalMs, step])
+
+  /* Continuous mode: drift a fraction of a pixel per frame.
+     The wrap subtracts half the scroll width — which is why the caller has to
+     render the children twice — and because both halves are identical, the seam
+     is invisible. */
+  useEffect(() => {
+    if (!running || !continuous) return
+    const track = trackRef.current
+    if (!track) return
+
+    let frame = 0
+    let previous = performance.now()
+    /*
+     * The position is accumulated here as a float rather than read back off the
+     * element each frame, and that is the whole reason this works.
+     *
+     * At 38px/s a frame advances about 0.6px, and assigning that to `scrollLeft`
+     * gets rounded to the nearest device pixel. Reading it back as the next
+     * frame's base therefore loses the remainder every time, the value floors
+     * straight back to where it started, and the rail sits perfectly still —
+     * which is exactly what it did before this was fixed.
+     */
+    let position = track.scrollLeft
+    let written = position
+
+    const tick = (now: number) => {
+      /* Clamped: coming back to a backgrounded tab hands over a delta of many
+         seconds, which would teleport the rail. */
+      const elapsed = Math.min(now - previous, 50)
+      previous = now
+
+      /* If the element has moved somewhere we did not put it, a person did —
+         dragged, flicked, or used the arrows — so continue from where they left
+         it instead of yanking it back. */
+      if (Math.abs(track.scrollLeft - written) > 2) position = track.scrollLeft
+
+      const half = track.scrollWidth / 2
+      position += (pxPerSecond * elapsed) / 1000
+      if (half > 0 && position >= half) position -= half
+
+      track.scrollLeft = position
+      written = track.scrollLeft
+      frame = requestAnimationFrame(tick)
+    }
+
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [running, continuous, pxPerSecond])
 
   return (
     <div
@@ -181,14 +258,18 @@ export function ScrollRail({
               )}
             </RailButton>
           )}
-          <RailButton label={`Scroll ${label} backwards`} onClick={() => step(-1)} disabled={atStart}>
+          {/* Neither arrow dead-ends once the rail loops, so neither is disabled
+              there — a greyed-out button on a loop is just a lie. */}
+          <RailButton
+            label={`Scroll ${label} backwards`}
+            onClick={() => step(-1)}
+            disabled={autoAdvance ? false : atStart}
+          >
             <path d="M12.5 4 6.5 10l6 6" />
           </RailButton>
-          {/* With auto-advance the forwards button wraps rather than dead-ending,
-              so it is never disabled — the rail is a loop, not a strip. */}
           <RailButton
             label={`Scroll ${label} forwards`}
-            onClick={() => step(1, autoAdvance)}
+            onClick={() => step(1, autoAdvance === 'step')}
             disabled={autoAdvance ? false : atEnd}
           >
             <path d="M7.5 4l6 6-6 6" />
@@ -205,7 +286,11 @@ export function ScrollRail({
         role="region"
         aria-label={label}
         className={cx(
-          'flex snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-contain pb-3',
+          'flex gap-6 overflow-x-auto overscroll-x-contain pb-3',
+          /* Snapping and a continuous drift are incompatible: the snap engine
+             pulls `scrollLeft` back to the nearest card on every frame the timer
+             nudges it forward, and the rail sits there vibrating. */
+          continuous ? 'snap-none' : 'snap-x snap-mandatory',
           // The scrollbar is suppressed because the buttons and the peeking
           // next card already say "there is more"; the track stays scrollable.
           '[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',

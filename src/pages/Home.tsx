@@ -128,13 +128,8 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* ========================================================= GALLERY */}
-      {/* Straight after the hero: the fastest honest answer to "what is this
-          organization" is a photograph of it working. */}
-      <GallerySection items={galleryItems} />
-
       {/* ==================================================== INTRODUCTION */}
-      <Section tone="deep" className="border-b border-mist/12">
+      <Section tone="deep" className="border-y border-mist/12">
         <Container size="wide">
           <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
             <Reveal>
@@ -192,6 +187,12 @@ export default function Home() {
           </Reveal>
         </Container>
       </Section>
+
+      {/* ========================================================= GALLERY */}
+      {/* Deliberately not directly under the hero. Who IES is and how the three
+          branches relate come first; by this point a visitor has the context to
+          read the photographs as evidence rather than as decoration. */}
+      <GallerySection items={galleryItems} />
 
       {/* ================================================== IMPACT SNAPSHOT */}
       <Section tone="paper" size="compact">

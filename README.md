@@ -121,13 +121,31 @@ grows on its own when an activity is added, and cannot drift out of step with th
 entries it links to. `GallerySection` in `components/sections/Media.tsx` renders
 it on `ScrollRail` with `autoAdvance`.
 
-Two things about that rail are load-bearing, not stylistic:
+Four things about that rail are load-bearing, not stylistic:
 
+- It runs in `autoAdvance="continuous"` mode — a constant slow drift rather than
+  a card-at-a-time jump, which spends most of its life motionless and then
+  lurches. Manual horizontal scrolling still works throughout: drag, trackpad,
+  arrow keys on the focused track, and the two arrow buttons.
+- **The children are rendered twice.** The loop works by subtracting half the
+  scroll width, which is seamless only because the second half repeats the first.
+  The copies are `aria-hidden` with `tabIndex={-1}` and empty `alt`, so a screen
+  reader hears thirteen programmes rather than twenty-six.
+- Continuous mode **accumulates position in a float** instead of reading
+  `scrollLeft` back each frame. At 38px/s a frame moves about 0.6px, which rounds
+  to the device pixel grid on write; using the rounded value as the next frame's
+  base loses the remainder every time. Measured, the naive version covers ~30px
+  where it should cover 36.5px — and at slower speeds it stalls completely.
+  Scroll snapping is off for the same class of reason: it drags `scrollLeft` back
+  to the nearest card on every frame.
 - It has a **pause button**, because WCAG 2.2.2 gives anyone the right to stop
   motion running longer than five seconds. It also holds on hover, on keyboard
-  focus inside the track, and while scrolled off screen, and it never starts at
-  all under `prefers-reduced-motion` — the button then reads "Play", so it can
-  still be opted into.
+  focus inside the track, and while scrolled off screen. It **does** keep moving
+  under `prefers-reduced-motion` — the site owner's call, the same one already
+  made for the scroll reveals and the globe. That is a real trade-off, not an
+  oversight: continuous drift is the motion most likely to affect someone with
+  vestibular sensitivity, and the pause button is the whole of their mitigation.
+  To reverse it, initialise `playing` from `!prefersReducedMotion()`.
 - Its cards are **not** wrapped in `Reveal`. A scroll reveal keys off intersection
   with the viewport, which is the wrong signal for a card arriving by sideways
   scroll: cards that had never been in view sat at opacity 0 and their fade-in
