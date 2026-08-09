@@ -52,6 +52,7 @@ export const people: Person[] = [
     koreanName: '신재서',
     title: 'Co-Founder · Vice Chairman',
     tier: 'founding',
+    spotlight: true,
     photo: '/leadership/jaesuh-joshua-shin.jpg',
     affiliations: ['Student, Seoul Foreign School'],
     bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 1st President to October 2025, designing IES programming and growing the school chapter network. Now Vice Chairman of the Global Foundation.',
@@ -243,10 +244,11 @@ export const leadershipIntro = {
   national: 'Each branch is led by students in that country, to the same shared standards.',
 }
 
-/** The opening pair on the Leadership page, in array order. */
+/** The opening group on the Leadership page, in array order. */
 export const spotlightLeadership = people.filter((p) => p.spotlight)
 export const foundingLeadership = people.filter((p) => p.tier === 'founding')
-/** Founders shown in the founding section — those not already in the opening pair. */
+/** Founders not already shown above. Empty while every founder is in the
+ *  opening group, which hides that section rather than heading an empty grid. */
 export const remainingFounders = foundingLeadership.filter((p) => !p.spotlight)
 export const globalLeadership = people.filter((p) => p.tier === 'global')
 export const nationalLeadership = people.filter((p) => p.tier === 'national')

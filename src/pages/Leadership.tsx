@@ -65,13 +65,14 @@ export default function Leadership() {
             />
           </Reveal>
 
-          {/* Only splits into two columns when there are actually two people.
-              A lone card in a two-column grid sits at half width with an empty
-              half beside it, which reads as a card that failed to load. */}
+          {/* Columns follow the count, so the row is always full. A card left
+              alone on a row sits at a fraction of the width with empty space
+              beside it, which reads as a card that failed to load. */}
           <div
             className={cx(
               'mt-14 grid gap-6',
-              spotlightLeadership.length > 1 && 'lg:grid-cols-2',
+              spotlightLeadership.length === 2 && 'lg:grid-cols-2',
+              spotlightLeadership.length > 2 && 'md:grid-cols-2 lg:grid-cols-3',
             )}
           >
             {spotlightLeadership.map((person, i) => (
@@ -193,6 +194,8 @@ export default function Leadership() {
       </Section>
 
       {/* =============================================== FOUNDING LEADERSHIP */}
+      {/* Only when a founder is not already shown above. */}
+      {remainingFounders.length > 0 && (
       <Section>
         <Container size="wide">
           <Reveal>
@@ -214,6 +217,7 @@ export default function Leadership() {
           </div>
         </Container>
       </Section>
+      )}
 
       {/* =============================================== NATIONAL LEADERSHIP */}
       <Section>
