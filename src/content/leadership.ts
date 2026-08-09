@@ -35,15 +35,15 @@ export const people: Person[] = [
   {
     id: 'yura-shin',
     name: 'Yura Shin',
-    title: 'Director of Global Outreach',
+    title: 'Vice Chairman · Director of Global Outreach',
     tier: 'global',
     spotlight: true,
     photo: '/leadership/yura-shin.jpg',
-    bio: 'Director of Global Outreach for the Global Foundation. The office is where IES meets the people outside it — schools asking what a chapter involves, organizations proposing a partnership, and students in countries where there is no branch yet. Responsible for how those conversations open, which are worth carrying forward, and handing each one to the branch or office that will see it through.',
+    bio: 'Directs the Foundation’s outreach — schools asking what a chapter involves, organizations proposing a partnership, and students in countries where IES has no branch yet. Decides how those conversations open, which are worth carrying forward, and who takes each one on. As Vice Chairman she also works on the Foundation’s direction and the standards that growth is held to, alongside the President.',
     responsibilities: [
+      'Governance and long-term direction of the Foundation',
       'First contact for schools, partners, and prospective chapters',
       'Outreach in countries without a national branch',
-      'Assessment of incoming partnership and chapter inquiries',
       'Handover of new relationships to the relevant branch or office',
     ],
   },
@@ -51,11 +51,11 @@ export const people: Person[] = [
     id: 'jaesuh-joshua-shin',
     name: 'Jaesuh Joshua Shin',
     koreanName: '신재서',
-    title: 'Co-Founder · Vice Chairman',
+    title: 'Co-Founder',
     tier: 'founding',
     photo: '/leadership/jaesuh-joshua-shin.jpg',
     affiliations: ['Student, Seoul Foreign School'],
-    bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 1st President to October 2025, designing IES programming and growing the school chapter network. Now Vice Chairman of the Global Foundation.',
+    bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 1st President to October 2025, designing IES programming and growing the school chapter network.',
     responsibilities: [
       'Program design and organizational planning',
       'School chapter development',
@@ -187,6 +187,16 @@ export const globalOffices: {
     holder: 'sean-han',
   },
   {
+    title: 'Vice Chairman',
+    scope: 'Foundation governance',
+    responsibilities: [
+      'Governance and long-term direction of the Foundation',
+      'Growth of the network and the standards it is held to',
+      'Support for the President and the national branches',
+    ],
+    holder: 'yura-shin',
+  },
+  {
     title: 'Director of Global Outreach',
     scope: 'External relationships',
     responsibilities: [
@@ -196,7 +206,7 @@ export const globalOffices: {
     ],
     holder: 'yura-shin',
     holderNote:
-      'The office exists because growth arrives as an inquiry from outside — a teacher who saw a forum, a charity looking for student volunteers, a student in a country with no branch. Shin decides which of those IES can genuinely support, makes sure a school knows what it is taking on before it commits, and hands each one to whoever will carry it. An approach that goes unanswered, or is passed to a branch with no capacity for it, costs the network more than never having been made.',
+      'Outreach exists because growth arrives as an inquiry from outside — a teacher who saw a forum, a charity looking for student volunteers, a student in a country with no branch. Shin decides which of those IES can genuinely support, makes sure a school knows what it is taking on before it commits, and hands each one to whoever will carry it. An approach that goes unanswered, or is passed to a branch with no capacity for it, costs the network more than never having been made. As Vice Chairman she also answers for whether that growth stays inside the standards the rest of the network works to.',
   },
   {
     title: 'Vice Chairman',
@@ -219,18 +229,6 @@ export const globalOffices: {
       'Cross-border programming logistics',
     ],
     holder: 'joseph-hahmmin-kang',
-  },
-  {
-    title: 'Vice Chairman',
-    scope: 'Foundation governance',
-    responsibilities: [
-      'Governance and long-term direction of the Foundation',
-      'Programme design and the standards new work is held to',
-      'Support for the President and the national branches',
-    ],
-    holder: 'jaesuh-joshua-shin',
-    holderNote:
-      'As Vice Chairman, Shin carries the programming he designed as first president into the Foundation’s governance — the forum formats, the school chapter model, and the standards that decide what is allowed to carry the IES name. He advises the President and the national branches on new programming, and on whether a chapter or a branch is ready for what it is asking to take on.',
   },
 ]
 
