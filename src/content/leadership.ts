@@ -38,6 +38,7 @@ export const people: Person[] = [
     title: 'Director of Global Outreach',
     tier: 'global',
     spotlight: true,
+    photo: '/leadership/yura-shin.jpg',
     bio: 'Director of Global Outreach for the Global Foundation. The office is where IES meets the people outside it — schools asking what a chapter involves, organizations proposing a partnership, and students in countries where there is no branch yet. Responsible for how those conversations open, which are worth carrying forward, and handing each one to the branch or office that will see it through.',
     responsibilities: [
       'First contact for schools, partners, and prospective chapters',
