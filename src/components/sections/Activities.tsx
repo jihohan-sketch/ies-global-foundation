@@ -29,9 +29,15 @@ function PhotoGrid({ activity }: { activity: Activity }) {
 
       {rest.length > 0 && (
         <div
+          /* Column count is chosen to avoid a single orphan on the last row:
+             four photos read better as 2×2 than as 3+1. */
           className={cx(
             'grid gap-3',
-            rest.length === 1 ? 'grid-cols-1' : rest.length === 2 ? 'grid-cols-2' : 'grid-cols-3',
+            rest.length === 1
+              ? 'grid-cols-1'
+              : rest.length === 2 || rest.length === 4
+                ? 'grid-cols-2'
+                : 'grid-cols-3',
           )}
         >
           {rest.map((photo) => (
@@ -92,6 +98,23 @@ export function ActivityEntry({ activity, index }: { activity: Activity; index: 
           <h3 className="text-h3 mt-5">{activity.title}</h3>
           <p className="mt-6 leading-relaxed font-light text-mist">{activity.summary}</p>
           <ActivityMeta activity={activity} />
+
+          {/* The guest's own portrait sits with the details, not in the grid —
+              it is a supplied studio portrait, not a record of the event. */}
+          {activity.portrait && (
+            <figure className="mt-8 flex items-center gap-5">
+              <img
+                src={activity.portrait.src}
+                alt={activity.portrait.alt}
+                loading="lazy"
+                decoding="async"
+                className="h-20 w-20 shrink-0 rounded-[3px] border border-mist/15 object-cover"
+              />
+              <figcaption className="text-[0.8125rem] leading-relaxed font-light text-mist/70">
+                {activity.participants ?? 'Guest speaker'}
+              </figcaption>
+            </figure>
+          )}
         </Reveal>
 
         <Reveal delay={120}>

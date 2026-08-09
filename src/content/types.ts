@@ -152,6 +152,12 @@ export interface Activity {
   /** One paragraph per entry. */
   body: string[]
   photos: ActivityPhoto[]
+  /**
+   * The guest's own portrait, where the branch publishes one. Shown beside the
+   * event details rather than inside the photo grid — it is a studio portrait
+   * supplied by the guest or their office, not a record of the event.
+   */
+  portrait?: ActivityPhoto
   /** `id` of the matching entry in `workCategories`. */
   workCategory: string
 }

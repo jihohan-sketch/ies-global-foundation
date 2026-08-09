@@ -87,7 +87,7 @@ Entries still reading **"Date to be confirmed"** must be dated or deleted:
 
 ### Photography — `src/content/activities.ts`, `public/activities/`
 
-37 photographs and 13 activity entries were taken from IES Korea's own site.
+70 photographs and 13 activity entries were taken from IES Korea's own site.
 Every entry's title, date, venue and named guests follow the branch's published
 wording; nothing was inferred. Before launch:
 
@@ -114,6 +114,77 @@ wording; nothing was inferred. Before launch:
       Korea community fair against internal records.
 - [ ] The bioethics forum has only one usable photograph (the online session).
       Request more from the branch, or leave it as is.
+- [ ] **Guest portraits.** Four activities show the guest's own portrait beside
+      the event details (`portrait` on the entry): Dr. Hyunju Lee, the ROKAF
+      general, Major General Charles Lombardo (official US Army portrait), and
+      Minister Sunghwan Kim (at a Ministry of Environment podium). None carries a
+      visible credit. Confirm the source and licence of each, or drop the field —
+      the Minister's in particular looks like a press photograph.
+
+### Video — `public/activities/ymun-korea-community-fair/`, `public/media/`
+
+Four video files were imported and **none is rendered on the site yet**, because
+nobody has watched them in this pass — there is no video tooling in this
+environment to play or transcode them.
+
+- [ ] **Watch `fair-1.mp4`, `fair-2.mp4`, `fair-3.mp4`** (from IES Korea's Drive,
+      labelled Yale MUN XIII Community Fair). If they are what the label says and
+      the people in them have consented, wire them into the YMUN entry. If not,
+      delete them — they are 13 MB of repository weight otherwise.
+- [ ] `public/media/kr-hero.mp4` is IES Korea's homepage hero video (12 MB). This
+      site leads with the interactive globe instead, so there is nowhere for it to
+      go as things stand. Use it or delete it.
+- A fifth clip on IES Korea's Drive (`1suaPm3s0k91wq_4N62aSCqbGJ-Hgqea9`) was
+  **not** imported: 90 MB QuickTime, unlabelled, and past the size at which it
+  belongs in git. Compress it first if it is wanted.
+
+### Brand assets — `public/brand/`
+
+Eight files from IES Korea's site: the current mark, the founding mark, the 2nd
+and 3rd administrations' marks, the IES United States mark, the Korean wordmark,
+and a banner. Nothing renders them — the site draws its own mark in
+`components/layout/LogoMark.tsx`. They are here as the identity archive.
+
+- [ ] Confirm which mark is currently canonical, and whether the historical ones
+      should appear anywhere on this site at all.
+
+### IES Korea roster — headshots staged, not wired
+
+Twenty further headshots are in `public/leadership/`, cropped and named, but no
+`Person` record references them. Each needs a confirmed title and an approved
+biography first (see the leadership items above). Names, Korean names, roles and
+schools below are as **IES Korea publishes them** — none of it is inferred.
+
+| File | Name | Korean | Published role | School / chapter |
+| --- | --- | --- | --- | --- |
+| `brian-cho.jpg` | Brian Cho | 조재우 | Vice President & Co-Director, Education | Saint Paul Preparatory Seoul |
+| `sua-bae.jpg` | Sua Bae | 배수아 | Secretary; Co-Director, IES Publications | Korea International School |
+| `connor-seong.jpg` | Connor Seong | 성지훈 | Co-Director | Seoul International School |
+| `olivia-lee.jpg` | Olivia Lee | 이하윤 | Co-Director | Yongsan International School of Seoul |
+| `caylee-park.jpg` | Caylee Park | 박소윤 | Co-Director | Yongsan International School of Seoul |
+| `meiko-wessley-lopez.jpg` | Meiko Wessley Lopez | 마이코 | Deputy Director | Yongsan International School of Seoul |
+| `elaine-jeong.jpg` | Elaine Jeong | 정** | Co-Director | Yongsan International School of Seoul |
+| `vivien-gong.jpg` | Vivien Gong | 공** | Co-Director | Yongsan International School of Seoul |
+| `jacob-sung.jpg` | Jacob Sung | 성시윤 | Co-Director | Seoul International School |
+| `isabel-jeong.jpg` | Isabel Jeong | 정재이 | Co-Director | Chadwick International |
+| `helen-huh.jpg` | Helen Huh | 허윤지 | Co-Director | Seoul International School |
+| `bill-cho.jpg` | Bill Cho | 조현우 | Co-President | IES Saint Paul Preparatory Seoul Chapter |
+| `ian-kim.jpg` | Ian Kim | 김이헌 | Co-President | IES Saint Paul Preparatory Seoul Chapter |
+| `ray-roh.jpg` | Ray Roh | — | *role not published* | — |
+| `joe-shin.jpg` | Joe Shin | — | *role not published* | — |
+| `eason-advisor.jpg` | *given name only* | — | Senior Advisor | — |
+| `joshua-ko-advisor.jpg` | Joshua Ko | — | Senior Advisor | — |
+| `charles-lombardo.jpg` | Charles Lombardo | — | US Army Major General; partner, not IES staff | — |
+| `commissioner-yongjin-kim.jpg` | Yongjin Kim | — | Commissioner; listed as a forthcoming forum guest | — |
+| `general-burwell-bell.jpg` | Burwell B. Bell III | — | General (retd.); listed as a forthcoming forum guest | — |
+
+- [ ] Two names are published with the family name masked (정**, 공**) and two
+      have no published role at all. Get full names and titles, or leave them off.
+- [ ] The last three are **not IES members** — they are partners and invited
+      guests. If they are shown anywhere, it must be as guests, and the
+      `Person`/`tier` model has no category for that today.
+- [ ] `elaine-jeong.jpg` is only 160×160 and `commissioner-yongjin-kim.jpg` 250×250
+      — the largest their sources allow. Both need better files before use.
 
 ### Branch content — `src/content/branches.ts`
 

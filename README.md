@@ -99,7 +99,18 @@ Photographs live in `public/activities/<id>/`. Resize to 1600px on the long edge
 before committing — the originals off the branch sites run to 5 MB each. `alt` is
 required, not optional: these images are records of events, and a caption that
 overstates what a photograph shows is a factual claim like any other. The first
-photo in the array is the wide lead image; the rest form the grid beneath it.
+photo in the array is the wide lead image; the rest form the grid beneath it —
+the column count adapts, and four photos lay out 2×2 rather than 3+1.
+
+Where the branch publishes the guest's own portrait, set `portrait` as well. It
+renders beside the event details rather than in the grid, because a supplied
+studio portrait is not a record of the event.
+
+Two directories hold media that nothing renders yet, and REVIEW.md says why:
+`public/brand/` (the historical IES marks) and the video files under
+`public/media/` and `public/activities/ymun-korea-community-fair/`. Delete them
+rather than leave them if the review decides against using them — they are the
+largest files in the repository.
 
 **Give a work area a photograph** — set `image` and `imageAlt` on the entry in
 `work.ts`. Pointing it at a file already under `public/activities/` avoids

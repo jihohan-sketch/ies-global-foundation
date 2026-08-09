@@ -40,6 +40,14 @@ export const activities: Activity[] = [
         src: '/activities/camp-humphreys-cadets/briefing.jpg',
         alt: 'IES students seated at desks with laptops and papers during a briefing session.',
       },
+      {
+        src: '/activities/camp-humphreys-cadets/table.jpg',
+        alt: 'Students and US Army officers around a conference table with laptops and papers during the working session.',
+      },
+      {
+        src: '/activities/camp-humphreys-cadets/session.jpg',
+        alt: 'The conference table from the far side of the room as the session runs.',
+      },
     ],
   },
   {
@@ -57,6 +65,10 @@ export const activities: Activity[] = [
       'The forum ran under the banner “Ethical Policy for a Sustainable Future,” and the venue was part of the argument: students took positions from the seats of a working municipal council chamber rather than a classroom. Environmental questions were treated as policy problems with distributional consequences, not as sentiment.',
       'Minister Sunghwan Kim, whose portfolio covers climate, energy and environment, joined the session. Students had prepared briefs in advance; the expectation, as at every IES forum, was that a position be defended rather than announced.',
     ],
+    portrait: {
+      src: '/activities/environmental-ethics-forum/speaker.jpg',
+      alt: 'Minister Sunghwan Kim speaking at a Ministry of Environment podium.',
+    },
     photos: [
       {
         src: '/activities/environmental-ethics-forum/assembly.jpg',
@@ -73,6 +85,26 @@ export const activities: Activity[] = [
       {
         src: '/activities/environmental-ethics-forum/group.jpg',
         alt: 'The forum participants photographed together in the council chamber at the close of the session.',
+      },
+      {
+        src: '/activities/environmental-ethics-forum/podium.jpg',
+        alt: 'Two IES students speaking from the chamber\'s twin podiums.',
+      },
+      {
+        src: '/activities/environmental-ethics-forum/speaking.jpg',
+        alt: 'An IES student speaking into a desk microphone from the council benches.',
+      },
+      {
+        src: '/activities/environmental-ethics-forum/desk.jpg',
+        alt: 'An IES student at a council desk with the session\'s printed papers.',
+      },
+      {
+        src: '/activities/environmental-ethics-forum/standing.jpg',
+        alt: 'Participants standing in the council chamber, with a seated guest in the foreground.',
+      },
+      {
+        src: '/activities/environmental-ethics-forum/minister.jpg',
+        alt: 'Participants gathered at the council desks with Minister Sunghwan Kim.',
       },
     ],
   },
@@ -102,6 +134,18 @@ export const activities: Activity[] = [
       {
         src: '/activities/cherry-blossom-ball/reception.jpg',
         alt: 'IES students seated at a banquet table during the reception.',
+      },
+      {
+        src: '/activities/cherry-blossom-ball/presentation.jpg',
+        alt: 'Certificates being presented on stage, with US and Korean officers and command flags.',
+      },
+      {
+        src: '/activities/cherry-blossom-ball/officers.jpg',
+        alt: 'An IES student with a Republic of Korea officer in dress uniform at the ball.',
+      },
+      {
+        src: '/activities/cherry-blossom-ball/guests.jpg',
+        alt: 'An IES student seated with a senior officer in white dress uniform.',
       },
     ],
   },
@@ -169,6 +213,10 @@ export const activities: Activity[] = [
       'Leadership ethics is the easiest subject in the programme to discuss badly, because the vocabulary is available to anyone and the stakes are abstract until they are not. Holding the session with a serving general removed that comfort.',
       'The discussion covered command responsibility, the duty to refuse, and what accountability means when a decision cannot be undone. It also began a working relationship: the same partnership produced a second meeting with cadets at Camp Humphreys in April 2026.',
     ],
+    portrait: {
+      src: '/activities/military-ethics-forum/speaker.jpg',
+      alt: 'Official US Army portrait of Major General Charles Lombardo.',
+    },
     photos: [
       {
         src: '/activities/military-ethics-forum/delegation.jpg',
@@ -207,6 +255,14 @@ export const activities: Activity[] = [
         src: '/activities/guro-happy-childrens-center/classroom.jpg',
         alt: 'An IES volunteer talking with a group of children beside the centre\'s bookshelves.',
       },
+      {
+        src: '/activities/guro-happy-childrens-center/activity.jpg',
+        alt: 'Children seated on the floor watching an IES volunteer at the screen.',
+      },
+      {
+        src: '/activities/guro-happy-childrens-center/games.jpg',
+        alt: 'IES volunteers and children playing a game together in the centre\'s room.',
+      },
     ],
   },
   {
@@ -241,6 +297,18 @@ export const activities: Activity[] = [
         src: '/activities/nanoom-korea-scholarship/recipients.jpg',
         alt: 'A presenter addressing the audience during the scholarship handover.',
       },
+      {
+        src: '/activities/nanoom-korea-scholarship/banner.jpg',
+        alt: 'A speaker beside the scholarship presentation banner in the school gymnasium.',
+      },
+      {
+        src: '/activities/nanoom-korea-scholarship/group.jpg',
+        alt: 'Students and Nanoom Korea representatives with the scholarship banner in the gymnasium.',
+      },
+      {
+        src: '/activities/nanoom-korea-scholarship/audience.jpg',
+        alt: 'Students seated in rows listening during the scholarship event.',
+      },
     ],
   },
   {
@@ -257,6 +325,10 @@ export const activities: Activity[] = [
       'The second forum took the question that most student discussion of AI avoids: what happens when an automated system is placed inside a chain of command. The guest speaker, a Republic of Korea Air Force general with a forty-year career, could answer from the operational side rather than the theoretical one.',
       'Sessions ran over two days, with the lecture followed by open discussion. The subject has since become a recurring thread in IES programming, including the National Assembly petition on generative AI and children.',
     ],
+    portrait: {
+      src: '/activities/ai-technology-ethics-forum/speaker.jpg',
+      alt: 'Official portrait of the Republic of Korea Air Force general who spoke at the forum.',
+    },
     photos: [
       {
         src: '/activities/ai-technology-ethics-forum/lecture.jpg',
@@ -269,6 +341,10 @@ export const activities: Activity[] = [
       {
         src: '/activities/ai-technology-ethics-forum/audience.jpg',
         alt: 'A view from the back of the hall over the audience towards the lit stage and screen.',
+      },
+      {
+        src: '/activities/ai-technology-ethics-forum/group.jpg',
+        alt: 'Forum participants and guests photographed together in the hall.',
       },
     ],
   },
@@ -300,6 +376,10 @@ export const activities: Activity[] = [
         src: '/activities/un-human-rights-office-visit/office.jpg',
         alt: 'The IES group photographed with OHCHR staff during the two-day visit.',
       },
+      {
+        src: '/activities/un-human-rights-office-visit/group.jpg',
+        alt: 'The IES group with OHCHR staff in front of the UN backdrop.',
+      },
     ],
   },
   {
@@ -316,6 +396,10 @@ export const activities: Activity[] = [
       'The forum that started the series was held online, with Dr. Hyunju Lee — an endocrinologist with more than twenty years in practice — as guest speaker. The subject was medical and biomedical ethics: consent, allocation, and the decisions clinicians make when no option is clean.',
       'Two things about it set the pattern for everything after. The guest was a working professional rather than an academic speaker, and students were expected to have read enough to ask something specific. As the host put it at the time, the point was to bring students who are interested in ethical questions together with professionals who have to answer them.',
     ],
+    portrait: {
+      src: '/activities/bioethics-forum/speaker.jpg',
+      alt: 'Portrait of Dr. Hyunju Lee, M.D.',
+    },
     photos: [
       {
         src: '/activities/bioethics-forum/session.jpg',
@@ -354,6 +438,26 @@ export const activities: Activity[] = [
         src: '/activities/jiguchon-childrens-center/activity.jpg',
         alt: 'An IES volunteer leading an activity with a group of children standing around him.',
       },
+      {
+        src: '/activities/jiguchon-childrens-center/classroom.jpg',
+        alt: 'IES volunteers and children standing together in the centre\'s main room.',
+      },
+      {
+        src: '/activities/jiguchon-childrens-center/group.jpg',
+        alt: 'Children seated on the floor of the centre with volunteers among them.',
+      },
+      {
+        src: '/activities/jiguchon-childrens-center/lesson.jpg',
+        alt: 'An IES volunteer leading a lesson while children sit at the tables.',
+      },
+      {
+        src: '/activities/jiguchon-childrens-center/corridor.jpg',
+        alt: 'Children and volunteers seated along the centre\'s corridor.',
+      },
+      {
+        src: '/activities/jiguchon-childrens-center/screen.jpg',
+        alt: 'Children at the tables watching a slide during a session.',
+      },
     ],
   },
   {
@@ -381,6 +485,34 @@ export const activities: Activity[] = [
       {
         src: '/activities/nanoom-korea-partnership/handover.jpg',
         alt: 'An IES volunteer in a Nanoom Korea vest washing up during a kitchen service shift.',
+      },
+      {
+        src: '/activities/nanoom-korea-partnership/home-visit.jpg',
+        alt: 'IES volunteers seated on the floor with residents during a home visit.',
+      },
+      {
+        src: '/activities/nanoom-korea-partnership/outdoor.jpg',
+        alt: 'Volunteers in Nanoom Korea vests working outdoors in winter.',
+      },
+      {
+        src: '/activities/nanoom-korea-partnership/loading.jpg',
+        alt: 'Volunteers loading crates during an outdoor distribution.',
+      },
+      {
+        src: '/activities/nanoom-korea-partnership/serving.jpg',
+        alt: 'Volunteers plating and serving food.',
+      },
+      {
+        src: '/activities/nanoom-korea-partnership/team.jpg',
+        alt: 'IES volunteers in Nanoom Korea vests photographed together.',
+      },
+      {
+        src: '/activities/nanoom-korea-partnership/crates.jpg',
+        alt: 'Stacked containers being moved during the outdoor distribution.',
+      },
+      {
+        src: '/activities/nanoom-korea-partnership/kitchen.jpg',
+        alt: 'An IES volunteer working at the kitchen counter during a service shift.',
       },
     ],
   },
