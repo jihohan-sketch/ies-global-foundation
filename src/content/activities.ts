@@ -69,6 +69,32 @@ export const activities: Activity[] = [
       src: '/activities/environmental-ethics-forum/speaker.jpg',
       alt: 'Minister Sunghwan Kim speaking at a Ministry of Environment podium.',
     },
+    videos: [
+      {
+        youtubeId: 'MXNhsB-9ZJI',
+        title: 'Environmental Ethics Forum (IES 2026)',
+        date: '2026-03-28',
+        note: 'The full session.',
+      },
+      {
+        youtubeId: '06QSiOUkqZ4',
+        title: 'IES Environmental Ethics Forum (Ryan Cha & Joseph Kang Opening Remarks)',
+        date: '2026-03-28',
+        note: 'Opening remarks by the 3rd President and a co-founder.',
+      },
+      {
+        youtubeId: '1S5eHcMdkh4',
+        title: 'IES Environmental Ethics Forum (Student Questions)',
+        date: '2026-03-28',
+        note: 'Students putting their prepared questions to the Minister.',
+      },
+      {
+        youtubeId: 'N-DZGDrUFdo',
+        title: 'IES Environmental Ethics Forum (Minister Responses)',
+        date: '2026-03-28',
+        note: 'Minister Sunghwan Kim answering.',
+      },
+    ],
     photos: [
       {
         src: '/activities/environmental-ethics-forum/assembly.jpg',
@@ -187,6 +213,43 @@ export const activities: Activity[] = [
     body: [
       'The petition was filed through the National Assembly\'s own consent system under the field of science, technology, information and communication, and asked for regulation of generative AI use by children under the age of twelve. The consent window ran from 6 November to 6 December 2025 and closed with 514 signatures.',
       'It did not become law, and the site does not claim otherwise. What it demonstrates is procedural: students identified an under-regulated question, used the mechanism a citizen actually has, and put their names to a public record. That is the difference the civic programme is trying to teach between advocacy and performance.',
+    ],
+    videos: [
+      {
+        youtubeId: 'GQd7elEWRvs',
+        title: '한국은 왜 아직 ‘아동 AI 보호법’이 없을까?',
+        date: '2025-11-08',
+        note: 'Why Korea still has no child AI protection law — published as the petition opened.',
+        language: 'ko',
+      },
+      {
+        youtubeId: 'aVx4cMYKgJo',
+        title: '왜 지금 우리가 나서야 하는가',
+        date: '2025-11-13',
+        note: 'Why we have to act now.',
+        language: 'ko',
+      },
+      {
+        youtubeId: 'UMKGSFwT6pk',
+        title: 'AI는 아이들의 친구가 아닙니다',
+        date: '2025-11-13',
+        note: 'AI is not a child’s friend.',
+        language: 'ko',
+      },
+      {
+        youtubeId: 'Va6n96n3Nzo',
+        title: 'AI는 아이들의 뇌를 어떻게 바꾸는가',
+        date: '2025-11-13',
+        note: 'How AI changes children’s brains.',
+        language: 'ko',
+      },
+      {
+        youtubeId: 'NYinuX-zMKQ',
+        title: '이건 기술의 문제가 아니라, 사회의 책임입니다',
+        date: '2025-11-13',
+        note: 'Not a technology problem but a social responsibility.',
+        language: 'ko',
+      },
     ],
     photos: [
       {

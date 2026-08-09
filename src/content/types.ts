@@ -126,6 +126,27 @@ export interface ActivityPhoto {
   alt: string
 }
 
+/**
+ * A video on the organization's own YouTube channel.
+ *
+ * Embedded rather than self-hosted: the file stays where its owner published it,
+ * the player handles formats and captions, and the repository does not carry
+ * tens of megabytes of binary. Nothing loads from YouTube until a visitor asks
+ * for it — see `VideoEmbed` in `components/sections/Activities.tsx`.
+ */
+export interface Video {
+  /** The 11-character YouTube id. */
+  youtubeId: string
+  /** The title as published on the channel. */
+  title: string
+  /** ISO date the video was published. */
+  date: string
+  /** Optional one-line note about what it shows. */
+  note?: string
+  /** Set when the video is in Korean, so the label can say so. */
+  language?: 'ko'
+}
+
 export type ActivityKind =
   | 'Ethics Forum'
   | 'Community Service'
@@ -158,6 +179,8 @@ export interface Activity {
    * supplied by the guest or their office, not a record of the event.
    */
   portrait?: ActivityPhoto
+  /** Footage of this activity, from the organization's YouTube channel. */
+  videos?: Video[]
   /** `id` of the matching entry in `workCategories`. */
   workCategory: string
 }

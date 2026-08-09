@@ -1,5 +1,6 @@
 import { Container, Eyebrow, Section } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
+import { VideoGrid } from '@/components/sections/Media'
 import { cx } from '@/lib/utils'
 import type { Activity } from '@/content/types'
 
@@ -126,6 +127,15 @@ export function ActivityEntry({ activity, index }: { activity: Activity; index: 
               </p>
             ))}
           </div>
+
+          {activity.videos && activity.videos.length > 0 && (
+            <div className="mt-10">
+              <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+                Footage
+              </p>
+              <VideoGrid videos={activity.videos} className="mt-5" />
+            </div>
+          )}
         </Reveal>
       </div>
     </article>

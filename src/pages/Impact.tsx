@@ -3,7 +3,9 @@ import { StatBlock } from '@/components/ui/Counter'
 import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
-import { impactIntro, impactStats, impactStories, timeline } from '@/content/impact'
+import { PhotoStrip, VideoSection } from '@/components/sections/Media'
+import { fieldPhotos, impactIntro, impactStats, impactStories, timeline } from '@/content/impact'
+import { organizationVideos } from '@/content/videos'
 import { site } from '@/content/site'
 import { useSeo } from '@/lib/seo'
 import { cx } from '@/lib/utils'
@@ -104,6 +106,22 @@ export default function Impact() {
           </div>
         </Container>
       </Section>
+
+      {/* ====================================================== IN THE FIELD */}
+      <PhotoStrip
+        photos={fieldPhotos}
+        eyebrow="In the Field"
+        title="The work as it happens"
+        lead="Photographs from IES programs — forums in session, volunteers mid-shift, a petition on the public record. The full set, event by event, is on Our Work."
+      />
+
+      {/* ============================================================= FILM */}
+      <VideoSection
+        videos={organizationVideos}
+        eyebrow="Film"
+        title="The organization in its own words"
+        lead="From the IES YouTube channel. Nothing loads from YouTube until you press play."
+      />
 
       {/* ========================================================= TIMELINE */}
       <Section tone="deep" className="border-y border-mist/12">

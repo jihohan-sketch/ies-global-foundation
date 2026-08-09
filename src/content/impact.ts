@@ -1,4 +1,4 @@
-import type { ImpactStory, Stat, TimelineEntry } from './types'
+import type { ActivityPhoto, ImpactStory, Stat, TimelineEntry } from './types'
 
 /**
  * ⚠ REVIEW BEFORE PUBLISHING — every number below must be supportable from
@@ -99,9 +99,11 @@ export const timeline: TimelineEntry[] = [
     body: 'Ethics forums on medical, environmental, military, AI, and human rights questions become recurring, alongside sustained service partnerships with Nanoom Korea and Jiguchon Children’s Center and a series of grassroots fundraising campaigns.',
   },
   {
-    date: 'Date to be confirmed',
+    /* Dated from the petition record itself, which is reproduced on Our Work:
+       the consent window ran 6 November to 6 December 2025. */
+    date: 'November – December 2025',
     title: 'Petition to the National Assembly',
-    body: 'IES submits a petition to the National Assembly of Korea on the regulation of generative AI for children under 12 — the organization’s clearest move from discussion into formal civic process.',
+    body: 'IES submits a petition to the National Assembly of Korea on the regulation of generative AI for children under 12, and runs a video campaign alongside it. The consent window closed with 514 signatures — the organization’s clearest move from discussion into formal civic process.',
     milestone: true,
   },
   {
@@ -142,5 +144,56 @@ export const timeline: TimelineEntry[] = [
     title: 'IES Global Foundation established',
     body: 'The Global Foundation is formed to connect the national branches under one international identity, shared standards, and coordinated programming.',
     milestone: true,
+  },
+]
+
+/**
+ * Photographs shown on the Impact page, chosen to show the work in progress
+ * rather than the group photograph at the end of it.
+ *
+ * These reference files already under `public/activities/`, so nothing is
+ * shipped twice, and the captions are the same alt text used there — a caption
+ * on this page cannot drift from what the photograph is recorded as showing.
+ * The full set, event by event, is on Our Work.
+ */
+export const fieldPhotos: ActivityPhoto[] = [
+  {
+    src: '/activities/environmental-ethics-forum/podium.jpg',
+    alt: 'Two IES students speaking from the twin podiums of the Nowon-gu Council chamber at the Environmental Ethics Forum.',
+  },
+  {
+    src: '/activities/guro-happy-childrens-center/lesson.jpg',
+    alt: 'An IES volunteer teaching at a whiteboard while children sit on the floor of the Guro Happy Children’s Center.',
+  },
+  {
+    src: '/activities/nanoom-korea-partnership/loading.jpg',
+    alt: 'IES volunteers in Nanoom Korea vests loading crates during an outdoor distribution.',
+  },
+  /* The petition record itself is deliberately not here: it is a wide document
+     screenshot, and this strip crops to 4/3, which makes its text unreadable.
+     It appears uncropped as the lead image of its own entry on Our Work. */
+  {
+    src: '/activities/nanoom-korea-partnership/home-visit.jpg',
+    alt: 'IES volunteers seated with residents during a Nanoom Korea home visit.',
+  },
+  {
+    src: '/activities/jiguchon-childrens-center/lesson.jpg',
+    alt: 'An IES volunteer leading a lesson at the Jiguchon Children’s Center while children sit at the tables.',
+  },
+  {
+    src: '/activities/camp-humphreys-cadets/discussion.jpg',
+    alt: 'IES students in conversation with a US Army officer at Camp Humphreys.',
+  },
+  {
+    src: '/activities/nanoom-korea-scholarship/ceremony.jpg',
+    alt: 'An IES student speaking at a lectern during the Nanoom Korea scholarship presentation.',
+  },
+  {
+    src: '/activities/un-human-rights-office-visit/delegation.jpg',
+    alt: 'IES students at the UN Office of the High Commissioner for Human Rights in Seoul.',
+  },
+  {
+    src: '/activities/environmental-ethics-forum/chamber.jpg',
+    alt: 'IES students at the council desks with printed briefs during the Environmental Ethics Forum.',
   },
 ]

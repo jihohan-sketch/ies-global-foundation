@@ -40,7 +40,8 @@ updating the site does not mean touching layout code.
 | `branches.ts` | The three national branches — facts, sections, contacts |
 | `leadership.ts` | People, biographies, Foundation offices |
 | `work.ts` | The three pillars and the five programme areas |
-| `activities.ts` | Documented programme activity, with photography |
+| `activities.ts` | Documented programme activity, with photography and footage |
+| `videos.ts` | Film from the organization's YouTube channel |
 | `impact.ts` | Statistics, impact stories, timeline |
 | `news.ts` | News articles |
 | `partners.ts` | Partner categories, named partners, logos |
@@ -105,6 +106,20 @@ the column count adapts, and four photos lay out 2×2 rather than 3+1.
 Where the branch publishes the guest's own portrait, set `portrait` as well. It
 renders beside the event details rather than in the grid, because a supplied
 studio portrait is not a record of the event.
+
+**Add a video** — put the YouTube id in `videos.ts` (`organizationVideos`) for
+film about the organization, or on the `videos` field of an `activities.ts` entry
+for footage of a specific event. Videos are **embedded, never re-hosted**: the
+file stays on the channel, and `VideoEmbed` in `components/sections/Media.tsx`
+makes no request to YouTube — not even for a thumbnail — until a visitor presses
+play. That is what lets this site carry no third-party scripts and no cookie
+banner, so keep it that way rather than switching to a plain `<iframe>`.
+
+**Show photographs on Impact** — `fieldPhotos` in `impact.ts` drives the "In the
+Field" strip. Point entries at files already under `public/activities/`; the
+captions are the photographs' own alt text, so a caption cannot drift from what
+the image is recorded as showing. Note the strip crops to 4/3 — a wide document
+screenshot will lose its text, so put those where they render uncropped.
 
 Two directories hold media that nothing renders yet, and REVIEW.md says why:
 `public/brand/` (the historical IES marks) and the video files under

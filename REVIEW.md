@@ -33,7 +33,7 @@ has changed since.
 | Petition to National Assembly re: generative AI for under-12s | `content/branches.ts`, `content/impact.ts`, `content/activities.ts` | ✅ published — dated from the petition record itself: consent window 6 Nov – 6 Dec 2025, closing at 514 signatures |
 | Service partners: Nanoom Korea, Jiguchon Children's Center, Guro Happy Children's Center | `content/partners.ts` | ✅ published |
 | Collaborators: YMUN Korea, UN OHCHR, National Assembly of Korea, Korea Legacy Committee | `content/partners.ts` | ✅ published |
-| Email theiesociety@gmail.com; Instagram @iesnational; LinkedIn; YouTube | `content/site.ts` | ✅ published |
+| Email theiesociety@gmail.com; Instagram @iesnational; LinkedIn; YouTube | `content/site.ts` | ⚠️ **two Instagram handles in circulation** — see below |
 | Student-led nonprofit organization | `content/legal.ts`, `content/site.ts` | ⚠️ per Wikipedia — **confirm registration** |
 
 ---
@@ -77,10 +77,10 @@ Entries still reading **"Date to be confirmed"** must be dated or deleted:
       Replace with each person's actual pronouns.
 - [x] Headshots are in `public/leadership/` with `photo:` set, sourced from
       ie-society.com and iesusa.space. Two gaps and one defect remain:
-  - [ ] **Jimin Lee** has no photograph on either branch site — renders as a
-        monogram. Request one from IES UK Society.
-  - [ ] **Sean Han** likewise — the existing file predates this pass and has no
-        traceable source. Confirm it is the right person and cleared for use.
+  - [x] **Jimin Lee** — found on the IES UK Society site and now in place.
+  - [ ] **Sean Han** is the only person left without a sourced photograph. The
+        existing file predates this pass and appears on none of the three branch
+        sites. Confirm it is the right person and cleared for use.
   - [ ] **Ryan Jimyung Cha** is shipped at 320×320 from a 170px source, the only
         one published anywhere. It is visibly soft next to the others. Replace
         with a proper file — this is the sitting National President.
@@ -121,11 +121,27 @@ wording; nothing was inferred. Before launch:
       visible credit. Confirm the source and licence of each, or drop the field —
       the Minister's in particular looks like a press photograph.
 
-### Video — `public/activities/ymun-korea-community-fair/`, `public/media/`
+### Video — the YouTube channel
 
-Four video files were imported and **none is rendered on the site yet**, because
+Fifteen videos on <https://www.youtube.com/@InterscholasticEthicsSocie-r8w> are
+now on the site as **embeds, not copies**: nine on the activities they document
+(four on the Environmental Ethics Forum, five on the National Assembly petition)
+and six on Impact under "Film". Nothing loads from YouTube until a visitor
+presses play, so the site still makes no third-party request on page load and
+still needs no cookie banner.
+
+- [ ] Confirm all fifteen are meant to stay public, and that everyone appearing
+      in them has consented — the same question as for the photographs, and the
+      five Korean petition-campaign videos are advocacy material.
+- [ ] The channel is the only place these live. If a video is unlisted or
+      deleted, the embed becomes a dead frame; there is no fallback.
+
+### Self-hosted video — `public/activities/ymun-korea-community-fair/`, `public/media/`
+
+Separately, four video **files** were imported and **none is rendered**, because
 nobody has watched them in this pass — there is no video tooling in this
-environment to play or transcode them.
+environment to play or transcode them. Now that the YouTube channel supplies the
+site's video properly, the case for keeping these is weaker.
 
 - [ ] **Watch `fair-1.mp4`, `fair-2.mp4`, `fair-3.mp4`** (from IES Korea's Drive,
       labelled Yale MUN XIII Community Fair). If they are what the label says and
@@ -185,6 +201,18 @@ schools below are as **IES Korea publishes them** — none of it is inferred.
       `Person`/`tier` model has no category for that today.
 - [ ] `elaine-jeong.jpg` is only 160×160 and `commissioner-yongjin-kim.jpg` 250×250
       — the largest their sources allow. Both need better files before use.
+
+### Instagram — `src/content/site.ts`, `src/content/branches.ts`, `index.html`
+
+- [ ] **Decide which handle is correct.** ie-society.com and this site both link
+      `instagram.com/iesnational`. The official link hub, `linktr.ee/iesnational`,
+      links `instagram.com/intethicsociety` instead. Both URLs respond, which
+      proves nothing — Instagram answers for handles that do not exist. One of
+      these is wrong on a page the organization controls, and it appears in three
+      places here plus the Organization JSON-LD.
+- No photographs were taken from Instagram. Its media cannot be fetched without
+  a logged-in session, and working around that is not something to do; if there
+  are posts worth adding, export them from the account and drop the files in.
 
 ### Branch content — `src/content/branches.ts`
 

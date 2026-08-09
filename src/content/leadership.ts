@@ -138,6 +138,7 @@ export const people: Person[] = [
     title: 'President, IES UK Society',
     tier: 'national',
     branch: 'united-kingdom',
+    photo: '/leadership/jimin-lee.jpg',
     bio: 'President of IES UK Society, the newest branch. Recruiting the first national officers and founding chapters, and leading the branch’s early programming.',
     responsibilities: [
       'National leadership of IES UK Society',
