@@ -73,6 +73,13 @@ export interface Person {
   tier: LeadershipTier
   /** Only set for national leadership. */
   branch?: BranchSlug
+  /**
+   * Lifts this person into the Leadership page's opening pair, ahead of the
+   * founding section. `tier` still records what they actually are — a founder
+   * stays a founder here — so this only ever changes where a card is shown,
+   * never what it claims about the person.
+   */
+  spotlight?: boolean
   /** Path or URL to a headshot. Falls back to a monogram when omitted. */
   photo?: string
   /**

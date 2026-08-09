@@ -5,13 +5,14 @@ import { PersonCard } from '@/components/sections/Cards'
 import { CallToAction } from '@/components/sections/CallToAction'
 import { branches } from '@/content/branches'
 import {
-  foundingLeadership,
   globalOffices,
   leadershipIntro,
   nationalLeadership,
   personById,
+  remainingFounders,
+  spotlightLeadership,
 } from '@/content/leadership'
-import { initials } from '@/lib/utils'
+import { cx, initials } from '@/lib/utils'
 import { useSeo } from '@/lib/seo'
 
 /*
@@ -46,19 +47,30 @@ export default function Leadership() {
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Leadership' }]}
       />
 
-      {/* =============================================== FOUNDING LEADERSHIP */}
+      {/* ============================================= FOUNDATION LEADERSHIP */}
+      {/* Deliberately not headed "founders": this pair is who runs the
+          Foundation now, and not everyone in it is a founder. Each card's own
+          title says which of the two a person is. */}
       <Section>
         <Container size="wide">
           <Reveal>
             <SectionHeading
-              eyebrow="Founding Leadership"
-              title="The founders of IES"
-              lead={leadershipIntro.founding}
+              eyebrow="Foundation Leadership"
+              title="Leading the Foundation"
+              lead={leadershipIntro.foundation}
             />
           </Reveal>
 
-          <div className="mt-14 grid gap-6 lg:grid-cols-2">
-            {foundingLeadership.map((person, i) => (
+          {/* Only splits into two columns when there are actually two people.
+              A lone card in a two-column grid sits at half width with an empty
+              half beside it, which reads as a card that failed to load. */}
+          <div
+            className={cx(
+              'mt-14 grid gap-6',
+              spotlightLeadership.length > 1 && 'lg:grid-cols-2',
+            )}
+          >
+            {spotlightLeadership.map((person, i) => (
               <Reveal key={person.id} delay={i * 120}>
                 <PersonCard person={person} />
               </Reveal>
@@ -106,12 +118,12 @@ export default function Leadership() {
                               src={holder.photo}
                               alt=""
                               loading="lazy"
-                              className="aspect-square w-28 shrink-0 self-start rounded-[3px] object-cover sm:w-32"
+                              className="aspect-square w-full shrink-0 self-start rounded-[3px] object-cover sm:w-56"
                             />
                           ) : (
                             <span
                               aria-hidden
-                              className="flex aspect-square w-28 shrink-0 items-center justify-center self-start rounded-[3px] border border-[var(--accent)]/35 font-serif text-2xl text-[var(--accent)] sm:w-32"
+                              className="flex aspect-square w-full shrink-0 items-center justify-center self-start rounded-[3px] border border-[var(--accent)]/35 font-serif text-4xl text-[var(--accent)] sm:w-56"
                             >
                               {initials(holder.name)}
                             </span>
@@ -167,6 +179,29 @@ export default function Leadership() {
                 </Reveal>
               )
             })}
+          </div>
+        </Container>
+      </Section>
+
+      {/* =============================================== FOUNDING LEADERSHIP */}
+      <Section>
+        <Container size="wide">
+          <Reveal>
+            <SectionHeading
+              eyebrow="Founding Leadership"
+              title="The founders of IES"
+              lead={leadershipIntro.founding}
+            />
+          </Reveal>
+
+          <div
+            className={cx('mt-14 grid gap-6', remainingFounders.length > 1 && 'lg:grid-cols-2')}
+          >
+            {remainingFounders.map((person, i) => (
+              <Reveal key={person.id} delay={i * 120}>
+                <PersonCard person={person} />
+              </Reveal>
+            ))}
           </div>
         </Container>
       </Section>

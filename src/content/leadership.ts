@@ -21,6 +21,7 @@ export const people: Person[] = [
     koreanName: '강함민',
     title: 'Co-Founder · Vice Chairman · Director of Global Operations',
     tier: 'founding',
+    spotlight: true,
     photo: '/leadership/joseph-hahmmin-kang.jpg',
     affiliations: ['Student, Seoul International School'],
     bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 2nd President to January 2026, setting the standards branches and chapters now operate under. Now Vice Chairman of the Global Foundation and its Director of Global Operations, holding the organization to those standards and coordinating the work that runs between the national branches.',
@@ -207,6 +208,8 @@ export const globalOffices: {
 ]
 
 export const leadershipIntro = {
+  foundation:
+    'The officers who run the Foundation day to day, across governance, international operations, and outreach.',
   founding:
     'Founded in Seoul on 20 April 2023 by two students, who led it jointly and then each served a term as president.',
   global:
@@ -214,7 +217,11 @@ export const leadershipIntro = {
   national: 'Each branch is led by students in that country, to the same shared standards.',
 }
 
+/** The opening pair on the Leadership page, in array order. */
+export const spotlightLeadership = people.filter((p) => p.spotlight)
 export const foundingLeadership = people.filter((p) => p.tier === 'founding')
+/** Founders shown in the founding section — those not already in the opening pair. */
+export const remainingFounders = foundingLeadership.filter((p) => !p.spotlight)
 export const globalLeadership = people.filter((p) => p.tier === 'global')
 export const nationalLeadership = people.filter((p) => p.tier === 'national')
 export const personById = (id: string) => people.find((p) => p.id === id)
