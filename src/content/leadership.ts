@@ -152,7 +152,8 @@ export const people: Person[] = [
     title: 'Member of the Board of Directors',
     tier: 'board',
     photo: '/leadership/hyundoo-cho.jpg',
-    bio: 'Serves on the board of directors of the IES Global Foundation. The board is the adult oversight a student-led organization is accountable to: it reviews how the Foundation is run, holds it to its own standards, and advises the students who lead it. Directors do not run programming — that stays with the students.',
+    affiliations: ['Chairman, Nanoom Korea (사단법인 나눔코리아)'],
+    bio: 'Chairman of Nanoom Korea, a non-profit that supports isolated older people, single-parent and multicultural families, North Korean defectors, and young children through home visits, living costs, medicine, and scholarships. Nanoom Korea is one of the organizations IES Korea returns to as a service partner, so he brings to the board a direct view of the work students do there. The board reviews how the Foundation is governed and advises the students leading it; it does not run the programming.',
     responsibilities: [
       'Oversight of the Foundation’s governance and conduct',
       'Review of how the Foundation is run against its own standards',
