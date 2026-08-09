@@ -597,3 +597,21 @@ export const activityById = (id: string) => activities.find((activity) => activi
 
 /** Total photographs on file — used for the Our Work photography note. */
 export const activityPhotoCount = activities.reduce((n, a) => n + a.photos.length, 0)
+
+/**
+ * One photograph per activity for the home page gallery.
+ *
+ * Derived rather than hand-listed, deliberately: it takes each activity's lead
+ * image, so the gallery covers every programme, cannot drift out of step with
+ * the activities themselves, and grows on its own when an activity is added.
+ * Each item links to the entry it came from, so the gallery is a way into the
+ * work rather than decoration.
+ */
+export const galleryItems = activities.map((activity) => ({
+  id: activity.id,
+  src: activity.photos[0].src,
+  alt: activity.photos[0].alt,
+  title: activity.title,
+  kind: activity.kind,
+  href: `/our-work#${activity.id}`,
+}))

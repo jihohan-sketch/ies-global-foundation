@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
+import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
 import { cx } from '@/lib/utils'
 import type { ActivityPhoto, Video } from '@/content/types'
 
@@ -110,6 +112,97 @@ export function VideoSection({
           <SectionHeading eyebrow={eyebrow} title={title} lead={lead} />
         </Reveal>
         <VideoGrid videos={videos} className="mt-14" />
+      </Container>
+    </Section>
+  )
+}
+
+export interface GalleryItem {
+  id: string
+  src: string
+  alt: string
+  title: string
+  kind: string
+  href: string
+}
+
+/**
+ * The home page gallery: one photograph per programme, on a rail that advances
+ * itself.
+ *
+ * Each card is a link into the activity it shows, so the gallery answers "what
+ * do you actually do" and then takes you to the answer in full. The photographs
+ * keep a single aspect ratio here — unlike the activity grids, where they keep
+ * their own — because a rail of mismatched heights reads as broken rather than
+ * as variety.
+ */
+export function GalleryRail({ items }: { items: GalleryItem[] }) {
+  return (
+    /* Not "what IES does" — the home page already has a rail under that label,
+       and two regions sharing one name is indistinguishable to a screen reader. */
+    <ScrollRail label="programme photographs" autoAdvance intervalMs={4500}>
+      {items.map((item, i) => (
+        <RailItem key={item.id} size="wide">
+          {/* Deliberately not wrapped in `Reveal`.
+              A scroll reveal keys off intersection with the viewport, which is
+              the wrong signal for something that arrives by the rail scrolling
+              sideways: cards that have never been in view sit at opacity 0, and
+              their fade-in transition stalls when the rail brings them in. The
+              rail's own movement is the animation here — it does not need a
+              second one fighting it. */}
+          <Link
+            to={item.href}
+            className="group block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
+          >
+            <figure className="overflow-hidden border border-mist/18 bg-navy-700/45 transition-colors duration-300 group-hover:border-gold/45">
+              <img
+                src={item.src}
+                alt={item.alt}
+                /* The first three are in view on arrival; the rest wait until the
+                   rail reaches them. */
+                loading={i < 3 ? 'eager' : 'lazy'}
+                decoding="async"
+                className="w-full object-cover"
+                style={{ aspectRatio: '3 / 2' }}
+              />
+              <figcaption className="border-t border-mist/12 p-6">
+                <span className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+                  {item.kind}
+                </span>
+                <span className="mt-3 block font-serif text-[1.1875rem] leading-snug transition-colors duration-300 group-hover:text-[var(--accent)]">
+                  {item.title}
+                </span>
+              </figcaption>
+            </figure>
+          </Link>
+        </RailItem>
+      ))}
+    </ScrollRail>
+  )
+}
+
+/** The gallery with its own heading, as it appears on the home page. */
+export function GallerySection({ items }: { items: GalleryItem[] }) {
+  if (items.length === 0) return null
+  return (
+    <Section tone="deep" className="border-b border-mist/12" size="compact">
+      <Container size="wide">
+        <Reveal>
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <div className="max-w-2xl">
+              <Eyebrow>In Practice</Eyebrow>
+              <h2 className="text-h2 mt-6">What this actually looks like</h2>
+            </div>
+            <p className="max-w-sm text-[0.9375rem] leading-relaxed font-light text-mist">
+              Every photograph was taken at the programme it shows. Pick one to read what
+              happened.
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-12">
+          <GalleryRail items={items} />
+        </div>
       </Container>
     </Section>
   )

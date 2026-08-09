@@ -6,7 +6,9 @@ import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
 import { StatBlock } from '@/components/ui/Counter'
 import { BranchCard, PersonCard } from '@/components/sections/Cards'
 import { CallToAction } from '@/components/sections/CallToAction'
+import { GallerySection } from '@/components/sections/Media'
 import { ValuePanels } from '@/components/sections/ValuePanels'
+import { galleryItems } from '@/content/activities'
 import { branches } from '@/content/branches'
 import { headlineStats } from '@/content/impact'
 import { foundingLeadership, nationalLeadership } from '@/content/leadership'
@@ -126,8 +128,13 @@ export default function Home() {
         </Container>
       </section>
 
+      {/* ========================================================= GALLERY */}
+      {/* Straight after the hero: the fastest honest answer to "what is this
+          organization" is a photograph of it working. */}
+      <GallerySection items={galleryItems} />
+
       {/* ==================================================== INTRODUCTION */}
-      <Section tone="deep" className="border-y border-mist/12">
+      <Section tone="deep" className="border-b border-mist/12">
         <Container size="wide">
           <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
             <Reveal>

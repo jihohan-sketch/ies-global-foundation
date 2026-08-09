@@ -115,6 +115,24 @@ makes no request to YouTube — not even for a thumbnail — until a visitor pre
 play. That is what lets this site carry no third-party scripts and no cookie
 banner, so keep it that way rather than switching to a plain `<iframe>`.
 
+**The home page gallery** needs no editing. `galleryItems` in `activities.ts`
+takes the lead photograph of every activity, so the rail covers each programme,
+grows on its own when an activity is added, and cannot drift out of step with the
+entries it links to. `GallerySection` in `components/sections/Media.tsx` renders
+it on `ScrollRail` with `autoAdvance`.
+
+Two things about that rail are load-bearing, not stylistic:
+
+- It has a **pause button**, because WCAG 2.2.2 gives anyone the right to stop
+  motion running longer than five seconds. It also holds on hover, on keyboard
+  focus inside the track, and while scrolled off screen, and it never starts at
+  all under `prefers-reduced-motion` — the button then reads "Play", so it can
+  still be opted into.
+- Its cards are **not** wrapped in `Reveal`. A scroll reveal keys off intersection
+  with the viewport, which is the wrong signal for a card arriving by sideways
+  scroll: cards that had never been in view sat at opacity 0 and their fade-in
+  stalled when the rail brought them in. The rail's own movement is the animation.
+
 **Show photographs on Impact** — `fieldPhotos` in `impact.ts` drives the "In the
 Field" strip. Point entries at files already under `public/activities/`; the
 captions are the photographs' own alt text, so a caption cannot drift from what
