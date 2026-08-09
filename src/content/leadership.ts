@@ -52,7 +52,6 @@ export const people: Person[] = [
     koreanName: '신재서',
     title: 'Co-Founder · Vice Chairman',
     tier: 'founding',
-    spotlight: true,
     photo: '/leadership/jaesuh-joshua-shin.jpg',
     affiliations: ['Student, Seoul Foreign School'],
     bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 1st President to October 2025, designing IES programming and growing the school chapter network. Now Vice Chairman of the Global Foundation.',
