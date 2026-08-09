@@ -143,6 +143,22 @@ export const people: Person[] = [
       'School outreach and early programming',
     ],
   },
+
+  /* ------------------------------------------------- Board of Directors */
+  {
+    id: 'hyundoo-cho',
+    name: 'Hyundoo Cho',
+    koreanName: '조현두',
+    title: 'Member of the Board of Directors',
+    tier: 'board',
+    photo: '/leadership/hyundoo-cho.jpg',
+    bio: 'Serves on the board of directors of the IES Global Foundation. The board is the adult oversight a student-led organization is accountable to: it reviews how the Foundation is run, holds it to its own standards, and advises the students who lead it. Directors do not run programming — that stays with the students.',
+    responsibilities: [
+      'Oversight of the Foundation’s governance and conduct',
+      'Review of how the Foundation is run against its own standards',
+      'Guidance for the students leading the Foundation and its branches',
+    ],
+  },
 ]
 
 /**
@@ -235,6 +251,8 @@ export const globalOffices: {
 export const leadershipIntro = {
   foundation:
     'The officers who run the Foundation day to day, across governance, international operations, and outreach.',
+  board:
+    'IES is run by students. The board is the oversight they answer to — it reviews how the Foundation is governed and advises the students leading it, without taking over the work.',
   founding:
     'Founded in Seoul on 20 April 2023 by two students, who led it jointly and then each served a term as president.',
   global:
@@ -245,9 +263,7 @@ export const leadershipIntro = {
 /** The opening group on the Leadership page, in array order. */
 export const spotlightLeadership = people.filter((p) => p.spotlight)
 export const foundingLeadership = people.filter((p) => p.tier === 'founding')
-/** Founders not already shown above. Empty while every founder is in the
- *  opening group, which hides that section rather than heading an empty grid. */
-export const remainingFounders = foundingLeadership.filter((p) => !p.spotlight)
+export const boardLeadership = people.filter((p) => p.tier === 'board')
 export const globalLeadership = people.filter((p) => p.tier === 'global')
 export const nationalLeadership = people.filter((p) => p.tier === 'national')
 export const personById = (id: string) => people.find((p) => p.id === id)

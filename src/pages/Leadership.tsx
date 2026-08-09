@@ -5,11 +5,12 @@ import { PersonCard } from '@/components/sections/Cards'
 import { CallToAction } from '@/components/sections/CallToAction'
 import { branches } from '@/content/branches'
 import {
+  boardLeadership,
+  foundingLeadership,
   globalOffices,
   leadershipIntro,
   nationalLeadership,
   personById,
-  remainingFounders,
   spotlightLeadership,
 } from '@/content/leadership'
 import { cx, initials } from '@/lib/utils'
@@ -31,8 +32,22 @@ const officeGroups = globalOffices.reduce<(typeof globalOffices)[]>((groups, off
 }, [])
 
 /** The people this page already renders a full PersonCard for. */
-const cardedIds = new Set([...spotlightLeadership, ...remainingFounders].map((p) => p.id))
+const cardedIds = new Set(
+  [...spotlightLeadership, ...foundingLeadership, ...boardLeadership].map((p) => p.id),
+)
 const hasPersonCard = (person: { id: string }) => cardedIds.has(person.id)
+
+/*
+ * Columns follow the count, so a row is always full. A card left alone on a
+ * row sits at a fraction of the width with empty space beside it, which reads
+ * as a card that failed to load rather than as a deliberate layout.
+ */
+const gridFor = (count: number) =>
+  cx(
+    'mt-14 grid gap-6',
+    count === 2 && 'lg:grid-cols-2',
+    count > 2 && 'md:grid-cols-2 lg:grid-cols-3',
+  )
 
 export default function Leadership() {
   useSeo({
@@ -65,16 +80,7 @@ export default function Leadership() {
             />
           </Reveal>
 
-          {/* Columns follow the count, so the row is always full. A card left
-              alone on a row sits at a fraction of the width with empty space
-              beside it, which reads as a card that failed to load. */}
-          <div
-            className={cx(
-              'mt-14 grid gap-6',
-              spotlightLeadership.length === 2 && 'lg:grid-cols-2',
-              spotlightLeadership.length > 2 && 'md:grid-cols-2 lg:grid-cols-3',
-            )}
-          >
+          <div className={gridFor(spotlightLeadership.length)}>
             {spotlightLeadership.map((person, i) => (
               <Reveal key={person.id} delay={i * 120}>
                 <PersonCard person={person} />
@@ -194,8 +200,9 @@ export default function Leadership() {
       </Section>
 
       {/* =============================================== FOUNDING LEADERSHIP */}
-      {/* Only when a founder is not already shown above. */}
-      {remainingFounders.length > 0 && (
+      {/* Every founder, including any also shown in the opening group above —
+          holding an office now does not make someone less of a founder, and a
+          founders section missing a founder is just wrong. */}
       <Section>
         <Container size="wide">
           <Reveal>
@@ -206,10 +213,8 @@ export default function Leadership() {
             />
           </Reveal>
 
-          <div
-            className={cx('mt-14 grid gap-6', remainingFounders.length > 1 && 'lg:grid-cols-2')}
-          >
-            {remainingFounders.map((person, i) => (
+          <div className={gridFor(foundingLeadership.length)}>
+            {foundingLeadership.map((person, i) => (
               <Reveal key={person.id} delay={i * 120}>
                 <PersonCard person={person} />
               </Reveal>
@@ -217,6 +222,28 @@ export default function Leadership() {
           </div>
         </Container>
       </Section>
+
+      {/* ================================================ BOARD OF DIRECTORS */}
+      {boardLeadership.length > 0 && (
+        <Section tone="deep" className="border-y border-mist/12">
+          <Container size="wide">
+            <Reveal>
+              <SectionHeading
+                eyebrow="Board of Directors"
+                title="Oversight of the Foundation"
+                lead={leadershipIntro.board}
+              />
+            </Reveal>
+
+            <div className={gridFor(boardLeadership.length)}>
+              {boardLeadership.map((person, i) => (
+                <Reveal key={person.id} delay={i * 120}>
+                  <PersonCard person={person} />
+                </Reveal>
+              ))}
+            </div>
+          </Container>
+        </Section>
       )}
 
       {/* =============================================== NATIONAL LEADERSHIP */}

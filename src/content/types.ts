@@ -62,7 +62,7 @@ export interface Branch {
   /** Leadership entries are matched by `branch` on the Person record. */
 }
 
-export type LeadershipTier = 'founding' | 'global' | 'national'
+export type LeadershipTier = 'founding' | 'global' | 'national' | 'board'
 
 export interface Person {
   id: string
@@ -74,10 +74,11 @@ export interface Person {
   /** Only set for national leadership. */
   branch?: BranchSlug
   /**
-   * Lifts this person into the Leadership page's opening pair, ahead of the
+   * Lifts this person into the Leadership page's opening group, ahead of the
    * founding section. `tier` still records what they actually are — a founder
    * stays a founder here — so this only ever changes where a card is shown,
-   * never what it claims about the person.
+   * never what it claims about the person. A founder lifted this way is still
+   * listed among the founders below.
    */
   spotlight?: boolean
   /** Path or URL to a headshot. Falls back to a monogram when omitted. */
