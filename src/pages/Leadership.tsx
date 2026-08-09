@@ -30,6 +30,10 @@ const officeGroups = globalOffices.reduce<(typeof globalOffices)[]>((groups, off
   return groups
 }, [])
 
+/** The people this page already renders a full PersonCard for. */
+const cardedIds = new Set([...spotlightLeadership, ...remainingFounders].map((p) => p.id))
+const hasPersonCard = (person: { id: string }) => cardedIds.has(person.id)
+
 export default function Leadership() {
   useSeo({
     title: 'Leadership',
@@ -145,15 +149,20 @@ export default function Leadership() {
                               )}
                             </p>
                             {/* Officers whose sole appearance is this card carry
-                                their biography here. A founder already has a
-                                PersonCard further up the same page, so repeating
-                                that paragraph would read as a bug — they get the
-                                office's own note instead, which describes the
-                                post rather than the person's history. */}
+                                their biography here. Anyone with a PersonCard
+                                further up the same page would otherwise repeat
+                                that paragraph, which reads as a bug — they get
+                                the office's own note instead, which describes
+                                the post rather than the person.
+
+                                Keyed on whether a card is actually rendered
+                                above, not on tier: the opening pair mixes
+                                founders with Foundation officers, so tier alone
+                                stopped answering the question. */}
                             <p className="mt-4 text-[0.875rem] leading-relaxed font-light text-mist">
-                              {holder.tier === 'global'
-                                ? holder.bio
-                                : group.map((office) => office.holderNote).find(Boolean)}
+                              {hasPersonCard(holder)
+                                ? group.map((office) => office.holderNote).find(Boolean)
+                                : holder.bio}
                             </p>
                           </div>
                         </div>

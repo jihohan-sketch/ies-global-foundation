@@ -33,6 +33,20 @@ export const people: Person[] = [
     ],
   },
   {
+    id: 'yura-shin',
+    name: 'Yura Shin',
+    title: 'Director of Global Outreach',
+    tier: 'global',
+    spotlight: true,
+    bio: 'Director of Global Outreach for the Global Foundation. The office is where IES meets the people outside it — schools asking what a chapter involves, organizations proposing a partnership, and students in countries where there is no branch yet. Responsible for how those conversations open, which are worth carrying forward, and handing each one to the branch or office that will see it through.',
+    responsibilities: [
+      'First contact for schools, partners, and prospective chapters',
+      'Outreach in countries without a national branch',
+      'Assessment of incoming partnership and chapter inquiries',
+      'Handover of new relationships to the relevant branch or office',
+    ],
+  },
+  {
     id: 'jaesuh-joshua-shin',
     name: 'Jaesuh Joshua Shin',
     koreanName: '신재서',
@@ -170,6 +184,18 @@ export const globalOffices: {
       'Publication approval workflow',
     ],
     holder: 'sean-han',
+  },
+  {
+    title: 'Director of Global Outreach',
+    scope: 'External relationships',
+    responsibilities: [
+      'First contact for schools, partners, and prospective chapters',
+      'Outreach in countries without a national branch',
+      'Handover of new relationships to the relevant branch or office',
+    ],
+    holder: 'yura-shin',
+    holderNote:
+      'The office exists because growth arrives as an inquiry from outside — a teacher who saw a forum, a charity looking for student volunteers, a student in a country with no branch. Shin decides which of those IES can genuinely support, makes sure a school knows what it is taking on before it commits, and hands each one to whoever will carry it. An approach that goes unanswered, or is passed to a branch with no capacity for it, costs the network more than never having been made.',
   },
   {
     title: 'Vice Chairman',
