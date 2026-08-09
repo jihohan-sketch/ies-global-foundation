@@ -115,6 +115,47 @@ export interface WorkCategory {
   imageAlt?: string
 }
 
+/** A photograph documenting a real IES activity. */
+export interface ActivityPhoto {
+  src: string
+  /**
+   * What is actually in the frame. Required rather than optional: these images
+   * are records of events, and a caption that overstates what a photograph
+   * shows is a factual claim like any other.
+   */
+  alt: string
+}
+
+export type ActivityKind =
+  | 'Ethics Forum'
+  | 'Community Service'
+  | 'Scholarship'
+  | 'Civic Advocacy'
+  | 'Institutional Engagement'
+
+/**
+ * A documented programme activity. Titles match the ones the branch itself
+ * publishes, so the Foundation site and the national site never disagree about
+ * what an event was called.
+ */
+export interface Activity {
+  id: string
+  title: string
+  kind: ActivityKind
+  branch: BranchSlug
+  /** As published by the branch, e.g. "March 14, 2026". Omitted when unconfirmed. */
+  date?: string
+  location?: string
+  /** Guests, partners, or institutions involved. */
+  participants?: string
+  summary: string
+  /** One paragraph per entry. */
+  body: string[]
+  photos: ActivityPhoto[]
+  /** `id` of the matching entry in `workCategories`. */
+  workCategory: string
+}
+
 export interface Stat {
   /** Numeric portion, used by the count-up animation. */
   value: number

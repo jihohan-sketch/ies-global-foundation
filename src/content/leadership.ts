@@ -89,6 +89,7 @@ export const people: Person[] = [
     title: '3rd President, IES Korea',
     tier: 'national',
     branch: 'korea',
+    photo: '/leadership/ryan-cha.jpg',
     bio: '3rd President since January 2026, leading IES Korea — the original branch and operational headquarters. Runs national programming and the Korean chapter network.',
     responsibilities: [
       'National leadership of IES Korea',
@@ -105,6 +106,7 @@ export const people: Person[] = [
     title: 'Co-President, IES United States',
     tier: 'national',
     branch: 'united-states',
+    photo: '/leadership/aden-lee.jpg',
     bio: 'Co-President of IES United States. Focused on establishing founding chapters and adapting IES programming to American schools without loosening shared standards.',
     responsibilities: [
       'National strategy for IES United States',
@@ -119,6 +121,7 @@ export const people: Person[] = [
     title: 'Co-President, IES United States',
     tier: 'national',
     branch: 'united-states',
+    photo: '/leadership/onew-choi.jpg',
     bio: 'Co-President of IES United States. Builds the branch’s programming calendar and its relationships with schools and community organizations.',
     responsibilities: [
       'National programming and events',

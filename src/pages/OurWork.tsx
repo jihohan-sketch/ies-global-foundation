@@ -1,9 +1,29 @@
-import { Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
+import { Card, Container, Eyebrow, Section } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
+import { ActivityFeed } from '@/components/sections/Activities'
+import { activities, activityPhotoCount } from '@/content/activities'
 import { pillars, workCategories } from '@/content/work'
+import { cx } from '@/lib/utils'
 import { useSeo } from '@/lib/seo'
+
+/** The bullet list of example work, shared by both category layouts. */
+function ExampleList({ examples, className }: { examples: string[]; className?: string }) {
+  return (
+    <ul className={cx('space-y-px', className)}>
+      {examples.map((example) => (
+        <li
+          key={example}
+          className="flex items-start gap-4 border-t border-mist/12 py-4 text-[0.9375rem] font-light text-paper/85"
+        >
+          <span aria-hidden className="mt-3 h-px w-4 shrink-0 bg-[var(--accent)]/60" />
+          {example}
+        </li>
+      ))}
+    </ul>
+  )
+}
 
 export default function OurWork() {
   useSeo({
@@ -62,6 +82,10 @@ export default function OurWork() {
                   </span>
                   <h2 className="text-h2 mt-6">{category.title}</h2>
                   <p className="text-lead mt-7 font-light text-mist">{category.summary}</p>
+
+                  {/* With a photograph in the other column the examples move here,
+                      so a category never loses its list to having an image. */}
+                  {category.image && <ExampleList examples={category.examples} className="mt-10" />}
                 </Reveal>
 
                 <Reveal delay={120} className={alternate ? 'lg:order-1' : undefined}>
@@ -70,6 +94,7 @@ export default function OurWork() {
                       src={category.image}
                       alt={category.imageAlt ?? ''}
                       loading="lazy"
+                      decoding="async"
                       className="w-full border border-mist/15 object-cover"
                       style={{ aspectRatio: '4 / 3' }}
                     />
@@ -78,17 +103,7 @@ export default function OurWork() {
                       <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
                         Examples of this work
                       </p>
-                      <ul className="mt-6 space-y-px">
-                        {category.examples.map((example) => (
-                          <li
-                            key={example}
-                            className="flex items-start gap-4 border-t border-mist/12 py-4 text-[0.9375rem] font-light text-paper/85"
-                          >
-                            <span aria-hidden className="mt-3 h-px w-4 shrink-0 bg-[var(--accent)]/60" />
-                            {example}
-                          </li>
-                        ))}
-                      </ul>
+                      <ExampleList examples={category.examples} className="mt-6" />
                     </Card>
                   )}
                 </Reveal>
@@ -98,28 +113,14 @@ export default function OurWork() {
         )
       })}
 
-      {/* ==================================================== PHOTO NOTICE */}
-      <Section size="compact" className="border-t border-mist/12">
-        <Container size="wide">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Photography"
-              title="Real programs, documented."
-              lead="Photographs come from IES events, chapter sessions, and service work. We do not use stock imagery."
-            />
-            <p className="mt-8 max-w-2xl text-sm leading-relaxed font-light text-mist/70">
-              To add photography for a work area, place the image in
-              <code className="mx-1.5 border border-mist/20 px-1.5 py-0.5 font-mono text-xs text-paper/80">
-                public/work/
-              </code>
-              and set the <code className="font-mono text-xs text-paper/80">image</code> field on
-              the matching entry in{' '}
-              <code className="font-mono text-xs text-paper/80">src/content/work.ts</code>. The
-              layout switches automatically.
-            </p>
-          </Reveal>
-        </Container>
-      </Section>
+      {/* ======================================================== ACTIVITIES */}
+      <ActivityFeed
+        activities={activities}
+        tone="deep"
+        eyebrow="Programs and Activities"
+        title="Real programs, documented."
+        lead={`Every entry below is an event the branch that ran it has published, photographed at the event itself — ${activityPhotoCount} photographs in total. We do not use stock imagery.`}
+      />
 
       <CallToAction
         title="Do this work with us"

@@ -40,6 +40,7 @@ updating the site does not mean touching layout code.
 | `branches.ts` | The three national branches — facts, sections, contacts |
 | `leadership.ts` | People, biographies, Foundation offices |
 | `work.ts` | The three pillars and the five programme areas |
+| `activities.ts` | Documented programme activity, with photography |
 | `impact.ts` | Statistics, impact stories, timeline |
 | `news.ts` | News articles |
 | `partners.ts` | Partner categories, named partners, logos |
@@ -73,6 +74,37 @@ the article page, and the sitemap all update automatically.
 
 Without a `cover` image the site generates a deterministic patterned cover, so
 the news index never looks broken.
+
+**Add an activity** — append to `activities` in `activities.ts`, newest first.
+The entry appears on Our Work (whole network) and on its branch page, and the
+`workCategory` field files it under one of the five programme areas.
+
+```ts
+{
+  id: 'a-url-safe-slug',       // also the anchor: /our-work#a-url-safe-slug
+  title: 'As the branch itself titles it',
+  kind: 'Ethics Forum',        // see ActivityKind in types.ts
+  branch: 'korea',
+  date: 'March 14, 2026',      // omit rather than invent one
+  location: 'Where it happened',
+  participants: 'Guests, partners, institutions',
+  summary: 'One or two sentences.',
+  body: ['A paragraph.', 'Another.'],
+  photos: [{ src: '/activities/<id>/lead.jpg', alt: 'What is in the frame.' }],
+  workCategory: 'civic-responsibility',
+}
+```
+
+Photographs live in `public/activities/<id>/`. Resize to 1600px on the long edge
+before committing — the originals off the branch sites run to 5 MB each. `alt` is
+required, not optional: these images are records of events, and a caption that
+overstates what a photograph shows is a factual claim like any other. The first
+photo in the array is the wide lead image; the rest form the grid beneath it.
+
+**Give a work area a photograph** — set `image` and `imageAlt` on the entry in
+`work.ts`. Pointing it at a file already under `public/activities/` avoids
+shipping the same photograph twice. The examples list moves alongside the prose
+rather than disappearing.
 
 **Add a leader** — append to `people` in `leadership.ts` with `tier` set to
 `founding`, `global`, or `national` (and `branch` for national roles). Drop a

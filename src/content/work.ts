@@ -58,6 +58,9 @@ export const workCategories: WorkCategory[] = [
       'Student-led research projects',
       'Responsible technology and AI education',
     ],
+    image: '/activities/environmental-ethics-forum/chamber.jpg',
+    imageAlt:
+      "IES students seated at the desks of a council chamber with printed briefs in front of them during the Environmental Ethics Forum.",
   },
   {
     id: 'community-service',
@@ -71,6 +74,9 @@ export const workCategories: WorkCategory[] = [
       'Scholarship-related service work',
       'Community outreach and support drives',
     ],
+    image: '/activities/guro-happy-childrens-center/lesson.jpg',
+    imageAlt:
+      "An IES volunteer teaching at a whiteboard while children sit on the floor of the Guro Happy Children's Center.",
   },
   {
     id: 'leadership-development',
@@ -84,6 +90,9 @@ export const workCategories: WorkCategory[] = [
       'Project and event management',
       'International collaboration across branches',
     ],
+    image: '/activities/nanoom-korea-scholarship/ceremony.jpg',
+    imageAlt:
+      "An IES student speaking at a lectern during the Nanoom Korea scholarship presentation.",
   },
   {
     id: 'civic-responsibility',
@@ -97,6 +106,9 @@ export const workCategories: WorkCategory[] = [
       'Community problem-solving initiatives',
       'Youth participation in public issues',
     ],
+    image: '/activities/environmental-ethics-forum/assembly.jpg',
+    imageAlt:
+      "IES students with Minister Sunghwan Kim beneath the Environmental Ethics Forum banner at the Nowon-gu Council chamber.",
   },
   {
     id: 'global-collaboration',
@@ -110,6 +122,9 @@ export const workCategories: WorkCategory[] = [
       'Guest speakers reaching the whole network',
       'Cultural and educational exchange',
     ],
+    image: '/activities/un-human-rights-office-visit/delegation.jpg',
+    imageAlt:
+      "Four IES students in front of a UN-branded backdrop at the Office of the High Commissioner for Human Rights in Seoul.",
   },
 ]
 

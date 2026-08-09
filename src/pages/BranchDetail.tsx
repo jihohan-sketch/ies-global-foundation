@@ -4,6 +4,8 @@ import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { ArticleCard, PersonCard } from '@/components/sections/Cards'
 import { CallToAction } from '@/components/sections/CallToAction'
+import { ActivityFeed } from '@/components/sections/Activities'
+import { activitiesByBranch } from '@/content/activities'
 import { branchBySlug, branches } from '@/content/branches'
 import { nationalLeadership } from '@/content/leadership'
 import { sortedArticles } from '@/content/news'
@@ -26,6 +28,7 @@ export default function BranchDetail() {
   const leaders = nationalLeadership.filter((p) => p.branch === branch.slug)
   const related = sortedArticles.filter((a) => a.branch === branch.name).slice(0, 3)
   const others = branches.filter((b) => b.slug !== branch.slug)
+  const branchActivities = activitiesByBranch(branch.slug)
 
   return (
     <>
@@ -109,6 +112,14 @@ export default function BranchDetail() {
           </div>
         </Container>
       </Section>
+
+      {/* ========================================================= ACTIVITIES */}
+      <ActivityFeed
+        activities={branchActivities}
+        eyebrow="Programs and Activities"
+        title={`What ${branch.name} has run`}
+        lead={`Forums, service partnerships, scholarships, and civic work — as published by ${branch.name}, photographed at the events themselves.`}
+      />
 
       {/* ========================================================= LEADERSHIP */}
       {leaders.length > 0 && (

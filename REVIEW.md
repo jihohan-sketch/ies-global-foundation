@@ -7,8 +7,12 @@ site goes live.**
 Sources used to build the current content:
 
 - <https://ie-society.com/> — IES Korea's existing website
+- <https://iesusa.space/> — IES United States' website
 - <https://linktr.ee/iesnational> — official link hub
 - Korean Wikipedia: 세계청소년사회윤리재단
+
+All photography and every activity date, venue and named guest on this site came
+from the first two. Nothing here is stock imagery and nothing was inferred.
 
 ---
 
@@ -26,7 +30,7 @@ has changed since.
 | Motto "Ethics in Action"; mission "Turn dialogue into service" | `content/site.ts` | ✅ published |
 | Three A's: Applied Ethics, Academic Vitality, Advancing Equity | `content/site.ts` | ✅ published |
 | Ethics forums on medical, AI, military, environmental, human rights | `content/branches.ts` | ✅ published |
-| Petition to National Assembly re: generative AI for under-12s | `content/branches.ts`, `content/impact.ts` | ✅ published — **needs a date** |
+| Petition to National Assembly re: generative AI for under-12s | `content/branches.ts`, `content/impact.ts`, `content/activities.ts` | ✅ published — dated from the petition record itself: consent window 6 Nov – 6 Dec 2025, closing at 514 signatures |
 | Service partners: Nanoom Korea, Jiguchon Children's Center, Guro Happy Children's Center | `content/partners.ts` | ✅ published |
 | Collaborators: YMUN Korea, UN OHCHR, National Assembly of Korea, Korea Legacy Committee | `content/partners.ts` | ✅ published |
 | Email theiesociety@gmail.com; Instagram @iesnational; LinkedIn; YouTube | `content/site.ts` | ✅ published |
@@ -71,7 +75,45 @@ Entries still reading **"Date to be confirmed"** must be dated or deleted:
       with no `holder` render as "Appointment to be confirmed" by design
 - [ ] Pronouns: all bios use they/them because no pronouns were supplied.
       Replace with each person's actual pronouns.
-- [ ] Add headshots to `public/leadership/` and set `photo:` on each person
+- [x] Headshots are in `public/leadership/` with `photo:` set, sourced from
+      ie-society.com and iesusa.space. Two gaps and one defect remain:
+  - [ ] **Jimin Lee** has no photograph on either branch site — renders as a
+        monogram. Request one from IES UK Society.
+  - [ ] **Sean Han** likewise — the existing file predates this pass and has no
+        traceable source. Confirm it is the right person and cleared for use.
+  - [ ] **Ryan Jimyung Cha** is shipped at 320×320 from a 170px source, the only
+        one published anywhere. It is visibly soft next to the others. Replace
+        with a proper file — this is the sitting National President.
+
+### Photography — `src/content/activities.ts`, `public/activities/`
+
+37 photographs and 13 activity entries were taken from IES Korea's own site.
+Every entry's title, date, venue and named guests follow the branch's published
+wording; nothing was inferred. Before launch:
+
+- [ ] **Consent for identifiable people.** Several photographs show children at
+      the Jiguchon and Guro Happy children's centres, and others show named
+      students and serving officers. Written permission from the centres, from
+      guardians of any identifiable minor, and from adults appearing in a
+      recognisable way should be on file. This is the single largest open risk in
+      this section — it is a legal question under PIPA, not an editorial one.
+- [ ] **Right to publish.** Confirm IES holds or has been granted the rights to
+      each photograph. Two candidates were deliberately **excluded** during this
+      pass and must not be reinstated without a licence: a Yonhap News image of
+      Major General Lombardo, and a Yale MUN logo.
+- [ ] `ROK–US Cherry Blossom Ball` carries **no date** — the branch has never
+      published one. Date it or remove the entry.
+- [ ] **Bioethics forum guest's name.** The branch site gives both "Dr. Hyunju
+      Lee" (timeline, and the event's own speaker card, which also states
+      endocrinologist, Santa Fe Springs, California) and "Dr. Hyunju Kim"
+      (speaker list). This site uses **Lee**. Confirm with the guest.
+- [ ] **AI ethics forum guest's name.** Published as both "ROKAF General Kim
+      Tae-wook" and "General Taewook Kim". This site uses the former. Settle the
+      romanisation and use one form everywhere.
+- [ ] Confirm the ₩1,000,000 scholarship figure and the 500+ figure for the YMUN
+      Korea community fair against internal records.
+- [ ] The bioethics forum has only one usable photograph (the online session).
+      Request more from the branch, or leave it as is.
 
 ### Branch content — `src/content/branches.ts`
 
@@ -86,6 +128,9 @@ Entries still reading **"Date to be confirmed"** must be dated or deleted:
 - [ ] **All six articles are structural placeholders.** They describe plausible
       activity but are not records of real events. Rewrite or delete every one
       before launch — do not publish them as reporting.
+- Note: no photograph has been attached to any of them, deliberately. Real
+  photography on a placeholder article would make an invented record look
+  documented. Rewrite the articles first, then add covers.
 
 ### Legal — `src/content/legal.ts`
 
