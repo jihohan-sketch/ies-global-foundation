@@ -210,9 +210,30 @@ schools below are as **IES Korea publishes them** — none of it is inferred.
       proves nothing — Instagram answers for handles that do not exist. One of
       these is wrong on a page the organization controls, and it appears in three
       places here plus the Organization JSON-LD.
-- No photographs were taken from Instagram. Its media cannot be fetched without
-  a logged-in session, and working around that is not something to do; if there
-  are posts worth adding, export them from the account and drop the files in.
+- Instagram media cannot be fetched without a logged-in session, and working
+  around that is not something to do. A Drive folder of 47 screenshots of the
+  Instagram feed was reviewed instead (see below).
+- [ ] If there is more on the account than the feed shows — Stories, archived
+      posts, or the original files behind the posts — **export the originals**
+      rather than screenshotting. Screenshots arrive at roughly a third of the
+      resolution the same photograph already has on ie-society.com.
+
+### Reviewed and mostly declined — "IES Joseph Media Collection" Drive folder
+
+50 files, owned by `jacobsung29@gmail.com`. Perceptual hashing against the 70
+photographs already on the site found:
+
+- **3 videos** byte-identical to the clips already in
+  `public/activities/ymun-korea-community-fair/`.
+- **40 of 47 screenshots** the same photographs already published, at lower
+  resolution — Instagram crops of images taken from ie-society.com at full size.
+- **6 more** near-identical alternate frames of group shots already represented
+  (the Environmental Ethics Forum group photo alone had four variants).
+- **1 genuinely new photograph**, now the lead image on the Camp Humphreys entry:
+  six students with Major General Lombardo and the unit colours.
+
+Nothing was lost by declining the rest, and adding it would have meant publishing
+worse copies of photographs already on the site.
 
 ### Branch content — `src/content/branches.ts`
 

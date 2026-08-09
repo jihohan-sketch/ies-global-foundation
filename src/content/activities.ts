@@ -29,6 +29,10 @@ export const activities: Activity[] = [
     ],
     photos: [
       {
+        src: '/activities/camp-humphreys-cadets/delegation.jpg',
+        alt: 'Six IES students with Major General Charles Lombardo, photographed between the United States flag and unit colours at Camp Humphreys.',
+      },
+      {
         src: '/activities/camp-humphreys-cadets/discussion.jpg',
         alt: 'Two IES students in suits speaking with a US Army officer in the lobby of a building at Camp Humphreys.',
       },
