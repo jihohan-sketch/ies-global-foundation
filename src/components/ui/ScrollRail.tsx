@@ -291,6 +291,11 @@ export function ScrollRail({
              pulls `scrollLeft` back to the nearest card on every frame the timer
              nudges it forward, and the rail sits there vibrating. */
           continuous ? 'snap-none' : 'snap-x snap-mandatory',
+          /* Soft edges, so cards enter and leave rather than being sliced off at
+             the container. Only when the rail actually overflows — a mask on a
+             rail that fits would fade the first and last card for no reason. */
+          overflowing &&
+            '[mask-image:linear-gradient(to_right,transparent_0,black_3rem,black_calc(100%-3rem),transparent_100%)]',
           // The scrollbar is suppressed because the buttons and the peeking
           // next card already say "there is more"; the track stays scrollable.
           '[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',

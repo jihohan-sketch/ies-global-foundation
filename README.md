@@ -151,6 +151,29 @@ Four things about that rail are load-bearing, not stylistic:
   scroll: cards that had never been in view sat at opacity 0 and their fade-in
   stalled when the rail brought them in. The rail's own movement is the animation.
 
+### Photograph presentation
+
+`GalleryImage` in `components/sections/Media.tsx` is the only way photographs
+should be rendered in galleries. It fades, unblurs and settles each image on its
+own `load` event, which is a deliberate choice over a scroll observer: because the
+images are lazily loaded, the load event *is* the moment they scroll into view, so
+the effect arrives with the scroll — and it cannot strand a photograph at opacity
+0 if an observer callback goes missing, which is what made the first home rail
+render blank. It also settles on `error`, so a broken path shows its alt text
+instead of an invisible box that reads as a layout bug.
+
+`Lightbox` is the full-size viewer behind the Gallery grid. It is **rendered
+through a portal into `document.body`**, and that is load-bearing: `position:
+fixed` with `z-index: 100` was not enough, because the section containing the grid
+establishes a stacking context, so the whole subtree paints as one layer and the
+site header at `z-50` still covered the lightbox controls. A portal is the only
+reliable escape. Focus moves in on open and returns to the thumbnail that opened
+it, Escape closes, the arrow keys step through the set, and the page behind cannot
+scroll.
+
+`ScrollRail` masks its own left and right edges with a gradient when it overflows,
+so cards fade in and out rather than being sliced at the container.
+
 **Show photographs on Impact** — `fieldPhotos` in `impact.ts` drives the "In the
 Field" strip. Point entries at files already under `public/activities/`; the
 captions are the photographs' own alt text, so a caption cannot drift from what

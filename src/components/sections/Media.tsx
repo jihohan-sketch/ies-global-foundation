@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
@@ -117,6 +118,69 @@ export function VideoSection({
   )
 }
 
+/**
+ * A photograph that fades and settles as it arrives.
+ *
+ * Keyed off the image's own `load` event rather than a scroll observer, which
+ * matters for two reasons. It cannot strand a photograph at opacity 0 if an
+ * observer callback goes missing — the failure mode that made the first version
+ * of the home rail render blank. And because the images are lazily loaded, the
+ * load event *is* the moment they scroll into view, so the effect arrives with
+ * the scroll for free.
+ *
+ * The ref callback checks `complete` because a cached image can finish decoding
+ * before React attaches the handler, and would then never fade in at all.
+ */
+export function GalleryImage({
+  src,
+  alt,
+  eager = false,
+  className,
+  aspectRatio = '4 / 3',
+  zoomOnHover = false,
+}: {
+  src: string
+  alt: string
+  eager?: boolean
+  className?: string
+  aspectRatio?: string
+  zoomOnHover?: boolean
+}) {
+  const [loaded, setLoaded] = useState(false)
+
+  const attach = useCallback((node: HTMLImageElement | null) => {
+    if (node?.complete) setLoaded(true)
+  }, [])
+
+  return (
+    <span
+      className={cx(
+        'relative block overflow-hidden border border-mist/15 bg-navy-700/40',
+        className,
+      )}
+      style={{ aspectRatio }}
+    >
+      <img
+        ref={attach}
+        src={src}
+        alt={alt}
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
+        onLoad={() => setLoaded(true)}
+        /* Also settle on error, so a broken path shows its alt text rather than
+           an invisible box that looks like a layout bug. */
+        onError={() => setLoaded(true)}
+        className={cx(
+          'h-full w-full object-cover',
+          'transition-[opacity,transform,filter] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
+          loaded ? 'scale-100 opacity-100 blur-0' : 'scale-[1.04] opacity-0 blur-[6px]',
+          zoomOnHover && 'group-hover:scale-[1.04]',
+        )}
+      />
+    </span>
+  )
+}
+
 export interface GalleryItem {
   id: string
   src: string
@@ -166,17 +230,17 @@ export function GalleryRail({ items }: { items: GalleryItem[] }) {
               tabIndex={duplicate ? -1 : undefined}
               className="group block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
             >
-              <figure className="overflow-hidden border border-mist/18 bg-navy-700/45 transition-colors duration-300 group-hover:border-gold/45">
-                <img
+              <figure className="border border-mist/18 bg-navy-700/45 transition-colors duration-300 group-hover:border-gold/45">
+                {/* The first three are in view on arrival; the rest wait until
+                    the rail reaches them. The second copy is never the first
+                    thing seen, so all of it can wait. */}
+                <GalleryImage
                   src={item.src}
                   alt={duplicate ? '' : item.alt}
-                  /* The first three are in view on arrival; the rest wait until
-                     the rail reaches them. The second copy is never the first
-                     thing seen, so all of it can wait. */
-                  loading={!duplicate && i < 3 ? 'eager' : 'lazy'}
-                  decoding="async"
-                  className="w-full object-cover"
-                  style={{ aspectRatio: '3 / 2' }}
+                  eager={!duplicate && i < 3}
+                  aspectRatio="3 / 2"
+                  zoomOnHover
+                  className="border-0"
                 />
                 <figcaption className="border-t border-mist/12 p-6">
                   <span className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
@@ -237,6 +301,167 @@ export function GallerySection({ items }: { items: GalleryItem[] }) {
   )
 }
 
+export interface LightboxShot {
+  src: string
+  alt: string
+  caption?: string
+}
+
+/**
+ * Full-size viewer for one photograph out of a set.
+ *
+ * Deliberately a real dialog rather than a styled overlay: focus moves in on
+ * open and returns to the thumbnail that opened it on close, Escape closes,
+ * the arrow keys move through the set, and the page behind it cannot scroll.
+ * A gallery that swallows the keyboard is worse than one with no lightbox.
+ */
+export function Lightbox({
+  shots,
+  index,
+  onClose,
+  onIndex,
+}: {
+  shots: LightboxShot[]
+  index: number | null
+  onClose: () => void
+  onIndex: (next: number) => void
+}) {
+  const open = index !== null
+  const panelRef = useRef<HTMLDivElement>(null)
+  const restoreTo = useRef<Element | null>(null)
+
+  useEffect(() => {
+    if (!open) return
+    restoreTo.current = document.activeElement
+    panelRef.current?.focus()
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+      if (event.key === 'ArrowRight') onIndex((index + 1) % shots.length)
+      if (event.key === 'ArrowLeft') onIndex((index - 1 + shots.length) % shots.length)
+    }
+    window.addEventListener('keydown', onKey)
+
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = previousOverflow
+      /* Returning focus is not a nicety — without it a keyboard user lands back
+         at the top of the document and has to walk the whole grid again. */
+      if (restoreTo.current instanceof HTMLElement) restoreTo.current.focus()
+    }
+  }, [open, index, shots.length, onClose, onIndex])
+
+  if (index === null) return null
+  const shot = shots[index]
+
+  /*
+   * Rendered into `document.body` rather than in place.
+   *
+   * `position: fixed` and a high `z-index` are not enough on their own: the grid
+   * that opens this sits inside a section that establishes a stacking context, so
+   * everything within it paints as one layer and the site header — at a far lower
+   * z-index — still covered these controls. A portal leaves that context entirely,
+   * which is the only reliable way to put a modal above the page.
+   */
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[100] flex flex-col bg-navy/95 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Photograph ${index + 1} of ${shots.length}`}
+    >
+      {/* The backdrop closes on click; the panel inside stops the bubble so a
+          click on the photograph itself does not dismiss it. */}
+      <button
+        type="button"
+        aria-label="Close photograph"
+        onClick={onClose}
+        className="absolute inset-0 h-full w-full cursor-default"
+      />
+
+      <div
+        ref={panelRef}
+        tabIndex={-1}
+        className="relative flex h-full flex-col focus-visible:outline-none"
+      >
+        <div className="flex items-center justify-between gap-4 px-6 py-5 sm:px-10">
+          <span className="text-[0.6875rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+            {index + 1} / {shots.length}
+          </span>
+          <div className="flex gap-2">
+            <LightboxButton
+              label="Previous photograph"
+              onClick={() => onIndex((index - 1 + shots.length) % shots.length)}
+            >
+              <path d="M12.5 4 6.5 10l6 6" />
+            </LightboxButton>
+            <LightboxButton
+              label="Next photograph"
+              onClick={() => onIndex((index + 1) % shots.length)}
+            >
+              <path d="M7.5 4l6 6-6 6" />
+            </LightboxButton>
+            <LightboxButton label="Close photograph" onClick={onClose}>
+              <path d="M5 5l10 10M15 5L5 15" />
+            </LightboxButton>
+          </div>
+        </div>
+
+        <div className="flex min-h-0 flex-1 items-center justify-center px-6 pb-4 sm:px-10">
+          {/* `key` forces a fresh element per photograph, so the fade replays as
+              the set is stepped through rather than snapping to the next frame. */}
+          <img
+            key={shot.src}
+            src={shot.src}
+            alt={shot.alt}
+            className="max-h-full max-w-full animate-[ies-lightbox_600ms_cubic-bezier(0.22,1,0.36,1)_both] object-contain"
+          />
+        </div>
+
+        <p className="px-6 pb-8 text-center text-[0.8125rem] leading-relaxed font-light text-mist/80 sm:px-10">
+          {shot.caption ?? shot.alt}
+        </p>
+      </div>
+    </div>,
+    document.body,
+  )
+}
+
+function LightboxButton({
+  children,
+  label,
+  onClick,
+}: {
+  children: ReactNode
+  label: string
+  onClick: () => void
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="relative flex h-11 w-11 items-center justify-center border border-mist/30 bg-navy-700/60 text-paper transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--accent)]"
+    >
+      <svg
+        viewBox="0 0 20 20"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-4 w-4"
+        aria-hidden
+      >
+        {children}
+      </svg>
+    </button>
+  )
+}
+
 /**
  * A band of photographs from across the network.
  *
@@ -268,14 +493,7 @@ export function PhotoStrip({
           {photos.map((photo, i) => (
             <Reveal key={photo.src} delay={i * 70}>
               <figure>
-                <img
-                  src={photo.src}
-                  alt={photo.alt}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full border border-mist/15 object-cover"
-                  style={{ aspectRatio: '4 / 3' }}
-                />
+                <GalleryImage src={photo.src} alt={photo.alt} eager={i < 3} />
                 <figcaption className="mt-3 text-[0.8125rem] leading-relaxed font-light text-mist/75">
                   {photo.alt}
                 </figcaption>

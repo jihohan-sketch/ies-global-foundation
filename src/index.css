@@ -266,3 +266,27 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ==========================================================================
+   LIGHTBOX
+   ========================================================================== */
+
+/*
+ * Entry for the full-size photograph. Kept as a keyframe animation rather than a
+ * transition so it replays whenever the element is replaced — stepping through
+ * the set remounts the image by `key`, and a transition would have nothing to
+ * transition from.
+ *
+ * Not exempted from the reduced-motion rule above: unlike the scroll reveals,
+ * this one collapses to nothing there, and the photograph simply appears.
+ */
+@keyframes ies-lightbox {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

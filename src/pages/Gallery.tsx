@@ -4,7 +4,7 @@ import { Container, Eyebrow, Section } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
-import { VideoEmbed } from '@/components/sections/Media'
+import { GalleryImage, Lightbox, VideoEmbed } from '@/components/sections/Media'
 import { activities } from '@/content/activities'
 import { channelUrl, organizationVideos } from '@/content/videos'
 import { useSeo } from '@/lib/seo'
@@ -59,11 +59,20 @@ export default function Gallery() {
   })
 
   const [active, setActive] = useState('all')
+  const [viewing, setViewing] = useState<number | null>(null)
 
   const photos = useMemo(
     () => (active === 'all' ? allPhotos : allPhotos.filter((p) => p.activityId === active)),
     [active],
   )
+
+  /* The lightbox indexes into the filtered set, so stepping through it stays
+     inside the programme being looked at. Changing the filter closes it, since
+     the index it was holding no longer means the same photograph. */
+  const changeFilter = (id: string) => {
+    setViewing(null)
+    setActive(id)
+  }
 
   return (
     <>
@@ -96,7 +105,7 @@ export default function Gallery() {
                   <button
                     key={filter.id}
                     type="button"
-                    onClick={() => setActive(filter.id)}
+                    onClick={() => changeFilter(filter.id)}
                     aria-pressed={selected}
                     className={cx(
                       'min-h-11 rounded-[3px] border px-4 py-2 text-[0.8125rem] font-light transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-3',
@@ -123,14 +132,23 @@ export default function Gallery() {
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {photos.map((photo, i) => (
               <figure key={photo.src} className="flex flex-col">
-                <img
-                  src={photo.src}
-                  alt={photo.alt}
-                  loading={i < 6 ? 'eager' : 'lazy'}
-                  decoding="async"
-                  className="w-full border border-mist/15 bg-navy-700/40 object-cover"
-                  style={{ aspectRatio: '4 / 3' }}
-                />
+                {/* A button, not a div with a click handler: enlarging a
+                    photograph has to be reachable by keyboard, and the browser
+                    gives that away free on the right element. */}
+                <button
+                  type="button"
+                  onClick={() => setViewing(i)}
+                  aria-label={`Enlarge: ${photo.alt}`}
+                  className="group block cursor-zoom-in focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--accent)]"
+                >
+                  <GalleryImage
+                    src={photo.src}
+                    alt={photo.alt}
+                    eager={i < 6}
+                    zoomOnHover
+                    className="transition-colors duration-300 group-hover:border-gold/45"
+                  />
+                </button>
                 <figcaption className="mt-3 text-[0.8125rem] leading-relaxed font-light text-mist/75">
                   {photo.alt}
                   {active === 'all' && (
@@ -148,6 +166,17 @@ export default function Gallery() {
               </figure>
             ))}
           </div>
+
+          <Lightbox
+            shots={photos.map((photo) => ({
+              src: photo.src,
+              alt: photo.alt,
+              caption: `${photo.alt} — ${photo.activityTitle}`,
+            }))}
+            index={viewing}
+            onClose={() => setViewing(null)}
+            onIndex={setViewing}
+          />
         </Container>
       </Section>
 
