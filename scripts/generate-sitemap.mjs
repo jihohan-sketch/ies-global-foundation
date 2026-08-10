@@ -23,6 +23,7 @@ const staticRoutes = [
   ['/about', '0.9', 'monthly'],
   ['/global-network', '0.9', 'monthly'],
   ['/our-work', '0.8', 'monthly'],
+  ['/gallery', '0.7', 'monthly'],
   ['/leadership', '0.8', 'monthly'],
   ['/impact', '0.8', 'monthly'],
   ['/partners', '0.7', 'monthly'],

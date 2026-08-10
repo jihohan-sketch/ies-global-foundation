@@ -10,6 +10,7 @@ const About = lazy(() => import('@/pages/About'))
 const GlobalNetwork = lazy(() => import('@/pages/GlobalNetwork'))
 const BranchDetail = lazy(() => import('@/pages/BranchDetail'))
 const OurWork = lazy(() => import('@/pages/OurWork'))
+const Gallery = lazy(() => import('@/pages/Gallery'))
 const Leadership = lazy(() => import('@/pages/Leadership'))
 const Impact = lazy(() => import('@/pages/Impact'))
 const Partners = lazy(() => import('@/pages/Partners'))
@@ -47,6 +48,7 @@ export default function App() {
         <Route path="global-network" element={split(<GlobalNetwork />)} />
         <Route path="global-network/:slug" element={split(<BranchDetail />)} />
         <Route path="our-work" element={split(<OurWork />)} />
+        <Route path="gallery" element={split(<Gallery />)} />
         <Route path="leadership" element={split(<Leadership />)} />
         <Route path="impact" element={split(<Impact />)} />
         <Route path="partners" element={split(<Partners />)} />
