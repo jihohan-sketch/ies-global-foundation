@@ -606,12 +606,20 @@ export const activityPhotoCount = activities.reduce((n, a) => n + a.photos.lengt
  * the activities themselves, and grows on its own when an activity is added.
  * Each item links to the entry it came from, so the gallery is a way into the
  * work rather than decoration.
+ *
+ * Activities without a photograph are skipped rather than indexed into blindly.
+ * `photos` is allowed to be empty by the type — the gallery page already filters
+ * on it — and this runs at module scope in the entry bundle, so reading `.src`
+ * off `undefined` would not fail quietly on one card: it would throw before the
+ * first render and leave the whole site blank.
  */
-export const galleryItems = activities.map((activity) => ({
-  id: activity.id,
-  src: activity.photos[0].src,
-  alt: activity.photos[0].alt,
-  title: activity.title,
-  kind: activity.kind,
-  href: `/our-work#${activity.id}`,
-}))
+export const galleryItems = activities
+  .filter((activity) => activity.photos.length > 0)
+  .map((activity) => ({
+    id: activity.id,
+    src: activity.photos[0].src,
+    alt: activity.photos[0].alt,
+    title: activity.title,
+    kind: activity.kind,
+    href: `/our-work#${activity.id}`,
+  }))

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Eyebrow, Section } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
@@ -73,6 +73,20 @@ export default function Gallery() {
     setViewing(null)
     setActive(id)
   }
+
+  /* Both memoised for the viewer's benefit rather than this page's: it preloads
+     the neighbouring photographs off the back of these identities, and a fresh
+     array or closure on every render would re-run that on every keystroke. */
+  const shots = useMemo(
+    () =>
+      photos.map((photo) => ({
+        src: photo.src,
+        alt: photo.alt,
+        caption: `${photo.alt} — ${photo.activityTitle}`,
+      })),
+    [photos],
+  )
+  const closeViewer = useCallback(() => setViewing(null), [])
 
   return (
     <>
@@ -167,16 +181,7 @@ export default function Gallery() {
             ))}
           </div>
 
-          <Lightbox
-            shots={photos.map((photo) => ({
-              src: photo.src,
-              alt: photo.alt,
-              caption: `${photo.alt} — ${photo.activityTitle}`,
-            }))}
-            index={viewing}
-            onClose={() => setViewing(null)}
-            onIndex={setViewing}
-          />
+          <Lightbox shots={shots} index={viewing} onClose={closeViewer} onIndex={setViewing} />
         </Container>
       </Section>
 

@@ -1,6 +1,26 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { cx, prefersReducedMotion } from '@/lib/utils'
 
+/**
+ * Time constant for the drift's speed ramp, in milliseconds.
+ *
+ * This is a time *constant*, not a duration: the ramp below closes a fixed
+ * proportion of the remaining gap per millisecond, so it settles after roughly
+ * four or five of these. 90 puts a full stop at about 420ms — quick enough that
+ * a cursor landing on a card feels like it stopped the rail, slow enough to
+ * read as easing rather than a cut. 260 was tried first and was a mistake: it
+ * left the rail visibly creeping for a second and a half after the hover, which
+ * reads as the pause not having worked.
+ */
+const RAMP_MS = 90
+
+/**
+ * Below this fraction of full speed, call it stopped. Without it the ramp
+ * chases an asymptote and the loop never parks. At 38px/s this threshold is
+ * 0.4px per second — three seconds to cross a pixel.
+ */
+const RAMP_FLOOR = 0.01
+
 /*
  * Horizontal card rail.
  *
@@ -175,12 +195,34 @@ export function ScrollRail({
     return () => window.clearInterval(timer)
   }, [running, continuous, intervalMs, step])
 
+  /*
+   * Current fraction of full speed, held across effect runs.
+   *
+   * The rail used to cut straight from full speed to nothing the instant a
+   * cursor crossed it, and back again on the way out — correct, and it read as
+   * a stutter rather than as a pause, because nothing physical stops like that.
+   * Easing it in and out is what makes the hover feel like the rail responding
+   * rather than the animation being killed.
+   */
+  const rateRef = useRef(0)
+
   /* Continuous mode: drift a fraction of a pixel per frame.
-     The wrap subtracts half the scroll width — which is why the caller has to
-     render the children twice — and because both halves are identical, the seam
-     is invisible. */
+     The wrap subtracts one copy of the children — which is why the caller has
+     to render them twice — and because both halves are identical, the seam is
+     invisible. */
+  const drifting = continuous && overflowing
+  /* Separated from `drifting` so that stopping does not tear the loop down: it
+     has to keep running long enough to ease the speed back to zero. */
+  const wanted = playing === true && !interacting && onScreen ? 1 : 0
+
   useEffect(() => {
-    if (!running || !continuous) return
+    if (!drifting) {
+      rateRef.current = 0
+      return
+    }
+    // Already stopped and asked to stay stopped: no frames needed at all.
+    if (wanted === 0 && rateRef.current === 0) return
+
     const track = trackRef.current
     if (!track) return
 
@@ -199,6 +241,18 @@ export function ScrollRail({
     let position = track.scrollLeft
     let written = position
 
+    /*
+     * The wrap distance is one copy of the children, which is *not* half the
+     * scroll width.
+     *
+     * `scrollWidth` spans 2N cards but only 2N−1 gaps — there is no gap after
+     * the last one — so half of it falls half a gap short of a whole copy. With
+     * 13 cards at 448px and a 24px gap that is 6124 against a true period of
+     * 6136, and the rail hitched 12px backwards on every loop. Adding one gap
+     * before halving restores the missing half-gap at each end.
+     */
+    const gap = Number.parseFloat(getComputedStyle(track).columnGap || '0') || 0
+
     const tick = (now: number) => {
       /* Clamped: coming back to a backgrounded tab hands over a delta of many
          seconds, which would teleport the rail. */
@@ -210,18 +264,32 @@ export function ScrollRail({
          it instead of yanking it back. */
       if (Math.abs(track.scrollLeft - written) > 2) position = track.scrollLeft
 
-      const half = track.scrollWidth / 2
-      position += (pxPerSecond * elapsed) / 1000
-      if (half > 0 && position >= half) position -= half
+      /*
+       * Ease the speed toward what is wanted rather than jumping to it.
+       *
+       * An exponential approach, so the result does not depend on the frame
+       * rate: each millisecond closes a fixed proportion of the remaining gap.
+       * It leaves and arrives gently at both ends, which is the shape a glide
+       * to a halt actually has.
+       */
+      rateRef.current += (wanted - rateRef.current) * (1 - Math.exp(-elapsed / RAMP_MS))
+      if (wanted === 0 && rateRef.current < RAMP_FLOOR) rateRef.current = 0
+
+      const period = (track.scrollWidth + gap) / 2
+      position += (pxPerSecond * rateRef.current * elapsed) / 1000
+      if (period > 0 && position >= period) position -= period
 
       track.scrollLeft = position
       written = track.scrollLeft
+
+      // Fully stopped: park the loop instead of burning a frame on nothing.
+      if (wanted === 0 && rateRef.current === 0) return
       frame = requestAnimationFrame(tick)
     }
 
     frame = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(frame)
-  }, [running, continuous, pxPerSecond])
+  }, [drifting, wanted, pxPerSecond])
 
   return (
     <div

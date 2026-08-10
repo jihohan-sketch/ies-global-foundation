@@ -272,18 +272,49 @@
    ========================================================================== */
 
 /*
- * Entry for the full-size photograph. Kept as a keyframe animation rather than a
- * transition so it replays whenever the element is replaced — stepping through
- * the set remounts the image by `key`, and a transition would have nothing to
- * transition from.
+ * Entry for the viewer as a whole — the backdrop and its controls arriving
+ * together, once, on open. The photograph inside is *not* animated per step:
+ * see the note on the `img` in Media.tsx for why a per-photograph fade made
+ * stepping through a set read as a blink.
  *
- * Not exempted from the reduced-motion rule above: unlike the scroll reveals,
- * this one collapses to nothing there, and the photograph simply appears.
+ * Keyframes rather than transitions because both of these run on elements that
+ * have only just been mounted, and a transition has nothing to transition from.
+ *
+ * Neither is exempted from the reduced-motion rule above: unlike the scroll
+ * reveals, these collapse to nothing there and the viewer simply appears.
  */
-@keyframes ies-lightbox {
+@keyframes ies-lightbox-in {
   from {
     opacity: 0;
-    transform: scale(0.97);
+    backdrop-filter: blur(0);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/*
+ * Waiting state for a photograph that has not arrived yet. Deliberately a
+ * brightness breath rather than the usual sweeping highlight — a shimmer
+ * travelling across a grid of 67 tiles is a lot of movement for something that
+ * is only meant to say "coming". This one collapses to a flat frame under
+ * reduced motion, which is the right outcome.
+ */
+@keyframes ies-placeholder {
+  0%,
+  100% {
+    background-color: color-mix(in srgb, var(--color-navy-700) 40%, transparent);
+  }
+  50% {
+    background-color: color-mix(in srgb, var(--color-navy-700) 72%, transparent);
+  }
+}
+
+/* The caption under the photograph, which does change per step. */
+@keyframes ies-caption-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
   to {
     opacity: 1;

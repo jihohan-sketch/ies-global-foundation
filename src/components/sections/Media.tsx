@@ -156,6 +156,11 @@ export function GalleryImage({
     <span
       className={cx(
         'relative block overflow-hidden border border-mist/15 bg-navy-700/40',
+        /* A slow breath on the empty frame while the photograph is on its way.
+           The gallery holds 67 full-size originals and they arrive over several
+           seconds; without this the page is a field of flat rectangles that
+           look like the images failed rather than like they are coming. */
+        !loaded && 'animate-[ies-placeholder_1.8s_ease-in-out_infinite]',
         className,
       )}
       style={{ aspectRatio }}
@@ -330,6 +335,17 @@ export function Lightbox({
   const panelRef = useRef<HTMLDivElement>(null)
   const restoreTo = useRef<Element | null>(null)
 
+  /*
+   * Opening and closing only — deliberately keyed on `open` alone.
+   *
+   * This used to sit in one effect with the key handler, which depended on
+   * `index` and on the callbacks the parent rebuilds every render. Stepping to
+   * the next photograph therefore tore the whole thing down and put it back:
+   * body scroll was unlocked and re-locked, and focus was handed back to the
+   * thumbnail behind the overlay before being pulled into the panel again —
+   * which scrolls the page underneath to wherever that thumbnail sits. Arrowing
+   * through a set left the page at a different scroll position than it started.
+   */
   useEffect(() => {
     if (!open) return
     restoreTo.current = document.activeElement
@@ -338,21 +354,48 @@ export function Lightbox({
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
 
+    return () => {
+      document.body.style.overflow = previousOverflow
+      /* Returning focus is not a nicety — without it a keyboard user lands back
+         at the top of the document and has to walk the whole grid again. */
+      if (restoreTo.current instanceof HTMLElement) restoreTo.current.focus()
+    }
+  }, [open])
+
+  /* The key handler, separately: it genuinely does depend on the current index,
+     and re-binding a listener is free — unlike moving focus and the scroll lock
+     above, which are not. */
+  useEffect(() => {
+    if (index === null) return
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose()
       if (event.key === 'ArrowRight') onIndex((index + 1) % shots.length)
       if (event.key === 'ArrowLeft') onIndex((index - 1 + shots.length) % shots.length)
     }
     window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [index, shots.length, onClose, onIndex])
 
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      document.body.style.overflow = previousOverflow
-      /* Returning focus is not a nicety — without it a keyboard user lands back
-         at the top of the document and has to walk the whole grid again. */
-      if (restoreTo.current instanceof HTMLElement) restoreTo.current.focus()
+  /*
+   * Fetch the neighbours in the background, so stepping through the set is
+   * instant instead of a wait on a full-size photograph.
+   *
+   * This is the difference between the viewer feeling smooth and feeling
+   * broken. These are 1600px originals: pressing the arrow used to swap in a
+   * `src` that had never been requested, leaving the frame empty for as long as
+   * it took to arrive. Decoding the next one before it is asked for means the
+   * swap below has pixels ready and happens within a frame.
+   */
+  useEffect(() => {
+    if (index === null) return
+    for (const offset of [1, -1]) {
+      const neighbour = shots[(index + offset + shots.length) % shots.length]
+      if (neighbour) {
+        const preload = new Image()
+        preload.src = neighbour.src
+      }
     }
-  }, [open, index, shots.length, onClose, onIndex])
+  }, [index, shots])
 
   if (index === null) return null
   const shot = shots[index]
@@ -368,7 +411,10 @@ export function Lightbox({
    */
   return createPortal(
     <div
-      className="fixed inset-0 z-[100] flex flex-col bg-navy/95 backdrop-blur-sm"
+      /* The overlay fades and settles in rather than appearing outright — a
+         full-screen panel arriving in one frame reads as a jump cut, and it is
+         the moment the eye most needs help following where it went. */
+      className="animate-[ies-lightbox-in_320ms_cubic-bezier(0.22,1,0.36,1)_both] fixed inset-0 z-[100] flex flex-col bg-navy/95 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-label={`Photograph ${index + 1} of ${shots.length}`}
@@ -411,17 +457,34 @@ export function Lightbox({
         </div>
 
         <div className="flex min-h-0 flex-1 items-center justify-center px-6 pb-4 sm:px-10">
-          {/* `key` forces a fresh element per photograph, so the fade replays as
-              the set is stepped through rather than snapping to the next frame. */}
+          {/*
+           * Deliberately *not* keyed by `src`.
+           *
+           * It used to be, which remounted the element on every step and
+           * replayed a 600ms fade from nothing. That reads as a blink: the
+           * photograph being left is gone instantly, and the one arriving takes
+           * over half a second to become legible — on a set you are arrowing
+           * through, most of the time is spent looking at neither.
+           *
+           * Swapping `src` on one element lets the browser hold the current
+           * frame until the next has decoded, so the change is a clean cut with
+           * nothing empty in between. Paired with the neighbour preloading
+           * above, that cut lands within a frame of the key press.
+           */}
           <img
-            key={shot.src}
             src={shot.src}
             alt={shot.alt}
-            className="max-h-full max-w-full animate-[ies-lightbox_600ms_cubic-bezier(0.22,1,0.36,1)_both] object-contain"
+            className="max-h-full max-w-full object-contain"
           />
         </div>
 
-        <p className="px-6 pb-8 text-center text-[0.8125rem] leading-relaxed font-light text-mist/80 sm:px-10">
+        <p
+          /* Keyed, so the caption cross-fades as the set is stepped through.
+             The photograph cuts and the words under it fade — text that swaps
+             instantly under a changing image is the part that reads as jarring. */
+          key={shot.src}
+          className="animate-[ies-caption-in_420ms_cubic-bezier(0.22,1,0.36,1)_both] px-6 pb-8 text-center text-[0.8125rem] leading-relaxed font-light text-mist/80 sm:px-10"
+        >
           {shot.caption ?? shot.alt}
         </p>
       </div>

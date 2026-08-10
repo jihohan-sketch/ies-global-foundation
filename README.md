@@ -127,10 +127,13 @@ Four things about that rail are load-bearing, not stylistic:
   a card-at-a-time jump, which spends most of its life motionless and then
   lurches. Manual horizontal scrolling still works throughout: drag, trackpad,
   arrow keys on the focused track, and the two arrow buttons.
-- **The children are rendered twice.** The loop works by subtracting half the
-  scroll width, which is seamless only because the second half repeats the first.
-  The copies are `aria-hidden` with `tabIndex={-1}` and empty `alt`, so a screen
-  reader hears thirteen programmes rather than twenty-six.
+- **The children are rendered twice.** The loop works by subtracting one copy's
+  width, which is seamless only because the second half repeats the first. The
+  copies are `aria-hidden` with `tabIndex={-1}` and empty `alt`, so a screen
+  reader hears thirteen programmes rather than twenty-six. That wrap distance is
+  `(scrollWidth + gap) / 2`, **not** `scrollWidth / 2`: the scroll width spans
+  2N cards but only 2N−1 gaps, so plain half of it falls half a gap short and the
+  rail hitches backwards every time round — measured at 12px on the live rail.
 - Continuous mode **accumulates position in a float** instead of reading
   `scrollLeft` back each frame. At 38px/s a frame moves about 0.6px, which rounds
   to the device pixel grid on write; using the rounded value as the next frame's
@@ -138,6 +141,13 @@ Four things about that rail are load-bearing, not stylistic:
   where it should cover 36.5px — and at slower speeds it stalls completely.
   Scroll snapping is off for the same class of reason: it drags `scrollLeft` back
   to the nearest card on every frame.
+- Stopping and starting are **eased, not switched**. The drift holds a fraction
+  of full speed that is ramped toward its target rather than set to it, so a
+  cursor landing on the rail glides it to a halt over ~420ms instead of cutting
+  the motion dead, which read as a stutter. `RAMP_MS` is a time *constant*, not a
+  duration — the ramp settles after roughly four or five of it, so 90 gives a
+  ~420ms stop. Note the loop keeps running while easing down and only parks once
+  it is fully stopped, which is why `wanted` is separate from `drifting`.
 - It has a **pause button**, because WCAG 2.2.2 gives anyone the right to stop
   motion running longer than five seconds. It also holds on hover, on keyboard
   focus inside the track, and while scrolled off screen. It **does** keep moving
@@ -160,7 +170,10 @@ images are lazily loaded, the load event *is* the moment they scroll into view, 
 the effect arrives with the scroll — and it cannot strand a photograph at opacity
 0 if an observer callback goes missing, which is what made the first home rail
 render blank. It also settles on `error`, so a broken path shows its alt text
-instead of an invisible box that reads as a layout bug.
+instead of an invisible box that reads as a layout bug. Until a photograph
+arrives its frame breathes on the `ies-placeholder` keyframe — the gallery holds
+67 full-size originals arriving over several seconds, and flat rectangles read as
+images that failed rather than images that are coming.
 
 `Lightbox` is the full-size viewer behind the Gallery grid. It is **rendered
 through a portal into `document.body`**, and that is load-bearing: `position:
@@ -170,6 +183,25 @@ site header at `z-50` still covered the lightbox controls. A portal is the only
 reliable escape. Focus moves in on open and returns to the thumbnail that opened
 it, Escape closes, the arrow keys step through the set, and the page behind cannot
 scroll.
+
+Three things about it are load-bearing:
+
+- **Opening is one effect, stepping is another.** They were one, and because the
+  combined effect depended on the index and on callbacks the page rebuilt each
+  render, every arrow press tore the modal down and rebuilt it: body scroll
+  unlocked and re-locked, and focus was handed back to the thumbnail *behind* the
+  overlay before being pulled in again — which scrolls the page underneath. Keep
+  the focus and scroll-lock effect keyed on `open` alone.
+- **The neighbouring photographs are preloaded.** These are 1600px originals, so
+  stepping to a `src` that had never been requested left the frame empty until it
+  arrived. `Gallery.tsx` memoises `shots` and `onClose` for this effect's benefit,
+  not its own — fresh identities re-run the preload on every render.
+- **The `<img>` is deliberately not keyed by `src`.** Keying it remounted the
+  element on every step and replayed a fade from nothing, which reads as a blink:
+  the photograph you left vanishes instantly and the next takes half a second to
+  become legible. Swapping `src` on one element lets the browser hold the current
+  frame until the next has decoded. The caption below it *is* keyed, so the words
+  cross-fade while the image cuts.
 
 `ScrollRail` masks its own left and right edges with a gradient when it overflows,
 so cards fade in and out rather than being sliced at the container.
