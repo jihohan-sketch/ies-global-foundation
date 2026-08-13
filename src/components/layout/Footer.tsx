@@ -25,7 +25,7 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="border border-mist/25 px-4 py-2 text-[0.6875rem] font-medium tracking-[0.16em] text-paper/80 uppercase transition-colors hover:border-gold/60 hover:text-gold"
+                  className="border border-mist/55 px-4 py-2 text-[0.6875rem] font-medium tracking-[0.16em] text-paper/80 uppercase transition-colors hover:border-gold/60 hover:text-gold"
                 >
                   {social.label}
                 </a>
@@ -76,7 +76,7 @@ export function Footer() {
                   className="group inline-flex items-baseline gap-2 text-sm font-light text-paper/72 transition-colors hover:text-paper"
                 >
                   {branchSite.label}
-                  <span className="text-xs text-mist/60 transition-colors group-hover:text-gold">
+                  <span className="text-xs text-mist/80 transition-colors group-hover:text-gold">
                     {branchSite.domain}
                     <span aria-hidden> ↗</span>
                   </span>
@@ -90,18 +90,18 @@ export function Footer() {
 
         {/* -------------------------------------------------------- Legal */}
         <div className="py-8">
-          <p className="max-w-4xl text-xs leading-relaxed font-light text-mist/70">
+          <p className="max-w-4xl text-xs leading-relaxed font-light text-mist/80">
             {site.legalNote}
           </p>
 
           <div className="mt-6 flex flex-col gap-4 border-t border-mist/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs font-light text-mist/70">{site.copyright}</p>
+            <p className="text-xs font-light text-mist/80">{site.copyright}</p>
             <ul className="flex flex-wrap gap-x-6 gap-y-2">
               {legalNav.map((item) => (
                 <li key={item.href}>
                   <Link
                     to={item.href}
-                    className="text-xs font-light text-mist/70 transition-colors hover:text-gold"
+                    className="text-xs font-light text-mist/80 transition-colors hover:text-gold"
                   >
                     {item.label}
                   </Link>

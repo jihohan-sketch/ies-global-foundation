@@ -72,7 +72,7 @@ function ActivityMeta({ activity }: { activity: Activity }) {
     <dl className="mt-8 space-y-px">
       {rows.map((row) => (
         <div key={row.label} className="grid gap-1 border-t border-mist/12 py-3 sm:grid-cols-[5rem_1fr] sm:gap-4">
-          <dt className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase sm:pt-0.5">
+          <dt className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase sm:pt-0.5">
             {row.label}
           </dt>
           <dd className="text-[0.9375rem] font-light text-paper/85">{row.value}</dd>
@@ -91,7 +91,7 @@ export function ActivityEntry({ activity, index }: { activity: Activity; index: 
             <span className="font-serif text-sm text-[var(--accent)]/70">
               {String(index + 1).padStart(2, '0')}
             </span>
-            <span className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+            <span className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
               {activity.kind}
             </span>
           </div>
@@ -111,7 +111,7 @@ export function ActivityEntry({ activity, index }: { activity: Activity; index: 
                 decoding="async"
                 className="h-20 w-20 shrink-0 rounded-[3px] border border-mist/15 object-cover"
               />
-              <figcaption className="text-[0.8125rem] leading-relaxed font-light text-mist/70">
+              <figcaption className="text-[0.8125rem] leading-relaxed font-light text-mist/80">
                 {activity.participants ?? 'Guest speaker'}
               </figcaption>
             </figure>
@@ -130,7 +130,7 @@ export function ActivityEntry({ activity, index }: { activity: Activity; index: 
 
           {activity.videos && activity.videos.length > 0 && (
             <div className="mt-10">
-              <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+              <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
                 Footage
               </p>
               <VideoGrid videos={activity.videos} className="mt-5" />

@@ -83,7 +83,7 @@ export default function Impact() {
                         <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-4">
                           {story.metrics.map((metric) => (
                             <div key={metric.label}>
-                              <dt className="text-[0.625rem] font-medium tracking-[0.18em] text-mist/70 uppercase">
+                              <dt className="text-[0.625rem] font-medium tracking-[0.18em] text-mist/80 uppercase">
                                 {metric.label}
                               </dt>
                               <dd className="mt-1 font-serif text-xl text-paper">
@@ -157,7 +157,7 @@ export default function Impact() {
                   <time
                     className={cx(
                       'text-[0.75rem] font-medium tracking-[0.14em] uppercase',
-                      entry.milestone ? 'text-[var(--accent)]' : 'text-mist/70',
+                      entry.milestone ? 'text-[var(--accent)]' : 'text-mist/80',
                     )}
                   >
                     {entry.date}
@@ -182,7 +182,7 @@ export default function Impact() {
           </ol>
 
           <Reveal>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed font-light text-mist/70">
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed font-light text-mist/80">
               Entries marked “date to be confirmed” are sequenced correctly but await
               verification against internal records before publication.
             </p>

@@ -280,7 +280,7 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={140}>
-              <p className="text-[0.6875rem] font-medium tracking-[0.24em] text-mist/70 uppercase">
+              <p className="text-[0.6875rem] font-medium tracking-[0.24em] text-mist/80 uppercase">
                 Supporting Values
               </p>
               <ul className="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">

@@ -50,7 +50,7 @@ export function VideoEmbed({ video }: { video: Video }) {
       onClick={() => setPlaying(true)}
       className="group flex aspect-video w-full flex-col justify-between border border-mist/18 bg-navy-700/45 p-6 text-left transition-colors duration-300 hover:border-gold/45 focus-visible:outline-2 focus-visible:outline-offset-3"
     >
-      <span className="flex items-center gap-3 text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+      <span className="flex items-center gap-3 text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
         <span
           aria-hidden
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/60 text-[var(--accent)] transition-colors duration-300 group-hover:border-[var(--accent)] group-hover:bg-[var(--accent)]/12"
@@ -58,7 +58,7 @@ export function VideoEmbed({ video }: { video: Video }) {
           ▶
         </span>
         {published(video.date)}
-        {video.language === 'ko' && <span className="text-mist/50">· in Korean</span>}
+        {video.language === 'ko' && <span className="text-mist/80">· in Korean</span>}
       </span>
 
       <span>
@@ -70,7 +70,7 @@ export function VideoEmbed({ video }: { video: Video }) {
             {video.note}
           </span>
         )}
-        <span className="mt-3 block text-[0.6875rem] tracking-[0.12em] text-mist/60 uppercase">
+        <span className="mt-3 block text-[0.6875rem] tracking-[0.12em] text-mist/80 uppercase">
           Play on YouTube
         </span>
       </span>
@@ -248,7 +248,7 @@ export function GalleryRail({ items }: { items: GalleryItem[] }) {
                   className="border-0"
                 />
                 <figcaption className="border-t border-mist/12 p-6">
-                  <span className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+                  <span className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
                     {item.kind}
                   </span>
                   <span className="mt-3 block font-serif text-[1.1875rem] leading-snug transition-colors duration-300 group-hover:text-[var(--accent)]">
@@ -434,7 +434,7 @@ export function Lightbox({
         className="relative flex h-full flex-col focus-visible:outline-none"
       >
         <div className="flex items-center justify-between gap-4 px-6 py-5 sm:px-10">
-          <span className="text-[0.6875rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+          <span className="text-[0.6875rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
             {index + 1} / {shots.length}
           </span>
           <div className="flex gap-2">

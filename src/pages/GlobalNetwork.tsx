@@ -55,7 +55,7 @@ export default function GlobalNetwork() {
                   onSelect={setActiveId}
                   className="mx-auto aspect-square w-full max-w-2xl"
                 />
-                <p className="mt-2 text-center text-xs font-light text-mist/60">
+                <p className="mt-2 text-center text-xs font-light text-mist/80">
                   Select a marker to view that branch. The globe is a schematic
                   representation and is not a cartographic reference.
                 </p>
@@ -116,7 +116,7 @@ export default function GlobalNetwork() {
 
                   {activeLeaders.length > 0 && (
                     <div className="mt-6 border-t border-mist/12 pt-5">
-                      <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+                      <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
                         National Leadership
                       </p>
                       <ul className="mt-3 space-y-1.5">

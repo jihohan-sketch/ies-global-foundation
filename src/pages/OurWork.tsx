@@ -100,7 +100,7 @@ export default function OurWork() {
                     />
                   ) : (
                     <Card className="h-full p-8 sm:p-10">
-                      <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+                      <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
                         Examples of this work
                       </p>
                       <ExampleList examples={category.examples} className="mt-6" />

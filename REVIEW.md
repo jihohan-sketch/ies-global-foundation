@@ -259,6 +259,13 @@ worse copies of photographs already on the site.
       Data Protection Act 2018), and applicable U.S. state law.
 - [ ] Set `lastReviewed` to the real review date
 - [ ] Confirm the nonprofit description matches actual registration in Korea
+- [ ] **Web3Forms as a processor.** The contact and join forms send submissions
+      through Web3Forms, so personal data — including data from minors — leaves
+      the organization before it reaches the inbox, and crosses a border doing
+      it. The Privacy Policy now says so under "How form submissions reach us",
+      and offers email as an alternative. Whether that disclosure is sufficient
+      under PIPA and UK GDPR (lawful basis, overseas transfer, a processor
+      agreement) is a question for whoever reviews these drafts.
 
 ---
 
@@ -267,8 +274,13 @@ worse copies of photographs already on the site.
 - [ ] Replace `site.url` in `src/content/site.ts` with the real domain
 - [ ] Update the canonical URL and OG URLs in `index.html`
 - [ ] Run `npm run sitemap` (or set `SITE_ORIGIN`) after the domain is final
-- [ ] Set `VITE_CONTACT_ENDPOINT` so the contact form POSTs somewhere; without
-      it the form falls back to opening a mail draft
+- [ ] **Confirm the Web3Forms inbox.** Both forms deliver through the access key
+      in `src/lib/forms.ts`, which currently forwards to theiesociety@gmail.com
+      and jiho.han@valorschool.org. Register the key against the addresses that
+      should actually receive applications, or set `VITE_WEB3FORMS_KEY` in Vercel
+      to a key that does. Send one test submission from each form after deploy —
+      a wrong key fails silently from the visitor's side apart from the mail
+      fallback.
 - [ ] Consider dedicated mailboxes (`partnerships@`, `media@`) — every channel
       currently routes to theiesociety@gmail.com
 - [ ] Add analytics only with a cookie/consent notice where law requires one

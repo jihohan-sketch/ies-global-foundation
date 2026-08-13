@@ -120,7 +120,7 @@ export default function Contact() {
                         href={social.href}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className="border border-mist/25 px-4 py-2 text-[0.6875rem] font-medium tracking-[0.16em] text-paper/80 uppercase transition-colors hover:border-[var(--accent)]/60 hover:text-[var(--accent)]"
+                        className="border border-mist/55 px-4 py-2 text-[0.6875rem] font-medium tracking-[0.16em] text-paper/80 uppercase transition-colors hover:border-[var(--accent)]/60 hover:text-[var(--accent)]"
                       >
                         {social.label}
                       </a>
@@ -142,7 +142,7 @@ export default function Contact() {
                           className="group inline-flex items-baseline gap-2 text-sm font-light text-paper/80 transition-colors hover:text-paper"
                         >
                           {branchSite.label}
-                          <span className="text-xs text-mist/70 transition-colors group-hover:text-[var(--accent)]">
+                          <span className="text-xs text-mist/80 transition-colors group-hover:text-[var(--accent)]">
                             {branchSite.domain}
                             <span aria-hidden> ↗</span>
                           </span>

@@ -18,6 +18,36 @@
 }
 
 /*
+ * MIST OPACITY LADDER — measured, not eyeballed.
+ *
+ * `mist` is the site's secondary tone, and it gets used at an opacity rather
+ * than as a second token. That is fine, but only two steps actually clear AA
+ * for text, and the ladder had drifted to seven ad-hoc values (/30 … /80) with
+ * several of them below the line. These are the ratios against both dark
+ * grounds — `deep` sections paint navy-700, which is the tighter of the two:
+ *
+ *                    on navy #071a33   on navy-700 #0d294d
+ *   text-mist              8.3:1              7.0:1
+ *   text-mist/80           5.8:1              5.0:1   ← floor for body text
+ *   text-mist/75           5.2:1              4.6:1   (placeholders only)
+ *   text-mist/70           4.7:1              4.2:1   ✗ fails on navy-700
+ *   text-mist/60           3.8:1              3.4:1   ✗
+ *   text-mist/50           3.0:1              2.8:1   ✗
+ *
+ * So: `text-mist` for primary secondary-copy, `text-mist/80` for anything
+ * quieter. Below /80 is reserved for things exempt from contrast rules —
+ * `aria-hidden` separators and `:disabled` states — never for text a sighted
+ * visitor is meant to read.
+ *
+ * Borders are the other half of this. A border that is the only thing marking
+ * out an interactive control (an input, the menu toggle, a filter chip) has to
+ * clear 3:1 under WCAG 1.4.11, which `border-mist/55` (3.4:1) does and the
+ * /22–/35 these used to sit at did not. Borders that merely divide or decorate
+ * — card edges, hairline rules — carry no such requirement and stay at /12–/18
+ * so the layout keeps its quiet.
+ */
+
+/*
  * `static`, because these three are only ever read through `var(--accent)` at
  * runtime — no utility class names them. Tailwind drops theme variables no
  * class references, which silently left `--accent` resolving to nothing on the

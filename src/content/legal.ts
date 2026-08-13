@@ -37,8 +37,14 @@ export const privacyPolicy: LegalDocument = {
     {
       heading: 'Information we collect',
       paragraphs: [
-        'We collect information you give us directly — your name, email address, school or organization, and the content of your message — when you submit the contact form or email us.',
+        'We collect information you give us directly — your name, email address, school or organization, and the content of your message — when you submit the contact or application form, or email us.',
         'We do not require an account to use this website, and we do not ask for personal information beyond what is needed to answer your inquiry.',
+      ],
+    },
+    {
+      heading: 'How form submissions reach us',
+      paragraphs: [
+        'The forms on this website are delivered by Web3Forms, a form-to-email service operating outside your country. What you submit passes through their systems on its way to our inbox; they forward it and do not use it for their own purposes. If you would rather not use the form, email us directly at theiesociety@gmail.com instead — it reaches the same place.',
       ],
     },
     {

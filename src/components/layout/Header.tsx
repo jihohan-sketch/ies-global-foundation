@@ -168,7 +168,7 @@ export function Header() {
                 aria-expanded={open}
                 aria-controls="mobile-nav"
                 aria-label={open ? 'Close menu' : 'Open menu'}
-                className="flex h-11 w-11 items-center justify-center border border-mist/25 transition-colors hover:border-gold/60 xl:hidden"
+                className="flex h-11 w-11 items-center justify-center border border-mist/55 transition-colors hover:border-gold/60 xl:hidden"
               >
                 <span className="relative block h-3 w-5">
                   <span

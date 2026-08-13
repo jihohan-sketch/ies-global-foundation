@@ -1,8 +1,10 @@
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, Container, Eyebrow, Section } from '@/components/ui/Primitives'
+import { Button, Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
+import { JoinForm } from '@/components/sections/JoinForm'
 import { joinIntro, joinPathways } from '@/content/join'
 import { branches } from '@/content/branches'
 import { membershipFormUrl } from '@/content/site'
@@ -15,6 +17,19 @@ export default function Join() {
       'Join as a member, join a school chapter, start a chapter, take on a national branch role, or collaborate with IES as an educator or organization.',
     path: '/join',
   })
+
+  /* The pathway a visitor picked upstairs, carried into the form so they do not
+     have to restate a choice they already made by clicking. Named apart from
+     the `pathway` the list below maps over, which shadows it inside that loop. */
+  const [selectedPathway, setSelectedPathway] = useState('member')
+  const formRef = useRef<HTMLDivElement>(null)
+
+  function applyFor(id: string) {
+    setSelectedPathway(id)
+    /* `block: 'start'` with the `scroll-padding-top` set in index.css lands the
+       heading clear of the fixed header rather than underneath it. */
+    formRef.current?.scrollIntoView({ block: 'start' })
+  }
 
   return (
     <>
@@ -67,6 +82,14 @@ export default function Join() {
                     {pathway.id === 'member' ? (
                       <Button href={membershipFormUrl} variant="primary" arrow>
                         Membership form
+                      </Button>
+                    ) : pathway.cta.href.startsWith('/contact') ? (
+                      /* The pathways that used to hand off to the contact page now
+                         scroll to the form below with this pathway already chosen.
+                         `start-chapter` and `collaborate` keep their links: those
+                         lead somewhere with more to read, not to a form. */
+                      <Button onClick={() => applyFor(pathway.id)} variant="secondary" arrow>
+                        {pathway.cta.label}
                       </Button>
                     ) : (
                       <Button to={pathway.cta.href} variant="secondary" arrow>
@@ -147,6 +170,31 @@ export default function Join() {
               </div>
             </div>
           </Reveal>
+        </Container>
+      </Section>
+
+      {/* ============================================================ APPLY */}
+      <Section id="apply" tone="deep" className="border-t border-mist/12">
+        <Container size="wide">
+          {/* The ref sits on the outer grid rather than the heading, so the
+              scroll lands on the whole panel and the form is already in view. */}
+          <div ref={formRef} className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
+            <Reveal>
+              <SectionHeading
+                eyebrow="Apply"
+                title="Send your application"
+                lead="Tell us who you are and which pathway you are after. Applications go to the branch in your country, and someone will reply within a few working days."
+              />
+              <p className="mt-8 max-w-md text-[0.9375rem] leading-relaxed font-light text-mist">
+                If you already know which chapter or officer you need, writing to your branch
+                directly is just as good — the addresses are above.
+              </p>
+            </Reveal>
+
+            <Reveal delay={120}>
+              <JoinForm defaultPathway={selectedPathway} />
+            </Reveal>
+          </div>
         </Container>
       </Section>
 

@@ -46,7 +46,7 @@ export function OrgChart({ className }: { className?: string }) {
 
             <Link
               to={`/global-network/${branch.slug}`}
-              className="group w-full border border-mist/22 bg-navy-700/35 px-6 py-6 text-center transition-colors duration-300 hover:border-[var(--accent)]/50"
+              className="group w-full border border-mist/55 bg-navy-700/35 px-6 py-6 text-center transition-colors duration-300 hover:border-[var(--accent)]/50"
             >
               <p className="font-serif text-lg transition-colors group-hover:text-[var(--accent)]">
                 {branch.name}

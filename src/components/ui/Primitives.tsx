@@ -162,7 +162,7 @@ const buttonBase =
 const buttonVariants: Record<ButtonVariant, string> = {
   primary: 'bg-gold text-navy hover:bg-gold-300',
   secondary:
-    'border border-mist/35 text-paper hover:border-gold/70 hover:bg-gold/8 hover:text-gold-300',
+    'border border-mist/55 text-paper hover:border-gold/70 hover:bg-gold/8 hover:text-gold-300',
   ghost: 'text-paper/85 hover:text-gold px-0 py-1 tracking-[0.14em]',
   onLight:
     'border border-navy/25 text-navy hover:border-navy hover:bg-navy hover:text-paper',

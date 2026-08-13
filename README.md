@@ -282,18 +282,24 @@ All motion respects `prefers-reduced-motion`.
 
 ---
 
-## Contact form
+## Forms
 
-`components/sections/ContactForm.tsx`. Set `VITE_CONTACT_ENDPOINT` in `.env` to
-any URL accepting a JSON POST:
+Two of them — `components/sections/ContactForm.tsx` and `JoinForm.tsx` — sharing
+their fields (`components/ui/FormFields.tsx`) and their delivery (`lib/forms.ts`)
+so the two cannot drift apart.
 
-```
-VITE_CONTACT_ENDPOINT=https://your-endpoint.example/contact
-```
+Both POST to **Web3Forms**, which forwards the submission as email to the
+addresses the access key is registered against. There is no backend of our own.
+If that call fails the visitor is handed a `mailto:` draft with everything they
+typed already in it, so a message is never silently dropped.
 
-With no endpoint configured it opens a pre-filled mail draft, so a message is
-never silently dropped. Spam protection is a hidden honeypot field plus a
-minimum time-on-form check — no third-party script, no CAPTCHA.
+The access key in `lib/forms.ts` is not a secret — Web3Forms keys are public
+identifiers, and they authorise nothing but "send mail to the inbox this key
+belongs to". Set `VITE_WEB3FORMS_KEY` to rotate it or point at a test inbox
+without a code change.
+
+Spam protection is a hidden honeypot field plus a minimum time-on-form check —
+no third-party script, no CAPTCHA.
 
 ---
 
@@ -350,12 +356,14 @@ Note that the origin must always be absolute — Vite resolves URLs in
 `index.html` as build assets, so a root-relative `/` makes it try to read the
 project directory and the build fails.
 
-### Contact form
+### Forms
 
-`VITE_CONTACT_ENDPOINT` sets where the contact form POSTs. Unset, the form falls
-back to opening a pre-filled mail draft, so it never silently drops a message.
+`VITE_WEB3FORMS_KEY` overrides the Web3Forms access key both forms submit with.
+It is optional: the key is committed in `lib/forms.ts`, and the variable exists
+so the key can be rotated or pointed at a test inbox without a code change.
 `VITE_`-prefixed variables are **baked into the client bundle and publicly
-readable** — fine for an endpoint URL, never for a secret.
+readable** — fine for a Web3Forms key, which is a public identifier by design,
+never for a secret.
 
 ---
 

@@ -125,7 +125,7 @@ export default function Gallery() {
                       'min-h-11 rounded-[3px] border px-4 py-2 text-[0.8125rem] font-light transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-3',
                       selected
                         ? 'border-[var(--accent)] bg-[var(--accent)]/12 text-[var(--accent)]'
-                        : 'border-mist/25 text-paper/80 hover:border-[var(--accent)]/60 hover:text-paper',
+                        : 'border-mist/55 text-paper/80 hover:border-[var(--accent)]/60 hover:text-paper',
                     )}
                   >
                     {filter.label}
@@ -135,7 +135,7 @@ export default function Gallery() {
             </div>
           </Reveal>
 
-          <p className="mt-6 text-sm font-light text-mist/70" aria-live="polite">
+          <p className="mt-6 text-sm font-light text-mist/80" aria-live="polite">
             {photos.length} {photos.length === 1 ? 'photograph' : 'photographs'}
             {active !== 'all' && ' in this programme'}
           </p>
@@ -210,7 +210,7 @@ export default function Gallery() {
               <Reveal key={video.youtubeId} delay={Math.min(i, 5) * 70}>
                 <VideoEmbed video={video} />
                 {video.activityTitle && (
-                  <p className="mt-3 text-[0.8125rem] font-light text-mist/70">
+                  <p className="mt-3 text-[0.8125rem] font-light text-mist/80">
                     <Link
                       to={video.href ?? '/our-work'}
                       className="underline decoration-mist/30 underline-offset-4 transition-colors hover:text-[var(--accent)]"

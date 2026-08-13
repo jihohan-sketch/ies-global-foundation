@@ -13,7 +13,7 @@ export function BranchCard({ branch, index }: { branch: Branch; index: number })
         className="flex h-full flex-col p-8 sm:p-10"
       >
         <div className="flex items-start justify-between gap-4">
-          <span className="font-serif text-sm text-mist/60">
+          <span className="font-serif text-sm text-mist/80">
             {String(index + 1).padStart(2, '0')}
           </span>
           <span className="border border-[var(--accent)]/35 px-3 py-1 text-[0.625rem] font-medium tracking-[0.16em] text-[var(--accent)] uppercase">
@@ -112,7 +112,7 @@ export function PersonCard({ person, branchName }: { person: Person; branchName?
             leaves the left side empty. */}
         {person.responsibilities.length > 0 && (
           <div className="mt-auto border-t border-mist/12 p-8">
-            <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+            <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
               Responsibilities
             </p>
             <ul className="mt-3 grid gap-2 @2xl:grid-cols-2 @2xl:gap-x-8">
@@ -179,7 +179,7 @@ export function ArticleCard({
             {article.summary}
           </p>
 
-          <span className="mt-7 text-[0.6875rem] font-medium tracking-[0.16em] text-mist/70 uppercase">
+          <span className="mt-7 text-[0.6875rem] font-medium tracking-[0.16em] text-mist/80 uppercase">
             {article.branch}
           </span>
         </div>

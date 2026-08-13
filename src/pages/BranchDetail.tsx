@@ -45,7 +45,7 @@ export default function BranchDetail() {
           <dl className="grid gap-x-10 gap-y-6 border-t border-mist/15 pt-8 sm:grid-cols-2 lg:grid-cols-4">
             {branch.facts.map((fact) => (
               <div key={fact.label}>
-                <dt className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+                <dt className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
                   {fact.label}
                 </dt>
                 <dd className="mt-2 text-[0.9375rem] font-light text-paper/90">{fact.value}</dd>

@@ -42,7 +42,7 @@ export default function News() {
           {/* ------------------------------------------------------ Filters */}
           <Reveal>
             <div className="flex flex-wrap items-center gap-2 border-b border-mist/15 pb-6">
-              <span className="mr-3 text-[0.625rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
+              <span className="mr-3 text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
                 Filter
               </span>
               {[ALL, ...newsCategories].map((category) => (

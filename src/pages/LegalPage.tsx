@@ -20,7 +20,7 @@ export function LegalPage({ document }: { document: LegalDocument }) {
         lead={document.intro}
         crumbs={[{ label: 'Home', href: '/' }, { label: document.title }]}
         meta={
-          <p className="text-[0.6875rem] font-medium tracking-[0.18em] text-mist/70 uppercase">
+          <p className="text-[0.6875rem] font-medium tracking-[0.18em] text-mist/80 uppercase">
             Last reviewed — {document.updated}
           </p>
         }
@@ -62,7 +62,7 @@ export function LegalPage({ document }: { document: LegalDocument }) {
           </div>
 
           <Reveal>
-            <p className="mt-16 border-t border-mist/15 pt-6 text-sm leading-relaxed font-light text-mist/70">
+            <p className="mt-16 border-t border-mist/15 pt-6 text-sm leading-relaxed font-light text-mist/80">
               Questions about this policy can be sent to{' '}
               <a
                 href="mailto:theiesociety@gmail.com"

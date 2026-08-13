@@ -174,7 +174,7 @@ export default function Leadership() {
                           </div>
                         </div>
                       ) : (
-                        <p className="text-[0.8125rem] font-light text-mist/70 italic">
+                        <p className="text-[0.8125rem] font-light text-mist/80 italic">
                           Appointment to be confirmed.
                         </p>
                       )}
@@ -286,7 +286,7 @@ export default function Leadership() {
           </div>
 
           <Reveal delay={160}>
-            <p className="mt-16 max-w-2xl border-t border-mist/15 pt-6 text-sm leading-relaxed font-light text-mist/70">
+            <p className="mt-16 max-w-2xl border-t border-mist/15 pt-6 text-sm leading-relaxed font-light text-mist/80">
               Additional national officers are listed once appointments are finalised and
               confirmed by the relevant branch.
             </p>

@@ -104,7 +104,7 @@ export default function Partners() {
           </ScrollRail>
 
           <Reveal delay={200}>
-            <p className="mt-10 max-w-3xl text-sm leading-relaxed font-light text-mist/70">
+            <p className="mt-10 max-w-3xl text-sm leading-relaxed font-light text-mist/80">
               Naming an organization here records a collaboration; it does not imply that
               organization endorses IES or its positions.
             </p>
@@ -192,7 +192,7 @@ export default function Partners() {
           </div>
 
           <Reveal delay={200}>
-            <p className="mt-14 max-w-2xl border-t border-mist/15 pt-6 text-sm leading-relaxed font-light text-mist/70">
+            <p className="mt-14 max-w-2xl border-t border-mist/15 pt-6 text-sm leading-relaxed font-light text-mist/80">
               Partner logos are displayed only with written permission from the organization
               concerned. IES does not imply endorsement, affiliation, or accreditation that has
               not been agreed in writing.
