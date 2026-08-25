@@ -34,6 +34,7 @@ export default function BranchDetail() {
     <>
       <PageHero
         eyebrow={`National Branch · ${branch.country}`}
+        ghost={branch.country}
         title={branch.name}
         lead={branch.role}
         crumbs={[

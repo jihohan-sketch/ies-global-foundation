@@ -25,6 +25,7 @@ export default function Partners() {
     <>
       <PageHero
         eyebrow="Partners"
+        ghost="Partners"
         title="Institutions that make student work possible."
         lead={partnersIntro}
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Partners' }]}
@@ -34,44 +35,16 @@ export default function Partners() {
         </Button>
       </PageHero>
 
-      {/* ======================================================= CATEGORIES */}
-      <Section>
-        <Container size="wide">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Who We Work With"
-              title="Eight kinds of collaboration"
-              lead="Each partnership is scoped in writing and held to the same safety and conduct standards as our own programs."
-            />
-          </Reveal>
-
-          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {partnerCategories.map((category, i) => (
-              <Reveal key={category.title} delay={i * 70}>
-                <Card className="h-full p-7">
-                  <h3 className="font-serif text-lg text-[var(--accent)]">{category.title}</h3>
-                  <p className="mt-4 text-[0.9375rem] leading-relaxed font-light text-mist">
-                    {category.description}
-                  </p>
-                  <ul className="mt-5 space-y-1.5 border-t border-mist/12 pt-4">
-                    {category.examples.map((example) => (
-                      <li key={example} className="text-[0.8125rem] font-light text-paper/70">
-                        {example}
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </Section>
-
+      {/* Named collaborations lead, ahead of the categories. A visitor asking
+          whether IES is serious wants the institutions, not the taxonomy — the
+          eight categories describe what a partnership *can* be, which only
+          becomes interesting once you believe some already exist. */}
       {/* =================================================== NAMED PARTNERS */}
-      <Section tone="deep" className="border-y border-mist/12">
+      <Section className="overflow-hidden">
         <Container size="wide">
           <Reveal>
             <SectionHeading
+              ghost="Named"
               eyebrow="Organizations We Work With"
               title="Named collaborations"
               lead="We work alongside community organizations, academic institutions, and public bodies — the relationships behind our service work."
@@ -109,6 +82,39 @@ export default function Partners() {
               organization endorses IES or its positions.
             </p>
           </Reveal>
+        </Container>
+      </Section>
+
+      {/* ======================================================= CATEGORIES */}
+      <Section>
+        <Container size="wide">
+          <Reveal>
+            <SectionHeading
+              eyebrow="Who We Work With"
+              title="Eight kinds of collaboration"
+              lead="Each partnership is scoped in writing and held to the same safety and conduct standards as our own programs."
+            />
+          </Reveal>
+
+          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {partnerCategories.map((category, i) => (
+              <Reveal key={category.title} delay={i * 70}>
+                <Card className="h-full p-7">
+                  <h3 className="font-serif text-lg text-[var(--accent)]">{category.title}</h3>
+                  <p className="mt-4 text-[0.9375rem] leading-relaxed font-light text-mist">
+                    {category.description}
+                  </p>
+                  <ul className="mt-5 space-y-1.5 border-t border-mist/12 pt-4">
+                    {category.examples.map((example) => (
+                      <li key={example} className="text-[0.8125rem] font-light text-paper/70">
+                        {example}
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              </Reveal>
+            ))}
+          </div>
         </Container>
       </Section>
 

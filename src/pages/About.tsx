@@ -1,4 +1,5 @@
 import { Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
+import { GhostTitle } from '@/components/ui/Cinematic'
 import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
@@ -20,6 +21,7 @@ export default function About() {
     <>
       <PageHero
         eyebrow="About IES"
+        ghost="About"
         title="An international youth organization built around ethical leadership."
         lead="IES began in Korea in April 2023. It is now a network of branches, chapters, and student leaders across three countries."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]}
@@ -114,28 +116,31 @@ export default function About() {
       </Section>
 
       {/* ========================================================== VALUES */}
-      <Section tone="paper" className="border-y border-mist/12">
-        <Container size="wide">
-          <div className="grid gap-14 lg:grid-cols-[1fr_1.3fr] lg:gap-24">
+      {/* Dark rather than the bright `paper` interlude this used to be — see the
+          note on the matching section in Home.tsx. */}
+      <Section tone="deep" className="overflow-hidden border-y border-mist/12">
+        <Container size="wide" className="relative">
+          <GhostTitle className="-top-[0.5em] -translate-y-1/2">Values</GhostTitle>
+          <div className="relative z-10 grid gap-14 lg:grid-cols-[1fr_1.3fr] lg:gap-24">
             <Reveal>
-              <Eyebrow tone="navy">Core Values</Eyebrow>
-              <p className="mt-8 font-serif text-[clamp(3rem,7vw,5.5rem)] leading-none text-navy">
+              <Eyebrow>Core Values</Eyebrow>
+              <p className="metal mt-8 font-serif text-[clamp(3rem,7vw,5.5rem)] leading-none">
                 {values.primary.title}
               </p>
-              <p className="mt-8 max-w-md leading-relaxed font-light text-navy-700/80">
+              <p className="mt-8 max-w-md leading-relaxed font-light text-mist">
                 {values.primary.body}
               </p>
             </Reveal>
 
             <Reveal delay={140}>
-              <p className="text-[0.6875rem] font-medium tracking-[0.24em] text-navy-600 uppercase">
+              <p className="text-[0.625rem] font-medium tracking-[0.3em] text-mist/80 uppercase">
                 Supporting Values
               </p>
               <ul className="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">
                 {values.supporting.map((value) => (
-                  <li key={value.title} className="border-t border-navy/12 pt-4">
-                    <h3 className="font-serif text-lg text-navy">{value.title}</h3>
-                    <p className="mt-1.5 text-sm font-light text-navy-700/70">{value.body}</p>
+                  <li key={value.title} className="border-t border-mist/15 pt-4">
+                    <h3 className="font-serif text-lg">{value.title}</h3>
+                    <p className="mt-1.5 text-sm font-light text-mist">{value.body}</p>
                   </li>
                 ))}
               </ul>

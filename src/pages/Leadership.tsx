@@ -61,6 +61,7 @@ export default function Leadership() {
     <>
       <PageHero
         eyebrow="Leadership"
+        ghost="Leaders"
         title="Students holding real responsibility."
         lead="IES is led by students at every level. Roles exist because work needs doing — we do not create titles to fill a page."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Leadership' }]}

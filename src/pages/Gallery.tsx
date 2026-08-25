@@ -92,6 +92,7 @@ export default function Gallery() {
     <>
       <PageHero
         eyebrow="Gallery"
+        ghost="Record"
         title="The complete record"
         lead={`Every photograph and every film IES has published — ${allPhotos.length} photographs across ${activities.length} programmes, and ${allVideos.length} videos. Nothing here is stock imagery, and every photograph was taken at the programme it shows.`}
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Gallery' }]}

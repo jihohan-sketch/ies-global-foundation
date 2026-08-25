@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Eyebrow } from '@/components/ui/Primitives'
+import { GhostTitle } from '@/components/ui/Cinematic'
 import { Reveal } from '@/components/ui/Reveal'
 
 interface Crumb {
@@ -13,6 +14,7 @@ export function PageHero({
   eyebrow,
   title,
   lead,
+  ghost,
   crumbs,
   meta,
   children,
@@ -20,13 +22,30 @@ export function PageHero({
   eyebrow: string
   title: ReactNode
   lead?: ReactNode
+  /**
+   * One word, set at display scale behind the masthead as texture. Decorative
+   * and `aria-hidden` — see `GhostTitle`. Keep it to a single word: the ghost
+   * never wraps, so anything longer runs off the viewport on a phone.
+   *
+   * Deliberately not derived from `eyebrow`. Several eyebrows are phrases
+   * ("News & Updates", "National Branch · Korea") that make poor ghosts, and a
+   * page's texture word is an editorial choice rather than a transformation.
+   */
+  ghost?: string
   crumbs?: Crumb[]
   meta?: ReactNode
   children?: ReactNode
 }) {
   return (
-    <section className="relative border-b border-mist/12 pt-40 pb-20 sm:pt-48 sm:pb-24">
-      <Container size="wide" className="relative">
+    <section className="relative overflow-hidden border-b border-mist/12 pt-40 pb-20 sm:pt-48 sm:pb-24">
+      {/* Sits against the section rather than the container, so it can run past
+          the text column's left edge and be cropped by the viewport. */}
+      {ghost && (
+        <GhostTitle className="top-28 left-6 sm:left-8" >
+          {ghost}
+        </GhostTitle>
+      )}
+      <Container size="wide" className="relative z-10">
         {crumbs && crumbs.length > 0 && (
           <nav aria-label="Breadcrumb" className="mb-8">
             <ol className="flex flex-wrap items-center gap-2 text-xs font-light text-mist">

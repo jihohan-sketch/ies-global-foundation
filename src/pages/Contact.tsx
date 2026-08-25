@@ -31,6 +31,7 @@ export default function Contact() {
     <>
       <PageHero
         eyebrow="Contact"
+        ghost="Contact"
         title="Reach the right team."
         lead="Inquiries are routed to the Foundation or the relevant branch. If you know which branch you need, contact them directly."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Contact' }]}

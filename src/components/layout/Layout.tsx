@@ -2,6 +2,7 @@ import { useEffect, type CSSProperties } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Header } from './Header'
 import { Footer } from './Footer'
+import { EntryGate } from './EntryGate'
 import { GlobeBackdrop } from '@/components/GlobeBackdrop'
 
 /** Resets scroll position on navigation, honouring in-page anchors. */
@@ -66,6 +67,8 @@ export function Layout() {
   return (
     <div className="relative flex min-h-dvh flex-col bg-navy">
       <ScrollManager />
+      {/* Above everything, including the header, and removes itself. */}
+      <EntryGate />
       {/* Sits at z-0; the content below is lifted to z-10 so it paints on top —
           without that, positioned-but-unlayered content would fall behind it. */}
       <GlobeBackdrop />

@@ -37,6 +37,7 @@ export default function OurWork() {
     <>
       <PageHero
         eyebrow="Our Work"
+        ghost="Work"
         title="From Reflection to Action"
         lead="Ethical inquiry joined to practical leadership: forums, service, leadership programs, partnerships, and student-led civic engagement."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Our Work' }]}

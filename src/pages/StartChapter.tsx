@@ -17,6 +17,7 @@ export default function StartChapter() {
     <>
       <PageHero
         eyebrow="Start a Chapter"
+        ghost="Chapter"
         title="Bring IES to your school."
         lead="The most demanding way into IES, and the one with the most ownership. Here is what it involves."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Start a Chapter' }]}

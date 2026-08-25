@@ -35,6 +35,7 @@ export default function Join() {
     <>
       <PageHero
         eyebrow="Join IES"
+        ghost="Join"
         title="Five ways in. All of them real."
         lead={joinIntro}
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Join IES' }]}

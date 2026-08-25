@@ -20,6 +20,7 @@ export default function Governance() {
     <>
       <PageHero
         eyebrow="Governance"
+        ghost="Charter"
         title="What each part of IES is — and is not."
         lead={governance.intro}
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Governance' }]}

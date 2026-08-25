@@ -34,6 +34,7 @@ export default function GlobalNetwork() {
     <>
       <PageHero
         eyebrow="Global Network"
+        ghost="Network"
         title="One Foundation. Multiple National Branches."
         lead="Students across three countries, joined by one commitment to ethical leadership. Each branch works in its own context, to the same standards."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Global Network' }]}

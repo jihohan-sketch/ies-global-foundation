@@ -32,6 +32,7 @@ export default function News() {
     <>
       <PageHero
         eyebrow="News & Updates"
+        ghost="News"
         title="From across the network"
         lead="Announcements, appointments, event recaps, partnerships, and program launches from across the network."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'News' }]}

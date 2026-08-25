@@ -1,4 +1,5 @@
 import { Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
+import { GhostTitle } from '@/components/ui/Cinematic'
 import { StatBlock } from '@/components/ui/Counter'
 import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
@@ -22,25 +23,29 @@ export default function Impact() {
     <>
       <PageHero
         eyebrow="Impact"
+        ghost="Impact"
         title="What the network has actually done."
         lead={impactIntro}
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Impact' }]}
       />
 
       {/* ====================================================== STATISTICS */}
-      <Section tone="paper">
-        <Container size="wide">
-          <Reveal>
-            <Eyebrow tone="navy">Organization-Wide Statistics</Eyebrow>
+      {/* Dark rather than the bright `paper` interlude this used to be — see the
+          note on the matching section in Home.tsx. */}
+      <Section tone="deep" className="overflow-hidden border-y border-mist/12">
+        <Container size="wide" className="relative">
+          <GhostTitle className="-top-[0.5em] -translate-y-1/2">Figures</GhostTitle>
+          <Reveal className="relative z-10">
+            <Eyebrow>Organization-Wide Statistics</Eyebrow>
           </Reveal>
 
-          <dl className="mt-12 grid gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+          <dl className="relative z-10 mt-12 grid gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
             {impactStats.map((stat, i) => (
               <Reveal key={stat.label + stat.value} delay={i * 80}>
-                <div className="border-t border-navy/15 pt-7">
+                <div className="border-t border-mist/15 pt-7">
                   <dt className="sr-only">{stat.label}</dt>
                   <dd>
-                    <StatBlock stat={stat} tone="light" />
+                    <StatBlock stat={stat} />
                   </dd>
                 </div>
               </Reveal>
@@ -48,7 +53,7 @@ export default function Impact() {
           </dl>
 
           <Reveal delay={200}>
-            <p className="mt-14 max-w-3xl text-xs leading-relaxed font-light text-navy-700/60">
+            <p className="mt-14 max-w-3xl text-xs leading-relaxed font-light text-mist/80">
               {site.statisticsNote} Figures are reported by national branches and consolidated by
               the Global Foundation. Where a figure cannot be supported from internal records, it
               is not published.

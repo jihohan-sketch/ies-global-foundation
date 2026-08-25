@@ -6,14 +6,30 @@
    ========================================================================== */
 
 @theme {
-  /* --- Brand palette --- */
-  --color-navy: #071a33; /* Primary navy   */
-  --color-navy-700: #0d294d; /* Secondary navy */
-  --color-navy-600: #16375f;
-  --color-navy-500: #21456f;
+  /*
+   * --- Brand palette ---
+   *
+   * The ground is deliberately near-black with a navy cast rather than the
+   * mid-navy this site used to sit on. Two reasons, both about the same thing:
+   *
+   *   1. Gold only reads as *metal* against something close to black. On the
+   *      old #071a33 the accent was a warm tan; at #050a14 the same hex reads
+   *      as a lit edge, which is the whole point of a gold-on-dark identity.
+   *   2. The globe, the photography and the section seams all paint light onto
+   *      this ground. A darker floor gives every one of them somewhere to go.
+   *
+   * Deepening the ground only ever *raises* contrast for the light type sitting
+   * on it, so every ratio recorded in the mist ladder below remains a floor
+   * rather than a ceiling. `paper` sections are unaffected.
+   */
+  --color-navy: #050a14; /* Ground — near-black, navy cast */
+  --color-navy-700: #0a1526; /* Raised panels, `deep` sections */
+  --color-navy-600: #12203a;
+  --color-navy-500: #1b2c4a;
   --color-paper: #f7f9fc; /* White / paper  */
   --color-gold: #c8a96b; /* Warm gold      */
   --color-gold-300: #dcc59a;
+  --color-gold-100: #f2e7cf; /* Metallic highlight — gradient stops only */
   --color-mist: #aab4c2; /* Muted gray     */
 }
 
@@ -24,7 +40,11 @@
  * than as a second token. That is fine, but only two steps actually clear AA
  * for text, and the ladder had drifted to seven ad-hoc values (/30 … /80) with
  * several of them below the line. These are the ratios against both dark
- * grounds — `deep` sections paint navy-700, which is the tighter of the two:
+ * grounds — `deep` sections paint navy-700, which is the tighter of the two.
+ *
+ * Measured against the *previous*, lighter grounds and kept that way on
+ * purpose: the palette above has since dropped to #050a14 / #0a1526, which can
+ * only raise every figure here. Treat these as guaranteed minimums.
  *
  *                    on navy #071a33   on navy-700 #0d294d
  *   text-mist              8.3:1              7.0:1
@@ -106,9 +126,27 @@
   --text-lead: clamp(1.0625rem, 1.35vw, 1.25rem);
   --text-lead--line-height: 1.65;
 
+  /* --- Cinematic display ---
+   *
+   * Wide-tracked capitals, set in the serif. This is the register the site
+   * uses for a section's *name* — never for a sentence. Tracking this open
+   * destroys word-shape, which is exactly why it works on one or two words and
+   * fails on anything longer; keep these to short noun phrases.
+   *
+   * `cinema` is the visible title. `ghost` is the same words repeated at
+   * display scale behind the section as texture, and is always aria-hidden. */
+  --text-cinema: clamp(1.5rem, 3.6vw, 3rem);
+  --text-cinema--line-height: 1.16;
+  --text-cinema--letter-spacing: 0.2em;
+
+  --text-ghost: clamp(3.5rem, 13vw, 12rem);
+  --text-ghost--line-height: 1;
+  --text-ghost--letter-spacing: 0.16em;
+
   /* --- Motion --- */
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-cinema: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* --- Layout --- */
   --spacing-section: 7.5rem;
@@ -136,7 +174,10 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
-    scroll-padding-top: 6rem;
+    /* Clears the header at its *scrolled* height (4.5rem), which is the state
+       it is always in by the time an in-page anchor resolves, plus a margin so
+       the target does not sit flush against the underside of the bar. */
+    scroll-padding-top: 7rem;
   }
 
   body {
@@ -235,6 +276,124 @@
     transparent
   );
   height: 1px;
+}
+
+/*
+ * Metallic fill for a display headline.
+ *
+ * Two things make this read as metal rather than as a coloured gradient: the
+ * highlight stop is off-centre (light has a direction), and the darkest stop is
+ * warm rather than grey. Applied with `background-clip: text`, so it needs a
+ * transparent fill — and a `color` fallback for the handful of engines that
+ * support neither, which would otherwise render the text invisible.
+ */
+@utility metal {
+  color: var(--color-gold-300);
+
+  @supports (background-clip: text) or (-webkit-background-clip: text) {
+    background: linear-gradient(
+      104deg,
+      color-mix(in srgb, var(--color-gold) 62%, var(--color-navy)) 0%,
+      var(--color-gold-300) 34%,
+      var(--color-gold-100) 46%,
+      var(--color-gold-300) 58%,
+      color-mix(in srgb, var(--color-gold) 55%, var(--color-navy)) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/*
+ * The section's own name, set at display scale behind its content as texture.
+ *
+ * Always paired with `aria-hidden` and a real heading in the flow — this is
+ * scenery, and a screen reader hearing the section title twice is a bug. It is
+ * also `pointer-events-none` and `select-none` so a drag across the section
+ * never selects a word the visitor cannot see themselves having clicked.
+ *
+ * 3% is not an arbitrary "faint". Below about 2% it disappears on a calibrated
+ * laptop screen; by 5% it stops being texture and starts being a second
+ * headline competing with the real one for the eye — which is exactly what it
+ * did at the 4% this was first drawn at, over a `deep` section where the
+ * lighter ground gives it more to push against. It is decorative, so it is
+ * exempt from contrast minimums by design.
+ */
+@utility ghost-title {
+  pointer-events: none;
+  user-select: none;
+  font-family: var(--font-serif);
+  font-weight: 300;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--color-paper) 3%, transparent);
+}
+
+/*
+ * Seam between two sections: a soft gradient rather than a hairline.
+ *
+ * The reference language here never cuts from one section to the next — each
+ * one dissolves into the ground it sits on. A 1px rule reads as a boundary; a
+ * 12rem gradient reads as depth. Placed absolutely at a section edge.
+ */
+@utility seam-top {
+  background: linear-gradient(to bottom, var(--color-navy), transparent);
+}
+
+@utility seam-bottom {
+  background: linear-gradient(to top, var(--color-navy), transparent);
+}
+
+/*
+ * Corner darkening for full-bleed cinematic sections. Kept as a radial rather
+ * than four edge gradients so it stays circular on any aspect ratio, which is
+ * what makes it read as a lens rather than as a frame.
+ */
+@utility vignette {
+  background: radial-gradient(
+    ellipse 120% 85% at 50% 45%,
+    transparent 30%,
+    color-mix(in srgb, var(--color-navy) 55%, transparent) 72%,
+    var(--color-navy) 100%
+  );
+}
+
+/* ==========================================================================
+   ENTRY
+   ========================================================================== */
+
+/*
+ * The entry gate's own animations. These are exempt from nothing — under
+ * reduced motion the blanket rule collapses them and the gate simply appears
+ * and then leaves, which is the correct outcome for a curtain.
+ */
+@keyframes ies-gate-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes ies-gate-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The mark's ring drawing itself once while the site loads behind it. */
+@keyframes ies-gate-trace {
+  from {
+    stroke-dashoffset: var(--trace-length, 300);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 /* ==========================================================================

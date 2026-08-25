@@ -1,5 +1,6 @@
 import type { ElementType, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import { GhostTitle, SectionIndex } from '@/components/ui/Cinematic'
 import { cx } from '@/lib/utils'
 
 /* -------------------------------------------------------------- Container */
@@ -80,14 +81,14 @@ export function Eyebrow({
   return (
     <p
       className={cx(
-        'flex items-center gap-3 text-[0.6875rem] font-medium tracking-[0.24em] uppercase',
+        'flex items-center gap-4 text-[0.625rem] font-medium tracking-[0.3em] uppercase',
         tones[tone],
         className,
       )}
     >
-      {/* `shrink-0` keeps the rule at its intended 32px; as a decorative element
+      {/* `shrink-0` keeps the rule at its intended 40px; as a decorative element
           it should not be the thing that gives way when space is tight. */}
-      <span aria-hidden className="h-px w-8 shrink-0 bg-current opacity-50" />
+      <span aria-hidden className="h-px w-10 shrink-0 bg-current opacity-45" />
       {children}
     </p>
   )
@@ -99,6 +100,8 @@ export function SectionHeading({
   eyebrow,
   title,
   lead,
+  ghost,
+  index,
   align = 'left',
   tone = 'light',
   className,
@@ -107,6 +110,18 @@ export function SectionHeading({
   eyebrow?: string
   title: ReactNode
   lead?: ReactNode
+  /**
+   * One or two words set at display scale behind the heading as texture. Purely
+   * decorative — see `GhostTitle`. Omit it on `paper` sections, where a 4%
+   * white ghost has nothing to sit on.
+   */
+  ghost?: string
+  /**
+   * `01`, `02`, … Numbers the section within its page and swaps the eyebrow for
+   * the indexed marker. Purely a presentational choice about the eyebrow: the
+   * label still comes from `eyebrow`, which stays required for it.
+   */
+  index?: string
   align?: 'left' | 'center'
   tone?: 'light' | 'dark'
   className?: string
@@ -115,37 +130,65 @@ export function SectionHeading({
   return (
     <div
       className={cx(
-        'max-w-3xl',
+        'relative max-w-3xl',
         align === 'center' && 'mx-auto text-center',
         className,
       )}
     >
-      {eyebrow && (
-        <Eyebrow
-          tone={tone === 'dark' ? 'navy' : 'gold'}
-          className={align === 'center' ? 'justify-center' : undefined}
+      {ghost && tone === 'light' && (
+        <GhostTitle
+          align={align === 'center' ? 'center' : 'left'}
+          /*
+           * Raised until roughly its top two-thirds sit above the heading, so
+           * the section's own `overflow-hidden` crops it against the top edge.
+           * That is the difference between type used as texture and type used
+           * as a second headline: sat squarely behind the words it competed
+           * with them and made both harder to read.
+           */
+          className="-top-[0.5em] -translate-y-1/2"
         >
-          {eyebrow}
-        </Eyebrow>
+          {ghost}
+        </GhostTitle>
       )}
-      <Tag
-        className={cx(
-          'text-h2 mt-6',
-          tone === 'dark' ? 'text-navy' : 'text-paper',
-        )}
-      >
-        {title}
-      </Tag>
-      {lead && (
-        <div
+      {/* Lifted over the ghost explicitly. Source order alone is not enough:
+          the ghost is positioned, so it would otherwise paint above static
+          siblings that come after it. */}
+      <div className="relative z-10">
+        {eyebrow &&
+          (index ? (
+            <SectionIndex
+              index={index}
+              label={eyebrow}
+              tone={tone}
+              className={align === 'center' ? 'justify-center' : undefined}
+            />
+          ) : (
+            <Eyebrow
+              tone={tone === 'dark' ? 'navy' : 'gold'}
+              className={align === 'center' ? 'justify-center' : undefined}
+            >
+              {eyebrow}
+            </Eyebrow>
+          ))}
+        <Tag
           className={cx(
-            'text-lead mt-6 font-light',
-            tone === 'dark' ? 'text-navy-700/80' : 'text-mist',
+            'text-h2 mt-6',
+            tone === 'dark' ? 'text-navy' : 'text-paper',
           )}
         >
-          {lead}
-        </div>
-      )}
+          {title}
+        </Tag>
+        {lead && (
+          <div
+            className={cx(
+              'text-lead mt-6 font-light',
+              tone === 'dark' ? 'text-navy-700/80' : 'text-mist',
+            )}
+          >
+            {lead}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

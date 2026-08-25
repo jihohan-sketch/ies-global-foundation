@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { primaryNav } from '@/content/site'
+import { primaryNav, site } from '@/content/site'
 import { branches } from '@/content/branches'
 import { Button, Container } from '@/components/ui/Primitives'
 import { Logo } from './Logo'
@@ -37,7 +37,7 @@ export function Header() {
      that would undo it is hidden too. Anyone who opened the menu on a narrow
      window and then widened it was left on a page that would not scroll. */
   useEffect(() => {
-    // Tailwind's `xl`, where the header switches to the inline nav.
+    // Tailwind's `xl`, where the header switches to the nav rail.
     const desktop = window.matchMedia('(min-width: 80rem)')
     const onChange = () => {
       if (desktop.matches) setOpen(false)
@@ -111,52 +111,57 @@ export function Header() {
 
       <header
         className={cx(
-          'fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
+          'fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-[var(--ease-cinema)]',
           scrolled || open
             ? 'border-b border-mist/12 bg-navy/92 backdrop-blur-xl'
             : 'border-b border-transparent',
         )}
       >
         <Container size="wide">
+          {/* ------------------------------------------------- Primary row */}
+          {/* Three tracks, not `justify-between`: the wordmark is centred on the
+              *viewport*, which only holds if the flanking columns are equal
+              regardless of what they contain. With space-between it drifted
+              left or right as the quote and the actions changed width. */}
           <div
             className={cx(
-              'flex items-center justify-between transition-all duration-500',
+              'grid grid-cols-[1fr_auto_1fr] items-center transition-all duration-500',
               scrolled ? 'h-18 py-3' : 'h-24 py-5',
             )}
           >
-            <Link to="/" aria-label="IES Global Foundation — home" className="shrink-0">
+            {/* The ambient epigraph. Decorative texture in the reference
+                language, and treated as such: it repeats the motto already in
+                the footer, so it is hidden from assistive tech rather than
+                read out on every page. */}
+            <p
+              aria-hidden
+              className={cx(
+                'hidden min-w-0 flex-col gap-0.5 leading-tight transition-opacity duration-500 xl:flex',
+                scrolled ? 'opacity-0' : 'opacity-100',
+              )}
+            >
+              <span className="truncate font-serif text-[0.9375rem] text-paper/70 italic">
+                {site.missionMotto}
+              </span>
+              <span className="text-[0.5625rem] font-medium tracking-[0.28em] text-mist/60 uppercase">
+                {site.motto}
+              </span>
+            </p>
+
+            <Link
+              to="/"
+              aria-label="IES Global Foundation — home"
+              className="col-start-2 justify-self-center"
+            >
               <Logo />
             </Link>
 
-            <nav
-              aria-label="Primary"
-              className="hidden min-w-0 flex-1 items-center justify-center gap-5 px-6 xl:flex 2xl:gap-7"
-            >
-              {primaryNav.map((item) => (
-                <NavLink
-                  key={item.href}
-                  to={item.href}
-                  className={({ isActive }) =>
-                    cx(
-                      'relative py-2 text-[0.8125rem] font-medium tracking-[0.04em] whitespace-nowrap transition-colors duration-300',
-                      'after:absolute after:-bottom-0.5 after:left-0 after:h-px after:bg-gold after:transition-all after:duration-400',
-                      isActive
-                        ? 'text-gold after:w-full'
-                        : 'text-paper/78 hover:text-paper after:w-0 hover:after:w-full',
-                    )
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              ))}
-            </nav>
-
-            <div className="flex shrink-0 items-center gap-4">
+            <div className="col-start-3 flex shrink-0 items-center justify-end gap-3">
               {/* Wrapped rather than given `hidden` directly: Button's base class
                   sets `inline-flex`, and utility order in the stylesheet — not
                   the class attribute — decides which display rule wins. */}
-              <span className="hidden lg:block">
-                <Button to="/join" variant="primary" className="px-6 py-3">
+              <span className="hidden sm:block">
+                <Button to="/join" variant="secondary" className="rounded-full px-6 py-3">
                   Join IES
                 </Button>
               </span>
@@ -168,7 +173,7 @@ export function Header() {
                 aria-expanded={open}
                 aria-controls="mobile-nav"
                 aria-label={open ? 'Close menu' : 'Open menu'}
-                className="flex h-11 w-11 items-center justify-center border border-mist/55 transition-colors hover:border-gold/60 xl:hidden"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-mist/55 transition-colors hover:border-gold/60 xl:hidden"
               >
                 <span className="relative block h-3 w-5">
                   <span
@@ -187,6 +192,55 @@ export function Header() {
               </button>
             </div>
           </div>
+
+          {/* ---------------------------------------------------- Nav rail */}
+          {/*
+           * The nav in the reference register: wide-tracked capitals spread
+           * edge to edge under a hairline, rather than a cluster of links.
+           *
+           * It collapses on scroll — `grid-rows-[0fr]` to `[1fr]` rather than a
+           * height, so nothing here carries a magic pixel value that breaks
+           * when a label is added. The inner element needs `overflow-hidden`
+           * for that to clip, and `invisible` at the collapsed end keeps the
+           * links out of the tab order rather than merely out of sight.
+           */}
+          <div
+            className={cx(
+              'hidden grid-rows-[1fr] transition-all duration-500 ease-[var(--ease-cinema)] xl:grid',
+              scrolled && 'grid-rows-[0fr] opacity-0',
+            )}
+          >
+            <nav
+              aria-label="Primary"
+              className={cx('overflow-hidden', scrolled && 'invisible')}
+            >
+              <ul className="flex items-center justify-between border-t border-mist/12 pt-4 pb-5">
+                {primaryNav.map((item) => (
+                  <li key={item.href}>
+                    <NavLink
+                      to={item.href}
+                      tabIndex={scrolled ? -1 : undefined}
+                      className={({ isActive }) =>
+                        cx(
+                          'relative block py-1 text-[0.6875rem] font-medium whitespace-nowrap uppercase transition-colors duration-300',
+                          /* Tracking this wide needs the trailing step taken
+                             back, or every label sits a notch left of centre in
+                             its own slot. */
+                          'tracking-[0.24em] -mr-[0.24em]',
+                          'after:absolute after:-bottom-0.5 after:left-0 after:h-px after:bg-[var(--accent)] after:transition-all after:duration-500',
+                          isActive
+                            ? 'text-[var(--accent)] after:w-[calc(100%-0.24em)]'
+                            : 'text-paper/70 hover:text-paper after:w-0 hover:after:w-[calc(100%-0.24em)]',
+                        )
+                      }
+                    >
+                      {item.label}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
         </Container>
       </header>
 
@@ -198,7 +252,7 @@ export function Header() {
         aria-modal={open || undefined}
         aria-label="Site menu"
         className={cx(
-          'fixed inset-0 z-40 bg-navy transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] xl:hidden',
+          'fixed inset-0 z-40 bg-navy transition-all duration-500 ease-[var(--ease-cinema)] xl:hidden',
           open ? 'visible opacity-100' : 'invisible opacity-0',
         )}
         aria-hidden={!open}
@@ -235,7 +289,7 @@ export function Header() {
             </nav>
 
             <div className="mt-10">
-              <p className="text-[0.6875rem] font-medium tracking-[0.24em] text-gold uppercase">
+              <p className="text-[0.625rem] font-medium tracking-[0.3em] text-gold uppercase">
                 National Branches
               </p>
               <div className="mt-4 flex flex-col gap-3">
