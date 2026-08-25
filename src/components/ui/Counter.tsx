@@ -53,7 +53,11 @@ export function Counter({ stat, className }: { stat: Stat; className?: string })
   return (
     <span ref={ref} className={className}>
       {stat.prefix}
-      <span className="tabular-nums">{formatNumber(display)}</span>
+      {/* `lining-nums` alongside `tabular-nums`: Tailwind's numeric utilities compose
+          into one `font-variant-numeric`, and a class beats the zero-specificity
+          `:where()` base rule that gives the rest of the serif its lining figures.
+          Without it a counter would slide back to Cormorant's old-style digits. */}
+      <span className="tabular-nums lining-nums">{formatNumber(display)}</span>
       {stat.suffix}
     </span>
   )

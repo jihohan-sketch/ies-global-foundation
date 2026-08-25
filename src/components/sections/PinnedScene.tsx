@@ -45,6 +45,7 @@ export function PinnedScene({
   panelWidth = 'screen',
   trackClassName,
   wordmark,
+  depth,
 }: {
   /** One node per panel. Each is given a full-viewport cell to sit in. */
   children: ReactNode[]
@@ -93,6 +94,22 @@ export function PinnedScene({
    * is nothing to see and it is simply a layer being composited for no one.
    */
   wordmark?: string
+  /**
+   * Viewing distance, in pixels, for the `scrub-tilt` preset — the cylinder.
+   * Omit and the scene stays flat.
+   *
+   * The perspective is put on the *frame*, not on the track, and the track is
+   * given `preserve-3d` so it passes through. The frame is sticky and exactly
+   * one viewport, so its centre is the screen's centre and the vanishing point
+   * holds still while the track slides past it. Put it on the track instead —
+   * the obvious place — and the vanishing point travels with the pan, so the
+   * panels at the far end of a long track fold in on themselves instead of
+   * turning away.
+   *
+   * 1600 over a viewport-width panel is roughly a 45° field: a room rather than
+   * a lens. Below about 900 it reads as a fisheye.
+   */
+  depth?: number
 }) {
   const sectionRef = useRef<HTMLElement>(null)
   const frameRef = useRef<HTMLDivElement>(null)
@@ -203,6 +220,7 @@ export function PinnedScene({
           'relative flex w-full items-center overflow-hidden',
           reduced ? 'flex-col' : 'sticky top-0 h-dvh',
         )}
+        style={depth && !reduced ? { perspective: `${depth}px` } : undefined}
       >
         {/*
          * The scene's name across the foot of the frame, drifting sideways
@@ -237,7 +255,17 @@ export function PinnedScene({
             reduced ? 'w-full flex-col' : 'will-change-transform',
             !reduced && trackClassName,
           )}
-          style={reduced ? undefined : { transform: 'translate3d(0px, 0, 0)' }}
+          style={
+            reduced
+              ? undefined
+              : {
+                  transform: 'translate3d(0px, 0, 0)',
+                  /* The track is the thing being translated, so it would
+                     otherwise flatten its children into its own plane and eat
+                     the frame's perspective before any panel saw it. */
+                  transformStyle: depth ? 'preserve-3d' : undefined,
+                }
+          }
         >
           {children.map((panel, i) => (
             <div

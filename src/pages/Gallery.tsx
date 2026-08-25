@@ -2,9 +2,11 @@ import { useCallback, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Eyebrow, Section } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
+import { Scrub } from '@/components/ui/Scrub'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
 import { GalleryImage, Lightbox, VideoEmbed } from '@/components/sections/Media'
+import { PhotoReel, type ReelShot } from '@/components/sections/PhotoReel'
 import { activities } from '@/content/activities'
 import { channelUrl, organizationVideos } from '@/content/videos'
 import { useSeo } from '@/lib/seo'
@@ -41,6 +43,29 @@ const allVideos: (Video & { activityTitle?: string; href?: string })[] = [
   ),
   ...organizationVideos,
 ]
+
+/**
+ * One photograph per programme, in content order.
+ *
+ * The first of each activity's set rather than a hand-picked list: the reel
+ * then re-cuts itself when a programme is added, and no separate list of
+ * filenames can rot against the photographs it names. `limit` caps how long the
+ * scene runs — see `vhPerPanel` below for what each panel costs.
+ */
+function reelFromActivities(limit = 9): ReelShot[] {
+  return activities
+    .filter((activity) => activity.photos.length > 0)
+    .slice(0, limit)
+    .map((activity) => ({
+      src: activity.photos[0].src,
+      alt: activity.photos[0].alt,
+      caption: activity.title,
+      href: `/our-work#${activity.id}`,
+    }))
+}
+
+/** One frame per programme, panned across a held viewport above the archive. */
+const reel = reelFromActivities(9)
 
 /** Filters are built from the content, so a new activity appears on its own. */
 const filters = [
@@ -97,6 +122,32 @@ export default function Gallery() {
         lead={`Every photograph and every film IES has published — ${allPhotos.length} photographs across ${activities.length} programmes, and ${allVideos.length} videos. Nothing here is stock imagery, and every photograph was taken at the programme it shows.`}
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Gallery' }]}
       />
+
+      {/* ============================================================= REEL
+
+          The signature pass: a dozen photographs at a size worth looking at,
+          in the order the programmes happened. It is a *reading* of the
+          archive and deliberately sits above the searchable grid rather than
+          in place of it — see the note in PhotoReel. */}
+      <Section size="compact" className="pb-0">
+        <Container size="wide">
+          <Reveal>
+            <Eyebrow>The reel</Eyebrow>
+            {/* `Scrub`, not a bare class: `scrub-glint` spends `--e`, and only
+                an element the engine has registered is ever written one. */}
+            <Scrub as="h2" effect="scrub-glint" className="text-h2 mt-6 max-w-2xl">
+              Nine programmes, one pass
+            </Scrub>
+            <p className="text-lead mt-7 max-w-2xl font-light text-mist">
+              Scroll on. The frames travel sideways at the speed you set — nothing
+              here captures the wheel, and the grid below stays the place to
+              search.
+            </p>
+          </Reveal>
+        </Container>
+      </Section>
+
+      <PhotoReel shots={reel} wordmark="Record" className="mt-12" />
 
       {/* ========================================================== FILTERS */}
       <Section size="compact">

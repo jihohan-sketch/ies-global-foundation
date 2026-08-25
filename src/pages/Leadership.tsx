@@ -3,10 +3,12 @@ import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { PersonCard } from '@/components/sections/Cards'
 import { CallToAction } from '@/components/sections/CallToAction'
+import { PeopleRibbon } from '@/components/sections/PeopleRibbon'
 import { branches } from '@/content/branches'
 import {
   boardLeadership,
   foundingLeadership,
+  globalLeadership,
   globalOffices,
   leadershipIntro,
   nationalLeadership,
@@ -32,9 +34,32 @@ const officeGroups = globalOffices.reduce<(typeof globalOffices)[]>((groups, off
 }, [])
 
 /** The people this page already renders a full PersonCard for. */
-const cardedIds = new Set(
-  [...spotlightLeadership, ...foundingLeadership, ...boardLeadership].map((p) => p.id),
-)
+const carded = [...spotlightLeadership, ...foundingLeadership, ...boardLeadership]
+const cardedIds = new Set(carded.map((p) => p.id))
+
+/*
+ * The ribbon's cast: everyone who leads IES anywhere, de-duplicated, in the
+ * order the page introduces them.
+ *
+ * The whole cast rather than only the ones with a full card, for two reasons.
+ * It is what the scene claims to be — a ribbon headed "the people who lead
+ * IES" that quietly omits every branch lead is making a claim it does not
+ * keep. And it is what makes the pan work: four panels over a screen and a
+ * half of scrolling barely move, which reads as a page that has stopped
+ * responding rather than as a held frame.
+ *
+ * The de-duplication is load-bearing. `spotlight` lifts a person into the
+ * opening group without changing their tier, so a spotlit founder appears in
+ * two of these lists. The card sections cope because each is a different
+ * heading; one pan is one list, and the same face twice in it reads as a bug.
+ */
+const ribbonPeople = [
+  ...spotlightLeadership,
+  ...foundingLeadership,
+  ...globalLeadership,
+  ...boardLeadership,
+  ...nationalLeadership,
+].filter((person, i, all) => all.findIndex((other) => other.id === person.id) === i)
 const hasPersonCard = (person: { id: string }) => cardedIds.has(person.id)
 
 /*
@@ -65,6 +90,17 @@ export default function Leadership() {
         title="Students holding real responsibility."
         lead="IES is led by students at every level. Roles exist because work needs doing — we do not create titles to fill a page."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Leadership' }]}
+      />
+
+      {/* =========================================================== RIBBON
+
+          Who these people are, at a glance and at a size worth looking at.
+          The reading stays in the cards below — see the note in PeopleRibbon
+          for why a pinned pan is the wrong place for a biography. */}
+      <PeopleRibbon
+        people={ribbonPeople}
+        label="The people who lead IES"
+        wordmark="Leaders"
       />
 
       {/* ============================================= FOUNDATION LEADERSHIP */}

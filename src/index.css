@@ -222,6 +222,27 @@
     text-wrap: balance;
   }
 
+  /*
+   * LINING FIGURES, EVERYWHERE THE SERIF IS.
+   *
+   * Cormorant Garamond ships old-style figures as its default: the digits sit
+   * on the x-height with ascenders and descenders, the way they do in a novel.
+   * That is lovely in a paragraph and wrong for everything this site does with
+   * a number. "10 institutions, named." read as "ro institutions". The index
+   * numbers that run down every list — 01, 02, 03 — read as "or, oz, o3". The
+   * hero counters bounced along a ragged baseline.
+   *
+   * A foundation asks to be believed on its numbers, so the numbers have to be
+   * unambiguous first and characterful second. `lining-nums` puts them back on
+   * the cap line at a uniform height.
+   *
+   * `:where()` keeps this at zero specificity, so any element that wants the
+   * old-style figures back can just say so with a plain utility class and win.
+   */
+  :where(h1, h2, h3, h4, .font-serif, .ghost-title, .wordmark) {
+    font-variant-numeric: lining-nums;
+  }
+
   p {
     text-wrap: pretty;
   }
@@ -639,6 +660,136 @@
   transform: translate3d(calc(var(--drift) * var(--scrub-depth, 80px)), 0, 0);
 }
 
+/* ------------------------------------------------------- the horizontal set
+
+   Five presets written for `PinnedScene`, where `--p` is a *panel's own*
+   crossing: 0 just off the right edge, 0.5 dead centre, 1 clear of the left.
+   That is why they lean on `--drift` (+0.5 → −0.5, signed, and therefore
+   direction-aware) and `--band` (0 → 1 → 0, and therefore symmetric about the
+   centre) rather than on `--e`, which only ever climbs.
+
+   All five are transform, opacity or clip-path. None reads layout, none is
+   registered with the engine separately, and none costs a second scroll
+   system — a horizontal panel already publishes its progress, and these are
+   just different ways of spending it. */
+
+/*
+ * THE CYLINDER — panels turn away from the centre as they cross.
+ *
+ * `--drift` is signed, so the panel entering on the right turns one way and
+ * the one leaving on the left turns the other, with the centre panel square
+ * on. That sign is the whole effect: mirror it and the rail reads as convex,
+ * bulging toward the viewer, which is the wrong room to be standing in.
+ *
+ * Needs a perspective on an ancestor — `PinnedScene`'s `depth` prop puts one
+ * on the *frame* rather than the track. The frame is sticky and viewport-sized,
+ * so its centre is the viewport's centre and the vanishing point stays put
+ * while the track slides past it. Perspective on the track instead would drag
+ * the vanishing point along with the pan, and the panels at the far end of a
+ * long track would fold rather than turn.
+ *
+ * 18° is a little under the 20° the card rail uses, because these panels are
+ * bigger and foreshortening compounds with width.
+ */
+.scrub-tilt {
+  transform: rotateY(calc(var(--drift) * var(--scrub-turn, 36deg)));
+}
+
+/*
+ * DEPTH IN THE PAN — a panel is largest and brightest dead centre, and both
+ * recedes and dims toward either edge.
+ *
+ * `--band` rather than `--e`: this has to be symmetric. An entering panel and a
+ * leaving one are at the same distance from the middle and should look it, so
+ * the value has to rise and fall rather than climb once and stay.
+ *
+ * The floors matter. Scale bottoms out at 0.88 and opacity at 0.45, not at 0 —
+ * a panel that shrinks to nothing reads as a bug on a slow scroll, and one that
+ * dims to nothing takes its own text with it. This is depth cueing on top of
+ * legible content, never a gate in front of it.
+ */
+.scrub-recede {
+  opacity: calc(0.45 + var(--band) * 0.55);
+  transform: scale(calc(0.88 + var(--band) * 0.12));
+}
+
+/*
+ * THE CURTAIN — the horizontal counterpart to `scrub-mask`.
+ *
+ * `scrub-mask` opens a frame upward, which is right for a picture arriving from
+ * below in a vertical column and wrong inside a pan, where every other vector
+ * on screen is sideways. This one opens along the direction of travel.
+ *
+ * Set `--scrub-open-from: right` — anything but the default, really — to wipe
+ * the other way; the two custom properties are read as an inset pair so a
+ * caller flips it without a second class.
+ */
+.scrub-curtain {
+  clip-path: inset(
+    0 calc((1 - var(--e)) * var(--curtain-right, 100%)) 0
+      calc((1 - var(--e)) * var(--curtain-left, 0%))
+  );
+}
+
+.scrub-curtain[data-from='right'] {
+  --curtain-right: 0%;
+  --curtain-left: 100%;
+}
+
+/*
+ * SHEAR — a panel leans into its own travel, and stands up as it lands.
+ *
+ * Borrowed from the way a hand-held camera drags on a whip pan. Keep it small:
+ * `--scrub-shear` past about 8deg stops reading as momentum and starts reading
+ * as a rendering fault, and it is doing that to type, which shows every degree.
+ * Do not put this on a photograph of a person.
+ */
+.scrub-skew-x {
+  transform: skewX(calc(var(--drift) * var(--scrub-shear, 5deg)));
+}
+
+/*
+ * THE GLINT — a single pass of light across gold type as its panel crosses.
+ *
+ * The one flourish in this set, and the rule is one per scene. It is the same
+ * gold the `metal` utility mixes, moved rather than repainted: the bar is a
+ * fixed gradient on a pseudo-element and only its `translate3d` changes, so
+ * nothing re-rasterises. Animating `background-position` on the text itself
+ * would repaint every glyph on every frame for the same picture.
+ *
+ * `mix-blend-mode: overlay` keeps it a highlight on the letterforms rather than
+ * a bar laid over them, and `pointer-events: none` keeps it out of the way of
+ * anything selectable underneath.
+ */
+.scrub-glint {
+  position: relative;
+  isolation: isolate;
+}
+
+.scrub-glint::after {
+  content: '';
+  position: absolute;
+  inset: -20% -60%;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(
+    100deg,
+    transparent 42%,
+    color-mix(in srgb, var(--color-gold-100) 70%, transparent) 50%,
+    transparent 58%
+  );
+  /* −60% → +60% of its own overwidth box, so the bar is fully clear of the
+     type at both ends of the pass and the highlight has a start and a finish
+     rather than parking half-lit on the last letter. */
+  /* The fallback matters: `--e` is only written to elements the engine has
+     registered, and a bare `var(--e)` inside `calc()` on anything else is
+     invalid at computed-value time — which drops the transform entirely and
+     parks the highlight across the middle of the word forever. `1` finishes
+     the pass instead, leaving the bar clear of the type. */
+  transform: translate3d(calc((var(--e, 1) - 0.5) * 120%), 0, 0);
+}
+
 /* ------------------------------------------------------------------ images */
 
 /*
@@ -748,6 +899,17 @@
 
 .scrub-word {
   display: inline-block;
+  /*
+   * The trailing space genuinely rides inside the span (see MaskedText) — and
+   * under `white-space: normal` the engine strips it anyway, because a space at
+   * the *end of a line box* is always trimmed and an inline-block's content is
+   * its own line box. So every word in a masked headline butted straight into
+   * the next one: "AGlobalNetworkRootedinEthicalLeadership".
+   *
+   * `pre-wrap` is the narrowest fix: it preserves that one trailing space and,
+   * unlike `pre` or an `&nbsp;`, still lets the line break between two words.
+   */
+  white-space: pre-wrap;
   opacity: var(--e);
   /* In `em` of the line's own size, so one rule is correct at every step of the
      type scale — a display line lifts further than a subhead because its own
@@ -776,6 +938,8 @@
  */
 .scrub-lit {
   display: inline-block;
+  /* Same trailing-space trim as `.scrub-word` above — see the note there. */
+  white-space: pre-wrap;
   opacity: calc(0.3 + var(--e) * 0.7);
 }
 
