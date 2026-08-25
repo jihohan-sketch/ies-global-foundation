@@ -217,7 +217,7 @@ export function GalleryRail({ items }: { items: GalleryItem[] }) {
   return (
     /* Not "what IES does" — the home page already has a rail under that label,
        and two regions sharing one name is indistinguishable to a screen reader. */
-    <ScrollRail label="programme photographs" autoAdvance="continuous" pxPerSecond={38}>
+    <ScrollRail label="programme photographs" autoAdvance="continuous" pxPerSecond={38} curve>
       {loop.map((item, index) => {
         const i = index % items.length
         const duplicate = index >= items.length

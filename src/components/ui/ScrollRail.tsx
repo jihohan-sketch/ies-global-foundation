@@ -22,6 +22,21 @@ const RAMP_MS = 90
 const RAMP_FLOOR = 0.01
 
 /*
+ * CURVATURE — how far the rail bends away at its edges.
+ *
+ * `MAX_TURN` is the rotation a card reaches once it is a full half-rail from
+ * the centre. 20° is close to the ceiling for this: past roughly 26° the
+ * foreshortening starts eating the caption under the photograph, and the text
+ * is being resampled at an angle steep enough to see.
+ *
+ * `PERSPECTIVE` is the viewing distance. Short values bend hard and read as a
+ * fisheye; 1600px over a rail around 1400px wide gives roughly a 45° field,
+ * which is the range that reads as a room rather than a lens.
+ */
+const MAX_TURN = 20
+const PERSPECTIVE = 1600
+
+/*
  * Horizontal card rail.
  *
  * The distinction that matters: this scrolls *inside its own track*. The page
@@ -46,6 +61,7 @@ export function ScrollRail({
   autoAdvance = false,
   intervalMs = 4500,
   pxPerSecond = 40,
+  curve = false,
 }: {
   children: ReactNode
   /** Names the region for screen readers — say what is in the rail. */
@@ -82,6 +98,16 @@ export function ScrollRail({
   intervalMs?: number
   /** `'continuous'` mode only. Calm is the point; 40 is roughly a card every 12s. */
   pxPerSecond?: number
+  /**
+   * Sit the cards on a cylinder: the one at the centre faces the viewer square
+   * on, and the further a card is from it the further it turns away.
+   *
+   * For photographic rails, where it turns a row of tiles into a band with a
+   * middle — the eye is told where to look without anything being highlighted.
+   * Not for rails of text cards: rotated body copy is resampled type, and the
+   * effect buys nothing that a row of paragraphs needs.
+   */
+  curve?: boolean
 }) {
   const trackRef = useRef<HTMLDivElement>(null)
   const [atStart, setAtStart] = useState(true)
@@ -128,6 +154,68 @@ export function ScrollRail({
       observer.disconnect()
     }
   }, [sync])
+
+  /*
+   * The cylinder.
+   *
+   * Each card's turn is a function of where its centre sits relative to the
+   * rail's, so the effect is entirely positional: the card in the middle is
+   * square on, and everything else is turning away from it. Scrolling the rail
+   * changes those positions and the angles follow.
+   *
+   * Written straight to the DOM inside a rAF rather than held in state. There
+   * is one transform per card per frame here, and routing that through React
+   * would mean reconciling the whole rail on every frame of a drag.
+   *
+   * The perspective lives on the *track*, not on each card, which is what makes
+   * this one cylinder rather than a row of cards each spinning about its own
+   * axis: a single vanishing point at the centre of the rail is the difference
+   * between a curved band and a set of independently rotating tiles.
+   */
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track || !curve) return
+
+    let frame = 0
+
+    const paint = () => {
+      frame = 0
+      const rail = track.getBoundingClientRect()
+      /* A guard, not a nicety: the rail is measured before layout has settled
+         on the first frame after mount, and dividing by a zero width sends
+         every card to `rotateY(NaN)`, which drops the transform entirely and
+         leaves the curve off until the next scroll. */
+      const reach = rail.width / 2 || 1
+      const centre = rail.left + reach
+
+      for (const child of Array.from(track.children) as HTMLElement[]) {
+        const box = child.getBoundingClientRect()
+        const offset = (box.left + box.width / 2 - centre) / reach
+        /* Clamped past the edge of the rail so a card waiting off-screen stops
+           turning rather than folding back on itself as the offset grows. */
+        const turn = Math.max(-1, Math.min(1, offset)) * MAX_TURN
+        child.style.transform = `rotateY(${-turn}deg)`
+      }
+    }
+
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(paint)
+    }
+
+    paint()
+    track.addEventListener('scroll', schedule, { passive: true })
+    const resizer = new ResizeObserver(schedule)
+    resizer.observe(track)
+
+    return () => {
+      if (frame) cancelAnimationFrame(frame)
+      track.removeEventListener('scroll', schedule)
+      resizer.disconnect()
+      for (const child of Array.from(track.children) as HTMLElement[]) {
+        child.style.transform = ''
+      }
+    }
+  }, [curve, children])
 
   const step = useCallback((direction: 1 | -1, wrap = false) => {
     const track = trackRef.current
@@ -353,8 +441,13 @@ export function ScrollRail({
         tabIndex={0}
         role="region"
         aria-label={label}
+        style={curve ? { perspective: `${PERSPECTIVE}px` } : undefined}
         className={cx(
           'flex gap-6 overflow-x-auto overscroll-x-contain pb-3',
+          /* Extra vertical room for the turn. A rotated card is fractionally
+             taller than its flat self at the corners, and without the padding
+             the scroller clips exactly the corner the curve is there to show. */
+          curve && 'py-4',
           /* Snapping and a continuous drift are incompatible: the snap engine
              pulls `scrollLeft` back to the nearest card on every frame the timer
              nudges it forward, and the rail sits there vibrating. */
