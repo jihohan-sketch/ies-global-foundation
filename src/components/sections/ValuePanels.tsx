@@ -38,7 +38,7 @@ const glowFor = (rgb: string) =>
 
 export function ValuePanels() {
   return (
-    <PinnedScene label="The Three A’s" className="border-y border-mist/12">
+    <PinnedScene label="The Three A’s" className="border-y border-mist/12" wordmark="Ethics">
       {threeAs.map((item, index) => {
         const panel = PANELS[index % PANELS.length]
         return (

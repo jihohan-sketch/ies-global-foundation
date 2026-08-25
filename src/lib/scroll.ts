@@ -100,6 +100,20 @@ export interface ScrubOptions {
    * a symmetric enter/exit effect wants `0.5`, its neutral middle.
    */
   reduced?: number
+  /**
+   * Track even under `prefers-reduced-motion`.
+   *
+   * For scroll *indicators* rather than scroll effects — a progress hairline,
+   * a position marker in a long document. The distinction is whether the
+   * element is reporting where the visitor is or performing for them: the
+   * reader moved the page either way, and withholding the readout from someone
+   * who asked for less motion tells them less about a document they are
+   * already navigating.
+   *
+   * Anything that moves *content* stays gated. If you find yourself reaching
+   * for this to keep a parallax alive, that is the wrong call.
+   */
+  always?: boolean
 }
 
 /* -------------------------------------------------------------------- state */
@@ -291,7 +305,7 @@ export function observeScroll(node: HTMLElement, options: ScrubOptions = {}): ()
   const property = options.property ?? '--p'
   const target = options.target ?? node
 
-  if (prefersReducedMotion()) {
+  if (prefersReducedMotion() && !options.always) {
     target.style.setProperty(property, String(options.reduced ?? 1))
     return () => target.style.removeProperty(property)
   }

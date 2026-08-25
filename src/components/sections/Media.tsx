@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
-import { Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
+import { ArrowLink, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
+import { CinemaLine } from '@/components/ui/Cinematic'
 import { Reveal } from '@/components/ui/Reveal'
 import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
 import { cx } from '@/lib/utils'
@@ -281,26 +282,38 @@ export function GallerySection({ items }: { items: GalleryItem[] }) {
   return (
     <Section tone="deep" className="border-y border-mist/12" size="compact">
       <Container size="wide">
-        <h2 className="sr-only">Programmes and activities</h2>
-
+        {/*
+         * Centred, and the only section on the home page that is.
+         *
+         * Everything else there is a left-aligned column with a rule and an
+         * index — the register of a document. A rail is not a column: it runs
+         * the full width, it has no left edge to hang a heading off, and a
+         * left-aligned title above a centred band of photographs reads as two
+         * pieces of layout rather than one. The title, the line under it and
+         * the link below all sit on the rail's own centre line instead.
+         */}
         <Reveal>
-          <div className="flex flex-wrap items-baseline justify-between gap-x-10 gap-y-4">
-            <Eyebrow>Programmes</Eyebrow>
-            <p className="text-[0.9375rem] font-light text-mist">
-              Photographed at the programmes themselves, across {items.length} initiatives.{' '}
-              <Link
-                to="/our-work"
-                className="text-paper underline decoration-mist/40 underline-offset-4 transition-colors hover:text-[var(--accent)] hover:decoration-[var(--accent)]"
-              >
-                See the full record
-              </Link>
+          <div className="text-center">
+            <CinemaLine as="h2" className="text-[clamp(1.25rem,2.6vw,1.875rem)] text-paper/90">
+              Programmes
+            </CinemaLine>
+            <p className="mx-auto mt-5 max-w-xl text-[0.9375rem] font-light text-mist">
+              Photographed at the programmes themselves, across {items.length} initiatives.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-10">
+        <div className="mt-12">
           <GalleryRail items={items} />
         </div>
+
+        {/* Closes the section rather than opening one — the rail has already
+            made the case, and this is the way out of it. */}
+        <Reveal>
+          <div className="mt-12 flex justify-center">
+            <ArrowLink to="/our-work">See the full record</ArrowLink>
+          </div>
+        </Reveal>
       </Container>
     </Section>
   )
@@ -507,7 +520,7 @@ function LightboxButton({
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="relative flex h-11 w-11 items-center justify-center border border-mist/30 bg-navy-700/60 text-paper transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--accent)]"
+      className="relative flex h-11 w-11 items-center justify-center rounded-full border border-mist/30 bg-navy-700/60 text-paper transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--accent)]"
     >
       <svg
         viewBox="0 0 20 20"

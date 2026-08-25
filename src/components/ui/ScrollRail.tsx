@@ -400,7 +400,7 @@ function RailButton({
          if sized to the glyph. */
       /* Was mist/25 on paper/80 — legible in a screenshot, invisible in use.
          The accent border and tinted ground make it read as a control. */
-      className="flex h-11 w-11 items-center justify-center border border-[var(--accent)]/45 bg-[var(--accent)]/8 text-[var(--accent)] transition-colors duration-200 hover:border-[var(--accent)] hover:bg-[var(--accent)]/18 disabled:pointer-events-none disabled:border-mist/15 disabled:bg-transparent disabled:text-mist/30"
+      className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--accent)]/45 bg-[var(--accent)]/8 text-[var(--accent)] transition-colors duration-200 hover:border-[var(--accent)] hover:bg-[var(--accent)]/18 disabled:pointer-events-none disabled:border-mist/15 disabled:bg-transparent disabled:text-mist/30"
     >
       <svg
         viewBox="0 0 20 20"

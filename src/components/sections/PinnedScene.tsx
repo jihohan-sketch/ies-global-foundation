@@ -1,5 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import { PINNED, observeScroll } from '@/lib/scroll'
+import { SceneLayer } from '@/components/ui/Scrub'
+import { Wordmark } from '@/components/ui/Cinematic'
 import { cx, prefersReducedMotion } from '@/lib/utils'
 
 /*
@@ -42,6 +44,7 @@ export function PinnedScene({
   runOut = 30,
   panelWidth = 'screen',
   trackClassName,
+  wordmark,
 }: {
   /** One node per panel. Each is given a full-viewport cell to sit in. */
   children: ReactNode[]
@@ -81,6 +84,15 @@ export function PinnedScene({
   panelWidth?: 'screen' | 'auto'
   /** Extra classes for the track — padding to inset the first and last panel. */
   trackClassName?: string
+  /**
+   * One word, set across the foot of the pinned frame as a horizon line that
+   * the panels travel in front of. See `Wordmark`.
+   *
+   * Only for scenes whose panels are *not* opaque — the typographic ones and
+   * the ones lit by a radial glow. Behind a run of full-bleed photographs there
+   * is nothing to see and it is simply a layer being composited for no one.
+   */
+  wordmark?: string
 }) {
   const sectionRef = useRef<HTMLElement>(null)
   const frameRef = useRef<HTMLDivElement>(null)
@@ -183,15 +195,45 @@ export function PinnedScene({
     >
       <div
         ref={frameRef}
+        /* `relative` unconditionally, not only while pinned: it is the
+           containing block for the horizon word below, and under reduced
+           motion the sticky positioning that would otherwise provide one is
+           gone. */
         className={cx(
-          'flex w-full items-center overflow-hidden',
+          'relative flex w-full items-center overflow-hidden',
           reduced ? 'flex-col' : 'sticky top-0 h-dvh',
         )}
       >
+        {/*
+         * The scene's name across the foot of the frame, drifting sideways
+         * against the pan.
+         *
+         * It reads the frame's own `--p`, so it moves with the scene as a whole
+         * rather than with any one panel — which is what makes it read as
+         * ground the panels travel over rather than as part of any of them.
+         * Cropped by the frame's bottom edge on purpose: a word that sits fully
+         * inside the frame is a caption, and a word running off the edge is a
+         * horizon.
+         */}
+        {wordmark && !reduced && (
+          <SceneLayer
+            hidden
+            effect="scrub-parallax-x"
+            depth="120px"
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-0 translate-y-[22%] px-[3vw]"
+          >
+            <Wordmark>{wordmark}</Wordmark>
+          </SceneLayer>
+        )}
+
         <div
           ref={trackRef}
           className={cx(
-            'flex',
+            /* Lifted over the horizon word explicitly. Source order is not
+               enough — the word is positioned and the track is not, so without
+               this the word would paint on top of the panels it is meant to sit
+               behind. */
+            'relative z-10 flex',
             reduced ? 'w-full flex-col' : 'will-change-transform',
             !reduced && trackClassName,
           )}

@@ -456,11 +456,24 @@
 .reveal {
   opacity: 0;
   transform: translateY(18px);
-  /* 2s, up from the original 0.9s: the brief is that copy should arrive slowly
-     enough to be watched arriving, not merely appear. */
+  /*
+   * 1.1s.
+   *
+   * The brief here is that copy should arrive slowly enough to be watched
+   * arriving rather than merely appear, and 1.1s still does that — it is well
+   * over twice the 400ms an interface fade normally gets. 2s did something
+   * else. An eased 2s fade spends its first third almost invisible, so anything
+   * already on screen when a page loads sat under 20% opacity for a full
+   * second after every navigation, which does not read as ceremony; it reads as
+   * a page that has failed to load. That cost lands hardest on exactly the
+   * content a visitor arrived to see.
+   *
+   * The value to change is here and nowhere else. To restore the previous
+   * behaviour, put both durations back to 2s.
+   */
   transition:
-    opacity 2s var(--ease-out-quint),
-    transform 2s var(--ease-out-quint);
+    opacity 1.1s var(--ease-out-quint),
+    transform 1.1s var(--ease-out-quint);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
 }
@@ -818,6 +831,54 @@
   .scrub-soften {
     filter: none;
   }
+}
+
+/* ==========================================================================
+   READOUTS
+   ========================================================================== */
+
+/*
+ * The progress hairline under the header. Reads `--p` for the document as a
+ * whole, written by the engine with `always: true` — see the note on that
+ * option in scroll.ts for why this one is not gated behind reduced motion.
+ *
+ * `scaleX` on a 1px line rather than a width, so it is a composited transform
+ * and never a layout pass. `transform-origin: left` is what makes it grow from
+ * the edge instead of the middle; at the default centre origin the same rule
+ * reads as a line opening outward, which says something else entirely.
+ */
+.scroll-progress {
+  transform: scaleX(var(--p, 0));
+  transform-origin: left;
+}
+
+/* ==========================================================================
+   ROUTE TRANSITION
+   ========================================================================== */
+
+/*
+ * Pages arrive rather than appear.
+ *
+ * Opacity alone, and that is a constraint rather than a preference: an
+ * animated `transform` or `filter` on this wrapper would make it the containing
+ * block for every `position: fixed` descendant for as long as it ran, which
+ * puts the lightbox — mounted inside a page — in the wrong coordinate space for
+ * the first six hundred milliseconds after a navigation.
+ *
+ * `both` holds the opening frame during the animation's own delay, so a page
+ * cannot paint at full strength and then drop to zero to start.
+ */
+@keyframes ies-route-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.route-enter {
+  animation: ies-route-in 0.55s var(--ease-cinema) both;
 }
 
 /* ==========================================================================

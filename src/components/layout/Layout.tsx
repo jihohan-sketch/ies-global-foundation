@@ -63,6 +63,7 @@ function useRouteAccent() {
 
 export function Layout() {
   const accent = useRouteAccent()
+  const { pathname } = useLocation()
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-navy">
@@ -78,7 +79,19 @@ export function Layout() {
         className="relative z-10 flex-1"
         style={{ '--accent': `var(--color-${accent})` } as CSSProperties}
       >
-        <Outlet />
+        {/*
+         * Keyed on the path so React tears the old page down and mounts the new
+         * one, which restarts the arrival animation — a CSS animation on a
+         * surviving element does not replay, and without the key a navigation
+         * would fade in exactly once, on the first page anyone landed on.
+         *
+         * Not keyed on `location.key`: an in-page anchor is a new key on the
+         * same path, and remounting the page underneath someone who clicked a
+         * jump link would throw away the scroll target they were jumping to.
+         */}
+        <div key={pathname} className="route-enter">
+          <Outlet />
+        </div>
       </main>
       <div className="relative z-10">
         <Footer />

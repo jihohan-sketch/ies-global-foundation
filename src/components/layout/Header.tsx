@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
+import { PINNED, observeScroll } from '@/lib/scroll'
 import { primaryNav, site } from '@/content/site'
 import { branches } from '@/content/branches'
 import { Button, Container } from '@/components/ui/Primitives'
@@ -10,6 +11,35 @@ import { cx } from '@/lib/utils'
    above the overlay and belongs inside the focus cycle rather than outside it. */
 const FOCUSABLE =
   'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+
+/**
+ * How far through the document the visitor is, as a hairline under the header.
+ *
+ * Measures `document.body` on the pinned window — 0 with the body's top at the
+ * top of the viewport, 1 with its bottom at the bottom — which is exactly the
+ * definition of document scroll progress, so no second scroll system is needed
+ * for it.
+ *
+ * `always`, because this reports a position rather than performing a movement.
+ * On a site with several sections that are deliberately many screens long, the
+ * scrollbar is the only other thing telling anyone how much is left, and it is
+ * the first thing a trackpad hides.
+ */
+function ScrollProgress() {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const bar = ref.current
+    if (!bar) return
+    return observeScroll(document.body, { ...PINNED, target: bar, always: true })
+  }, [])
+
+  return (
+    <div aria-hidden className="absolute inset-x-0 bottom-0 h-px overflow-hidden">
+      <div ref={ref} className="scroll-progress h-full w-full bg-[var(--accent)]/55" />
+    </div>
+  )
+}
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
@@ -249,6 +279,11 @@ export function Header() {
             </nav>
           </div>
         </Container>
+
+        {/* Outside the Container so the line runs the full width of the
+            viewport rather than stopping at the content gutters, and hidden
+            while the menu is open — the overlay is not the document. */}
+        {!open && <ScrollProgress />}
       </header>
 
       {/* --------------------------------------------------------- Overlay */}

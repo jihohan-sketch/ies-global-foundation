@@ -27,7 +27,7 @@ const glowFor = (rgb: string) =>
 
 export function NetworkScene() {
   return (
-    <PinnedScene label="The three national branches" vhPerPanel={118}>
+    <PinnedScene label="The three national branches" vhPerPanel={118} wordmark="Network">
       {branches.map((branch, index) => {
         const accent = ACCENTS[index % ACCENTS.length]
         return (

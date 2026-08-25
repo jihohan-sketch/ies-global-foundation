@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Globe, type GlobeMarker } from '@/components/Globe'
 import { Button, Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
 import { GhostTitle, SectionIndex, Seam, Vignette } from '@/components/ui/Cinematic'
-import { MaskedText } from '@/components/ui/MaskedText'
+import { LitText, MaskedText } from '@/components/ui/MaskedText'
 import { SceneLayer, Scrub } from '@/components/ui/Scrub'
 import { StatBlock } from '@/components/ui/Counter'
 import { PersonCard } from '@/components/sections/Cards'
@@ -242,11 +242,15 @@ export default function Home() {
                   youth network.
                 </p>
               </Scrub>
-              <Scrub effect="scrub-rise" offset={0.12}>
-                <p className="leading-relaxed font-light text-mist">
-                  {site.headquartersStatement}
-                </p>
-              </Scrub>
+              {/* The one paragraph on this page that lights as it is read.
+                  It is the sentence that explains the whole structure of the
+                  organisation, and giving it the treatment is a way of saying
+                  so without setting it larger than everything around it. */}
+              <LitText
+                offset={0.12}
+                className="leading-relaxed font-light text-mist"
+                text={site.headquartersStatement}
+              />
               <Scrub effect="scrub-rise" offset={0.18} className="pt-4">
                 <Button to="/about" variant="ghost" arrow>
                   Learn about IES
@@ -400,12 +404,11 @@ export default function Home() {
               ]}
             />
 
-            <Scrub effect="scrub-rise" offset={0.22}>
-              <p className="text-lead mx-auto mt-10 max-w-2xl font-light text-mist">
-                Reflection that never leaves the seminar room is incomplete, and service
-                without reflection is thin.
-              </p>
-            </Scrub>
+            <LitText
+              offset={0.22}
+              className="text-lead mx-auto mt-10 max-w-2xl font-light text-mist"
+              text="Reflection that never leaves the seminar room is incomplete, and service without reflection is thin."
+            />
           </div>
 
           <div className="relative z-10 mt-20 grid gap-6 md:grid-cols-3">
