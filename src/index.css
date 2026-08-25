@@ -174,6 +174,16 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    /*
+     * `clip`, and on `html` rather than `body`. This guard used to be
+     * `overflow-x: hidden` on the body, which is the single most reliable way
+     * to break `position: sticky` site-wide: `hidden` establishes a scroll
+     * container, and a sticky element anchors to its nearest scrolling
+     * ancestor rather than to the viewport — so every pinned section silently
+     * stops pinning. `clip` suppresses the same horizontal overflow without
+     * establishing one, which is exactly the difference that matters here.
+     */
+    overflow-x: clip;
     /* Clears the header at its *scrolled* height (4.5rem), which is the state
        it is always in by the time an in-page anchor resolves, plus a margin so
        the target does not sit flush against the underside of the bar. */
@@ -190,7 +200,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    overflow-x: hidden;
   }
 
   h1,
@@ -453,6 +462,252 @@
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+}
+
+/* ==========================================================================
+   SCROLL SCRUB
+   ==========================================================================
+
+   The scroll engine (`src/lib/scroll.ts`) writes one number per element:
+   `--p`, its progress through its own scroll window, 0 → 1. Everything below
+   turns that number into motion.
+
+   No element here animates or transitions. There is nothing to transition —
+   the value changes on every frame the wheel moves, and a transition on top of
+   that would only add lag between the scroll and the picture, which is the one
+   thing a scrubbed effect must not have. Scroll *is* the timeline.
+
+   Every preset stays on transform and opacity, with one documented exception
+   (`scrub-soften`). Nothing here touches a layout property.
+   ========================================================================== */
+
+.scrub {
+  /*
+   * `--sp` — progress after the element's stagger offset is taken out and the
+   * remainder renormalised, so an offset element still finishes at exactly 1
+   * rather than stopping short of its own arrival.
+   */
+  --sp: clamp(
+    0,
+    calc((var(--p, 0) - var(--scrub-offset, 0)) / (1 - var(--scrub-offset, 0))),
+    1
+  );
+
+  /*
+   * `--e` — the same progress eased out (1 − (1−x)³). Linear progress reads as
+   * mechanical: the element tracks the wheel exactly, which is honest but
+   * lifeless. The cubic front-loads the travel so movement arrives quickly and
+   * settles slowly, which is what makes it read as weight rather than as a
+   * value being plotted.
+   */
+  --e: calc(1 - (1 - var(--sp)) * (1 - var(--sp)) * (1 - var(--sp)));
+
+  /*
+   * The enter/exit envelope, for effects on a `through` window. `--in` closes
+   * over the first third, `--out` opens over the last quarter, and `--band` is
+   * the product: 0 → 1 → 0 across a full crossing of the viewport. This is what
+   * lets copy fade *out* as it leaves rather than sitting there fully lit until
+   * it is clipped by the top of the screen.
+   */
+  --in: clamp(0, calc(var(--sp) / 0.34), 1);
+  --out: clamp(0, calc((1 - var(--sp)) / 0.26), 1);
+  --band: calc(var(--in) * var(--out));
+
+  /* Signed distance from the midpoint, +0.5 → −0.5. The parallax driver. */
+  --drift: calc(0.5 - var(--sp));
+}
+
+/*
+ * Promotion is granted only while the element is actually being driven. The
+ * engine sets this attribute as an element comes within a screen of the
+ * viewport and removes it on the way out. A blanket `will-change` on every
+ * scrubbed element would hand the compositor a layer per element for the whole
+ * length of the document, which costs memory on exactly the long pages this
+ * site has most of.
+ */
+.scrub[data-scrub-active] {
+  will-change: transform, opacity;
+}
+
+/* --------------------------------------------------------------- entrances */
+
+/* The workhorse: rise and fade, tied to the wheel rather than fired once. */
+.scrub-rise {
+  opacity: var(--e);
+  transform: translate3d(0, calc((1 - var(--e)) * var(--scrub-travel, 56px)), 0);
+}
+
+/* Descends instead — for the second half of a pair, so the two close a gap. */
+.scrub-fall {
+  opacity: var(--e);
+  transform: translate3d(0, calc((var(--e) - 1) * var(--scrub-travel, 56px)), 0);
+}
+
+.scrub-in-left {
+  opacity: var(--e);
+  transform: translate3d(calc((var(--e) - 1) * var(--scrub-travel, 80px)), 0, 0);
+}
+
+.scrub-in-right {
+  opacity: var(--e);
+  transform: translate3d(calc((1 - var(--e)) * var(--scrub-travel, 80px)), 0, 0);
+}
+
+/*
+ * Arrives *and* leaves. Wants a `through` window and `reduced={0.5}` — its
+ * resting value is the middle of the band, not the end of it.
+ */
+.scrub-band {
+  opacity: var(--band);
+  transform: translate3d(0, calc(var(--drift) * var(--scrub-travel, 48px)), 0);
+}
+
+/* ---------------------------------------------------------------- parallax */
+
+/*
+ * Depth through disagreement. Give the layers of one scene different
+ * `--scrub-depth` values — background small, foreground large — and they part
+ * as the scene crosses the viewport.
+ *
+ * Keep the spread modest. Past roughly 140px the layers stop reading as one
+ * space and start reading as separate things sliding over each other.
+ */
+.scrub-parallax {
+  transform: translate3d(0, calc(var(--drift) * var(--scrub-depth, 80px)), 0);
+}
+
+/* The same, sideways — §6's horizontal parallax inside a pinned scene. */
+.scrub-parallax-x {
+  transform: translate3d(calc(var(--drift) * var(--scrub-depth, 80px)), 0, 0);
+}
+
+/* ------------------------------------------------------------------ images */
+
+/*
+ * The cinematic image move: a slow settle out of a slight oversize, with the
+ * frame opening at the same time.
+ *
+ * 1.08 → 1, not 1.3 → 1. The brief asks for cinematic, and cinematic zoom is
+ * the amount you notice only if you look for it; anything larger reads as a
+ * stock-footage Ken Burns effect and, worse, resamples the whole image every
+ * frame at a scale the browser has no cached raster for.
+ */
+.scrub-zoom {
+  transform: scale(calc(1.08 - var(--e) * 0.08));
+}
+
+/*
+ * Clip-mask reveal — the frame opens from the bottom edge upward. Pairs with
+ * `scrub-zoom` on a child image so the picture settles as the frame opens,
+ * which is the difference between a reveal and a wipe.
+ */
+.scrub-mask {
+  clip-path: inset(0 0 calc((1 - var(--e)) * 100%) 0);
+}
+
+/*
+ * The one preset that leaves the compositor's fast path: `filter` forces a
+ * repaint of the element's box on every value change. 6px, on single elements,
+ * on the two or three biggest statements on the site — never on a group, never
+ * on anything over a photograph, never inside a pinned scene where it would
+ * repaint for the whole length of the pin.
+ */
+.scrub-soften {
+  opacity: var(--e);
+  filter: blur(calc((1 - var(--e)) * 6px));
+}
+
+/* ------------------------------------------------------------- departures */
+
+/*
+ * Dissolve on the way *out* — a hero's type receding as its image takes the
+ * frame.
+ *
+ * `--scrub-fade` is how much of the element's window the departure occupies,
+ * and it is the knob that sequences a group: give each line a slightly later
+ * `--scrub-offset` and a slightly longer fade, and the block clears from the
+ * outside in rather than all at once. The travel is driven by the same value
+ * as the opacity so a departed element stops moving instead of drifting on
+ * invisibly for the rest of the scene.
+ */
+.scrub-dissolve {
+  --dissolve: clamp(0, calc(var(--sp) / var(--scrub-fade, 0.34)), 1);
+  opacity: calc(1 - var(--dissolve));
+  transform: translate3d(0, calc(var(--dissolve) * var(--scrub-travel, -40px)), 0)
+    scale(calc(1 - var(--dissolve) * 0.05));
+}
+
+/*
+ * Opens *into* full size — starts at `1 − grow` and settles at exactly 1.
+ *
+ * The direction matters more than it looks. `scrub-expand` below ends
+ * oversized, which is right for a photograph with pixels to spare and wrong for
+ * anything rasterised at its layout size: a `<canvas>` scaled past 1 is
+ * resampled, and the globe would spend the end of the hero — the moment it is
+ * finally the only thing on screen — visibly soft. Ending at 1 puts it at its
+ * native resolution exactly when it has the frame to itself.
+ */
+.scrub-open {
+  transform: scale(calc(1 - (1 - var(--e)) * var(--scrub-grow, 0.12)));
+}
+
+/* Ends oversized. For photographs, which have the resolution to take it. */
+.scrub-expand {
+  transform: scale(calc(1 + var(--e) * var(--scrub-grow, 0.14)));
+}
+
+/*
+ * A layer that has left the scene, and must stop existing for everyone else
+ * too.
+ *
+ * `opacity: 0` hides a thing from the eye and from nothing else: the buttons in
+ * a dissolved hero stay clickable over whatever is now underneath them, and
+ * stay in the tab order as two stops that focus something nobody can see.
+ * `visibility: hidden` is what actually removes an element from hit-testing and
+ * from sequential focus, and it is applied on a discrete threshold — see
+ * `pastAt` in StickyScene — rather than per frame, so it never lands mid-fade.
+ *
+ * Mark any interactive layer that dissolves with `scene-exit`. Purely
+ * decorative layers do not need it.
+ */
+[data-scene-past] .scene-exit {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /*
+   * The engine already declines to register anything here, and writes each
+   * element its resting value once. This is the second line of defence: it
+   * pins every derived value to "arrived and still", so a preset cannot strand
+   * an element mid-effect even if a caller passed the wrong `reduced` value.
+   *
+   * Note this is a genuine departure from the `.reveal` carve-out above, which
+   * runs for everyone by the site owner's decision. A reveal is one 18px rise
+   * that ends; these track the wheel continuously for as long as the element
+   * is on screen, and continuous scroll-coupled motion is the kind most likely
+   * to make someone ill. The carve-out was not extended to it.
+   */
+  .scrub {
+    --sp: 1;
+    --e: 1;
+    --in: 1;
+    --out: 1;
+    --band: 1;
+    --drift: 0;
+  }
+
+  .scrub-dissolve,
+  .scrub-open,
+  .scrub-expand {
+    --dissolve: 0;
+    opacity: 1;
+    transform: none;
+  }
+
+  .scrub-soften {
+    filter: none;
   }
 }
 

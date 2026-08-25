@@ -1,12 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { Globe, type GlobeMarker } from '@/components/Globe'
 import { Button, Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
-import { GhostTitle, Seam, Vignette } from '@/components/ui/Cinematic'
-import { Reveal } from '@/components/ui/Reveal'
-import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
+import { GhostTitle, SectionIndex, Seam, Vignette } from '@/components/ui/Cinematic'
+import { MaskedText } from '@/components/ui/MaskedText'
+import { SceneLayer, Scrub } from '@/components/ui/Scrub'
 import { StatBlock } from '@/components/ui/Counter'
-import { BranchCard, PersonCard } from '@/components/sections/Cards'
+import { PersonCard } from '@/components/sections/Cards'
 import { CallToAction } from '@/components/sections/CallToAction'
+import { StickyScene } from '@/components/sections/StickyScene'
+import { NetworkScene } from '@/components/sections/NetworkScene'
+import { WorkScene } from '@/components/sections/WorkScene'
 import { GallerySection } from '@/components/sections/Media'
 import { NamedPartners } from '@/components/sections/NamedPartners'
 import { ValuePanels } from '@/components/sections/ValuePanels'
@@ -15,7 +18,7 @@ import { branches } from '@/content/branches'
 import { headlineStats } from '@/content/impact'
 import { personById } from '@/content/leadership'
 import { site, values } from '@/content/site'
-import { featuredWork, pillars } from '@/content/work'
+import { pillars } from '@/content/work'
 import { useSeo } from '@/lib/seo'
 
 const markers: GlobeMarker[] = branches.map((branch) => ({
@@ -53,19 +56,38 @@ export default function Home() {
     <>
       {/* ============================================================ HERO */}
       {/*
-       * Staged rather than laid out: the globe is the subject, centred and
-       * full-bleed, and the type sits *in* the frame with it rather than beside
-       * it. That is the whole difference between a hero with an illustration in
-       * it and a hero that reads as a shot.
+       * Not a hero with an animation on it — the opening shot of a sequence.
+       *
+       * The section is a little over two screens tall and the frame inside it
+       * pins, so everything that follows is one continuous move driven by the
+       * wheel: the type clears, the world it was sitting on grows into the
+       * frame, and the figures rise into the space the type left. Scroll back
+       * up and it reassembles exactly. Nothing here is on a timer.
+       *
+       * All of it costs the scroll engine one registration. `StickyScene`
+       * writes `--p` once on the frame; custom properties inherit, so every
+       * layer below reads the same number and takes its own slice out of it
+       * via `offset` and `fade`. Those two props are the scene's beat sheet.
        *
        * Opaque on purpose — this hero runs its own full-intensity globe, so the
        * shared ambient backdrop is masked out here rather than doubling up.
        */}
-      <section className="relative flex min-h-dvh flex-col justify-center overflow-hidden bg-navy pt-36 pb-16 xl:pt-44">
-        {/* Centred and oversized, so the horizon runs off both edges. The
-            visitor sees a piece of a world rather than a small ball on a page. */}
-        <div
-          aria-hidden
+      <StickyScene
+        vh={215}
+        label="IES Global Foundation"
+        className="bg-navy"
+        frameClassName="bg-navy pt-32 pb-14 xl:pt-36"
+      >
+        {/* --- The world. Furthest back, and the only layer still moving when
+            the scene releases. Centred and oversized, so the horizon runs off
+            both edges: the visitor sees a piece of a world rather than a small
+            ball on a page. It opens *into* full size rather than past it — a
+            canvas scaled beyond 1 is resampled, and this one has the frame to
+            itself at exactly the moment that would show. */}
+        <SceneLayer
+          hidden
+          effect="scrub-open"
+          grow={0.14}
           className="pointer-events-none absolute inset-0 flex items-center justify-center"
         >
           <Globe
@@ -75,29 +97,47 @@ export default function Home() {
             intensity={1}
             className="h-[min(155vmin,72rem)] w-[min(155vmin,72rem)] opacity-70 sm:opacity-80"
           />
-        </div>
+        </SceneLayer>
 
         {/* Two overlays doing two jobs. The vignette pulls the corners down so
-            the globe reads as lit from within; the horizontal wash sits only
-            behind the centre band, which is the strip the headline occupies.
-            Neither may eat pointer events — the globe beneath is draggable. */}
+            the globe reads as lit from within and stays for the whole scene;
+            the horizontal wash sits only behind the centre band, which is the
+            strip the headline occupies — so it leaves when the headline does,
+            rather than greying the globe for the rest of the shot.
+
+            Placed with `top-[calc(50%-13rem)]` rather than the obvious
+            `top-1/2 -translate-y-1/2`: the scrub owns this element's transform,
+            and a Tailwind translate utility on the same node is a second
+            authority on the same property. Neither may eat pointer events —
+            the globe beneath is draggable. */}
         <Vignette />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-1/2 h-[26rem] -translate-y-1/2 bg-[linear-gradient(to_bottom,transparent,rgba(5,10,20,0.82)_28%,rgba(5,10,20,0.82)_72%,transparent)]"
+        <SceneLayer
+          hidden
+          effect="scrub-dissolve"
+          offset={0.14}
+          fade={0.44}
+          travel="0px"
+          className="pointer-events-none absolute inset-x-0 top-[calc(50%-13rem)] h-[26rem] bg-[linear-gradient(to_bottom,transparent,rgba(5,10,20,0.82)_28%,rgba(5,10,20,0.82)_72%,transparent)]"
         />
 
-        {/* `pointer-events-none` on the whole column, restored only on the
-            controls. Everywhere else in the hero the drag reaches the globe. */}
+        {/* --- The type, clearing from the outside in.
+            The eyebrow goes first and fastest, the supporting line and the
+            controls follow, and the headline holds longest because it is the
+            thing the visitor came to read. Each line travels a little further
+            than the one before, which is what makes the group read as one
+            movement rather than four things switching off in sequence.
+
+            `pointer-events-none` on the whole column, restored only on the
+            controls: everywhere else in the hero the drag reaches the globe. */}
         <Container size="wide" className="pointer-events-none relative z-10">
           <div className="text-center">
-            <Reveal>
+            <SceneLayer effect="scrub-dissolve" fade={0.28} travel="-26px">
               <Eyebrow className="justify-center">
                 Founded 20 April 2023 · Seoul
               </Eyebrow>
-            </Reveal>
+            </SceneLayer>
 
-            <Reveal delay={140}>
+            <SceneLayer effect="scrub-dissolve" offset={0.12} fade={0.54} travel="-72px">
               {/*
                * The site's one genuinely ceremonial line, so it takes the
                * cinematic register: wide-tracked serif capitals, second line
@@ -115,15 +155,23 @@ export default function Home() {
                   Across Borders
                 </span>
               </h1>
-            </Reveal>
+            </SceneLayer>
 
-            <Reveal delay={280}>
+            <SceneLayer effect="scrub-dissolve" offset={0.06} fade={0.34} travel="-42px">
               <p className="mx-auto mt-8 max-w-xl text-[0.9375rem] leading-relaxed font-light text-mist">
                 {site.descriptor}
               </p>
-            </Reveal>
+            </SceneLayer>
 
-            <Reveal delay={380}>
+            {/* `scene-exit`: these dissolve, and a dissolved button is still a
+                click target and still a tab stop. See index.css. */}
+            <SceneLayer
+              effect="scrub-dissolve"
+              offset={0.04}
+              fade={0.3}
+              travel="-34px"
+              className="scene-exit"
+            >
               <div className="pointer-events-auto mt-10 flex flex-wrap justify-center gap-4">
                 <Button to="/global-network" variant="primary" arrow>
                   Explore the Network
@@ -132,15 +180,18 @@ export default function Home() {
                   Discover Our Work
                 </Button>
               </div>
-            </Reveal>
+            </SceneLayer>
           </div>
         </Container>
 
-        {/* Headline figures, pinned to the foot of the frame as a caption strip
-            rather than stacked under the buttons. Four across at the widest,
-            since `736,000+` needs the room the old three-up layout denied it. */}
+        {/* --- The figures, arriving into the space the type has left.
+            The one layer in this scene that enters rather than leaves, and held
+            back until the headline is most of the way gone — an arrival only
+            reads as an arrival if there is somewhere for it to arrive. Four
+            across at the widest, since `736,000+` needs the room the old
+            three-up layout denied it. */}
         <Container size="wide" className="pointer-events-none relative z-10">
-          <Reveal delay={520}>
+          <SceneLayer effect="scrub-rise" offset={0.46} travel="44px">
             <dl className="mx-auto mt-14 grid max-w-4xl grid-cols-2 gap-x-8 gap-y-8 border-t border-mist/12 pt-8 sm:grid-cols-4">
               {headlineStats.slice(0, 4).map((stat) => (
                 <div key={stat.label} className="text-center">
@@ -157,49 +208,64 @@ export default function Home() {
                 </div>
               ))}
             </dl>
-          </Reveal>
+          </SceneLayer>
         </Container>
 
         <Seam edge="bottom" />
-      </section>
+      </StickyScene>
 
       {/* ==================================================== INTRODUCTION */}
+      {/* Back to ordinary vertical scrolling, and deliberately so — the hero
+          was a held shot, this is a page again. The heading is one of the two
+          statements on this page that assemble themselves; everything else
+          here simply rises. */}
       <Section tone="deep" className="overflow-hidden border-y border-mist/12">
         <Container size="wide" className="relative">
           <GhostTitle className="-top-24">Origin</GhostTitle>
           <div className="relative z-10 grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
-            <Reveal>
-              <SectionHeading
-                index="01"
-                eyebrow="Introduction"
-                title="A Global Network Rooted in Ethical Leadership"
+            <div>
+              <Scrub effect="scrub-rise">
+                <SectionIndex index="01" label="Introduction" />
+              </Scrub>
+              <MaskedText
+                className="text-h2 mt-6 text-paper"
+                text={['A Global Network Rooted', 'in Ethical Leadership']}
               />
-            </Reveal>
+            </div>
 
-            <Reveal delay={120} className="space-y-6">
-              <p className="text-lead font-light text-paper/90">
-                Founded in Seoul on 20 April 2023, the{' '}
-                <span className="text-paper">Interscholastic Ethics Society</span> has grown
-                from Korea’s largest student-led ethics organization into an international
-                youth network.
-              </p>
-              <p className="leading-relaxed font-light text-mist">
-                {site.headquartersStatement}
-              </p>
-              <div className="pt-4">
+            <div className="space-y-6">
+              <Scrub effect="scrub-rise" offset={0.05}>
+                <p className="text-lead font-light text-paper/90">
+                  Founded in Seoul on 20 April 2023, the{' '}
+                  <span className="text-paper">Interscholastic Ethics Society</span> has grown
+                  from Korea’s largest student-led ethics organization into an international
+                  youth network.
+                </p>
+              </Scrub>
+              <Scrub effect="scrub-rise" offset={0.12}>
+                <p className="leading-relaxed font-light text-mist">
+                  {site.headquartersStatement}
+                </p>
+              </Scrub>
+              <Scrub effect="scrub-rise" offset={0.18} className="pt-4">
                 <Button to="/about" variant="ghost" arrow>
                   Learn about IES
                 </Button>
-              </div>
-            </Reveal>
+              </Scrub>
+            </div>
           </div>
         </Container>
       </Section>
 
       {/* ========================================================= NETWORK */}
-      <Section id="network" className="overflow-hidden">
+      {/* First horizontal scene. The three branches are a set of three
+          comparable things, which is exactly the shape a sideways pan reads
+          well — one at a time, in order, at the same size. The heading stays
+          in the vertical flow above it so the section announces itself before
+          the pin takes the viewport. */}
+      <Section id="network" size="compact" className="overflow-hidden">
         <Container size="wide">
-          <Reveal>
+          <Scrub effect="scrub-rise">
             <SectionHeading
               index="02"
               eyebrow="Global Presence"
@@ -207,25 +273,20 @@ export default function Home() {
               title="One Foundation. Three National Branches."
               lead="Each branch brings the mission into its own community, connected by one international vision."
             />
-          </Reveal>
+          </Scrub>
+        </Container>
+      </Section>
 
-          {/* Three items: a grid, not a rail. A rail with exactly three cards
-              clips the third at the container edge, which reads as a broken
-              layout rather than as an invitation to scroll. */}
-          <div className="mt-16 grid gap-6 md:grid-cols-3">
-            {branches.map((branch, i) => (
-              <Reveal key={branch.slug} delay={i * 110} className="h-full">
-                <BranchCard branch={branch} index={i} />
-              </Reveal>
-            ))}
-          </div>
+      <NetworkScene />
 
-          <Reveal delay={200}>
-            <p className="mt-10 max-w-2xl text-sm leading-relaxed font-light text-mist/80">
+      <Section size="compact" className="overflow-hidden">
+        <Container size="wide">
+          <Scrub effect="scrub-rise">
+            <p className="max-w-2xl text-sm leading-relaxed font-light text-mist/80">
               The Foundation does not replace the branches. It connects them — shared
               standards and cross-border programming, each in its own national context.
             </p>
-          </Reveal>
+          </Scrub>
         </Container>
       </Section>
 
@@ -252,33 +313,34 @@ export default function Home() {
       <Section tone="deep" size="compact" className="overflow-hidden border-y border-mist/12">
         <Container size="wide">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:items-end lg:gap-20">
-            <Reveal>
+            <Scrub effect="scrub-rise">
               <SectionHeading
-                index="04"
+                index="03"
                 eyebrow="Impact Snapshot"
                 ghost="Scale"
                 title="Scale, measured honestly."
               />
-            </Reveal>
+            </Scrub>
 
-            <Reveal delay={120}>
-              {/* Three across, not five: `736,000+` is the widest figure in the
-                  set and overruns a fifth of this column between 1024px and
-                  1400px, colliding with the figure beside it. */}
-              <dl className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
-                {headlineStats.map((stat) => (
-                  <div key={stat.label}>
-                    <dt className="sr-only">{stat.label}</dt>
-                    <dd>
-                      <StatBlock stat={stat} />
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </Reveal>
+            {/* Three across, not five: `736,000+` is the widest figure in the
+                set and overruns a fifth of this column between 1024px and
+                1400px, colliding with the figure beside it.
+
+                Each figure carries its own offset, so the row assembles left to
+                right as the section rises rather than landing as a block. */}
+            <dl className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
+              {headlineStats.map((stat, i) => (
+                <Scrub key={stat.label} effect="scrub-rise" offset={Math.min(i, 5) * 0.045}>
+                  <dt className="sr-only">{stat.label}</dt>
+                  <dd>
+                    <StatBlock stat={stat} />
+                  </dd>
+                </Scrub>
+              ))}
+            </dl>
           </div>
 
-          <Reveal delay={200}>
+          <Scrub effect="scrub-rise" offset={0.1}>
             <p className="mt-14 border-t border-mist/15 pt-6 text-xs font-light text-mist/80">
               {site.statisticsNote}{' '}
               <Link to="/impact" className="text-paper underline underline-offset-4 hover:text-[var(--accent)]">
@@ -286,11 +348,33 @@ export default function Home() {
               </Link>
               .
             </p>
-          </Reveal>
+          </Scrub>
         </Container>
       </Section>
 
+      {/* ======================================================== OUR WORK */}
+      {/* Second horizontal scene, and the photographic one. Five areas of work,
+          each panel a picture of that work actually happening. */}
+      <Section size="compact" className="overflow-hidden">
+        <Container size="wide">
+          <Scrub effect="scrub-rise">
+            <SectionHeading
+              index="04"
+              eyebrow="Our Work"
+              ghost="Work"
+              title="From Reflection to Action"
+              lead="Forums, service, leadership programs, partnerships, and student-led civic engagement."
+            />
+          </Scrub>
+        </Container>
+      </Section>
+
+      <WorkScene />
+
       {/* ========================================================= MISSION */}
+      {/* The page's biggest statement, and the second and last place a headline
+          assembles itself. Held at the centre of its own near-full screen with
+          nothing else in it — the whitespace is the emphasis. */}
       <Section size="tall" className="overflow-hidden">
         <Container className="relative">
           {/* Raised almost entirely above the heading and cropped by the
@@ -299,21 +383,34 @@ export default function Home() {
           <GhostTitle align="center" className="-top-[0.5em] -translate-y-1/2">
             Mission
           </GhostTitle>
-          <Reveal className="relative z-10 text-center">
-            <Eyebrow className="justify-center">Our Mission</Eyebrow>
-            <h2 className="text-h1 mx-auto mt-10 max-w-4xl font-serif leading-[1.15]">
-              We help young people turn ethical reflection into{' '}
-              <span className="text-[var(--accent)] italic">meaningful action.</span>
-            </h2>
-            <p className="text-lead mx-auto mt-10 max-w-2xl font-light text-mist">
-              Reflection that never leaves the seminar room is incomplete, and service
-              without reflection is thin.
-            </p>
-          </Reveal>
+          <div className="relative z-10 text-center">
+            <Scrub effect="scrub-rise">
+              <Eyebrow className="justify-center">Our Mission</Eyebrow>
+            </Scrub>
+
+            <MaskedText
+              className="text-h1 mx-auto mt-10 max-w-4xl font-serif leading-[1.15]"
+              stagger={0.045}
+              text={[
+                'We help young people turn ethical',
+                <>
+                  reflection into{' '}
+                  <span className="text-[var(--accent)] italic">meaningful action.</span>
+                </>,
+              ]}
+            />
+
+            <Scrub effect="scrub-rise" offset={0.22}>
+              <p className="text-lead mx-auto mt-10 max-w-2xl font-light text-mist">
+                Reflection that never leaves the seminar room is incomplete, and service
+                without reflection is thin.
+              </p>
+            </Scrub>
+          </div>
 
           <div className="relative z-10 mt-20 grid gap-6 md:grid-cols-3">
             {pillars.map((pillar, i) => (
-              <Reveal key={pillar.id} delay={i * 120} className="h-full">
+              <Scrub key={pillar.id} effect="scrub-rise" offset={i * 0.06} className="h-full">
                 <Card className="h-full p-8 sm:p-10">
                   <span className="font-serif text-sm text-[var(--accent)]">
                     {String(i + 1).padStart(2, '0')}
@@ -323,115 +420,85 @@ export default function Home() {
                     {pillar.summary}
                   </p>
                 </Card>
-              </Reveal>
+              </Scrub>
             ))}
           </div>
         </Container>
       </Section>
 
       {/* ========================================================== VALUES */}
+      {/* Quiet on purpose, and placed here on purpose: it is the last flat
+          stretch before the third and final horizontal scene. */}
       <Section tone="deep" className="overflow-hidden border-y border-mist/12" size="compact">
         <Container size="wide" className="relative">
           <GhostTitle className="-top-24">Equity</GhostTitle>
           <div className="relative z-10 grid gap-14 lg:grid-cols-[1fr_1.25fr] lg:gap-24">
-            <Reveal>
-              <Eyebrow>Core Value</Eyebrow>
-              <h2 className="metal mt-8 font-serif text-[clamp(3.5rem,9vw,7rem)] leading-none">
-                {values.primary.title}
-              </h2>
-              <p className="mt-8 max-w-md leading-relaxed font-light text-mist">
-                {values.primary.body}
-              </p>
-            </Reveal>
+            <div>
+              <Scrub effect="scrub-rise">
+                <Eyebrow>Core Value</Eyebrow>
+              </Scrub>
+              <Scrub effect="scrub-rise" offset={0.06}>
+                <h2 className="metal mt-8 font-serif text-[clamp(3.5rem,9vw,7rem)] leading-none">
+                  {values.primary.title}
+                </h2>
+              </Scrub>
+              <Scrub effect="scrub-rise" offset={0.12}>
+                <p className="mt-8 max-w-md leading-relaxed font-light text-mist">
+                  {values.primary.body}
+                </p>
+              </Scrub>
+            </div>
 
-            <Reveal delay={140}>
-              <p className="text-[0.625rem] font-medium tracking-[0.3em] text-mist/80 uppercase">
-                Supporting Values
-              </p>
+            <div>
+              <Scrub effect="scrub-rise" offset={0.08}>
+                <p className="text-[0.625rem] font-medium tracking-[0.3em] text-mist/80 uppercase">
+                  Supporting Values
+                </p>
+              </Scrub>
               <ul className="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">
-                {values.supporting.map((value) => (
-                  <li key={value.title} className="border-t border-mist/15 pt-4">
+                {values.supporting.map((value, i) => (
+                  <Scrub
+                    key={value.title}
+                    as="li"
+                    effect="scrub-rise"
+                    offset={0.1 + Math.min(i, 7) * 0.025}
+                    className="border-t border-mist/15 pt-4"
+                  >
                     <h3 className="font-serif text-lg">{value.title}</h3>
                     <p className="mt-1.5 text-sm font-light text-mist">{value.body}</p>
-                  </li>
+                  </Scrub>
                 ))}
               </ul>
-            </Reveal>
+            </div>
           </div>
         </Container>
       </Section>
 
       {/* ======================================================= THREE A'S */}
+      {/* Third horizontal scene, and the most abstract of the three — by this
+          point the visitor has been taught how the pan behaves twice. */}
       <Section size="compact">
         <Container size="wide">
-          <Reveal>
+          <Scrub effect="scrub-rise">
             <SectionHeading
               index="05"
               eyebrow="Ethics in Action"
               title="The Three A’s"
               lead="The framework IES has worked from since 2023, carried into every branch."
             />
-          </Reveal>
+          </Scrub>
         </Container>
       </Section>
 
       <ValuePanels />
 
-      {/* =================================================== FEATURED WORK */}
-      <Section className="overflow-hidden">
-        <Container size="wide">
-          <Reveal>
-            <SectionHeading
-              index="06"
-              eyebrow="Our Work"
-              ghost="Work"
-              title="From Reflection to Action"
-              lead="Forums, service, leadership programs, partnerships, and student-led civic engagement."
-            />
-          </Reveal>
-
-          {/* Five items against a container that fits three, so this one always
-              has somewhere to scroll. */}
-          <ScrollRail label="what IES does" className="mt-16">
-            {featuredWork.map((item, i) => (
-              <RailItem key={item.title}>
-                <Reveal delay={i * 70} className="h-full">
-                  <Card interactive className="group h-full">
-                    <Link to={item.href} className="flex h-full flex-col p-8">
-                      <span className="font-serif text-sm text-[var(--accent)]/70">
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
-                      <span className="mt-6 block font-serif text-[1.375rem] leading-snug transition-colors duration-300 group-hover:text-[var(--accent)]">
-                        {item.title}
-                      </span>
-                      <span className="mt-4 block flex-1 text-[0.9375rem] leading-relaxed font-light text-mist">
-                        {item.body}
-                      </span>
-                      <span className="mt-8 inline-flex items-center gap-2 text-[0.6875rem] font-medium tracking-[0.2em] text-paper/85 uppercase transition-colors group-hover:text-[var(--accent)]">
-                        Explore
-                        <span
-                          aria-hidden
-                          className="transition-transform duration-300 group-hover:translate-x-1"
-                        >
-                          →
-                        </span>
-                      </span>
-                    </Link>
-                  </Card>
-                </Reveal>
-              </RailItem>
-            ))}
-          </ScrollRail>
-        </Container>
-      </Section>
-
       {/* ====================================================== LEADERSHIP */}
       <Section tone="deep" className="overflow-hidden border-t border-mist/12">
         <Container size="wide">
-          <Reveal>
+          <Scrub effect="scrub-rise">
             <div className="flex flex-wrap items-end justify-between gap-8">
               <SectionHeading
-                index="07"
+                index="06"
                 eyebrow="Leadership"
                 ghost="Leaders"
                 title="Students holding real responsibility."
@@ -442,15 +509,15 @@ export default function Home() {
                 All Leadership
               </Button>
             </div>
-          </Reveal>
+          </Scrub>
 
           {/* Two-up at most: a third column would put every card under the
               width PersonCard needs to set its portrait beside the text. */}
           <div className="mt-16 grid gap-6 lg:grid-cols-2">
             {leadershipPreview.map((person, i) => (
-              <Reveal key={person.id} delay={i * 110}>
+              <Scrub key={person.id} effect="scrub-rise" offset={i * 0.06}>
                 <PersonCard person={person} />
-              </Reveal>
+              </Scrub>
             ))}
           </div>
         </Container>

@@ -5,11 +5,12 @@ import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
 import { PhotoStrip, VideoSection } from '@/components/sections/Media'
-import { fieldPhotos, impactIntro, impactStats, impactStories, timeline } from '@/content/impact'
+import { fieldPhotos, impactIntro, impactStats, impactStories } from '@/content/impact'
 import { organizationVideos } from '@/content/videos'
 import { site } from '@/content/site'
+import { TimelineScene } from '@/components/sections/TimelineScene'
+import { Scrub } from '@/components/ui/Scrub'
 import { useSeo } from '@/lib/seo'
-import { cx } from '@/lib/utils'
 
 export default function Impact() {
   useSeo({
@@ -129,69 +130,33 @@ export default function Impact() {
       />
 
       {/* ========================================================= TIMELINE */}
-      <Section tone="deep" className="border-y border-mist/12">
+      {/* Horizontal, because the content already is. Reading the history left
+          to right while scrolling down makes the passage of time and the
+          passage of the page the same gesture — and unlike the vertical spine
+          this replaces, several entries are on screen at once, so what a
+          visitor sees is a sequence rather than a stack of dates. */}
+      <Section tone="deep" size="compact" className="border-t border-mist/12">
         <Container size="wide">
-          <Reveal>
+          <Scrub effect="scrub-rise">
             <SectionHeading
               eyebrow="Timeline"
               title="From April 2023 onward"
               lead="The sequence of the organization’s development, from a single student initiative to an international network."
             />
-          </Reveal>
+          </Scrub>
+        </Container>
+      </Section>
 
-          <ol className="relative mt-16 ml-0 sm:ml-4">
-            {/* Vertical spine */}
-            <span
-              aria-hidden
-              className="absolute top-2 bottom-2 left-[7px] w-px bg-gradient-to-b from-[var(--accent)]/45 via-mist/20 to-transparent sm:left-[9px]"
-            />
+      <TimelineScene />
 
-            {timeline.map((entry, i) => (
-              <Reveal key={entry.title} delay={i * 70} as="li">
-                <div className="relative grid gap-3 pb-12 pl-9 sm:grid-cols-[10rem_1fr] sm:gap-8 sm:pl-12">
-                  <span
-                    aria-hidden
-                    className={cx(
-                      'absolute top-2 left-0 block rounded-full border transition-colors sm:left-0.5',
-                      entry.milestone
-                        ? 'h-4 w-4 border-[var(--accent)] bg-[var(--accent)]/25'
-                        : 'h-2.5 w-2.5 translate-x-[3px] border-mist/50 bg-navy',
-                    )}
-                  />
-
-                  <time
-                    className={cx(
-                      'text-[0.75rem] font-medium tracking-[0.14em] uppercase',
-                      entry.milestone ? 'text-[var(--accent)]' : 'text-mist/80',
-                    )}
-                  >
-                    {entry.date}
-                  </time>
-
-                  <div>
-                    <h3
-                      className={cx(
-                        'font-serif',
-                        entry.milestone ? 'text-h3' : 'text-[1.25rem]',
-                      )}
-                    >
-                      {entry.title}
-                    </h3>
-                    <p className="mt-3 max-w-2xl leading-relaxed font-light text-mist">
-                      {entry.body}
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </ol>
-
-          <Reveal>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed font-light text-mist/80">
+      <Section tone="deep" size="compact" className="border-b border-mist/12">
+        <Container size="wide">
+          <Scrub effect="scrub-rise">
+            <p className="max-w-2xl text-sm leading-relaxed font-light text-mist/80">
               Entries marked “date to be confirmed” are sequenced correctly but await
               verification against internal records before publication.
             </p>
-          </Reveal>
+          </Scrub>
         </Container>
       </Section>
 
