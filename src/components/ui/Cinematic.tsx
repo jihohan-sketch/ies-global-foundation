@@ -101,6 +101,42 @@ export function GhostTitle({
   )
 }
 
+/* ----------------------------------------------------------------- Wordmark */
+
+/**
+ * One word, justified edge to edge across its container — the section's name
+ * used as architecture rather than as texture.
+ *
+ * Where `GhostTitle` hides behind a heading at 3%, this sits *below* a scene as
+ * a horizon line the eye reads before it reads anything else. Give it the
+ * section's subject in one word; two will fit but the letters thin out and it
+ * stops reading as a single sweep.
+ *
+ * The letters are split into spans because `justify-content: space-between` has
+ * nothing to distribute otherwise. Splitting text is normally a thing to avoid
+ * — it hands a screen reader a stream of single characters — so the whole
+ * element is `aria-hidden` and the section keeps its real heading elsewhere in
+ * the flow. That is the trade this component is: decorative, and honest about it.
+ */
+export function Wordmark({
+  children,
+  className,
+}: {
+  /** A single word. Spaces are rendered, but the effect is built for one. */
+  children: string
+  className?: string
+}) {
+  return (
+    <span aria-hidden className={cx('wordmark text-horizon', className)}>
+      {[...children].map((letter, i) => (
+        /* Index keys are correct here and nowhere else: the list *is* the
+           string, so a letter's position is its identity. */
+        <span key={i}>{letter === ' ' ? ' ' : letter}</span>
+      ))}
+    </span>
+  )
+}
+
 /* --------------------------------------------------------------- CinemaLine */
 
 /**

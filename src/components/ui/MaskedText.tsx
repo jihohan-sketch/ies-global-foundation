@@ -118,6 +118,71 @@ export function MaskedText({
   )
 }
 
+/*
+ * A paragraph that lights up as it is read past.
+ *
+ * The counterpart to `MaskedText`, and the treatment for the copy *underneath*
+ * a statement rather than the statement itself. Nothing moves, nothing is
+ * clipped: every word is present and legible from the first frame and simply
+ * comes up to full strength in reading order, which is why this can be used on
+ * a paragraph where the aperture reveal above cannot.
+ *
+ * Still not free, and still not for every paragraph. One per section at most —
+ * a page where all the copy lights up has just made lighting up the normal
+ * state of text, which is a slower way of having no effect at all.
+ *
+ * The accessible text is intact for the same reasons set out above: real words
+ * in normal flow, never duplicated, never reordered, with each trailing space
+ * inside its own word's span so the line-breaker cannot collapse it.
+ */
+export function LitText({
+  text,
+  as: Tag = 'p',
+  className,
+  /**
+   * Words per beat. Looser than `MaskedText`'s, and on purpose: a paragraph
+   * holds far more words than a headline, and at the headline's spacing the
+   * `maxOffset` cap below would be reached a third of the way in and the rest
+   * of the paragraph would light as one block.
+   */
+  stagger = 0.02,
+  maxOffset = 0.6,
+  driven = 'self',
+  offset = 0,
+}: {
+  /** One string, or one entry per paragraph. */
+  text: string | readonly string[]
+  as?: ElementType
+  className?: string
+  stagger?: number
+  maxOffset?: number
+  driven?: 'self' | 'scene'
+  offset?: number
+}) {
+  const paragraphs = typeof text === 'string' ? [text] : text
+  const Frame = driven === 'self' ? Scrub : SceneLayer
+
+  let word = 0
+
+  return (
+    <Frame as={Tag} offset={offset} className={className}>
+      {paragraphs.map((paragraph, paragraphIndex) => (
+        <span key={paragraphIndex} className={paragraphs.length > 1 ? 'mt-5 block first:mt-0' : undefined}>
+          {paragraph.split(' ').map((token, tokenIndex, tokens) => (
+            <span
+              key={tokenIndex}
+              className="scrub scrub-lit"
+              style={{ '--scrub-offset': Math.min(word++ * stagger, maxOffset) } as React.CSSProperties}
+            >
+              {tokenIndex < tokens.length - 1 ? `${token} ` : token}
+            </span>
+          ))}
+        </span>
+      ))}
+    </Frame>
+  )
+}
+
 /**
  * The same masking, for something that is not a string — a headline with an
  * emphasised clause, a line carrying a link. One aperture, one rise, no

@@ -32,22 +32,7 @@ export function Header() {
      locked behind it. */
   useEffect(() => setOpen(false), [location.key])
 
-  /* The drawer is hidden by CSS at the desktop breakpoint, but hiding it does
-     not close it: `open` stayed true, the scroll lock stayed on, and the toggle
-     that would undo it is hidden too. Anyone who opened the menu on a narrow
-     window and then widened it was left on a page that would not scroll. */
-  useEffect(() => {
-    // Tailwind's `xl`, where the header switches to the nav rail.
-    const desktop = window.matchMedia('(min-width: 80rem)')
-    const onChange = () => {
-      if (desktop.matches) setOpen(false)
-    }
-    onChange()
-    desktop.addEventListener('change', onChange)
-    return () => desktop.removeEventListener('change', onChange)
-  }, [])
-
-  /* Lock scroll behind the mobile drawer. */
+  /* Lock scroll behind the overlay. */
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     return () => {
@@ -112,7 +97,12 @@ export function Header() {
       <header
         className={cx(
           'fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-[var(--ease-cinema)]',
-          scrolled || open
+          /* Transparent while the menu is open, even when scrolled. The header
+             sits above the overlay so its toggle stays clickable and stays
+             inside the focus cycle; painting its own bar there would cut a hard
+             opaque band across the top of an otherwise full-bleed field and
+             break the one impression the overlay exists to give. */
+          scrolled && !open
             ? 'border-b border-mist/12 bg-navy/92 backdrop-blur-xl'
             : 'border-b border-transparent',
         )}
@@ -137,7 +127,9 @@ export function Header() {
               aria-hidden
               className={cx(
                 'hidden min-w-0 flex-col gap-0.5 leading-tight transition-opacity duration-500 xl:flex',
-                scrolled ? 'opacity-0' : 'opacity-100',
+                /* Also clears for the overlay: the epigraph is ambient texture
+                   for the page, and the menu is not the page. */
+                scrolled || open ? 'opacity-0' : 'opacity-100',
               )}
             >
               <span className="truncate font-serif text-[0.9375rem] text-paper/70 italic">
@@ -160,8 +152,18 @@ export function Header() {
               {/* Wrapped rather than given `hidden` directly: Button's base class
                   sets `inline-flex`, and utility order in the stylesheet — not
                   the class attribute — decides which display rule wins. */}
-              <span className="hidden sm:block">
-                <Button to="/join" variant="secondary" className="rounded-full px-6 py-3">
+              {/* Withdrawn while the menu is open — the overlay carries its own
+                  pair of these, and two live "Join IES" controls a few hundred
+                  pixels apart is one too many. `invisible` rather than
+                  `hidden` so the row keeps its width and the toggle beside it
+                  does not slide sideways as the menu opens. */}
+              <span
+                className={cx(
+                  'hidden transition-opacity duration-300 sm:block',
+                  open && 'invisible opacity-0',
+                )}
+              >
+                <Button to="/join" variant="secondary" className="px-6 py-3">
                   Join IES
                 </Button>
               </span>
@@ -173,7 +175,12 @@ export function Header() {
                 aria-expanded={open}
                 aria-controls="mobile-nav"
                 aria-label={open ? 'Close menu' : 'Open menu'}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-mist/55 transition-colors hover:border-gold/60 xl:hidden"
+                /* No longer `xl:hidden`. The nav rail below collapses the
+                   moment the page is scrolled, which used to leave a desktop
+                   visitor with no navigation at all beyond the first screen —
+                   the rail is the shortcut, this is the way in, and both belong
+                   at every width. */
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-mist/55 transition-colors hover:border-gold/60"
               >
                 <span className="relative block h-3 w-5">
                   <span
@@ -244,7 +251,24 @@ export function Header() {
         </Container>
       </header>
 
-      {/* ---------------------------------------------------- Mobile drawer */}
+      {/* --------------------------------------------------------- Overlay */}
+      {/*
+       * The menu as a held frame over the page, not a panel beside it.
+       *
+       * Three things make it read that way rather than as a modal. It is
+       * translucent and blurred, so the page is still visibly *there* behind
+       * it — the visitor has paused the site, not left it. The entries are set
+       * in the cinematic register (wide-tracked serif capitals, centred) and
+       * nothing else shares the screen with them. And they arrive in sequence
+       * on a stagger, which turns opening the menu into a movement instead of
+       * a state change.
+       *
+       * `backdrop-blur` needs something translucent above it to blur *through*:
+       * at `bg-navy` the filter is computed and then hidden behind an opaque
+       * fill. The tint below is the ground at 72%, which is dark enough for the
+       * type to clear AA against the brightest thing the page can put behind it
+       * (a lit photograph) and still light enough that the page reads through.
+       */}
       <div
         id="mobile-nav"
         ref={drawerRef}
@@ -252,15 +276,18 @@ export function Header() {
         aria-modal={open || undefined}
         aria-label="Site menu"
         className={cx(
-          'fixed inset-0 z-40 bg-navy transition-all duration-500 ease-[var(--ease-cinema)] xl:hidden',
+          'fixed inset-0 z-40 overflow-y-auto bg-navy/72 backdrop-blur-2xl transition-all duration-500 ease-[var(--ease-cinema)]',
           open ? 'visible opacity-100' : 'invisible opacity-0',
         )}
         aria-hidden={!open}
       >
-        <div className="h-24" />
-        <div className="h-[calc(100dvh-6rem)] overflow-y-auto pb-16">
-          <Container>
-            <nav aria-label="Mobile" className="flex flex-col">
+        {/* `min-h-full` with `place-items-center`, not `h-full`: the column
+            centres in the viewport when it fits and scrolls from the top when
+            it does not, which is what a nine-entry menu on a short laptop
+            window needs. */}
+        <div className="grid min-h-full place-items-center px-6 py-28">
+          <div className="w-full max-w-3xl">
+            <nav aria-label="Site" className="flex flex-col items-center">
               {primaryNav.map((item, i) => (
                 <NavLink
                   key={item.href}
@@ -268,53 +295,66 @@ export function Header() {
                   tabIndex={open ? 0 : -1}
                   className={({ isActive }) =>
                     cx(
-                      'group border-b border-mist/12 py-5 transition-all duration-500',
-                      isActive ? 'text-gold' : 'text-paper',
+                      /* Tracked at 0.22em, and the trailing step taken back so
+                         a centred label sits on the centre line rather than
+                         half a step left of it. */
+                      'block py-2.5 -mr-[0.22em] font-serif font-light tracking-[0.22em] uppercase',
+                      'text-[clamp(1.125rem,3.2vw,1.875rem)] leading-tight',
+                      'transition-[color,opacity,transform] duration-500 ease-[var(--ease-cinema)]',
+                      isActive ? 'text-[var(--accent)]' : 'text-paper/80 hover:text-paper',
                     )
                   }
                   style={{
-                    transitionDelay: open ? `${80 + i * 45}ms` : '0ms',
+                    /* Delay on the way in only. Closing, every entry leaves at
+                       once — a staggered exit makes dismissing the menu feel
+                       like it is refusing to go. */
+                    transitionDelay: open ? `${120 + i * 40}ms` : '0ms',
                     opacity: open ? 1 : 0,
-                    transform: open ? 'none' : 'translateY(12px)',
+                    transform: open ? 'none' : 'translateY(14px)',
                   }}
                 >
-                  <span className="font-serif text-h3 block">{item.label}</span>
-                  {item.description && (
-                    <span className="mt-1 block text-sm font-light text-mist">
-                      {item.description}
-                    </span>
-                  )}
+                  {item.label}
                 </NavLink>
               ))}
             </nav>
 
-            <div className="mt-10">
-              <p className="text-[0.625rem] font-medium tracking-[0.3em] text-gold uppercase">
+            {/* The rest of the overlay arrives after the last entry has. */}
+            <div
+              className="transition-all duration-500 ease-[var(--ease-cinema)]"
+              style={{
+                transitionDelay: open ? `${120 + primaryNav.length * 40}ms` : '0ms',
+                opacity: open ? 1 : 0,
+                transform: open ? 'none' : 'translateY(14px)',
+              }}
+            >
+              <div className="mx-auto mt-12 h-px w-full max-w-md bg-mist/15" />
+
+              <p className="mt-10 text-center text-[0.5625rem] font-medium tracking-[0.3em] text-mist/80 uppercase">
                 National Branches
               </p>
-              <div className="mt-4 flex flex-col gap-3">
+              <div className="mt-5 flex flex-wrap justify-center gap-x-10 gap-y-3">
                 {branches.map((branch) => (
                   <Link
                     key={branch.slug}
                     to={`/global-network/${branch.slug}`}
                     tabIndex={open ? 0 : -1}
-                    className="text-paper/80 transition-colors hover:text-gold"
+                    className="text-sm font-light text-paper/72 transition-colors hover:text-[var(--accent)]"
                   >
                     {branch.name}
                   </Link>
                 ))}
               </div>
-            </div>
 
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-              <Button to="/join" variant="primary" className="flex-1">
-                Join IES
-              </Button>
-              <Button to="/partners" variant="secondary" className="flex-1">
-                Partner With Us
-              </Button>
+              <div className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Button to="/join" variant="primary">
+                  Join IES
+                </Button>
+                <Button to="/partners" variant="secondary">
+                  Partner With Us
+                </Button>
+              </div>
             </div>
-          </Container>
+          </div>
         </div>
       </div>
     </>

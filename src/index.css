@@ -143,6 +143,16 @@
   --text-ghost--line-height: 1;
   --text-ghost--letter-spacing: 0.16em;
 
+  /*
+   * The horizon word — see the `wordmark` utility. Sized off the viewport with
+   * no tracking of its own: the letters are distributed by the flex box, so
+   * this only has to set how *tall* the word is, and `vw` keeps its height in
+   * proportion to the width it is being stretched across. The upper bound stops
+   * an ultrawide monitor from turning it into a wall.
+   */
+  --text-horizon: clamp(2.5rem, 10.5vw, 9rem);
+  --text-horizon--line-height: 0.9;
+
   /* --- Motion --- */
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
@@ -337,6 +347,40 @@
   text-transform: uppercase;
   white-space: nowrap;
   color: color-mix(in srgb, var(--color-paper) 3%, transparent);
+}
+
+/*
+ * THE HORIZON WORD — one word, justified edge to edge across the viewport.
+ *
+ * The ghost above is type used as *texture*: faint, nowrap, sitting behind a
+ * heading it must never compete with. This is type used as *architecture* —
+ * a single word spread the full width of the screen at the foot of a section,
+ * which the eye reads as a horizon line rather than as a headline. Because the
+ * letters are distributed rather than tracked, the word fits its container
+ * exactly at every viewport width with no clamping to tune.
+ *
+ * `space-between` needs real element children, which is why `Wordmark` splits
+ * the word into one span per letter. A single tracked string cannot do this:
+ * `letter-spacing` is a fixed step, so the word overshoots a phone and leaves
+ * a third of a desktop empty.
+ *
+ * 7%, against the ghost's 3%. This one is meant to be *seen* — it is the
+ * section's name, structurally placed — where the ghost is only meant to be
+ * felt behind other type. Both are decorative and `aria-hidden`, so both are
+ * exempt from contrast minimums; the real heading is elsewhere in the flow.
+ */
+@utility wordmark {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  pointer-events: none;
+  user-select: none;
+  font-family: var(--font-serif);
+  font-weight: 300;
+  line-height: 0.9;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--color-paper) 7%, transparent);
 }
 
 /*
@@ -655,6 +699,71 @@
 /* Ends oversized. For photographs, which have the resolution to take it. */
 .scrub-expand {
   transform: scale(calc(1 + var(--e) * var(--scrub-grow, 0.14)));
+}
+
+/* ------------------------------------------------------------------- type */
+
+/*
+ * THE APERTURE, AND THE WORDS THAT RISE THROUGH IT.
+ *
+ * `MaskedText` splits a display line into one span per word and hands each one
+ * a later `--scrub-offset`; these two rules are what turn that markup into the
+ * reveal. They were referenced by the component and never written, so every
+ * masked headline on the site has been rendering as flat static type.
+ *
+ * `.scrub-line` is the slot — one line tall, clipped. `.scrub-word` is a word
+ * sitting below its own slot and travelling up into it. Because the clip lives
+ * on the line rather than on the word, a word that has not arrived is not
+ * merely transparent: it is *behind the edge*, which is the difference between
+ * type that assembles and type that fades in.
+ *
+ * `overflow: hidden` cuts descenders — a `g` or a `y` on the last line loses
+ * its tail to the clip. The padding gives the clip somewhere to fall that is
+ * not the letterform, and the identical negative margin takes that space back
+ * out of the layout so the line's rhythm is unchanged.
+ *
+ * `inline-block` on the word, not `inline`: transforms do not apply to inline
+ * boxes at all. The trailing space rides *inside* the span (see MaskedText) so
+ * the line still breaks normally between two inline-blocks.
+ */
+.scrub-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}
+
+.scrub-word {
+  display: inline-block;
+  opacity: var(--e);
+  /* In `em` of the line's own size, so one rule is correct at every step of the
+     type scale — a display line lifts further than a subhead because its own
+     em is bigger, which is exactly right. */
+  transform: translate3d(0, calc((1 - var(--e)) * var(--scrub-lift, 1.05em)), 0);
+}
+
+/*
+ * ILLUMINATION — a paragraph that lights up word by word as it is read past.
+ *
+ * The reference site's signature treatment for body copy, and the counterpart
+ * to the aperture above: that one is for the two or three lines a page is
+ * *about*, this one is for the paragraph underneath them. Nothing moves and
+ * nothing is clipped — the words are all present and readable from the first
+ * frame, they simply come up to full strength in reading order.
+ *
+ * Opacity rather than `color`, deliberately. A `color-mix` on `currentColor`
+ * would repaint the glyphs of every word on every frame; opacity on an
+ * inline-block is a composited property, and the words are not registered with
+ * the engine individually so none of them takes a `will-change` layer.
+ *
+ * The floor is 0.3 and not 0. Unlit text is still text: at 0.3 over the navy
+ * ground it stays legible for anyone who scrolled past it faster than the
+ * effect can keep up, which is the failure mode of every reveal that starts at
+ * zero. This is decoration on top of readable copy, never a gate in front of it.
+ */
+.scrub-lit {
+  display: inline-block;
+  opacity: calc(0.3 + var(--e) * 0.7);
 }
 
 /*

@@ -197,10 +197,18 @@ export function SectionHeading({
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'onLight'
 
-/* `min-h-11` keeps every variant at the 44px minimum touch target, including
-   `ghost`, whose padding alone would leave it around 27px tall. */
+/*
+ * `min-h-11` keeps every variant at the 44px minimum touch target, including
+ * `ghost`, whose padding alone would leave it around 27px tall.
+ *
+ * Fully rounded, not the 3px this used to carry. The site's other corners stay
+ * sharp — cards, images, inputs — and that contrast is the point: on a page
+ * built from hairlines and right angles, a capsule is unmistakably the thing
+ * you press. A 3px radius reads as a softened rectangle and competes with every
+ * other softened rectangle on the screen.
+ */
 const buttonBase =
-  'group inline-flex min-h-11 items-center justify-center gap-2.5 rounded-[3px] px-7 py-3.5 text-[0.8125rem] font-medium tracking-[0.1em] uppercase transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-2 focus-visible:outline-offset-3'
+  'group inline-flex min-h-11 items-center justify-center gap-2.5 rounded-full px-8 py-3.5 text-[0.8125rem] font-medium tracking-[0.1em] uppercase transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-2 focus-visible:outline-offset-3'
 
 const buttonVariants: Record<ButtonVariant, string> = {
   primary: 'bg-gold text-navy hover:bg-gold-300',
@@ -286,6 +294,85 @@ export function Button({
     <button type={type} onClick={onClick} className={classes} disabled={disabled}>
       {inner}
     </button>
+  )
+}
+
+/* --------------------------------------------------------------- ArrowLink */
+
+/**
+ * A label with a circular arrow beside it — the site's quietest call to action,
+ * and the one that carries a section rather than a page.
+ *
+ * The ring is the whole idea. A `Button` is a solid object you press; this is a
+ * line of type that happens to lead somewhere, with the target drawn as a
+ * separate mark next to it. It sits between `Button variant="ghost"` (a link
+ * with an arrow glyph) and a full capsule, and it is the right register at the
+ * foot of a section that has already said everything it needed to.
+ *
+ * The whole thing is one anchor, so the ring is never a second tab stop for the
+ * same destination, and the hover moves both halves together — the ring fills
+ * and the arrow steps forward inside it.
+ */
+export function ArrowLink({
+  children,
+  to,
+  href,
+  className,
+  align = 'left',
+}: {
+  children: ReactNode
+  to?: string
+  href?: string
+  className?: string
+  /** `center` is for a rail or a scene the link closes rather than opens. */
+  align?: 'left' | 'center'
+}) {
+  const classes = cx(
+    'group inline-flex items-center gap-5 text-[0.8125rem] font-light tracking-[0.08em] text-paper/85 transition-colors duration-300 hover:text-paper',
+    align === 'center' && 'justify-center',
+    className,
+  )
+
+  const inner = (
+    <>
+      <span>{children}</span>
+      <span
+        aria-hidden
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-mist/45 transition-colors duration-300 group-hover:border-[var(--accent)]/70 group-hover:bg-[var(--accent)]/10"
+      >
+        <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4">
+          <path
+            d="M2 8h11m0 0-4-4m4 4-4 4"
+            stroke="currentColor"
+            strokeWidth="1"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            /* Translates rather than growing: the ring is a fixed frame and the
+               arrow moves inside it, which is what makes the pair read as one
+               mechanism instead of two things reacting separately. */
+            className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-[2px]"
+          />
+        </svg>
+      </span>
+    </>
+  )
+
+  if (to) {
+    return (
+      <Link to={to} className={classes}>
+        {inner}
+      </Link>
+    )
+  }
+
+  return (
+    <a
+      href={href}
+      className={classes}
+      {...(href?.startsWith('http') ? { target: '_blank', rel: 'noreferrer noopener' } : {})}
+    >
+      {inner}
+    </a>
   )
 }
 
