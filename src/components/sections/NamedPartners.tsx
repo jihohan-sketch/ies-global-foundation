@@ -26,9 +26,9 @@ const organizations = namedPartners.flatMap((group) =>
   group.organizations.map((name) => ({ name, group: group.group })),
 )
 
-export function NamedPartners() {
+export function NamedPartners({ id }: { id?: string }) {
   return (
-    <Section tone="deep" className="overflow-hidden border-y border-mist/12">
+    <Section id={id} tone="deep" className="overflow-hidden border-y border-mist/12">
       <Container size="wide">
         <Reveal>
           <SectionHeading

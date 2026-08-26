@@ -79,10 +79,22 @@ export function MaskedText({
      three separate ones firing together. */
   let word = 0
 
+  /*
+   * The block's offset is folded into each *word's* offset rather than set on
+   * the frame.
+   *
+   * It has to be. `--scrub-offset` is a custom property, and every word sets
+   * its own to carry the stagger — which shadows whatever the frame declared,
+   * so an offset on the frame was inherited by nothing and did nothing. That
+   * mattered nowhere while every caller left it at 0 and matters a great deal
+   * now: a scene-driven headline is placed on the scene's beat sheet entirely
+   * by this number.
+   */
+  const beat = (index: number) => offset + Math.min(index * stagger, maxOffset)
+
   return (
     <Frame
       as={Tag}
-      offset={offset}
       className={className}
       style={lift ? ({ '--scrub-lift': lift } as React.CSSProperties) : undefined}
     >
@@ -90,7 +102,7 @@ export function MaskedText({
         <span key={lineIndex} className={cx('scrub-line', lineClassName)}>
           {typeof line === 'string' ? (
             line.split(' ').map((token, tokenIndex, tokens) => {
-              const delay = Math.min(word++ * stagger, maxOffset)
+              const delay = beat(word++)
               return (
                 <span
                   key={tokenIndex}
@@ -107,7 +119,7 @@ export function MaskedText({
           ) : (
             <span
               className="scrub scrub-word"
-              style={{ '--scrub-offset': Math.min(word++ * stagger, maxOffset) } as React.CSSProperties}
+              style={{ '--scrub-offset': beat(word++) } as React.CSSProperties}
             >
               {line}
             </span>
@@ -164,15 +176,19 @@ export function LitText({
 
   let word = 0
 
+  /* Folded into the words for the reason set out in `MaskedText` above: a
+     word's own `--scrub-offset` shadows the frame's, so the frame's was inert. */
+  const beat = (index: number) => offset + Math.min(index * stagger, maxOffset)
+
   return (
-    <Frame as={Tag} offset={offset} className={className}>
+    <Frame as={Tag} className={className}>
       {paragraphs.map((paragraph, paragraphIndex) => (
         <span key={paragraphIndex} className={paragraphs.length > 1 ? 'mt-5 block first:mt-0' : undefined}>
           {paragraph.split(' ').map((token, tokenIndex, tokens) => (
             <span
               key={tokenIndex}
               className="scrub scrub-lit"
-              style={{ '--scrub-offset': Math.min(word++ * stagger, maxOffset) } as React.CSSProperties}
+              style={{ '--scrub-offset': beat(word++) } as React.CSSProperties}
             >
               {tokenIndex < tokens.length - 1 ? `${token} ` : token}
             </span>

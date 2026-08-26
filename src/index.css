@@ -568,9 +568,32 @@
    */
   --sp: clamp(
     0,
-    calc((var(--p, 0) - var(--scrub-offset, 0)) / (1 - var(--scrub-offset, 0))),
+    calc(
+      (var(--p, 0) - var(--scrub-offset, 0)) /
+        var(--scrub-length, calc(1 - var(--scrub-offset, 0)))
+    ),
     1
   );
+
+  /*
+   * `--scrub-length` is how much of the scene the effect occupies, and it is
+   * the second half of a beat sheet.
+   *
+   * Offset alone can only say *when a beat starts*. Left to itself every
+   * effect then runs to the end of the scene, because the divisor above is
+   * whatever is left after the offset — so a headline told to begin at 0.3 was
+   * still arriving at 0.95, and a scene with three beats in it had one long
+   * beat and two stretches of nothing. Naming the length as well lets a beat
+   * finish and hold, which is what makes room for the next one.
+   *
+   * It inherits, and that is deliberate rather than incidental: a `MaskedText`
+   * splits its line into per-word `.scrub` spans that each set their own
+   * offset, so a length set on the block gives every word in it the same
+   * duration, staggered. Set it on the wrapper, not on the words.
+   *
+   * Unset, the fallback is the old behaviour exactly — run from the offset to
+   * the end of the scene.
+   */
 
   /*
    * `--e` — the same progress eased out (1 − (1−x)³). Linear progress reads as
@@ -943,6 +966,78 @@
   opacity: calc(0.3 + var(--e) * 0.7);
 }
 
+/* ------------------------------------------------- kinetic display type */
+
+/*
+ * These five are for the two places on the site where the *type itself* is the
+ * scene rather than a caption on one: the mission statement and the impact
+ * ledger. Same contract as everything above — transform and opacity only, one
+ * number in, nothing read back.
+ */
+
+/*
+ * CROSSING — a word that travels the frame for as long as its scene runs.
+ *
+ * Driven off `--drift` rather than `--e`, so it is signed: the word sits at its
+ * resting position dead centre of the window and is equidistant either side of
+ * it. Give two words opposite `--scrub-span` values and they pass each other,
+ * which is the whole effect the mission scene is built on — the sweep is
+ * legible as a *relationship* between two words, not as two things sliding.
+ *
+ * Span is in `vw` on purpose. The travel has to scale with the frame it crosses
+ * or the gesture is a grand sweep on a laptop and a twitch on a display.
+ */
+.scrub-cross {
+  transform: translate3d(calc(var(--drift) * var(--scrub-span, 30vw)), 0, 0);
+}
+
+/* The same sweep under the enter/exit envelope, so the word arrives and leaves
+   rather than sitting fully lit at both ends of its own travel. Wants a
+   `through` window and `reduced={0.5}`. */
+.scrub-cross-band {
+  opacity: var(--band);
+  transform: translate3d(calc(var(--drift) * var(--scrub-span, 30vw)), 0, 0);
+}
+
+/*
+ * CONVERGING — starts a span out to one side and closes on its resting place.
+ *
+ * The counterpart to `scrub-cross`: that one never settles, this one does. A
+ * negative `--scrub-span` comes in from the other side, which is how a line
+ * assembles from both edges at once instead of sliding in as a block.
+ */
+.scrub-converge {
+  opacity: var(--e);
+  transform: translate3d(calc((1 - var(--e)) * var(--scrub-span, 22vw)), 0, 0);
+}
+
+/*
+ * A FIGURE ARRIVING — for the oversized numerals in the impact ledger.
+ *
+ * Scale, not travel. A numeral set at 12vw moving 56px vertically reads as the
+ * page having jumped; the same numeral settling into its own size reads as
+ * weight landing. The origin is the baseline corner so the figure grows *out*
+ * of where it will finally sit rather than toward it from the middle of itself.
+ */
+.scrub-figure {
+  opacity: var(--e);
+  transform: translate3d(0, calc((1 - var(--e)) * 0.1em), 0)
+    scale(calc(1 - (1 - var(--e)) * var(--scrub-grow, 0.08)));
+  transform-origin: left bottom;
+}
+
+/*
+ * A RULE THAT DRAWS ITSELF, left to right, as its row arrives.
+ *
+ * `scaleX` on a hairline rather than an animated `width`: the same picture, but
+ * a composited transform instead of a layout pass per frame on an element that
+ * spans the viewport.
+ */
+.scrub-rule {
+  transform: scaleX(var(--e));
+  transform-origin: left center;
+}
+
 /*
  * A layer that has left the scene, and must stop existing for everyone else
  * too.
@@ -986,7 +1081,12 @@
 
   .scrub-dissolve,
   .scrub-open,
-  .scrub-expand {
+  .scrub-expand,
+  .scrub-cross,
+  .scrub-cross-band,
+  .scrub-converge,
+  .scrub-figure,
+  .scrub-rule {
     --dissolve: 0;
     opacity: 1;
     transform: none;
@@ -1014,6 +1114,66 @@
 .scroll-progress {
   transform: scaleX(var(--p, 0));
   transform-origin: left;
+}
+
+/* ==========================================================================
+   HEADER SCRIM
+   ==========================================================================
+
+   What the header paints once the page has been scrolled.
+
+   The obvious treatment — an opaque bar with a hairline under it — is what was
+   here, and on this site it is actively wrong. Half the page is full-bleed:
+   pinned photographic scenes, a globe running edge to edge, panels that fill
+   the viewport. A solid band with a hard bottom edge cuts a visible seam across
+   every one of them, and the eye reads that seam as a *lid on the page* rather
+   than as chrome sitting over it.
+
+   So there is no edge. The tint runs from nearly-opaque at the very top to
+   nothing by the foot of the bar, and the blur is masked on the same ramp — so
+   the header dissolves into whatever it is over instead of terminating against
+   it. Over the navy ground the gradient is invisible; over a lit photograph it
+   is the only thing making the wordmark legible, which is exactly when it
+   should be doing work.
+
+   The mask is what makes the blur fade too. `backdrop-filter` is clipped to its
+   element's box, and a hard-edged blur is just as visible a seam as a hard-edged
+   fill — arguably worse, because a blurred edge over a sharp photograph reads
+   as a rendering fault. */
+.header-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 10, 20, 0.94) 0%,
+    rgba(5, 10, 20, 0.78) 38%,
+    rgba(5, 10, 20, 0.38) 72%,
+    rgba(5, 10, 20, 0) 100%
+  );
+  backdrop-filter: blur(16px) saturate(112%);
+  -webkit-backdrop-filter: blur(16px) saturate(112%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 46%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 46%, transparent 100%);
+}
+
+/* ==========================================================================
+   SECTION RAIL
+   ==========================================================================
+
+   The fixed index down the left edge of the home page. Each entry is a number
+   and a tick; the active one grows its tick and takes the accent.
+
+   The tick is a `scaleX` on a fixed-width span rather than a width transition,
+   for the same reason the progress hairline is: it is the only property here
+   that changes, it changes on every section boundary, and it belongs on the
+   compositor. */
+.rail-tick {
+  transform: scaleX(var(--tick, 0.34));
+  transform-origin: left center;
+  transition:
+    transform 600ms var(--ease-cinema),
+    background-color 600ms var(--ease-cinema);
 }
 
 /* ==========================================================================

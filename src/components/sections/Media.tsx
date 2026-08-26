@@ -277,10 +277,10 @@ export function GalleryRail({ items }: { items: GalleryItem[] }) {
  * it outright would leave a whole section of the page unnamed in a screen
  * reader's list of headings.
  */
-export function GallerySection({ items }: { items: GalleryItem[] }) {
+export function GallerySection({ items, id }: { items: GalleryItem[]; id?: string }) {
   if (items.length === 0) return null
   return (
-    <Section tone="deep" className="border-y border-mist/12" size="compact">
+    <Section id={id} tone="deep" className="border-y border-mist/12" size="compact">
       <Container size="wide">
         {/*
          * Centred, and the only section on the home page that is.

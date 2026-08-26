@@ -35,8 +35,16 @@ function ScrollProgress() {
   }, [])
 
   return (
-    <div aria-hidden className="absolute inset-x-0 bottom-0 h-px overflow-hidden">
-      <div ref={ref} className="scroll-progress h-full w-full bg-[var(--accent)]/55" />
+    /*
+     * At the very top of the viewport, not under the header.
+     *
+     * Under the header it was a second horizontal line a few pixels below the
+     * header's own border — two rules doing one job, and the reading was
+     * ambiguous: neither one obviously meant "position in the document". On the
+     * top edge there is nothing else for it to be.
+     */
+    <div aria-hidden className="absolute inset-x-0 top-0 h-px overflow-hidden">
+      <div ref={ref} className="scroll-progress h-full w-full bg-[var(--accent)]/60" />
     </div>
   )
 }
@@ -124,20 +132,28 @@ export function Header() {
         Skip to content
       </a>
 
-      <header
-        className={cx(
-          'fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-[var(--ease-cinema)]',
-          /* Transparent while the menu is open, even when scrolled. The header
-             sits above the overlay so its toggle stays clickable and stays
-             inside the focus cycle; painting its own bar there would cut a hard
-             opaque band across the top of an otherwise full-bleed field and
-             break the one impression the overlay exists to give. */
-          scrolled && !open
-            ? 'border-b border-mist/12 bg-navy/92 backdrop-blur-xl'
-            : 'border-b border-transparent',
-        )}
-      >
-        <Container size="wide">
+      <header className="fixed inset-x-0 top-0 z-50">
+        {/*
+         * The scrim, as its own layer rather than a background on the header.
+         *
+         * Transparent while the menu is open, even when scrolled: the header
+         * sits above the overlay so its toggle stays clickable and stays inside
+         * the focus cycle, and painting a band there would cut across an
+         * otherwise full-bleed field and break the one impression the overlay
+         * exists to give.
+         *
+         * It fades rather than switching — a scrim that appears the instant the
+         * page moves 24px is a flicker, not a response. See `.header-scrim`.
+         */}
+        <div
+          aria-hidden
+          className={cx(
+            'header-scrim transition-opacity duration-700 ease-[var(--ease-cinema)]',
+            scrolled && !open ? 'opacity-100' : 'opacity-0',
+          )}
+        />
+
+        <Container size="wide" className="relative">
           {/* ------------------------------------------------- Primary row */}
           {/* Three tracks, not `justify-between`: the wordmark is centred on the
               *viewport*, which only holds if the flanking columns are equal

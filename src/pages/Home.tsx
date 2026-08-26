@@ -1,14 +1,16 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Globe, type GlobeMarker } from '@/components/Globe'
-import { Button, Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
+import { Button, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
 import { GhostTitle, SectionIndex, Seam, Vignette } from '@/components/ui/Cinematic'
 import { LitText, MaskedText } from '@/components/ui/MaskedText'
 import { SceneLayer, Scrub } from '@/components/ui/Scrub'
-import { StatBlock } from '@/components/ui/Counter'
 import { PersonCard } from '@/components/sections/Cards'
 import { CallToAction } from '@/components/sections/CallToAction'
 import { StickyScene } from '@/components/sections/StickyScene'
+import { SectionRail, type RailSection } from '@/components/layout/SectionRail'
 import { NetworkScene } from '@/components/sections/NetworkScene'
+import { MissionScene } from '@/components/sections/MissionScene'
+import { ImpactLedger } from '@/components/sections/ImpactLedger'
 import { WorkScene } from '@/components/sections/WorkScene'
 import { GallerySection } from '@/components/sections/Media'
 import { NamedPartners } from '@/components/sections/NamedPartners'
@@ -18,8 +20,29 @@ import { branches } from '@/content/branches'
 import { headlineStats } from '@/content/impact'
 import { personById } from '@/content/leadership'
 import { site, values } from '@/content/site'
-import { pillars } from '@/content/work'
 import { useSeo } from '@/lib/seo'
+
+/*
+ * The page's movements, in order, for the left-margin rail.
+ *
+ * Kept here rather than inside `SectionRail` because it is a fact about *this
+ * page* — the rail is a component, the running order is editorial. Every id
+ * below has to exist on a section in the markup; a missing one is silently
+ * skipped by the observer rather than throwing, which is the right failure for
+ * a decorative indicator but does mean this list is worth reading against the
+ * page when a section moves.
+ */
+const railSections: readonly RailSection[] = [
+  { id: 'origin', label: 'Introduction' },
+  { id: 'network', label: 'Global Presence' },
+  { id: 'programmes', label: 'Programmes' },
+  { id: 'organizations', label: 'Organizations' },
+  { id: 'impact', label: 'Impact' },
+  { id: 'our-work', label: 'Our Work' },
+  { id: 'mission', label: 'Mission' },
+  { id: 'three-as', label: 'Ethics in Action' },
+  { id: 'leadership', label: 'Leadership' },
+]
 
 const markers: GlobeMarker[] = branches.map((branch) => ({
   id: branch.slug,
@@ -54,6 +77,8 @@ export default function Home() {
 
   return (
     <>
+      <SectionRail sections={railSections} />
+
       {/* ============================================================ HERO */}
       {/*
        * Not a hero with an animation on it — the opening shot of a sequence.
@@ -219,7 +244,7 @@ export default function Home() {
           was a held shot, this is a page again. The heading is one of the two
           statements on this page that assemble themselves; everything else
           here simply rises. */}
-      <Section tone="deep" className="overflow-hidden border-y border-mist/12">
+      <Section id="origin" tone="deep" className="overflow-hidden border-y border-mist/12">
         <Container size="wide" className="relative">
           <GhostTitle className="-top-24">Origin</GhostTitle>
           <div className="relative z-10 grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
@@ -298,72 +323,35 @@ export default function Home() {
       {/* Deliberately not directly under the hero. Who IES is and how the three
           branches relate come first; by this point a visitor has the context to
           read the photographs as evidence rather than as decoration. */}
-      <GallerySection items={galleryItems} />
+      <GallerySection id="programmes" items={galleryItems} />
 
       {/* ============================================== ORGANIZATIONS */}
       {/* Directly after the photographs on purpose: the images show the work,
           and this says who was in the room for it. Separated they are two
           claims; together they are one piece of evidence. */}
-      <NamedPartners />
+      <NamedPartners id="organizations" />
 
       {/* ================================================== IMPACT SNAPSHOT */}
       {/*
        * Dark, not the bright `paper` interlude this used to be. A full-bleed
        * white slab between two near-black sections is a cut, and the page reads
        * as a sequence of shots rather than a stack of slides — the one thing a
-       * cut here destroys. The figures get their separation from the raised
-       * `deep` ground and the ghost behind them instead.
+       * cut here destroys.
+       *
+       * The figures themselves moved out into `ImpactLedger`, where they are set
+       * at display scale on full-width rows instead of packed into a grid at
+       * subheading size. See the note at the top of that file.
        */}
-      <Section tone="deep" size="compact" className="overflow-hidden border-y border-mist/12">
-        <Container size="wide">
-          <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:items-end lg:gap-20">
-            <Scrub effect="scrub-rise">
-              <SectionHeading
-                index="03"
-                eyebrow="Impact Snapshot"
-                ghost="Scale"
-                title="Scale, measured honestly."
-              />
-            </Scrub>
-
-            {/* Three across, not five: `736,000+` is the widest figure in the
-                set and overruns a fifth of this column between 1024px and
-                1400px, colliding with the figure beside it.
-
-                Each figure carries its own offset, so the row assembles left to
-                right as the section rises rather than landing as a block. */}
-            <dl className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
-              {headlineStats.map((stat, i) => (
-                <Scrub key={stat.label} effect="scrub-rise" offset={Math.min(i, 5) * 0.045}>
-                  <dt className="sr-only">{stat.label}</dt>
-                  <dd>
-                    <StatBlock stat={stat} />
-                  </dd>
-                </Scrub>
-              ))}
-            </dl>
-          </div>
-
-          <Scrub effect="scrub-rise" offset={0.1}>
-            <p className="mt-14 border-t border-mist/15 pt-6 text-xs font-light text-mist/80">
-              {site.statisticsNote}{' '}
-              <Link to="/impact" className="text-paper underline underline-offset-4 hover:text-[var(--accent)]">
-                See the full impact report
-              </Link>
-              .
-            </p>
-          </Scrub>
-        </Container>
-      </Section>
+      <ImpactLedger />
 
       {/* ======================================================== OUR WORK */}
       {/* Second horizontal scene, and the photographic one. Five areas of work,
           each panel a picture of that work actually happening. */}
-      <Section size="compact" className="overflow-hidden">
+      <Section id="our-work" size="compact" className="overflow-hidden">
         <Container size="wide">
           <Scrub effect="scrub-rise">
             <SectionHeading
-              index="04"
+              index="05"
               eyebrow="Our Work"
               ghost="Work"
               title="From Reflection to Action"
@@ -376,58 +364,14 @@ export default function Home() {
       <WorkScene />
 
       {/* ========================================================= MISSION */}
-      {/* The page's biggest statement, and the second and last place a headline
-          assembles itself. Held at the centre of its own near-full screen with
-          nothing else in it — the whitespace is the emphasis. */}
-      <Section size="tall" className="overflow-hidden">
-        <Container className="relative">
-          {/* Raised almost entirely above the heading and cropped by the
-              section edge. Centred behind a centred headline it competed with
-              it directly, which is the one place a ghost must never sit. */}
-          <GhostTitle align="center" className="-top-[0.5em] -translate-y-1/2">
-            Mission
-          </GhostTitle>
-          <div className="relative z-10 text-center">
-            <Scrub effect="scrub-rise">
-              <Eyebrow className="justify-center">Our Mission</Eyebrow>
-            </Scrub>
-
-            <MaskedText
-              className="text-h1 mx-auto mt-10 max-w-4xl font-serif leading-[1.15]"
-              stagger={0.045}
-              text={[
-                'We help young people turn ethical',
-                <>
-                  reflection into{' '}
-                  <span className="text-[var(--accent)] italic">meaningful action.</span>
-                </>,
-              ]}
-            />
-
-            <LitText
-              offset={0.22}
-              className="text-lead mx-auto mt-10 max-w-2xl font-light text-mist"
-              text="Reflection that never leaves the seminar room is incomplete, and service without reflection is thin."
-            />
-          </div>
-
-          <div className="relative z-10 mt-20 grid gap-6 md:grid-cols-3">
-            {pillars.map((pillar, i) => (
-              <Scrub key={pillar.id} effect="scrub-rise" offset={i * 0.06} className="h-full">
-                <Card className="h-full p-8 sm:p-10">
-                  <span className="font-serif text-sm text-[var(--accent)]">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <h3 className="text-h3 mt-6">{pillar.title}</h3>
-                  <p className="mt-5 text-[0.9375rem] leading-relaxed font-light text-mist">
-                    {pillar.summary}
-                  </p>
-                </Card>
-              </Scrub>
-            ))}
-          </div>
-        </Container>
-      </Section>
+      {/*
+       * The page's biggest statement, and the only one given a screen of its own
+       * to be made in. `MissionScene` pins, crosses `Reflection` and `Action`
+       * past each other, assembles the sentence they were lifted out of, and
+       * then lays the three pillars out as a full-width ledger rather than as
+       * three bordered cards. Its beat sheet is documented in that file.
+       */}
+      <MissionScene />
 
       {/* ========================================================== VALUES */}
       {/* Quiet on purpose, and placed here on purpose: it is the last flat
@@ -480,11 +424,11 @@ export default function Home() {
       {/* ======================================================= THREE A'S */}
       {/* Third horizontal scene, and the most abstract of the three — by this
           point the visitor has been taught how the pan behaves twice. */}
-      <Section size="compact">
+      <Section id="three-as" size="compact">
         <Container size="wide">
           <Scrub effect="scrub-rise">
             <SectionHeading
-              index="05"
+              index="06"
               eyebrow="Ethics in Action"
               title="The Three A’s"
               lead="The framework IES has worked from since 2023, carried into every branch."
@@ -496,12 +440,12 @@ export default function Home() {
       <ValuePanels />
 
       {/* ====================================================== LEADERSHIP */}
-      <Section tone="deep" className="overflow-hidden border-t border-mist/12">
+      <Section id="leadership" tone="deep" className="overflow-hidden border-t border-mist/12">
         <Container size="wide">
           <Scrub effect="scrub-rise">
             <div className="flex flex-wrap items-end justify-between gap-8">
               <SectionHeading
-                index="06"
+                index="07"
                 eyebrow="Leadership"
                 ghost="Leaders"
                 title="Students holding real responsibility."
