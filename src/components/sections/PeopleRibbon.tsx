@@ -2,6 +2,7 @@ import { PinnedScene } from '@/components/sections/PinnedScene'
 import { SceneLayer } from '@/components/ui/Scrub'
 import { cx, initials } from '@/lib/utils'
 import type { Person } from '@/content/types'
+import { image, SIZES } from '@/lib/images'
 
 /*
  * A ribbon of portraits travelling across a held frame.
@@ -75,20 +76,27 @@ export function PeopleRibbon({
           effect="scrub-tilt"
           className="mx-auto w-full max-w-[22rem]"
         >
+          {/* Square, because every portrait in `public/leadership` is square —
+              all twenty-seven of them. The frame here used to be 3/4, which
+              meant `object-cover` quietly shaved 25% off the sides of every
+              face in the rail and read as a portrait shot far too tight. A
+              frame that does not match the asset set is not art direction, it
+              is a crop nobody chose. */}
           <SceneLayer effect="scrub-recede" as="figure" className="w-full">
             <span className="relative block overflow-hidden border border-mist/18 bg-navy-700/40">
               {person.photo ? (
                 <img
-                  src={person.photo}
+                  {...image(person.photo)}
+                  sizes={SIZES.portrait}
                   alt=""
                   loading="lazy"
                   decoding="async"
-                  className="block aspect-[3/4] w-full object-cover"
+                  className="block aspect-square w-full object-cover"
                 />
               ) : (
                 <span
                   aria-hidden
-                  className="flex aspect-[3/4] w-full items-center justify-center font-serif text-6xl text-[var(--accent)]/60"
+                  className="flex aspect-square w-full items-center justify-center font-serif text-6xl text-[var(--accent)]/60"
                 >
                   {initials(person.name)}
                 </span>

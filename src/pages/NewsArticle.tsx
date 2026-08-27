@@ -7,6 +7,7 @@ import { articleBySlug, sortedArticles } from '@/content/news'
 import type { ArticleBlock } from '@/content/types'
 import { useSeo } from '@/lib/seo'
 import { formatDate } from '@/lib/utils'
+import { image, SIZES } from '@/lib/images'
 
 function Block({ block }: { block: ArticleBlock }) {
   switch (block.type) {
@@ -107,7 +108,8 @@ export default function NewsArticle() {
         {article.cover && (
           <Container size="wide" className="relative -mt-0">
             <img
-              src={article.cover}
+              {...image(article.cover)}
+              sizes={SIZES.wide}
               alt={article.coverAlt ?? ''}
               className="mt-14 w-full border border-mist/15 object-cover"
               style={{ aspectRatio: '21 / 9' }}

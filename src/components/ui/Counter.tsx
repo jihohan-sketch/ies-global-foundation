@@ -23,18 +23,47 @@ export function Counter({ stat, className }: { stat: Stat; className?: string })
     }
 
     let frame = 0
-    const duration = 1700
+
+    /*
+     * Long enough to actually be a count.
+     *
+     * This was 1700ms on an easeOutQuint, and the pairing was the problem: a
+     * fifth-power ease-out is 97% done in its first 500ms, so the figure
+     * effectively jumped to its value and then spent 1.2s creeping through the
+     * last 3% where the digits no longer change. It read as a static number,
+     * which is the one thing a counter must not do.
+     */
+    const duration = 2600
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return
+        /*
+         * `top < 0` alongside the intersection test: an element the viewport
+         * jumped clean over — an anchor link, a restored scroll position, the
+         * End key — never intersects and never would again, which used to
+         * leave the figure reading 0 permanently. Landing past it means the
+         * count is moot, so it takes its value without animating.
+         */
+        if (!entry.isIntersecting) {
+          if (entry.boundingClientRect.top < 0) {
+            observer.disconnect()
+            setDisplay(stat.value)
+          }
+          return
+        }
         observer.disconnect()
 
         const start = performance.now()
         const tick = (now: number) => {
           const progress = Math.min((now - start) / duration, 1)
-          // easeOutQuint — fast start, long settle
-          const eased = 1 - Math.pow(1 - progress, 5)
+          /*
+           * easeInOutSine — eases off both ends and is very nearly linear
+           * through the middle, so the digits climb at a steady readable rate
+           * instead of front-loading. A counter is one of the few things that
+           * wants a near-linear curve: the middle of the animation is the part
+           * that carries the information.
+           */
+          const eased = -(Math.cos(Math.PI * progress) - 1) / 2
           setDisplay(stat.value * eased)
           if (progress < 1) frame = requestAnimationFrame(tick)
         }

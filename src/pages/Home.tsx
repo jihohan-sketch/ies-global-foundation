@@ -101,7 +101,13 @@ export default function Home() {
         vh={215}
         label="IES Global Foundation"
         className="bg-navy"
-        frameClassName="bg-navy pt-32 pb-14 xl:pt-36"
+        /* `xl:pt-44`, not `pt-36`. At xl the header is not one bar but two —
+           the 6rem primary row plus the nav rail under it — which comes to
+           roughly 9.5rem before the rail collapses on scroll. At 9rem the
+           hero's eyebrow landed *inside* the rail, so "Founded 20 April 2023 ·
+           Seoul" sat on top of the Gallery and Leadership links on the first
+           screen of the site. 11rem clears the pair with air to spare. */
+        frameClassName="bg-navy pt-32 pb-14 xl:pt-44"
       >
         {/* --- The world. Furthest back, and the only layer still moving when
             the scene releases. Centred and oversized, so the horizon runs off

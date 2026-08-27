@@ -7,6 +7,7 @@ import { activities, activityPhotoCount } from '@/content/activities'
 import { pillars, workCategories } from '@/content/work'
 import { cx } from '@/lib/utils'
 import { useSeo } from '@/lib/seo'
+import { image, SIZES } from '@/lib/images'
 
 /** The bullet list of example work, shared by both category layouts. */
 function ExampleList({ examples, className }: { examples: string[]; className?: string }) {
@@ -92,7 +93,8 @@ export default function OurWork() {
                 <Reveal delay={120} className={alternate ? 'lg:order-1' : undefined}>
                   {category.image ? (
                     <img
-                      src={category.image}
+                      {...image(category.image)}
+                      sizes={SIZES.card}
                       alt={category.imageAlt ?? ''}
                       loading="lazy"
                       decoding="async"

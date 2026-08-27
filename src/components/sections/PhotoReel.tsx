@@ -3,6 +3,7 @@ import { PinnedScene } from '@/components/sections/PinnedScene'
 import { SceneLayer } from '@/components/ui/Scrub'
 import { GalleryImage } from '@/components/sections/Media'
 import { cx } from '@/lib/utils'
+import { SIZES } from '@/lib/images'
 
 /*
  * THE REEL — a run of photographs travelling across a held frame.
@@ -109,6 +110,7 @@ export function PhotoReel({
               <GalleryImage
                 src={shot.src}
                 alt={shot.alt}
+                sizes={SIZES.reel}
                 /* The first two are on screen the moment the section is, so
                    they are not a lazy-load candidate — they are the LCP. */
                 eager={i < 2}

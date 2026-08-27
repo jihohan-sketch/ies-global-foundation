@@ -3,6 +3,7 @@ import { Reveal } from '@/components/ui/Reveal'
 import { VideoGrid } from '@/components/sections/Media'
 import { cx } from '@/lib/utils'
 import type { Activity } from '@/content/types'
+import { image, SIZES } from '@/lib/images'
 
 /**
  * Documented activity, with its photography.
@@ -19,7 +20,8 @@ function PhotoGrid({ activity }: { activity: Activity }) {
     <div className="space-y-3">
       <figure className="overflow-hidden border border-mist/15 bg-navy-700/40">
         <img
-          src={lead.src}
+          {...image(lead.src)}
+          sizes={SIZES.half}
           alt={lead.alt}
           loading="lazy"
           decoding="async"
@@ -44,7 +46,8 @@ function PhotoGrid({ activity }: { activity: Activity }) {
           {rest.map((photo) => (
             <figure key={photo.src} className="overflow-hidden border border-mist/15 bg-navy-700/40">
               <img
-                src={photo.src}
+                {...image(photo.src)}
+                sizes={SIZES.half}
                 alt={photo.alt}
                 loading="lazy"
                 decoding="async"
@@ -105,7 +108,8 @@ export function ActivityEntry({ activity, index }: { activity: Activity; index: 
           {activity.portrait && (
             <figure className="mt-8 flex items-center gap-5">
               <img
-                src={activity.portrait.src}
+                {...image(activity.portrait.src)}
+                sizes={SIZES.portrait}
                 alt={activity.portrait.alt}
                 loading="lazy"
                 decoding="async"

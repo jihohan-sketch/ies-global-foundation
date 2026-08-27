@@ -7,6 +7,7 @@ import { Reveal } from '@/components/ui/Reveal'
 import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
 import { cx } from '@/lib/utils'
 import type { ActivityPhoto, Video } from '@/content/types'
+import { image, SIZES } from '@/lib/images'
 
 const YEAR_MONTH = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' })
 
@@ -139,6 +140,11 @@ export function GalleryImage({
   className,
   aspectRatio = '4 / 3',
   zoomOnHover = false,
+  /* Defaults to the card slot because that is what most callers are — a tile
+     in the gallery grid or the rail. A caller filling the viewport has to say
+     so: `sizes` is what decides which file off the ladder gets fetched, and
+     getting it wrong is the whole cost of having built the ladder. */
+  sizes = SIZES.card,
 }: {
   src: string
   alt: string
@@ -146,6 +152,7 @@ export function GalleryImage({
   className?: string
   aspectRatio?: string
   zoomOnHover?: boolean
+  sizes?: string
 }) {
   const [loaded, setLoaded] = useState(false)
 
@@ -168,7 +175,8 @@ export function GalleryImage({
     >
       <img
         ref={attach}
-        src={src}
+        {...image(src)}
+        sizes={sizes}
         alt={alt}
         loading={eager ? 'eager' : 'lazy'}
         decoding="async"
@@ -217,7 +225,7 @@ export function GalleryRail({ items }: { items: GalleryItem[] }) {
   return (
     /* Not "what IES does" — the home page already has a rail under that label,
        and two regions sharing one name is indistinguishable to a screen reader. */
-    <ScrollRail label="programme photographs" autoAdvance="continuous" pxPerSecond={38} curve>
+    <ScrollRail label="programme photographs" autoAdvance="continuous" pxPerSecond={26} curve>
       {loop.map((item, index) => {
         const i = index % items.length
         const duplicate = index >= items.length
@@ -485,7 +493,8 @@ export function Lightbox({
            * above, that cut lands within a frame of the key press.
            */}
           <img
-            src={shot.src}
+            {...image(shot.src)}
+            sizes={SIZES.full}
             alt={shot.alt}
             className="max-h-full max-w-full object-contain"
           />

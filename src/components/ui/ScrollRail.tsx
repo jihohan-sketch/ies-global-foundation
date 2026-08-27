@@ -60,7 +60,7 @@ export function ScrollRail({
   className,
   autoAdvance = false,
   intervalMs = 4500,
-  pxPerSecond = 40,
+  pxPerSecond = 28,
   curve = false,
 }: {
   children: ReactNode
@@ -96,7 +96,11 @@ export function ScrollRail({
   autoAdvance?: false | 'step' | 'continuous'
   /** `'step'` mode only. */
   intervalMs?: number
-  /** `'continuous'` mode only. Calm is the point; 40 is roughly a card every 12s. */
+  /**
+   * `'continuous'` mode only. Calm is the point: 28 is roughly a card every 17s,
+   * slow enough that the rail reads as drifting rather than as scrolling itself.
+   * Was 40 (a card every 12s), lowered along with the scroll damping.
+   */
   pxPerSecond?: number
   /**
    * Sit the cards on a cylinder: the one at the centre faces the viewer square

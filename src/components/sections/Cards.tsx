@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import type { Branch, NewsArticle, Person } from '@/content/types'
 import { Card } from '@/components/ui/Primitives'
 import { formatDate, initials } from '@/lib/utils'
+import { image, SIZES } from '@/lib/images'
 
 /* ------------------------------------------------------------- BranchCard */
 
@@ -64,7 +65,8 @@ export function PersonCard({ person, branchName }: { person: Person; branchName?
           <div className="shrink-0 @md:w-[38%] @md:max-w-[17rem]">
             {person.photo ? (
               <img
-                src={person.photo}
+                {...image(person.photo)}
+                sizes={SIZES.portrait}
                 alt=""
                 loading="lazy"
                 className="aspect-square w-full object-cover"
@@ -148,10 +150,17 @@ export function ArticleCard({
         >
           {article.cover ? (
             <img
-              src={article.cover}
+              {...image(article.cover)}
+              sizes={SIZES.card}
               alt={article.coverAlt ?? ''}
               loading="lazy"
-              className="h-full w-full object-cover"
+              /* Crop biased upward rather than centred. The slots above are
+                 fixed at 16/9 and 3/2 while the photographs behind them are
+                 taller than either, so `object-cover` always discards a band —
+                 and a centred crop takes it off the top, which on a photograph
+                 of people is exactly where the faces are. 28% keeps heads in
+                 frame without pinning the crop to the ceiling. */
+              className="h-full w-full object-cover object-[50%_28%]"
             />
           ) : (
             <GeneratedCover seed={article.slug} label={article.category} />

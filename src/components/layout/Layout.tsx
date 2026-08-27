@@ -20,7 +20,22 @@ function ScrollManager() {
        */
       const target = document.getElementById(decodeURIComponent(hash.slice(1)))
       if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        /*
+         * `instant`, not `smooth`.
+         *
+         * This runs on *arrival* — a fresh load or a cross-page link — so
+         * there is no continuity to preserve; the visitor has not seen the top
+         * of the page and is not being carried anywhere they were looking. And
+         * the home page is over 23,000px tall, which is where the smooth
+         * version fell apart: an anchor near the end asked the browser to
+         * animate twenty thousand pixels, which it caps and which any layout
+         * shift on the way cancels outright. Measured, `/#leadership` was
+         * still sitting at scrollY 0 more than two seconds after load.
+         *
+         * Smooth scrolling belongs on in-page jumps the visitor makes while
+         * already reading, which is a different code path.
+         */
+        target.scrollIntoView({ behavior: 'instant' as ScrollBehavior, block: 'start' })
         return
       }
     }

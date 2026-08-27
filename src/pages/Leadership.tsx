@@ -17,6 +17,7 @@ import {
 } from '@/content/leadership'
 import { cx, initials } from '@/lib/utils'
 import { useSeo } from '@/lib/seo'
+import { image, SIZES } from '@/lib/images'
 
 /*
  * One person can hold several offices. Rendering one card per office then
@@ -104,9 +105,9 @@ export default function Leadership() {
       />
 
       {/* ============================================= FOUNDATION LEADERSHIP */}
-      {/* Deliberately not headed "founders": this pair is who runs the
+      {/* Deliberately not headed "founders": this group is who runs the
           Foundation now, and not everyone in it is a founder. Each card's own
-          title says which of the two a person is. */}
+          title says which a person is. */}
       <Section>
         <Container size="wide">
           <Reveal>
@@ -163,7 +164,8 @@ export default function Leadership() {
                         <div className="flex flex-col gap-5 sm:flex-row">
                           {holder.photo ? (
                             <img
-                              src={holder.photo}
+                              {...image(holder.photo)}
+                              sizes={SIZES.portrait}
                               alt=""
                               loading="lazy"
                               className="aspect-square w-full shrink-0 self-start rounded-[3px] object-cover sm:w-56"

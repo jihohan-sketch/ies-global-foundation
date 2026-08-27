@@ -261,6 +261,13 @@ export function Header() {
             className={cx(
               'hidden grid-rows-[1fr] transition-all duration-500 ease-[var(--ease-cinema)] xl:grid',
               scrolled && 'grid-rows-[0fr] opacity-0',
+              /* Withdrawn while the menu is open, for the same reason the Join
+                 button above is: the overlay carries the whole of this nav at
+                 display size, and leaving the rail up meant two live copies of
+                 every link on screen at once — the rail's ABOUT sitting
+                 directly on top of the overlay's. `invisible` alongside the
+                 fade so the duplicate links leave the tab order too. */
+              open && 'invisible opacity-0',
             )}
           >
             <nav

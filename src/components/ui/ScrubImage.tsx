@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
 import { Scrub, SceneLayer } from '@/components/ui/Scrub'
 import { cx } from '@/lib/utils'
+import { image, SIZES } from '@/lib/images'
 
 /*
  * A photograph that arrives as a shot rather than as a `<img>`.
@@ -110,7 +111,8 @@ export function ScrubImage({
       >
         <img
           ref={attach}
-          src={src}
+          {...image(src)}
+          sizes={SIZES.full}
           alt={alt}
           loading={eager ? 'eager' : 'lazy'}
           decoding="async"

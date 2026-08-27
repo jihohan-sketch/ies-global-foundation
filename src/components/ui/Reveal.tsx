@@ -54,7 +54,24 @@ export function Reveal({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        /*
+         * `top < 0` alongside the intersection test, because an entrance that
+         * only ever fires on intersection has no answer for the element the
+         * viewport *skipped*.
+         *
+         * An observer reports non-intersection once and then stays quiet, and
+         * an element left above the viewport never comes back into view on the
+         * way down — so anything jumped over stayed at `opacity: 0`
+         * permanently. Not a rare path: an in-page anchor, a restored scroll
+         * position on back-navigation, the End key, or a deep link all do it,
+         * and the result is a blank stretch of page with the content still in
+         * the DOM and still read out by a screen reader.
+         *
+         * Above the viewport means the entrance is moot rather than pending,
+         * so it resolves to arrived. The CSS transition runs against an
+         * element nobody is looking at, which costs nothing.
+         */
+        if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
           setVisible(true)
           observer.disconnect()
         }

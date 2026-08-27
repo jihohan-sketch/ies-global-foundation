@@ -1,6 +1,7 @@
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { imagetools } from 'vite-imagetools'
 import path from 'node:path'
 import { resolveOrigin } from './scripts/site-origin.mjs'
 
@@ -27,7 +28,7 @@ function siteOrigin(): Plugin {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), siteOrigin()],
+  plugins: [react(), tailwindcss(), siteOrigin(), imagetools()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

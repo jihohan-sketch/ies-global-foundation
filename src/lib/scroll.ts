@@ -130,6 +130,13 @@ interface Entry {
   to: number
   /** Last value written, to skip redundant writes. `-1` forces the next one. */
   applied: number
+  /**
+   * The damped value — what actually gets written. Trails the scroll position's
+   * own progress by `SMOOTHING`; see the note there.
+   */
+  smoothed: number
+  /** False while `smoothed` is still catching up. Keeps the rAF loop alive. */
+  settled: boolean
   /** Whether the element is near enough to the viewport to be worth updating. */
   active: boolean
   /** Set when geometry needs re-measuring before the next write. */
@@ -142,6 +149,8 @@ const byNode = new WeakMap<Element, Entry>()
 let frame = 0
 let listening = false
 let viewport = 0
+/** Timestamp of the last frame, for the damping delta. `0` when the loop is idle. */
+let lastFrameAt = 0
 
 let observer: IntersectionObserver | null = null
 let resizer: ResizeObserver | null = null
@@ -163,6 +172,66 @@ const PRECISION = 1000
  */
 const ACTIVE_MARGIN = '100% 0px 100% 0px'
 
+/* ------------------------------------------------------------------ damping */
+
+/**
+ * THE ONE KNOB FOR HOW THE SCENES FEEL.
+ *
+ * Progress used to be read straight off `window.scrollY`, which made every
+ * scene exactly as smooth as the input device driving it. A trackpad is
+ * continuous and looked fine; a mouse wheel arrives in ~100px steps, and the
+ * pans and pins stepped with it.
+ *
+ * So the written value is damped rather than assigned: each frame it moves a
+ * fraction of the remaining distance toward where the scroll position says it
+ * should be. The number below is that fraction, per 60fps frame.
+ *
+ * Settle times are for a typical wheel tick — the time from the wheel stopping
+ * to the scene arriving, which is the part that reads as weight:
+ *
+ *   0.30  taut — barely more than the raw value, steps still visible (~0.2s)
+ *   0.11  the first setting here (~0.65s)
+ *   0.07  the current setting (~1.05s) — deliberately slow, see below
+ *   0.05  heavy; starts to feel disconnected from the hand (~1.5s)
+ *
+ * Set to 0.07 rather than 0.11 on a direct call for a slower feel. This is the
+ * right knob for that and the scene `vh` budgets are not: raising those makes
+ * each wheel tick move the scene *less*, which reads as a page that has stopped
+ * responding rather than as a slow one — the failure `StickyScene` warns about
+ * past ~260vh. Damping buys the weight without spending a pixel of page length.
+ *
+ * Three things this deliberately is *not*:
+ *
+ *   - It is not scroll-jacking. The wheel is never intercepted and the page
+ *     scrolls exactly as far as it is tall — the scrollbar keeps its ordinary
+ *     meaning, and stopping still stops. What lags is the *effect*, not the
+ *     document.
+ *   - It is not a way to make a scene longer. Damping adds a trailing settle,
+ *     which reads as slower; the actual scroll budget is `vh` on the scene.
+ *   - It is not active under `prefers-reduced-motion`. Nothing is registered
+ *     there in the first place — see `observeScroll`.
+ */
+const SMOOTHING = 0.07
+
+/** A 60fps frame, in ms. The unit `SMOOTHING` is quoted in. */
+const FRAME_MS = 1000 / 60
+
+/**
+ * Below this the remaining distance is under half a quantisation step, so
+ * easing further would write the same number forever. Snap and stop.
+ */
+const SNAP = 1 / PRECISION / 2
+
+/**
+ * Ceiling on the frame delta used for damping.
+ *
+ * A backgrounded tab, a long task or a breakpoint hands the next frame a delta
+ * of seconds, which would resolve to a `k` of 1 and land every scene on its
+ * target in one visible jump. Clamping means a dropped frame costs smoothness,
+ * never correctness.
+ */
+const MAX_DELTA_MS = 100
+
 /* ---------------------------------------------------------------- measuring */
 
 /** Reads layout. Only ever called from the read phase of a frame. */
@@ -178,8 +247,8 @@ function measure(entry: Entry) {
   entry.applied = -1
 }
 
-/** Writes one entry's progress. Never reads layout. */
-function write(entry: Entry) {
+/** Where the scroll position says this entry should be. Never reads layout. */
+function targetOf(entry: Entry) {
   const span = entry.to - entry.from
   /*
    * A zero span means the two anchors resolve to the same scroll position —
@@ -188,7 +257,28 @@ function write(entry: Entry) {
    * dividing by zero.
    */
   const raw = span === 0 ? 1 : (window.scrollY - entry.from) / span
-  const progress = Math.round(Math.min(1, Math.max(0, raw)) * PRECISION) / PRECISION
+  return Math.min(1, Math.max(0, raw))
+}
+
+/**
+ * Writes one entry's progress, damped toward its target. Never reads layout.
+ *
+ * `k` is the fraction of the remaining distance to cover this frame. Pass 1 to
+ * snap — at registration, and when parking an element that has left the screen,
+ * where there is no motion to smooth and easing would only show a stale value.
+ */
+function write(entry: Entry, k: number) {
+  const target = targetOf(entry)
+
+  if (k >= 1 || Math.abs(target - entry.smoothed) < SNAP) {
+    entry.smoothed = target
+    entry.settled = true
+  } else {
+    entry.smoothed += (target - entry.smoothed) * k
+    entry.settled = false
+  }
+
+  const progress = Math.round(entry.smoothed * PRECISION) / PRECISION
 
   if (progress === entry.applied) return
   entry.applied = progress
@@ -198,8 +288,18 @@ function write(entry: Entry) {
 
 /* --------------------------------------------------------------- the frame */
 
-function update() {
+function update(now: number) {
   frame = 0
+
+  /*
+   * Damping is quoted per 60fps frame but has to hold on any refresh rate, so
+   * the fraction is re-derived from the real delta: covering 11% of the gap
+   * twice at 120Hz is the same 21% one 60Hz frame covers, and a 144Hz monitor
+   * does not get a faster site than a 60Hz one.
+   */
+  const delta = lastFrameAt ? Math.min(now - lastFrameAt, MAX_DELTA_MS) : FRAME_MS
+  lastFrameAt = now
+  const k = 1 - Math.pow(1 - SMOOTHING, delta / FRAME_MS)
 
   /*
    * Read phase, then write phase — in that order, never interleaved. Both
@@ -209,9 +309,22 @@ function update() {
   for (const entry of entries) {
     if (entry.active && entry.dirty) measure(entry)
   }
+
+  /*
+   * The loop no longer ends when the scroll events do: an entry mid-settle has
+   * frames left to run after the wheel has stopped, and it has to ask for them
+   * itself. Once everything has converged the loop shuts down completely and
+   * the engine costs nothing again until the next scroll.
+   */
+  let settling = false
   for (const entry of entries) {
-    if (entry.active) write(entry)
+    if (!entry.active) continue
+    write(entry, k)
+    if (!entry.settled) settling = true
   }
+
+  if (settling) schedule()
+  else lastFrameAt = 0
 }
 
 function schedule() {
@@ -260,10 +373,11 @@ function start() {
            * Park at the nearer end rather than freezing mid-effect. Leaving it
            * where it was means an element scrolled past at speed keeps a
            * half-finished opacity for as long as it stays off screen, and
-           * shows it on the way back.
+           * shows it on the way back. Snapped, not eased: there is nobody
+           * watching it get there.
            */
           entry.dirty = false
-          write(entry)
+          write(entry, 1)
         }
       }
       schedule()
@@ -281,6 +395,7 @@ function stop() {
 
   if (frame) cancelAnimationFrame(frame)
   frame = 0
+  lastFrameAt = 0
 
   window.removeEventListener('scroll', schedule)
   window.removeEventListener('resize', invalidate)
@@ -320,6 +435,9 @@ export function observeScroll(node: HTMLElement, options: ScrubOptions = {}): ()
     from: 0,
     to: 0,
     applied: -1,
+    /* Both overwritten by the snapping `write` below, before anything paints. */
+    smoothed: 0,
+    settled: true,
     /*
      * Active until the IntersectionObserver says otherwise. Starting inactive
      * would leave anything already on screen at first paint — the hero, above
@@ -341,7 +459,7 @@ export function observeScroll(node: HTMLElement, options: ScrubOptions = {}): ()
   // which lands a frame late — long enough for the hero to paint unpromoted.
   viewport = window.innerHeight
   measure(entry)
-  write(entry)
+  write(entry, 1)
   node.toggleAttribute('data-scrub-active', true)
 
   return () => {

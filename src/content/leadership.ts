@@ -70,6 +70,7 @@ export const people: Person[] = [
     name: 'Sean Han',
     title: 'President · Director of Global Marketing',
     tier: 'global',
+    spotlight: true,
     photo: '/leadership/sean-han.jpg',
     bio: 'Sean Han is President of the Global Foundation and its Director of Global Marketing. As President they lead the Foundation’s offices and its work with the national branches. As Director of Global Marketing they are responsible for how IES presents itself across Korea, the United States, and the United Kingdom: the organization’s brand, this website, and its social channels, together with the approval process every public statement passes through before publication. Much of that work is consistency — a chapter in Seoul, a founding team in the United States, and a branch in London all describe the same organization, and it should read that way to a school deciding whether to work with IES. They also set the standards branches follow in building their own communications.',
     responsibilities: [
@@ -265,8 +266,30 @@ export const leadershipIntro = {
   national: 'Each branch is led by students in that country, to the same shared standards.',
 }
 
-/** The opening group on the Leadership page, in array order. */
-export const spotlightLeadership = people.filter((p) => p.spotlight)
+/**
+ * The opening group on the Leadership page.
+ *
+ * Membership is the `spotlight` flag; order is array order, with one exception.
+ * `people` is grouped by tier — founding first, then the Foundation's officers
+ * — so the President sorts *below* the two Vice Chairmen, which is the one
+ * ordering this group must not have. Naming the lead here rather than
+ * reordering `people` keeps the tier grouping every other derived list
+ * depends on intact.
+ *
+ * Anyone flagged `spotlight` still appears whether or not they are named
+ * below; the list pins a front, it does not gate the group.
+ */
+const SPOTLIGHT_LEAD: readonly string[] = ['sean-han']
+
+export const spotlightLeadership = people
+  .filter((p) => p.spotlight)
+  .sort((a, b) => {
+    const rank = (id: string) => {
+      const i = SPOTLIGHT_LEAD.indexOf(id)
+      return i === -1 ? SPOTLIGHT_LEAD.length : i
+    }
+    return rank(a.id) - rank(b.id)
+  })
 export const foundingLeadership = people.filter((p) => p.tier === 'founding')
 export const boardLeadership = people.filter((p) => p.tier === 'board')
 export const globalLeadership = people.filter((p) => p.tier === 'global')

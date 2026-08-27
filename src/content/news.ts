@@ -23,6 +23,8 @@ export const articles: NewsArticle[] = [
     featured: true,
     summary:
       'The Foundation formalises the relationship between IES Korea, IES United States, and IES UK Society under one international identity and a shared set of standards.',
+    cover: '/activities/un-human-rights-office-visit/delegation.jpg',
+    coverAlt: 'Four IES students in formal dress in front of a UN-branded backdrop at the OHCHR office in Seoul.',
     body: [
       {
         type: 'paragraph',
@@ -95,6 +97,8 @@ export const articles: NewsArticle[] = [
     branch: 'IES United States',
     summary:
       'Aden Lee and Onew Choi share national leadership of the U.S. branch, with responsibility split across strategy, chapter development, and programming.',
+    cover: '/activities/camp-humphreys-cadets/delegation.jpg',
+    coverAlt: 'Six IES students with Major General Charles Lombardo, photographed between the United States flag and unit colours at Camp Humphreys.',
     body: [
       {
         type: 'paragraph',
@@ -119,6 +123,8 @@ export const articles: NewsArticle[] = [
     featured: true,
     summary:
       'Students from Korea, the United States, and the United Kingdom prepared positions on a shared question and defended them under cross-examination.',
+    cover: '/activities/environmental-ethics-forum/assembly.jpg',
+    coverAlt: 'Ten IES students standing with Minister Sunghwan Kim beneath a banner reading \u201cEnvironmental Ethics Forum \u2014 Ethical Policy for a Sustainable Future\u201d.',
     body: [
       {
         type: 'paragraph',
@@ -152,6 +158,8 @@ export const articles: NewsArticle[] = [
     branch: 'IES Korea',
     summary:
       'IES Korea’s longest-running service partnership continues, with student volunteers returning on a recurring schedule to run educational sessions and mentorship.',
+    cover: '/activities/jiguchon-childrens-center/lesson.jpg',
+    coverAlt: 'An IES volunteer leading a lesson while children sit at the tables.',
     body: [
       {
         type: 'paragraph',
@@ -175,6 +183,8 @@ export const articles: NewsArticle[] = [
     branch: 'Global Foundation',
     summary:
       'Revised guidelines clarify chapter approval, annual planning, reporting expectations, and participant safety standards for all branches.',
+    cover: '/activities/environmental-ethics-forum/desk.jpg',
+    coverAlt: 'An IES student at a council desk with the session\'s printed papers.',
     body: [
       {
         type: 'paragraph',
