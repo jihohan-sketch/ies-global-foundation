@@ -86,13 +86,15 @@ export function PhotoReel({
          * layer tree where it costs nothing.
          */
         /*
-         * `max-w` + `mx-auto` rather than a width, so this is a no-op under
-         * motion — the panel is already exactly this wide — and the whole of
-         * the fix under reduced motion, where `PinnedScene` stacks the panels
-         * and hands each one the full width of the page. Without it the scene
-         * degrades into a column of full-bleed images several times the size of
-         * anything else on the page, which is a worse experience than the pan
-         * it stands in for rather than an equivalent one.
+         * `max-w` + `mx-auto` rather than a width. A no-op as things stand —
+         * the panel is already exactly this wide — and kept as the cap that
+         * makes it one: it is the only thing standing between this and a
+         * full-bleed image several times the size of anything else on the page
+         * if the panel ever loses its width.
+         *
+         * It used to be load-bearing, as the whole of the fallback for
+         * `prefers-reduced-motion`, back when `PinnedScene` stacked its panels
+         * there. It no longer stacks — see the note at the top of that file.
          */
         <SceneLayer
           key={shot.src}

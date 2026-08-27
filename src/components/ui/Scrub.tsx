@@ -42,6 +42,17 @@ export interface ScrubTuning {
    */
   span?: string
   /**
+   * `--scrub-in` — the share of the element's window spent fading up, 0 → 1.
+   *
+   * Only read by the `--band` envelope, so it governs `scrub-fade` and
+   * `scrub-band`. The default is 0.34; longer is softer. Give the layers of one
+   * panel different values and they cross-dissolve in sequence instead of
+   * arriving together.
+   */
+  fadeIn?: number
+  /** `--scrub-out` — the share spent fading back down. Default 0.26. */
+  fadeOut?: number
+  /**
    * `--scrub-length` — how much of the scene the effect occupies, 0 → 1.
    *
    * The other half of `offset`. Offset says when a beat starts; without a
@@ -65,6 +76,8 @@ function tune(style: React.CSSProperties | undefined, tuning: ScrubTuning, offse
   if (tuning.grow) vars['--scrub-grow'] = tuning.grow
   if (tuning.span) vars['--scrub-span'] = tuning.span
   if (tuning.length) vars['--scrub-length'] = tuning.length
+  if (tuning.fadeIn) vars['--scrub-in'] = tuning.fadeIn
+  if (tuning.fadeOut) vars['--scrub-out'] = tuning.fadeOut
   return Object.keys(vars).length ? (vars as React.CSSProperties) : undefined
 }
 

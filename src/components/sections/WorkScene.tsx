@@ -17,6 +17,20 @@ import type { WorkCategory } from '@/content/types'
  * what we would like to look like".
  *
  * ---------------------------------------------------------------------------
+ * THE DISSOLVE
+ *
+ * Every layer in a panel carries its own fade window, and they disagree on
+ * purpose. The photograph comes up first and slowest and leaves last; the
+ * index, the heading, the summary, the chips and the button each start a beat
+ * later than the one above and start dimming a beat earlier, so a panel
+ * assembles from the top down as it arrives and comes apart the same way as it
+ * leaves. `PinnedScene` fades the whole cell around all of it.
+ *
+ * None of it costs an element. `scrub-fade` is opacity only, so it rides on the
+ * same node as the parallax rather than needing a wrapper, and `SceneLayer`'s
+ * `as` renders the heading or the paragraph itself.
+ *
+ * ---------------------------------------------------------------------------
  * WHY THE PHOTOGRAPHS FADE AT THEIR OWN EDGES
  *
  * Full-bleed images in a horizontal pan meet each other at a hard vertical
@@ -57,8 +71,13 @@ export function WorkScene() {
            */}
           <SceneLayer
             hidden
-            effect="scrub-parallax-x"
+            effect="scrub-parallax-x scrub-fade"
             depth="34px"
+            /* The longest, gentlest window in the panel — the photograph is the
+               ground everything else arrives onto, so it is already there when
+               the type starts and still there when the type has gone. */
+            fadeIn={0.4}
+            fadeOut={0.4}
             className="pointer-events-none absolute inset-y-0 -inset-x-10"
             style={{ maskImage: EDGE_FADE, WebkitMaskImage: EDGE_FADE }}
           >
@@ -89,56 +108,95 @@ export function WorkScene() {
            * rectangle with type on it, which throws away the one thing the
            * section exists to show.
            */}
-          <div
-            aria-hidden
+          {/* The scrims dissolve on the same window as the photograph they are
+              holding back. Left at full strength they would go on darkening a
+              panel whose picture had already faded out, which reads as the
+              transition leaving a stain behind it. */}
+          <SceneLayer
+            hidden
+            effect="scrub-fade"
+            fadeIn={0.4}
+            fadeOut={0.4}
             className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(5,10,20,0.95)_0%,rgba(5,10,20,0.88)_30%,rgba(5,10,20,0.46)_62%,rgba(5,10,20,0.16)_100%)]"
           />
-          <div
-            aria-hidden
+          <SceneLayer
+            hidden
+            effect="scrub-fade"
+            fadeIn={0.4}
+            fadeOut={0.4}
             className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(5,10,20,0.55),transparent_45%)]"
           />
 
-          {/* Nearest and fastest, fading at both edges of the crossing. */}
-          <SceneLayer
-            effect="scrub-band"
-            travel="0px"
-            className="relative mx-auto w-full max-w-[88rem] px-6 sm:px-8"
-          >
+          {/* Nearest and fastest. The travel lives here; every fade below is
+              opacity on the element that is actually fading. */}
+          <div className="relative mx-auto w-full max-w-[88rem] px-6 sm:px-8">
             <SceneLayer effect="scrub-parallax-x" depth="112px" className="max-w-xl">
-              <p className="flex items-center gap-4 text-[0.625rem] font-medium tracking-[0.3em] text-[var(--accent)] uppercase">
+              <SceneLayer
+                as="p"
+                effect="scrub-fade"
+                fadeIn={0.18}
+                fadeOut={0.42}
+                className="flex items-center gap-4 text-[0.625rem] font-medium tracking-[0.3em] text-[var(--accent)] uppercase"
+              >
                 <span aria-hidden className="h-px w-10 shrink-0 bg-current opacity-45" />
                 {String(index + 1).padStart(2, '0')} / {String(scenes.length).padStart(2, '0')}
-              </p>
+              </SceneLayer>
 
-              <h3
+              <SceneLayer
+                as="h3"
+                effect="scrub-fade"
+                offset={0.03}
+                fadeIn={0.22}
+                fadeOut={0.36}
                 className="mt-8 font-serif leading-[1] text-paper"
                 style={{ fontSize: 'clamp(2.25rem, 5.6vw, 4.5rem)', letterSpacing: '-0.02em' }}
               >
                 {category.title}
-              </h3>
+              </SceneLayer>
 
-              <p className="text-lead mt-8 leading-relaxed font-light text-mist">
+              <SceneLayer
+                as="p"
+                effect="scrub-fade"
+                offset={0.06}
+                fadeIn={0.26}
+                fadeOut={0.3}
+                className="text-lead mt-8 leading-relaxed font-light text-mist"
+              >
                 {category.summary}
-              </p>
+              </SceneLayer>
 
               <ul className="mt-8 flex flex-wrap gap-x-3 gap-y-2">
-                {category.examples.slice(0, 3).map((example) => (
-                  <li
+                {category.examples.slice(0, 3).map((example, chip) => (
+                  /* The chips stagger against each other as well as against the
+                     block above them — three of them arriving together is the
+                     one place in the panel where a row would land flat. */
+                  <SceneLayer
                     key={example}
+                    as="li"
+                    effect="scrub-fade"
+                    offset={0.09 + chip * 0.02}
+                    fadeIn={0.28}
+                    fadeOut={0.26}
                     className="border border-mist/18 px-3 py-1.5 text-[0.6875rem] font-light text-mist/80"
                   >
                     {example}
-                  </li>
+                  </SceneLayer>
                 ))}
               </ul>
 
-              <div className="mt-10">
+              <SceneLayer
+                effect="scrub-fade"
+                offset={0.16}
+                fadeIn={0.3}
+                fadeOut={0.22}
+                className="mt-10"
+              >
                 <Button to={`/our-work#${category.id}`} variant="ghost" arrow>
                   See this work
                 </Button>
-              </div>
+              </SceneLayer>
             </SceneLayer>
-          </SceneLayer>
+          </div>
         </div>
       ))}
     </PinnedScene>

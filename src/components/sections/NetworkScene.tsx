@@ -57,8 +57,12 @@ export function NetworkScene() {
                 "K R" is not a second piece of information. */}
             <SceneLayer
               hidden
-              effect="scrub-parallax-x"
+              effect="scrub-parallax-x scrub-fade"
               depth="38px"
+              /* Widest window in the panel — the country code is the ground the
+                 dossier sits on, lit before it arrives and after it goes. */
+              fadeIn={0.42}
+              fadeOut={0.42}
               className="pointer-events-none absolute inset-0 flex items-center justify-center"
             >
               <span
@@ -74,40 +78,58 @@ export function NetworkScene() {
               </span>
             </SceneLayer>
 
-            {/* Nearest, fastest, and fading at both edges of the crossing. Two
-                nested layers because one element has one transform: the outer
-                carries the fade, the inner the travel. */}
-            <SceneLayer
-              effect="scrub-band"
-              travel="0px"
-              className="relative mx-auto w-full max-w-6xl px-6 sm:px-8"
-            >
+            {/* Nearest and fastest. The travel is on the column — one element,
+                one transform — and each line below fades on its own window, a
+                beat later in and a beat earlier out than the one above it, so
+                the dossier assembles and comes apart in reading order. */}
+            <div className="relative mx-auto w-full max-w-6xl px-6 sm:px-8">
               <SceneLayer effect="scrub-parallax-x" depth="120px">
-                <p
+                <SceneLayer
+                  as="p"
+                  effect="scrub-fade"
+                  fadeIn={0.18}
+                  fadeOut={0.44}
                   className="flex items-center gap-4 text-[0.625rem] font-medium tracking-[0.3em] uppercase"
                   style={{ color: accent }}
                 >
                   <span aria-hidden className="h-px w-10 shrink-0 bg-current opacity-45" />
                   {String(index + 1).padStart(2, '0')} — {branch.country}
-                </p>
+                </SceneLayer>
 
-                <h3
+                <SceneLayer
+                  as="h3"
+                  effect="scrub-fade"
+                  offset={0.03}
+                  fadeIn={0.22}
+                  fadeOut={0.38}
                   className="mt-6 font-serif leading-[0.95] text-paper"
                   style={{ fontSize: 'clamp(2.25rem, 5.6vw, 4.5rem)', letterSpacing: '-0.02em' }}
                 >
                   {branch.name}
-                </h3>
+                </SceneLayer>
 
-                <p
+                <SceneLayer
+                  as="p"
+                  effect="scrub-fade"
+                  offset={0.05}
+                  fadeIn={0.24}
+                  fadeOut={0.34}
                   className="mt-5 text-[0.75rem] font-medium tracking-[0.2em] uppercase"
                   style={{ color: accent }}
                 >
                   {branch.status}
-                </p>
+                </SceneLayer>
 
-                <p className="text-lead mt-5 max-w-2xl leading-relaxed font-light text-mist">
+                <SceneLayer
+                  as="p"
+                  effect="scrub-fade"
+                  offset={0.08}
+                  fadeIn={0.26}
+                  fadeOut={0.3}
+                  className="text-lead mt-5 max-w-2xl leading-relaxed font-light text-mist"
+                >
                   {branch.summary}
-                </p>
+                </SceneLayer>
 
                 {/*
                  * The dossier.
@@ -132,7 +154,13 @@ export function NetworkScene() {
                  * the density this panel had before it was enriched, and the
                  * branch's own page carries all of it at any width.
                  */}
-                <div className="mt-7 grid gap-x-12 gap-y-6 border-t border-mist/15 pt-6 lg:grid-cols-[1.15fr_1fr]">
+                <SceneLayer
+                  effect="scrub-fade"
+                  offset={0.11}
+                  fadeIn={0.28}
+                  fadeOut={0.26}
+                  className="mt-7 grid gap-x-12 gap-y-6 border-t border-mist/15 pt-6 lg:grid-cols-[1.15fr_1fr]"
+                >
                   {/* Two columns of facts, not one. Stacked, four rows of
                       label-and-value plus a five-item programme list overran a
                       laptop viewport, and a panel that is a full screen tall by
@@ -181,15 +209,21 @@ export function NetworkScene() {
                       ))}
                     </ul>
                   </div>
-                </div>
+                </SceneLayer>
 
-                <div className="mt-8">
+                <SceneLayer
+                  effect="scrub-fade"
+                  offset={0.15}
+                  fadeIn={0.3}
+                  fadeOut={0.22}
+                  className="mt-8"
+                >
                   <Button to={`/global-network/${branch.slug}`} variant="ghost" arrow>
                     Explore {branch.name}
                   </Button>
-                </div>
+                </SceneLayer>
               </SceneLayer>
-            </SceneLayer>
+            </div>
           </div>
         )
       })}

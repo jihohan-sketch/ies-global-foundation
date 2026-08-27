@@ -2,7 +2,7 @@ import { useEffect, useRef, type ReactNode } from 'react'
 import { PINNED, observeScroll } from '@/lib/scroll'
 import { SceneLayer } from '@/components/ui/Scrub'
 import { Wordmark } from '@/components/ui/Cinematic'
-import { cx, prefersReducedMotion } from '@/lib/utils'
+import { cx } from '@/lib/utils'
 
 /*
  * A section that pins to the viewport while its panels travel sideways, driven
@@ -33,6 +33,25 @@ import { cx, prefersReducedMotion } from '@/lib/utils'
  * its own rAF loop. Same arithmetic, one fewer scroll system: the geometry is
  * measured only when it can have changed, and a frame does nothing but multiply
  * and write.
+ *
+ * ---------------------------------------------------------------------------
+ * REDUCED MOTION
+ *
+ * This scene runs for everyone, including visitors with
+ * `prefers-reduced-motion: reduce`. That is the site owner's decision, taken
+ * deliberately: the horizontal scenes are most of what these pages are, and the
+ * previous behaviour — collapsing them into a stack of static sections —
+ * quietly served a plainer, different website to anyone with the setting on.
+ *
+ * It is not the naive version of that decision. The frame publishes
+ * `data-motion-always`, which the reduced-motion block in index.css reads to
+ * keep this subtree's scrub values live, and the panels lean on `scrub-fade`
+ * throughout — so what a visitor gets is predominantly a cross-dissolve, with
+ * the sideways travel driven entirely by their own wheel at their own speed.
+ * Nothing here plays on a timer, nothing autoplays, and stopping stops it.
+ *
+ * `StickyScene` takes the same decision for the site's vertical held shots, so
+ * every scene on the site behaves the same way. See the note in index.css.
  */
 export function PinnedScene({
   children,
@@ -114,13 +133,12 @@ export function PinnedScene({
   const sectionRef = useRef<HTMLElement>(null)
   const frameRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
-  const reduced = prefersReducedMotion()
 
   useEffect(() => {
     const section = sectionRef.current
     const frame = frameRef.current
     const track = trackRef.current
-    if (!section || !frame || !track || reduced) return
+    if (!section || !frame || !track) return
 
     const panels = Array.from(track.children) as HTMLElement[]
 
@@ -188,39 +206,44 @@ export function PinnedScene({
       ...PINNED,
       target: frame,
       onProgress: apply,
+      /*
+       * `always`, and this is the line that actually implements the decision
+       * described at the top of this file.
+       *
+       * Without it the engine declines to register under
+       * `prefers-reduced-motion`, writes the frame a resting `--p` of 1 and
+       * never calls `onProgress` again — so the `ResizeObserver` above applies
+       * that 1 once and the track parks at the far end of its travel. The scene
+       * pins, and shows nothing but its last panel for the whole of its scroll.
+       * That is a worse failure than either honouring the preference or
+       * ignoring it, because it looks like a bug rather than a choice.
+       */
+      always: true,
     })
 
     return () => {
       resizer.disconnect()
       unobserve()
     }
-  }, [reduced, children.length, panelWidth])
+  }, [children.length, panelWidth])
 
-  /*
-   * Under reduced motion the pin, the extra height and the sideways travel all
-   * go, and the panels stack. There is no reduced *version* of a horizontal
-   * pan — the travel is the thing being reduced — so this becomes an ordinary
-   * run of full-width sections, which is what the content was anyway.
-   */
   return (
     <section
       ref={sectionRef}
       id={id}
       aria-label={label}
       className={cx('relative', className)}
-      style={reduced ? undefined : { height: `${children.length * vhPerPanel + runOut}vh` }}
+      style={{ height: `${children.length * vhPerPanel + runOut}vh` }}
     >
       <div
         ref={frameRef}
-        /* `relative` unconditionally, not only while pinned: it is the
-           containing block for the horizon word below, and under reduced
-           motion the sticky positioning that would otherwise provide one is
-           gone. */
-        className={cx(
-          'relative flex w-full items-center overflow-hidden',
-          reduced ? 'flex-col' : 'sticky top-0 h-dvh',
-        )}
-        style={depth && !reduced ? { perspective: `${depth}px` } : undefined}
+        /* `data-motion-always` — see the note at the top of this file and the
+           reduced-motion block in index.css. It is what keeps every `.scrub`
+           below this point reading live progress rather than being pinned to
+           its arrived state. */
+        data-motion-always
+        className="relative flex w-full items-center overflow-hidden sticky top-0 h-dvh"
+        style={depth ? { perspective: `${depth}px` } : undefined}
       >
         {/*
          * The scene's name across the foot of the frame, drifting sideways
@@ -233,7 +256,7 @@ export function PinnedScene({
          * inside the frame is a caption, and a word running off the edge is a
          * horizon.
          */}
-        {wordmark && !reduced && (
+        {wordmark && (
           <SceneLayer
             hidden
             effect="scrub-parallax-x"
@@ -251,47 +274,42 @@ export function PinnedScene({
                enough — the word is positioned and the track is not, so without
                this the word would paint on top of the panels it is meant to sit
                behind. */
-            'relative z-10 flex',
-            reduced ? 'w-full flex-col' : 'will-change-transform',
-            !reduced && trackClassName,
+            'relative z-10 flex will-change-transform',
+            trackClassName,
           )}
-          style={
-            reduced
-              ? undefined
-              : {
-                  transform: 'translate3d(0px, 0, 0)',
-                  /* The track is the thing being translated, so it would
-                     otherwise flatten its children into its own plane and eat
-                     the frame's perspective before any panel saw it. */
-                  transformStyle: depth ? 'preserve-3d' : undefined,
-                }
-          }
+          style={{
+            transform: 'translate3d(0px, 0, 0)',
+            /* The track is the thing being translated, so it would otherwise
+               flatten its children into its own plane and eat the frame's
+               perspective before any panel saw it. */
+            transformStyle: depth ? 'preserve-3d' : undefined,
+          }}
         >
           {children.map((panel, i) => (
             <div
               key={i}
+              /*
+               * The panel is itself a `.scrub`, reading the `--p` the pan writes
+               * on it a few lines above, and it carries the outermost fade of
+               * the scene: the whole cell dissolves up as it enters and back
+               * down as it leaves.
+               *
+               * That one class is what makes neighbouring panels *cross*-fade
+               * rather than butt: a panel is at full strength only around the
+               * centre, which is also the only time it is the panel being read.
+               *
+               * It deliberately sets no `--scrub-in` / `--scrub-out` of its
+               * own. Those two inherit, and a value set here would silently
+               * become the default for every layer inside the panel — which is
+               * precisely the set of elements that need to disagree with each
+               * other for the dissolve to read as a sequence rather than as one
+               * rectangle changing brightness.
+               */
               className={cx(
-                'relative flex shrink-0 items-center overflow-hidden',
-                reduced
-                  ? /* A screen-wide panel was a scene and becomes a section;
-                       an auto-width one was a card in a ribbon and becomes a
-                       row, which should take the height its content needs
-                       rather than a screen of it. */
-                    panelWidth === 'screen'
-                      ? 'min-h-[80vh] w-full'
-                      : 'w-full py-10'
-                  : panelWidth === 'screen'
-                    ? 'h-dvh w-screen'
-                    : 'h-dvh',
-                /* Sizing for the horizontal case only. `panelClassName` is how a
-                   caller sets a ribbon panel's width, and a fixed width is
-                   exactly wrong once the panels are stacked. */
-                !reduced && panelClassName,
+                'scrub scrub-fade relative flex shrink-0 items-center overflow-hidden',
+                panelWidth === 'screen' ? 'h-dvh w-screen' : 'h-dvh',
+                panelClassName,
               )}
-              /* Stacked panels get no scene to read, so they are pinned at
-                 their arrived value — the same resting state the CSS gives
-                 everything else under reduced motion. */
-              style={reduced ? ({ '--p': 0.5 } as React.CSSProperties) : undefined}
             >
               {panel}
             </div>

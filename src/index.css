@@ -521,20 +521,31 @@
   }
 
   /*
-   * `.reveal` is deliberately exempt from the blanket rule below, and from the
-   * usual honouring of this setting.
+   * Three exemptions from the blanket rule below, and from the usual honouring
+   * of this setting. All three are the site owner's decision — the same call
+   * taken for the globe, and the same one the scroll scenes take further down
+   * this file.
    *
-   * The site owner asked for the scroll reveals to run for everyone, the same
-   * call already made for the globe. It is a real accessibility trade-off:
-   * someone who set "reduce motion" because motion makes them ill will still
-   * get these. Kept as narrow as possible — the reveals are opacity/transform
-   * only, they run once per element and never loop, and every other animation
-   * on the site still collapses to nothing here.
+   *   `.reveal`       — the scroll entrances. Opacity and transform only, once
+   *                     per element, never looping.
+   *   `.header-scrim` — the tint behind the header. It is a single opacity
+   *                     fade on chrome, and killing the transition does not
+   *                     remove the change, only the softness: the scrim then
+   *                     snaps in and out at the 24px scroll threshold, which
+   *                     reads as a flicker rather than as a response.
+   *   `.rail-tick`    — the section indicator in the left margin, for the same
+   *                     reason. Snapping between lengths reads as a glitch;
+   *                     the transition is what makes it read as tracking.
    *
-   * To restore the default behaviour, delete the `:not(.reveal)` below and
-   * re-add a `.reveal { transition: none }` rule inside this block.
+   * It is a real accessibility trade-off: someone who set "reduce motion"
+   * because motion makes them ill will still get these. Kept as narrow as it
+   * can be — every one of them is opacity or transform, none loops, and none
+   * moves content the visitor is trying to read.
+   *
+   * To restore the default behaviour, empty the `:not(…)` list below and re-add
+   * `transition: none` rules for the three inside this block.
    */
-  *:not(.reveal),
+  *:not(.reveal, .header-scrim, .rail-tick),
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
@@ -565,6 +576,20 @@
    * `--sp` — progress after the element's stagger offset is taken out and the
    * remainder renormalised, so an offset element still finishes at exactly 1
    * rather than stopping short of its own arrival.
+   *
+   * `--scrub-length` is the second half of a beat sheet. Offset alone can only
+   * say *when a beat starts*; left to itself every effect then runs to the end
+   * of the scene, because the divisor is whatever is left after the offset — so
+   * a headline told to begin at 0.3 was still arriving at 0.95, and a scene
+   * with three beats in it had one long beat and two stretches of nothing.
+   * Naming the length as well lets a beat finish and hold, which is what makes
+   * room for the next one.
+   *
+   * It inherits, and that is deliberate: a `MaskedText` splits its line into
+   * per-word `.scrub` spans that each set their own offset, so a length set on
+   * the block gives every word in it the same duration, staggered. Set it on
+   * the wrapper, never on the words. Unset, the fallback is the older
+   * behaviour exactly — run from the offset to the end of the scene.
    */
   --sp: clamp(
     0,
@@ -574,26 +599,6 @@
     ),
     1
   );
-
-  /*
-   * `--scrub-length` is how much of the scene the effect occupies, and it is
-   * the second half of a beat sheet.
-   *
-   * Offset alone can only say *when a beat starts*. Left to itself every
-   * effect then runs to the end of the scene, because the divisor above is
-   * whatever is left after the offset — so a headline told to begin at 0.3 was
-   * still arriving at 0.95, and a scene with three beats in it had one long
-   * beat and two stretches of nothing. Naming the length as well lets a beat
-   * finish and hold, which is what makes room for the next one.
-   *
-   * It inherits, and that is deliberate rather than incidental: a `MaskedText`
-   * splits its line into per-word `.scrub` spans that each set their own
-   * offset, so a length set on the block gives every word in it the same
-   * duration, staggered. Set it on the wrapper, not on the words.
-   *
-   * Unset, the fallback is the old behaviour exactly — run from the offset to
-   * the end of the scene.
-   */
 
   /*
    * `--e` — the same progress eased out (1 − (1−x)³). Linear progress reads as
@@ -610,9 +615,15 @@
    * the product: 0 → 1 → 0 across a full crossing of the viewport. This is what
    * lets copy fade *out* as it leaves rather than sitting there fully lit until
    * it is clipped by the top of the screen.
+   *
+   * Both halves are tunable — `--scrub-in` and `--scrub-out`, as the `fadeIn`
+   * and `fadeOut` props. A long fade on both sides is what turns a horizontal
+   * pan into a run of cross-dissolves rather than a run of slides, and giving
+   * successive layers slightly different windows is what stops a panel arriving
+   * as one flat rectangle of content.
    */
-  --in: clamp(0, calc(var(--sp) / 0.34), 1);
-  --out: clamp(0, calc((1 - var(--sp)) / 0.26), 1);
+  --in: clamp(0, calc(var(--sp) / var(--scrub-in, 0.34)), 1);
+  --out: clamp(0, calc((1 - var(--sp)) / var(--scrub-out, 0.26)), 1);
   --band: calc(var(--in) * var(--out));
 
   /* Signed distance from the midpoint, +0.5 → −0.5. The parallax driver. */
@@ -662,6 +673,40 @@
 .scrub-band {
   opacity: var(--band);
   transform: translate3d(0, calc(var(--drift) * var(--scrub-travel, 48px)), 0);
+}
+
+/* -------------------------------------------------------------- pure fades */
+
+/*
+ * OPACITY, AND NOTHING ELSE.
+ *
+ * `scrub-band` above is the same envelope with a translate bolted on, and that
+ * translate is the reason it cannot be used everywhere: an element has one
+ * transform, so a layer already carrying a parallax cannot also carry a band.
+ * This one touches only `opacity`, which means it composes with *any* of the
+ * transform presets on the same element — `scrub-parallax-x scrub-fade` is one
+ * layer that both drifts and cross-dissolves, where before it was two nested
+ * ones.
+ *
+ * That composability is what makes a dense fade sequence affordable. A panel
+ * can give its eyebrow, its heading, its copy, its chips and its button five
+ * different fade windows without adding a single element to the tree.
+ *
+ * It is also the gentlest thing in this file, and the only kind of motion that
+ * survives `prefers-reduced-motion` in a `data-motion-always` subtree: nothing
+ * moves, nothing scales, nothing tracks the wheel except how bright it is.
+ */
+.scrub-fade {
+  opacity: var(--band);
+}
+
+/*
+ * The same, entering only — it fades up and stays up rather than fading back
+ * out. For anything inside a scene that should still be readable once the
+ * scene has settled, where the symmetric band would take it away again.
+ */
+.scrub-appear {
+  opacity: var(--e);
 }
 
 /* ---------------------------------------------------------------- parallax */
@@ -1059,18 +1104,45 @@
 
 @media (prefers-reduced-motion: reduce) {
   /*
-   * The engine already declines to register anything here, and writes each
-   * element its resting value once. This is the second line of defence: it
-   * pins every derived value to "arrived and still", so a preset cannot strand
-   * an element mid-effect even if a caller passed the wrong `reduced` value.
+   * THE PREFERENCE, AND THE ONE PLACE THE SITE DOES NOT HONOUR IT.
+   *
+   * The engine already declines to register anything here and writes each
+   * element its resting value once. These rules are the second line of
+   * defence: they pin every derived value to "arrived and still", so a preset
+   * cannot strand an element mid-effect even if a caller passed the wrong
+   * `reduced` value.
    *
    * Note this is a genuine departure from the `.reveal` carve-out above, which
    * runs for everyone by the site owner's decision. A reveal is one 18px rise
    * that ends; these track the wheel continuously for as long as the element
    * is on screen, and continuous scroll-coupled motion is the kind most likely
-   * to make someone ill. The carve-out was not extended to it.
+   * to make someone ill.
+   *
+   * ---------------------------------------------------------------------
+   * THE OPT-OUT
+   *
+   * `:not([data-motion-always] *)` — a `.scrub` inside a subtree marked
+   * `data-motion-always` keeps its values live and goes on running.
+   *
+   * `StickyScene` and `PinnedScene` both set the mark, so every scene on the
+   * site — the hero, the mission, and all three horizontal pans — runs for
+   * everyone. That is the site owner's decision, made deliberately and
+   * recorded here rather than left implicit: the scenes are most of what these
+   * pages *are*, and honouring the preference by collapsing them into a stack
+   * of static sections meant a visitor with the setting on was served a
+   * different, and much plainer, website.
+   *
+   * What those scenes actually do under the preference is weighted hard toward
+   * opacity. Every layer inside a pan carries `scrub-fade`, which touches
+   * nothing but brightness; the travel that remains is driven entirely by the
+   * visitor's own wheel, at their own speed, and stops when they stop. Nothing
+   * anywhere on the site plays on a timer.
+   *
+   * The exclusion is written as a `:not()` rather than as a second set of
+   * rules restating the live values, because two copies of a formula is one
+   * copy too many and the copy in the exception is the one that goes stale.
    */
-  .scrub {
+  .scrub:not([data-motion-always] *) {
     --sp: 1;
     --e: 1;
     --in: 1;
@@ -1079,41 +1151,29 @@
     --drift: 0;
   }
 
-  .scrub-dissolve,
-  .scrub-open,
-  .scrub-expand,
-  .scrub-cross,
-  .scrub-cross-band,
-  .scrub-converge,
-  .scrub-figure,
-  .scrub-rule {
+  /*
+   * The presets that are not purely variable-driven, and would strand rather
+   * than settle if left to the pin above. `scrub-dissolve` computes its own
+   * `--dissolve` and at `--sp: 1` resolves to fully *gone*; `scrub-expand`
+   * ends deliberately oversized. The rest are here for the same reason a belt
+   * accompanies braces.
+   */
+  .scrub-dissolve:not([data-motion-always] *),
+  .scrub-open:not([data-motion-always] *),
+  .scrub-expand:not([data-motion-always] *),
+  .scrub-cross:not([data-motion-always] *),
+  .scrub-cross-band:not([data-motion-always] *),
+  .scrub-converge:not([data-motion-always] *),
+  .scrub-figure:not([data-motion-always] *),
+  .scrub-rule:not([data-motion-always] *) {
     --dissolve: 0;
     opacity: 1;
     transform: none;
   }
 
-  .scrub-soften {
+  .scrub-soften:not([data-motion-always] *) {
     filter: none;
   }
-}
-
-/* ==========================================================================
-   READOUTS
-   ========================================================================== */
-
-/*
- * The progress hairline under the header. Reads `--p` for the document as a
- * whole, written by the engine with `always: true` — see the note on that
- * option in scroll.ts for why this one is not gated behind reduced motion.
- *
- * `scaleX` on a 1px line rather than a width, so it is a composited transform
- * and never a layout pass. `transform-origin: left` is what makes it grow from
- * the edge instead of the middle; at the default centre origin the same rule
- * reads as a line opening outward, which says something else entirely.
- */
-.scroll-progress {
-  transform: scaleX(var(--p, 0));
-  transform-origin: left;
 }
 
 /* ==========================================================================

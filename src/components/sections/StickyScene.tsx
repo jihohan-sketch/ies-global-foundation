@@ -1,6 +1,6 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import { PINNED, observeScroll } from '@/lib/scroll'
-import { cx, prefersReducedMotion } from '@/lib/utils'
+import { cx } from '@/lib/utils'
 
 /*
  * A section that holds the viewport while the page scrolls through it.
@@ -17,10 +17,26 @@ import { cx, prefersReducedMotion } from '@/lib/utils'
  * number and takes its own slice of it. A scene with fifteen moving parts costs
  * the engine one entry.
  *
- * Under `prefers-reduced-motion` the extra height and the pin both disappear
- * and this collapses to an ordinary one-screen section. That is the whole
- * adaptation — there is no reduced *version* of a pinned scene, because the
- * pinning is the thing being reduced.
+ * ---------------------------------------------------------------------------
+ * REDUCED MOTION
+ *
+ * This runs for everyone, including visitors with
+ * `prefers-reduced-motion: reduce`. It used to collapse the pin and the extra
+ * height there, which meant the hero and the mission — the two scenes the page
+ * is built around — were replaced by static blocks for anyone with the setting
+ * on, and the site they saw was a different and much plainer one.
+ *
+ * The frame publishes `data-motion-always`, which the reduced-motion block in
+ * index.css reads to keep this subtree's scrub values live, and the scroll
+ * registration below is marked `always` so the engine keeps writing progress
+ * rather than parking it. Both halves are needed: without the second the frame
+ * is handed a resting `--p` of 1 and every layer in the scene renders at its
+ * *end* state for the whole pin, which looks like a bug rather than a choice.
+ *
+ * It is the site owner's decision, and the same one already taken for the
+ * `.reveal` entrances, for `ScrollRail`'s drift, and for `PinnedScene`. Nothing
+ * here plays on a timer: the wheel is the timeline, the visitor drives it at
+ * their own speed, and stopping stops it.
  */
 export function StickyScene({
   children,
@@ -64,7 +80,6 @@ export function StickyScene({
 }) {
   const sectionRef = useRef<HTMLElement>(null)
   const frameRef = useRef<HTMLDivElement>(null)
-  const reduced = prefersReducedMotion()
 
   useEffect(() => {
     const section = sectionRef.current
@@ -76,6 +91,8 @@ export function StickyScene({
     return observeScroll(section, {
       ...PINNED,
       target: frame,
+      /* See the note on reduced motion at the top of this file. */
+      always: true,
       onProgress: (p) => {
         /* A discrete flip, not a per-frame write. `toggleAttribute` with an
            explicit second argument is a no-op when the state already matches,
@@ -91,13 +108,16 @@ export function StickyScene({
       id={id}
       aria-label={label}
       className={cx('relative', className)}
-      style={reduced ? undefined : { height: `${vh}vh` }}
+      style={{ height: `${vh}vh` }}
     >
       <div
         ref={frameRef}
+        /* `data-motion-always` — see the note at the top of this file and the
+           reduced-motion block in index.css. It is what keeps every `.scrub`
+           below this point reading live progress. */
+        data-motion-always
         className={cx(
-          'relative flex w-full flex-col justify-center overflow-hidden',
-          reduced ? 'min-h-dvh' : 'sticky top-0 h-dvh',
+          'relative flex w-full flex-col justify-center overflow-hidden sticky top-0 h-dvh',
           frameClassName,
         )}
       >

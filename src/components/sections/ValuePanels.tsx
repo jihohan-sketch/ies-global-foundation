@@ -13,11 +13,14 @@ import { threeAs } from '@/content/site'
  * Inside each panel, three layers move at three speeds against `--p`, which
  * `PinnedScene` re-points to *this panel's* own crossing. The initial drifts
  * slowest because it is the furthest back; the type moves fastest because it is
- * nearest; and the whole text block fades up as the panel reaches centre and
- * back down as it leaves, so a panel arrives as a scene rather than sliding
- * past as a slide. The spread is deliberately narrow — past about 140px the
- * layers stop reading as one space and start reading as separate things sliding
- * over each other.
+ * nearest. The spread is deliberately narrow — past about 140px the layers stop
+ * reading as one space and start reading as separate things sliding over each
+ * other.
+ *
+ * And every line has its own fade window. The initial comes up first and leaves
+ * last; the marker, the title, the subtitle and the body each start a beat
+ * later and start dimming a beat earlier, so the panel assembles and comes
+ * apart in reading order rather than switching on and off as a block.
  */
 /*
  * A glow rather than a flat wash. A panel filled edge to edge with a tint meets
@@ -52,8 +55,13 @@ export function ValuePanels() {
                 with, and a screen reader announcing a lone "A" helps nobody. */}
             <SceneLayer
               hidden
-              effect="scrub-parallax-x"
+              effect="scrub-parallax-x scrub-fade"
               depth="44px"
+              /* The widest window in the panel: the letter is the room the rest
+                 of the panel is standing in, so it is lit before anything else
+                 arrives and still lit after everything else has gone. */
+              fadeIn={0.42}
+              fadeOut={0.42}
               className="pointer-events-none absolute inset-0 flex items-center justify-center"
             >
               <span
@@ -64,41 +72,59 @@ export function ValuePanels() {
               </span>
             </SceneLayer>
 
-            {/* Nearest: the type. Two layers because one element has one
-                transform — the outer carries the fade, the inner the travel. */}
-            <SceneLayer
-              effect="scrub-band"
-              travel="0px"
-              className="relative mx-auto w-full max-w-3xl px-6 sm:px-8"
-            >
+            {/* Nearest: the type. The travel is on the column, because one
+                element has one transform; the fades are opacity on the lines
+                themselves, which costs no extra element at all. */}
+            <div className="relative mx-auto w-full max-w-3xl px-6 sm:px-8">
               <SceneLayer effect="scrub-parallax-x" depth="128px" className="text-center">
-                <p
+                <SceneLayer
+                  as="p"
+                  effect="scrub-fade"
+                  fadeIn={0.18}
+                  fadeOut={0.44}
                   className="text-[0.6875rem] font-medium tracking-[0.24em] uppercase"
                   style={{ color: panel.accent }}
                 >
                   {item.title.charAt(0)} · Value {String(index + 1).padStart(2, '0')} /{' '}
                   {String(threeAs.length).padStart(2, '0')}
-                </p>
+                </SceneLayer>
 
-                <h3
+                <SceneLayer
+                  as="h3"
+                  effect="scrub-fade"
+                  offset={0.03}
+                  fadeIn={0.22}
+                  fadeOut={0.38}
                   className="mt-8 font-serif leading-[0.95] text-paper"
                   style={{ fontSize: 'clamp(2.75rem, 8vw, 6.5rem)', letterSpacing: '-0.02em' }}
                 >
                   {item.title}
-                </h3>
+                </SceneLayer>
 
-                <p
+                <SceneLayer
+                  as="p"
+                  effect="scrub-fade"
+                  offset={0.06}
+                  fadeIn={0.26}
+                  fadeOut={0.32}
                   className="mt-6 text-[0.75rem] font-medium tracking-[0.2em] uppercase"
                   style={{ color: panel.accent }}
                 >
                   {item.subtitle}
-                </p>
+                </SceneLayer>
 
-                <p className="text-lead mx-auto mt-10 max-w-2xl leading-relaxed font-light text-mist">
+                <SceneLayer
+                  as="p"
+                  effect="scrub-fade"
+                  offset={0.1}
+                  fadeIn={0.3}
+                  fadeOut={0.26}
+                  className="text-lead mx-auto mt-10 max-w-2xl leading-relaxed font-light text-mist"
+                >
                   {item.body}
-                </p>
+                </SceneLayer>
               </SceneLayer>
-            </SceneLayer>
+            </div>
           </div>
         )
       })}

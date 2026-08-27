@@ -27,8 +27,14 @@ import { pillars } from '@/content/work'
  *   0.00 → 0.28   Reflection and Action cross the frame and dissolve
  *   0.30 → 0.62   the mission statement assembles, word by word
  *   0.58 → 0.80   the supporting line assembles under it
- *   0.76 → 0.88   the way out arrives
+ *   0.68 → 0.78   the way out arrives, and holds
  *   0.86 → 1.00   the whole column clears as the pin releases
+ *
+ * The gap between 0.78 and 0.86 is not slack. The link finished arriving at
+ * 0.88 in the first cut, two hundredths after the column had already begun to
+ * clear — so the one control in the scene appeared and immediately started
+ * leaving, which is a control nobody can use. It now lands with most of a
+ * screen of scrolling to sit still in.
  *
  * Every one of those numbers is an `offset` / `length` pair on a `SceneLayer`
  * below. `--p` is written once on the frame and inherits; each layer takes its
@@ -82,16 +88,12 @@ export function MissionScene() {
          * piece of display type in the same band turned all three into texture.
          * At the foot it is ground the words travel over, which is what it was
          * always meant to be.
-         *
-         * Hidden under reduced motion for the same reason `PinnedScene` hides
-         * its own horizon there: it hangs below the frame by design, and with
-         * no pin the opaque section underneath simply crops it mid-letter.
          */}
         <SceneLayer
           hidden
           effect="scrub-parallax-x"
           depth="150px"
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-0 translate-y-[24%] px-[3vw] motion-reduce:hidden"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-0 translate-y-[24%] px-[3vw]"
         >
           <Wordmark>Mission</Wordmark>
         </SceneLayer>
@@ -109,22 +111,9 @@ export function MissionScene() {
          * of that sentence, not an addition to it. The statement itself is a
          * real heading in the flow and carries the meaning.
          */}
-        {/*
-         * `motion-reduce:hidden`, and this is the one part of the scene that
-         * cannot survive the reduction.
-         *
-         * Under `prefers-reduced-motion` the pin goes, the travel goes, and
-         * every scrub preset is pinned to its arrived state — so these two
-         * words would sit at full opacity in an absolutely-positioned layer
-         * directly on top of the statement, unmoving, forever. They are not a
-         * decorated version of anything: they *are* the crossing. With the
-         * crossing gone there is nothing left for them to be, and the scene
-         * becomes what it always was underneath — a mission statement, a line
-         * of support, and a way onward.
-         */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 flex flex-col justify-center overflow-hidden motion-reduce:hidden"
+          className="pointer-events-none absolute inset-0 flex flex-col justify-center overflow-hidden"
         >
           <SceneLayer effect="scrub-dissolve" fade={0.28} travel="0px">
             <SceneLayer effect="scrub-cross" span="46vw">
@@ -209,7 +198,7 @@ export function MissionScene() {
             />
           </SceneLayer>
 
-          <SceneLayer effect="scrub-rise" offset={0.76} length={0.12} travel="28px">
+          <SceneLayer effect="scrub-rise" offset={0.68} length={0.1} travel="28px">
             <p className="mt-12">
               <Link
                 to="/our-work"
@@ -270,14 +259,10 @@ function PillarLedger() {
      *
      * Opaque `bg-navy` and a stacking context of its own, because it is
      * genuinely passing over a still-pinned frame rather than following it.
-     *
-     * `motion-safe` only. Under reduced motion there is no pin to overlap —
-     * the scene above collapses to an ordinary one-screen section — and half a
-     * viewport of negative margin would drag this straight over the statement.
      */
     <section
       aria-label="The three pillars"
-      className="relative z-10 overflow-hidden bg-navy pb-24 motion-safe:-mt-[50vh]"
+      className="relative z-10 -mt-[50vh] overflow-hidden bg-navy pb-24"
     >
       <div className="mx-auto w-full max-w-[88rem] px-6 sm:px-8">
         {pillars.map((pillar, i) => (
