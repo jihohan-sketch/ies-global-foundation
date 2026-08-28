@@ -124,17 +124,44 @@ export const values = {
   ],
 } as const
 
+/*
+ * TWO TIERS, AND THE SPLIT IS ABOUT WHAT A NAVIGATION BAR IS FOR.
+ *
+ * This was one flat list of nine, spread edge to edge across the desktop rail.
+ * Nine is past the point where a bar is *scanned* — the eye stops recognising
+ * shapes and starts reading a list, which is the slowest possible way to use
+ * navigation and the reason a wide rail of nine tracked capitals reads as
+ * daunting rather than as a way in.
+ *
+ * The four that moved are not less important; they are answers to questions a
+ * visitor asks *second*. `primaryNav` is the first-visit path — who are you,
+ * what do you do, where are you, does it work — and every one of the four in
+ * `secondaryNav` is reachable in one click from the overlay menu, the footer,
+ * and from the section of the home page that covers it.
+ *
+ * Both lists are still complete and still one source: the overlay menu renders
+ * primary at display size and secondary beneath it, the footer carries every
+ * destination, and nothing is hidden behind a hover-only dropdown — which is
+ * the other way to solve this and the one that fails on a touch screen.
+ */
 export const primaryNav: NavItem[] = [
   { label: 'About', href: '/about', description: 'Our story, structure, and purpose' },
-  { label: 'Global Network', href: '/global-network', description: 'Korea, United States, United Kingdom' },
   { label: 'Our Work', href: '/our-work', description: 'Programs across five areas' },
-  { label: 'Gallery', href: '/gallery', description: 'Every photograph and film' },
-  { label: 'Leadership', href: '/leadership', description: 'Global and national leadership' },
+  { label: 'Global Network', href: '/global-network', description: 'Korea, United States, United Kingdom' },
   { label: 'Impact', href: '/impact', description: 'Results, stories, and timeline' },
-  { label: 'Partners', href: '/partners', description: 'Institutional collaboration' },
-  { label: 'News', href: '/news', description: 'Announcements and updates' },
   { label: 'Contact', href: '/contact', description: 'Reach the right team' },
 ]
+
+/** The second tier — see the note on `primaryNav`. Never shown in the bar. */
+export const secondaryNav: NavItem[] = [
+  { label: 'Leadership', href: '/leadership', description: 'Global and national leadership' },
+  { label: 'Gallery', href: '/gallery', description: 'Every photograph and film' },
+  { label: 'Partners', href: '/partners', description: 'Institutional collaboration' },
+  { label: 'News', href: '/news', description: 'Announcements and updates' },
+]
+
+/** Everything in the bar and behind the menu, in order. For the footer and 404. */
+export const allNav: NavItem[] = [...primaryNav, ...secondaryNav]
 
 export const footerNav: { title: string; items: NavItem[] }[] = [
   {

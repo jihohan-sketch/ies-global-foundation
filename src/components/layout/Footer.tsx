@@ -3,7 +3,7 @@ import {
   branchSites,
   contactChannels,
   legalNav,
-  primaryNav,
+  allNav,
   site,
   socials,
 } from '@/content/site'
@@ -111,12 +111,15 @@ export function Footer() {
          * the bottom of a long scroll is exactly where someone wants it.
          */}
         <div className="grid gap-14 py-20 lg:grid-cols-[1fr_auto_1fr] lg:gap-16">
-          {/* The primary navigation, in the cinematic register. The same nine
-              destinations as the header rail and the overlay — a footer that
-              invents its own taxonomy is a footer nobody trusts. */}
+          {/* Every section, in the cinematic register — `allNav`, not
+              `primaryNav`. The header rail now shows five and the overlay adds
+              the rest, but a footer is where a visitor goes when they already
+              know what they want and cannot see it, so it carries the complete
+              list. A footer that invents its own taxonomy is a footer nobody
+              trusts; a footer that quietly drops four destinations is worse. */}
           <nav aria-label="Footer">
             <ul className="flex flex-col gap-1">
-              {primaryNav.map((item) => (
+              {allNav.map((item) => (
                 <li key={item.href}>
                   <Link
                     to={item.href}

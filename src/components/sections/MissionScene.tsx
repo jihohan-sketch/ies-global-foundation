@@ -60,13 +60,18 @@ export function MissionScene() {
     <>
       <StickyScene
         id="mission"
-        /* 250, down from 300. Three screens of pin for a scene whose beats
-           are all spent by 0.94 left roughly half a screen of held frame at the
-           end — and a held frame at the end of a three-screen pin is exactly
-           the point at which a reader starts to wonder whether the page has
-           stopped responding. The beat sheet below is unchanged; only the
-           distance the wheel has to cover to run it is shorter. */
-        vh={250}
+        /* 190, down from 250 and 300 before that, and the beat sheet below is
+           unchanged at each step — the offsets are fractions of the scene, so
+           shortening the pin does not drop a beat, it only shortens the wheel
+           travel between them.
+
+           What that buys is worth being explicit about: at 250 this scene alone
+           was 1,893px, and the two statements it crosses are on screen and
+           legible for well over a screen of scrolling each. 190 still gives
+           every beat more hold than any other pinned scene on the page, and it
+           takes most of a screen off a page whose central problem was that a
+           reader could not tell movement from length. */
+        vh={190}
         label="Our mission"
         className="bg-navy"
         frameClassName="bg-navy"

@@ -1,141 +1,137 @@
-import { PinnedScene } from '@/components/sections/PinnedScene'
-import { SceneLayer } from '@/components/ui/Scrub'
+import { Container, Section, SectionHeading } from '@/components/ui/Primitives'
+import { Scrub } from '@/components/ui/Scrub'
 import { threeAs } from '@/content/site'
 
-/*
- * The Three A's as a pinned horizontal scene: the section sticks to the
- * viewport and the three values travel sideways as the page scrolls down, one
- * full screen each.
- *
- * Each panel carries its own accent rather than inheriting the route's — the
- * point of the section is that the three differ from one another.
- *
- * Inside each panel, three layers move at three speeds against `--p`, which
- * `PinnedScene` re-points to *this panel's* own crossing. The initial drifts
- * slowest because it is the furthest back; the type moves fastest because it is
- * nearest. The spread is deliberately narrow — past about 140px the layers stop
- * reading as one space and start reading as separate things sliding over each
- * other.
- *
- * And every line has its own fade window. The initial comes up first and leaves
- * last; the marker, the title, the subtitle and the body each start a beat
- * later and start dimming a beat earlier, so the panel assembles and comes
- * apart in reading order rather than switching on and off as a block.
- */
-/*
- * A glow rather than a flat wash. A panel filled edge to edge with a tint meets
- * its neighbour at a hard vertical line, and the pan reads as a slideshow
- * cutting between slides — which is the one thing this section must not do. A
- * radial that falls to nothing before the panel edge lets each colour dissolve
- * into the next as they cross, so the boundary is never visible even though the
- * two panels are unmistakably different places.
- */
-/*
- * ONE ACCENT, THREE DEPTHS.
- *
- * These three panels used to be sky, sage and clay — a different colour per
- * value. Three colours across three panels of one framework makes the Three
- * A's look like three unrelated ideas, which is the opposite of what the
- * section is for: they are one framework with three faces. The blue is now
- * constant and the *glow* steps instead, so the pan still rises and falls
- * across its length without ever changing identity.
- */
-const GLOW_STRENGTHS = [0.2, 0.15, 0.11] as const
+/* ==========================================================================
+   THE THREE A'S
+   ==========================================================================
 
-const glowFor = (strength: number) =>
-  `radial-gradient(ellipse 78% 68% at 50% 50%, rgba(200, 169, 107, ${strength}) 0%, rgba(200, 169, 107, ${
-    strength * 0.4
-  }) 46%, transparent 76%)`
+   FROM THREE PINNED SCREENS TO ONE, AND THE ARGUMENT IS ABOUT WHAT THE PAN IS
+   FOR RATHER THAN ABOUT SAVING PIXELS.
 
-export function ValuePanels() {
+   This was a `PinnedScene`: three viewport-sized panels travelling sideways,
+   2,407px of scroll — three full screens of wheel — to deliver three sentences.
+   That is the worst content-to-distance ratio on the page, and it was the
+   *third* horizontal pan a visitor met, after the branches and the five areas
+   of work. By the third repetition the device has stopped saying "these are
+   distinct places, look at them one at a time" and started saying "this page is
+   long".
+
+   The pan earns its cost when the panels are things you compare *in sequence*
+   and each has enough in it to fill a screen — three countries with their own
+   coordinates and dossiers, five areas of work each with a photograph. Three
+   values of two sentences each are the opposite case: they are one framework
+   with three faces, they want to be read together, and putting them a screen
+   apart is what stops a reader ever holding all three at once.
+
+   So they are a ledger now: three columns, side by side, comparable at a
+   glance, about 700px instead of 2,400. Nothing was cut — every word of
+   `threeAs` is still here, and so is the giant ghost initial that gave each
+   panel its room. The initial simply sits behind its own column now instead of
+   behind its own screen.
+
+   The heading moved inside, too. It used to be a separate `Section` above the
+   pin, which was another 280px of page and a hard cut between "reading" and
+   "panning"; with no pin to announce, the section can introduce itself the way
+   every other one on the site does.
+   ========================================================================== */
+
+/*
+ * ONE ACCENT, AND NO PER-COLUMN COLOUR — carried over from the pinned version,
+ * where the reasoning was the same.
+ *
+ * These three used to be sky, sage and clay: a different colour per value.
+ * Three colours across three faces of one framework makes them look like three
+ * unrelated ideas, which is the opposite of what the section is for. Gold
+ * throughout, and what distinguishes the columns is what should: the words.
+ */
+
+export function ValuePanels({ id, index = '07' }: { id?: string; index?: string }) {
   return (
-    <PinnedScene label="The Three A’s" className="border-y border-mist/12" wordmark="Ethics">
-      {threeAs.map((item, index) => {
-        const accent = 'var(--color-gold)' 
-        return (
-          <div
-            key={item.title}
-            className="relative flex w-full items-center self-stretch"
-            style={{ backgroundImage: glowFor(GLOW_STRENGTHS[index % GLOW_STRENGTHS.length]) }}
-          >
-            {/* Furthest back: the initial, set enormous and barely visible.
-                aria-hidden — it is the same letter the heading already starts
-                with, and a screen reader announcing a lone "A" helps nobody. */}
-            <SceneLayer
-              hidden
-              effect="scrub-parallax-x scrub-fade"
-              depth="44px"
-              /* The widest window in the panel: the letter is the room the rest
-                 of the panel is standing in, so it is lit before anything else
-                 arrives and still lit after everything else has gone. */
-              fadeIn={0.42}
-              fadeOut={0.42}
-              className="pointer-events-none absolute inset-0 flex items-center justify-center"
+    <Section id={id} className="overflow-hidden border-y border-mist/12">
+      {/* The glow, once across the whole row rather than once per panel. Three
+          radial washes in a row on one ground band at each other's edges; one
+          wide ellipse behind all three reads as a single lit space, which is
+          what a framework should look like. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,rgba(200,169,107,0.11),transparent_72%)]"
+      />
+
+      <Container size="wide" className="relative">
+        <Scrub effect="scrub-rise">
+          <SectionHeading
+            index={index}
+            eyebrow="How We Work"
+            ghost="Ethics"
+            title="The Three A’s"
+            lead="The test every IES programme is held to, unchanged since 2023 and applied the same way in every branch."
+          />
+        </Scrub>
+
+        {/*
+         * `divide-x` from `md` up rather than three bordered cards.
+         *
+         * The site's rule is that grouping is carried by hairlines and
+         * whitespace, never by boxes — a row of three tinted rectangles is an
+         * inventory, and the eye counts them before it reads any of them. The
+         * dividers between the columns do the same grouping at no visual
+         * weight, and they are also what makes the row read as *one* framework
+         * split three ways rather than as three separate claims.
+         */}
+        <dl className="mt-14 grid gap-x-10 gap-y-12 md:grid-cols-3 md:gap-x-0 md:divide-x md:divide-mist/15">
+          {threeAs.map((item, i) => (
+            <Scrub
+              key={item.title}
+              effect="scrub-rise"
+              offset={i * 0.06}
+              /* `group` for the hover, `relative` so the ghost initial below
+                 has this column to position against rather than the section. */
+              className="group relative md:px-8 lg:px-10 md:first:pl-0 md:last:pr-0"
             >
+              {/* The initial, kept from the pinned version and doing the same
+                  job at a third of the size: it is the room the column stands
+                  in. `aria-hidden` — it is the letter the title already starts
+                  with, and a screen reader announcing a lone "A" helps nobody. */}
               <span
-                className="font-serif leading-none select-none"
-                style={{ fontSize: 'min(58vw, 34rem)', color: accent, opacity: 0.07 }}
+                aria-hidden
+                className="pointer-events-none absolute -top-6 -left-1 font-serif leading-none text-[var(--accent)] opacity-[0.07] transition-opacity duration-700 ease-[var(--ease-cinema)] select-none group-hover:opacity-[0.12]"
+                style={{ fontSize: 'clamp(6rem,11vw,9rem)' }}
               >
                 {item.title.charAt(0)}
               </span>
-            </SceneLayer>
 
-            {/* Nearest: the type. The travel is on the column, because one
-                element has one transform; the fades are opacity on the lines
-                themselves, which costs no extra element at all. */}
-            <div className="relative mx-auto w-full max-w-3xl px-6 sm:px-8">
-              <SceneLayer effect="scrub-parallax-x" depth="128px" className="text-center">
-                <SceneLayer
-                  as="p"
-                  effect="scrub-fade"
-                  fadeIn={0.18}
-                  fadeOut={0.44}
-                  className="text-[0.6875rem] font-semibold tracking-[0.12em] uppercase"
-                  style={{ color: accent }}
-                >
-                  {item.title.charAt(0)} · Value {String(index + 1).padStart(2, '0')} /{' '}
-                  {String(threeAs.length).padStart(2, '0')}
-                </SceneLayer>
+              <div className="relative">
+                <p className="text-label-sm font-semibold text-[var(--accent)] uppercase">
+                  Value {String(i + 1).padStart(2, '0')} / {String(threeAs.length).padStart(2, '0')}
+                </p>
 
-                <SceneLayer
-                  as="h3"
-                  effect="scrub-fade"
-                  offset={0.03}
-                  fadeIn={0.22}
-                  fadeOut={0.38}
-                  className="mt-8 font-serif leading-[0.95] text-paper"
-                  style={{ fontSize: 'clamp(2.75rem, 8vw, 6.5rem)', letterSpacing: '-0.02em' }}
-                >
+                {/* `dt`/`dd`, so the pair is a described term rather than two
+                    stacked paragraphs that only look related. */}
+                <dt className="mt-5 font-serif text-[clamp(1.625rem,2.4vw,2.125rem)] leading-[1.08] font-normal text-paper">
                   {item.title}
-                </SceneLayer>
+                </dt>
 
-                <SceneLayer
-                  as="p"
-                  effect="scrub-fade"
-                  offset={0.06}
-                  fadeIn={0.26}
-                  fadeOut={0.32}
-                  className="mt-6 text-[0.75rem] font-medium tracking-[0.2em] uppercase"
-                  style={{ color: accent }}
-                >
+                <p className="text-label-sm mt-3 font-semibold text-mist uppercase">
                   {item.subtitle}
-                </SceneLayer>
+                </p>
 
-                <SceneLayer
-                  as="p"
-                  effect="scrub-fade"
-                  offset={0.1}
-                  fadeIn={0.3}
-                  fadeOut={0.26}
-                  className="text-lead mx-auto mt-10 max-w-2xl leading-relaxed text-mist"
-                >
-                  {item.body}
-                </SceneLayer>
-              </SceneLayer>
-            </div>
-          </div>
-        )
-      })}
-    </PinnedScene>
+                {/* The rule is the only thing that moves on hover. A column
+                    that lights up in full reads as a tile reacting; a hairline
+                    warming under the title reads as the column acknowledging
+                    the cursor, which is the register the rest of the site
+                    uses. */}
+                <span
+                  aria-hidden
+                  className="mt-6 block h-px w-10 bg-mist/30 transition-all duration-500 ease-[var(--ease-cinema)] group-hover:w-20 group-hover:bg-[var(--accent)]"
+                />
+
+                <dd className="mt-6 leading-relaxed text-mist">{item.body}</dd>
+              </div>
+            </Scrub>
+          ))}
+        </dl>
+      </Container>
+    </Section>
   )
 }

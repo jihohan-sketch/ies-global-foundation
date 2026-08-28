@@ -1,13 +1,11 @@
-import { useNavigate } from 'react-router-dom'
-import { Globe, type GlobeMarker } from '@/components/Globe'
-import { Button, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
-import { GhostTitle, SectionIndex, Seam, Vignette } from '@/components/ui/Cinematic'
+import { Button, Container, Section, SectionHeading } from '@/components/ui/Primitives'
+import { GhostTitle, SectionIndex } from '@/components/ui/Cinematic'
 import { LitText, MaskedText } from '@/components/ui/MaskedText'
-import { SceneLayer, Scrub } from '@/components/ui/Scrub'
+import { Scrub } from '@/components/ui/Scrub'
 import { PersonCard } from '@/components/sections/Cards'
 import { Split } from '@/components/ui/Editorial'
 import { CallToAction } from '@/components/sections/CallToAction'
-import { StickyScene } from '@/components/sections/StickyScene'
+import { HomeHero } from '@/components/sections/HomeHero'
 import { SectionRail, type RailSection } from '@/components/layout/SectionRail'
 import { NetworkScene } from '@/components/sections/NetworkScene'
 import { MissionScene } from '@/components/sections/MissionScene'
@@ -17,8 +15,6 @@ import { GallerySection } from '@/components/sections/Media'
 import { NamedPartners } from '@/components/sections/NamedPartners'
 import { ValuePanels } from '@/components/sections/ValuePanels'
 import { galleryItems } from '@/content/activities'
-import { branches } from '@/content/branches'
-import { headlineStats } from '@/content/impact'
 import { personById } from '@/content/leadership'
 import { site } from '@/content/site'
 import { useSeo } from '@/lib/seo'
@@ -45,16 +41,8 @@ const railSections: readonly RailSection[] = [
   { id: 'leadership', label: 'Who Runs It' },
 ]
 
-const markers: GlobeMarker[] = branches.map((branch) => ({
-  id: branch.slug,
-  label: branch.name,
-  lat: branch.point.lat,
-  lon: branch.point.lon,
-}))
 
 export default function Home() {
-  const navigate = useNavigate()
-
   useSeo({
     title: 'IES Global Foundation — Building Ethical Leaders Across Borders',
     description:
@@ -82,340 +70,17 @@ export default function Home() {
 
       {/* ============================================================ HERO */}
       {/*
-       * Not a hero with an animation on it — the opening shot of a sequence.
+       * One screen, two columns: the argument on the left, photographs of the
+       * work on the right, the four headline figures across the foot.
        *
-       * The section is a little over two screens tall and the frame inside it
-       * pins, so everything that follows is one continuous move driven by the
-       * wheel: the type clears, the world it was sitting on grows into the
-       * frame, and the figures rise into the space the type left. Scroll back
-       * up and it reassembles exactly. Nothing here is on a timer.
-       *
-       * All of it costs the scroll engine one registration. `StickyScene`
-       * writes `--p` once on the frame; custom properties inherit, so every
-       * layer below reads the same number and takes its own slice out of it
-       * via `offset` and `fade`. Those two props are the scene's beat sheet.
-       *
-       * Opaque on purpose — this hero runs its own full-intensity globe, so the
-       * shared ambient backdrop is masked out here rather than doubling up.
+       * This used to be a `StickyScene` pinned for 165vh — a slogan dissolving
+       * off a rotating globe, with the figures arriving at 46% of the pin. The
+       * full reasoning for the replacement lives at the top of `HomeHero`; the
+       * short version is that it cost a screen and a half to say one thing, put
+       * the only evidence behind a scroll, and showed no students on a page
+       * about students.
        */}
-      <StickyScene
-        /* 165, down from 185. The hero's last beat — the figures rising into
-           the space the type left — lands at `offset={0.46}` and is settled
-           well before the scene releases, so the final third of the old pin
-           was a held frame with nothing left to do in it. */
-        vh={165}
-        label="IES Global Foundation"
-        className="bg-navy"
-        /* `xl:pt-44`, not `pt-36`. At xl the header is not one bar but two —
-           the 6rem primary row plus the nav rail under it — which comes to
-           roughly 9.5rem before the rail collapses on scroll. At 9rem the
-           hero's eyebrow landed *inside* the rail, so "Founded 20 April 2023 ·
-           Seoul" sat on top of the Gallery and Leadership links on the first
-           screen of the site. 11rem clears the pair with air to spare. */
-        frameClassName="bg-navy pt-32 pb-28 xl:pt-44 xl:pb-32"
-      >
-        {/* --- The world. Furthest back, and the only layer still moving when
-            the scene releases. It opens *into* full size rather than past it —
-            a canvas scaled beyond 1 is resampled, and this one has the frame to
-            itself at exactly the moment that would show.
-
-            SIZED TO FIT, WHICH IS THE WHOLE POINT.
-
-            This was `min(155vmin, 72rem)` — a 1152px box in an 837px viewport,
-            putting the drawn sphere at about 102% of the frame with its top and
-            bottom cut off. The intent was "a piece of a world rather than a
-            small ball on a page", and what it produced was neither: a circle
-            whose silhouette leaves the frame stops reading as a sphere and
-            becomes a faint field of graticule behind the type. The curved edge
-            is the only thing that says *globe*, and it was the part not on
-            screen.
-
-            NOTE THE TWO FACTORS BETWEEN THIS NUMBER AND WHAT IS DRAWN, because
-            they are not obvious and they compound:
-
-              · `scrub-open` holds the layer at `1 − grow` at rest — 0.86 here.
-              · `Globe` draws its sphere at about 0.86 of its own box, leaving
-                the remainder for the atmosphere glow.
-
-            The exact figure, since the brief asks for one and the two factors
-            are easy to get wrong by eye:
-
-              sphere diameter = box × (1 − 2·SPHERE_INSET) × (1 − grow)
-                              = box × 0.88 × 0.86
-                              = box × 0.757
-
-            At `95vh` the box is 0.95 of the frame, so the sphere sits at
-            **72% of the hero's height at rest** — inside the 65–75% the brief
-            asks for, horizon visible all the way round with air above and
-            below — and opens toward 84% as the scene runs, which is the "opens
-            into full size" move this layer has always made.
-
-            Both constants are load-bearing and both live elsewhere:
-            `SPHERE_INSET` in Globe.tsx and `grow` on the `SceneLayer` below.
-            Change either and this number moves.
-
-            `86vw` keeps it inside a narrow screen, where the binding constraint
-            is width rather than height.
-
-            Opacity up from .70/.80 — enough that the continents and graticule
-            read as structure rather than as texture, short of the point where
-            it starts competing with the headline sitting on it. */}
-        <SceneLayer
-          hidden
-          effect="scrub-open"
-          grow={0.14}
-          className="pointer-events-none absolute inset-0 flex items-center justify-center"
-        >
-          <Globe
-            markers={markers}
-            draggable
-            onSelect={(slug) => navigate(`/global-network/${slug}`)}
-            intensity={1}
-            /* Up from 0.86/0.96. The brief asks for the globe to be *clearly*
-               visible and to hold roughly 65–75% of the hero's height, which
-               the sizing below already does — what it did not do was survive
-               the wash sitting over its middle. At full opacity the continents
-               read as structure behind the type rather than as a texture the
-               eye keeps trying to resolve. */
-            className="h-[min(95vh,86vw,50rem)] w-[min(95vh,86vw,50rem)] opacity-[0.94] sm:opacity-100"
-          />
-        </SceneLayer>
-
-        {/* Two overlays doing two jobs. The vignette pulls the corners down so
-            the globe reads as lit from within and stays for the whole scene;
-            the horizontal wash sits only behind the centre band, which is the
-            strip the headline occupies — so it leaves when the headline does,
-            rather than greying the globe for the rest of the shot.
-
-            Placed with `top-[calc(50%-13rem)]` rather than the obvious
-            `top-1/2 -translate-y-1/2`: the scrub owns this element's transform,
-            and a Tailwind translate utility on the same node is a second
-            authority on the same property. Neither may eat pointer events —
-            the globe beneath is draggable. */}
-        <Vignette />
-        <SceneLayer
-          hidden
-          effect="scrub-dissolve"
-          offset={0.14}
-          fade={0.44}
-          travel="0px"
-          /* Re-fitted to the smaller headline: 26rem of wash was sized to a
-             type block a third taller than the one there now, and left over
-             the globe it is no longer protecting. Lighter, too — the band only
-             has to hold the type off the graticule, and at 0.82 it was flatting
-             the middle of the sphere into a grey stripe. */
-          /* Shorter and lighter again, for the same reason as last time: this
-             band exists only to hold the headline off the graticule, and it was
-             cut for a type block a third taller than the one there now. At
-             0.55 it does that and stops flattening the middle of the sphere
-             into a grey stripe — which was the single biggest reason the globe
-             did not read as clearly visible. */
-          className="pointer-events-none absolute inset-x-0 top-[calc(50%-7.5rem)] h-[15rem] bg-[linear-gradient(to_bottom,transparent,rgba(5,11,22,0.55)_30%,rgba(5,11,22,0.55)_70%,transparent)]"
-        />
-
-        {/* --- The type, clearing from the outside in.
-            The eyebrow goes first and fastest, the supporting line and the
-            controls follow, and the headline holds longest because it is the
-            thing the visitor came to read. Each line travels a little further
-            than the one before, which is what makes the group read as one
-            movement rather than four things switching off in sequence.
-
-            `pointer-events-none` on the whole column, restored only on the
-            controls: everywhere else in the hero the drag reaches the globe. */}
-        <Container size="wide" className="pointer-events-none relative z-10">
-          <div className="text-center">
-            <SceneLayer effect="scrub-dissolve" fade={0.28} travel="-26px">
-              <Eyebrow className="justify-center">
-                Founded 20 April 2023 · Seoul
-              </Eyebrow>
-            </SceneLayer>
-
-            <SceneLayer
-              effect="scrub-dissolve-x"
-              offset={0.12}
-              fade={0.54}
-              travel="-72px"
-              /* The ceremonial line leaves *across* the frame as well as up —
-                 the one gesture in the scene that moves sideways, on the line
-                 that says "Across Borders". Small: 4vw over the whole exit is a
-                 drift, and anything more turns a departure into a slide. */
-              span="4vw"
-            >
-              {/*
-               * The site's one genuinely ceremonial line, so it takes the
-               * cinematic register: wide-tracked serif capitals, second line
-               * filled with the sheen gradient.
-               *
-               * Tracking is applied to the right of every glyph, the last one
-               * included, which pushes a centred line half a step left. Each
-               * line takes that step back with its own negative margin.
-               *
-               * SIZE. Both lines are down about 30% from where they were
-               * (3.6rem / 5.4rem at the cap). At the old size the headline
-               * measured 91% of the viewport width and ran edge to edge across
-               * the middle of the globe, so the sphere was only ever visible in
-               * the corners. The register is unchanged — same face, same
-               * tracking, same sheen on the second line — it simply no longer
-               * occupies the whole frame, which is what lets the thing behind
-               * it be seen. The lower bounds come down further still, because
-               * a phone has the least room to spare and the globe has to
-               * survive there too.
-               */}
-              <h1 className="mt-10 font-serif font-normal uppercase">
-                <span className="block -mr-[0.16em] text-[clamp(0.9375rem,2.4vw,1.75rem)] leading-[1.32] tracking-[0.16em] text-paper">
-                  Building Ethical Leaders
-                </span>
-                <span className="sheen mt-2.5 block -mr-[0.18em] text-[clamp(1.25rem,3.6vw,2.75rem)] leading-[1.14] tracking-[0.18em]">
-                  Across Borders
-                </span>
-              </h1>
-            </SceneLayer>
-
-            <SceneLayer effect="scrub-dissolve" offset={0.06} fade={0.34} travel="-42px">
-              {/*
-               * SECOND IN THE HIERARCHY, AND NOW SET LIKE IT.
-               *
-               * 15px light grey under a 60px headline is not a supporting line,
-               * it is a caption — and it was carrying the only plain-English
-               * sentence on the first screen explaining what this organisation
-               * actually is. At `text-lead` in `paper/90` it reads as the
-               * second thing on the page rather than the fifth.
-               *
-               * `max-w-2xl` over the old `max-w-xl` because the line got
-               * bigger; the measure is what matters, not the box, and 36rem at
-               * 22px was breaking a two-line sentence into four.
-               */}
-              {/*
-               * THE SENTENCE THAT HAS TO DO THE EXPLAINING.
-               *
-               * The slogan above is ceremony and says nothing checkable; this
-               * is where a visitor finds out what IES actually is. It is set
-               * at `text-lead` in full paper — second in the hierarchy and set
-               * like it — and the first clause is emphasised because "a
-               * student-run ethics society" is the single fact everything else
-               * on the site depends on.
-               *
-               * `max-w-3xl`, not `2xl`: the sentence is longer than the one it
-               * replaced because it carries three facts instead of none, and
-               * at 36rem it was breaking into five short centred lines.
-               */}
-              <p className="text-lead mx-auto mt-7 max-w-3xl text-center text-paper">
-                A <strong className="font-semibold text-paper">student-run ethics society</strong>{' '}
-                founded in Seoul in April 2023, now working across Korea, the United States,
-                and the United Kingdom. Students run moderated forums on contested questions,
-                then take what they conclude into service in their own communities.
-              </p>
-            </SceneLayer>
-
-            {/* `scene-exit`: these dissolve, and a dissolved button is still a
-                click target and still a tab stop. See index.css. */}
-            <SceneLayer
-              effect="scrub-dissolve"
-              offset={0.04}
-              fade={0.3}
-              travel="-34px"
-              className="scene-exit"
-            >
-              <div className="pointer-events-auto mt-12 flex flex-wrap justify-center gap-4">
-                <Button to="/our-work" variant="primary" arrow>
-                  See What We Run
-                </Button>
-                <Button to="/join" variant="secondary">
-                  Join IES
-                </Button>
-              </div>
-            </SceneLayer>
-          </div>
-        </Container>
-
-        {/* --- The figures, arriving into the space the type has left.
-            The one layer in this scene that enters rather than leaves, and held
-            back until the headline is most of the way gone — an arrival only
-            reads as an arrival if there is somewhere for it to arrive. Four
-            across at the widest, since `736,000+` needs the room the old
-            three-up layout denied it.
-
-            ABSOLUTELY POSITIONED, AND THAT IS A BUG FIX RATHER THAN A LAYOUT
-            PREFERENCE.
-
-            This block used to sit in the flow underneath the type column. The
-            frame centres its content, so those ~160px counted toward the
-            centred stack even though the figures are invisible until the scene
-            is nearly half over — and once the stack grew taller than the frame's
-            content box (which it did as soon as the descriptor was set at lead
-            size), the overflow split evenly top and bottom and pushed the
-            eyebrow *up into the fixed header*. On a 1470×760 window "Founded 20
-            April 2023 · Seoul" was rendering across the nav rail's GLOBAL
-            NETWORK and OUR WORK.
-
-            Out of the flow, the type column centres on its own and the figures
-            arrive where the note above says they do — in the space the type has
-            left, at the foot of the frame. The `bottom-24` clears the scroll cue
-            below it, and the two never share the screen anyway: the cue is gone
-            by 0.16 and these do not begin arriving until 0.46. */}
-        <Container
-          size="wide"
-          className="pointer-events-none absolute inset-x-0 bottom-24 z-10"
-        >
-          <SceneLayer effect="scrub-rise" offset={0.46} travel="44px">
-            {/*
-             * TERTIARY, AND THE LABEL IS NOW THE READABLE HALF.
-             *
-             * `dt` was `sr-only` and the visible label was a 9px caption under
-             * the figure, which inverted the pair: a sighted reader met `42+`
-             * with no idea what it counted until they had decoded a line of
-             * tracked capitals below it. The label is real markup again, at a
-             * legible size, and the figure carries the accent on its suffix the
-             * same way the impact ledger does — one treatment for a statistic
-             * across the whole site.
-             */}
-            <dl className="mx-auto grid max-w-4xl grid-cols-2 gap-x-8 gap-y-8 border-t border-mist/20 pt-8 sm:grid-cols-4">
-              {headlineStats.slice(0, 4).map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <dd className="font-serif text-[1.875rem] font-medium text-paper tabular-nums lining-nums sm:text-[2.25rem]">
-                    {stat.value.toLocaleString('en-US')}
-                    <span className="text-[var(--accent)]">{stat.suffix}</span>
-                  </dd>
-                  <dt className="text-label-sm mt-2 font-semibold text-mist uppercase">
-                    {stat.label}
-                  </dt>
-                </div>
-              ))}
-            </dl>
-          </SceneLayer>
-        </Container>
-
-        {/* --- The invitation to leave.
-            A hero that pins for most of two screens has one honest problem: a
-            held frame and a page that has not moved yet look identical, so a
-            visitor can read a stopped page as a finished one. This says which
-            it is, and then gets out of the way — `fade={0.16}` means it is gone
-            within the first sixth of the scene, before the type has finished
-            clearing. It is the shortest-lived layer in the hero on purpose:
-            once the page is demonstrably moving, an instruction to move it is
-            just something else on the screen.
-
-            Absolutely positioned rather than in flow, so it cannot push the
-            type block off centre, and `hidden` because it is scenery — a
-            screen-reader user is not navigating by scroll cue. */}
-        <SceneLayer
-          hidden
-          effect="scrub-dissolve"
-          fade={0.16}
-          travel="-14px"
-          className="pointer-events-none absolute inset-x-0 bottom-10 z-10 flex flex-col items-center gap-3"
-        >
-          <span className="text-[0.6875rem] font-semibold tracking-[0.12em] text-slate uppercase">
-            Scroll to explore
-          </span>
-          {/* A rule that fades out downward rather than an arrow glyph: the
-              hero's whole register is hairlines and tracked capitals, and a ↓
-              is the one piece of UI furniture in it. */}
-          <span className="block h-12 w-px bg-[linear-gradient(to_bottom,var(--accent),transparent)] opacity-70" />
-        </SceneLayer>
-
-        <Seam edge="bottom" />
-      </StickyScene>
+      <HomeHero />
 
       {/* ====================================================== WHO WE ARE */}
       {/*
@@ -522,6 +187,13 @@ export default function Home() {
           well — one at a time, in order, at the same size. The heading stays
           in the vertical flow above it so the section announces itself before
           the pin takes the viewport. */}
+      {/* The qualifier that used to follow the pan — "the Foundation does not
+          replace the branches" — is part of this heading now.
+          It was a 185px section containing one paragraph, sitting between the
+          end of a pinned scene and the start of a gallery, which is the shape
+          this page had too much of: a whole movement of the page spent on a
+          sentence. It belongs with the claim it qualifies, not a scene away
+          from it. */}
       <Section id="network" size="compact" className="overflow-hidden">
         <Container size="wide">
           <Scrub effect="scrub-rise">
@@ -530,25 +202,26 @@ export default function Home() {
               eyebrow="Where We Are"
               ghost="Network"
               title="One society, three countries."
-              lead="Korea is the original branch and the operational headquarters. The United States and the United Kingdom run their own programming to the same standards."
+              lead={
+                <>
+                  <span className="block">
+                    Korea is the original branch and the operational headquarters. The United
+                    States and the United Kingdom run their own programming to the same
+                    standards.
+                  </span>
+                  <span className="mt-4 block text-[0.9375rem] text-mist">
+                    The Foundation does not replace the branches. It sets the standards they
+                    share and runs the programming that crosses between them; everything local
+                    is the branch’s own.
+                  </span>
+                </>
+              }
             />
           </Scrub>
         </Container>
       </Section>
 
       <NetworkScene />
-
-      <Section size="compact" className="overflow-hidden">
-        <Container size="wide">
-          <Scrub effect="scrub-rise">
-            <p className="max-w-[62ch] text-[0.9375rem] leading-relaxed text-mist">
-              The Foundation does not replace the branches. It sets the standards they share
-              and runs the programming that crosses between them; everything local is the
-              branch’s own.
-            </p>
-          </Scrub>
-        </Container>
-      </Section>
 
       {/* ========================================================= GALLERY */}
       {/* Deliberately not directly under the hero. Who IES is and how the three
@@ -592,22 +265,11 @@ export default function Home() {
       <MissionScene />
 
       {/* ======================================================= THREE A'S */}
-      {/* Third horizontal scene, and the most abstract of the three — by this
-          point the visitor has been taught how the pan behaves twice. */}
-      <Section id="three-as" size="compact">
-        <Container size="wide">
-          <Scrub effect="scrub-rise">
-            <SectionHeading
-              index="07"
-              eyebrow="How We Work"
-              title="The Three A’s"
-              lead="The test every IES programme is held to, unchanged since 2023 and applied the same way in every branch."
-            />
-          </Scrub>
-        </Container>
-      </Section>
-
-      <ValuePanels />
+      {/* No longer a horizontal scene, and no longer preceded by a heading
+          section of its own — it carries both now. Three values of two
+          sentences each did not justify three screens of pin, and it was the
+          third pan on the page; see the note at the top of `ValuePanels`. */}
+      <ValuePanels id="three-as" index="07" />
 
       {/* ============================================================ IMPACT */}
       {/*
@@ -670,13 +332,47 @@ export default function Home() {
         </Container>
       </Section>
 
+      {/*
+       * THE CLOSING ASK, DESCRIBED RATHER THAN LABELLED.
+       *
+       * The three destinations are unchanged; what changed is that each one now
+       * says who it is for before it says where it goes. The sentence that used
+       * to carry all three conditions — "if your school already has a chapter …
+       * if it does not … if you are an organization" — was doing the work of
+       * three columns in one paragraph, above three buttons whose labels
+       * repeated none of it. A reader had to hold the paragraph in their head
+       * and map it onto the buttons themselves. See the `routes` note in
+       * `CallToAction`.
+       */}
       <CallToAction
         title="Three ways in."
-        body="If your school already has an IES chapter, join it. If it does not, start one — you will need a founding team and an annual plan. If you are an organization, we scope partnerships in writing."
+        body="Every one of them leads to real responsibility rather than a membership list. Pick the one that matches what you actually want to take on."
+        routes={[
+          {
+            audience: 'Students',
+            title: 'Join as a student',
+            body: 'If your school already has an IES chapter, join it — programming runs week to week, and officer roles open to members who want them.',
+            linkLabel: 'See the pathways',
+            to: '/join',
+          },
+          {
+            audience: 'Students without a chapter',
+            title: 'Start a chapter',
+            body: 'The most demanding way in and the one with the most ownership. You will need a founding team and a plan for your school’s first year.',
+            linkLabel: 'See the process',
+            to: '/start-a-chapter',
+          },
+          {
+            audience: 'Schools and organizations',
+            title: 'Partner with us',
+            body: 'Partnerships are scoped in writing, against the same conduct and participant safety standards as our own programming.',
+            linkLabel: 'Start a conversation',
+            to: '/partners',
+          },
+        ]}
         actions={[
-          { label: 'Join as a Student', to: '/join', variant: 'primary' },
-          { label: 'Start a Chapter', to: '/start-a-chapter' },
-          { label: 'Partner With Us', to: '/partners' },
+          { label: 'Join IES', to: '/join', variant: 'primary' },
+          { label: 'Contact the team', to: '/contact' },
         ]}
       />
     </>

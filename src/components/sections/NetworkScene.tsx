@@ -53,7 +53,19 @@ const glowFor = (strength: number) =>
 
 export function NetworkScene() {
   return (
-    <PinnedScene label="The three national branches" vhPerPanel={96} wordmark="Network">
+    <PinnedScene
+      label="The three national branches"
+      /* 88 and 16, from 96 and 30. The pan is unchanged in kind — three
+         branches, one screen each, in order — and the reading of each panel is
+         not what the last 8vh was buying. The run-out is the bigger cut: 30vh
+         of held frame after the third panel has landed is most of a screen in
+         which the reader keeps scrolling and nothing moves, which is the exact
+         failure the run-out exists to prevent at the *start* of a panel. 16 is
+         enough to read the last dossier without the scene going quiet. */
+      vhPerPanel={88}
+      runOut={16}
+      wordmark="Network"
+    >
       {branches.map((branch, index) => {
         const accent = 'var(--color-gold)' 
         return (

@@ -330,7 +330,7 @@ const MOSAIC_SLOTS = [
   { className: 'sm:col-span-7 sm:row-span-2', aspect: '7 / 8', depth: '34px', sizes: SIZES.half },
   { className: 'sm:col-span-5', aspect: '5 / 4', depth: '72px', sizes: SIZES.card },
   { className: 'sm:col-span-5', aspect: '5 / 4', depth: '72px', sizes: SIZES.card },
-  { className: 'sm:col-span-12', aspect: '21 / 9', depth: '30px', sizes: SIZES.full },
+  { className: 'sm:col-span-12', aspect: '21 / 7', depth: '30px', sizes: SIZES.full },
 ] as const
 
 function MosaicTile({
@@ -414,21 +414,25 @@ export function GallerySection({
   if (items.length === 0) return null
 
   /*
-   * Two measures — eight photographs — and no more.
+   * ONE MEASURE — four photographs — and no more.
    *
-   * Two constraints meet here. Whole measures only: thirteen photographs into a
-   * four-slot measure leaves an orphan tile in a half-built row, and the
-   * layout's whole argument is that the sizes are chosen, so a stray half-width
-   * tile at the end reads as a bug rather than as an edit.
+   * Whole measures only, and that constraint has not changed: thirteen
+   * photographs into a four-slot measure leaves an orphan tile in a half-built
+   * row, and the layout's whole argument is that the sizes are chosen, so a
+   * stray half-width tile at the end reads as a bug rather than as an edit.
    *
-   * And two rather than three, because the mosaic is expensive in page height:
-   * one measure is about 1,500px, so showing all twelve made this single
-   * section of the home page taller than four screens. A home-page gallery
-   * exists to establish that the work is real and photographed, which eight
-   * photographs do as well as twelve; the full record is one link away and
-   * carries every one of them.
+   * WHAT CHANGED IS THE COUNT, from two measures to one, and the reason is that
+   * the page around this section now carries photography it did not before. The
+   * home hero opens on three photographs of the work; the five panels of Our
+   * Work below are each a picture of that work happening. Eight more here was
+   * the same argument made a third time, at 1,500px a measure — this section
+   * alone was over four screens tall.
+   *
+   * A home-page gallery exists to establish that the work is real and
+   * photographed. Four photographs do that; the link below carries every one of
+   * them, and the sentence above says how many there are.
    */
-  const shown = items.slice(0, MOSAIC_SLOTS.length * 2)
+  const shown = items.slice(0, MOSAIC_SLOTS.length)
 
   return (
     <Section id={id} tone="deep" size="compact">
@@ -455,9 +459,14 @@ export function GallerySection({
                 What the work actually looks like.
               </h2>
             </div>
+            {/* Says what is below *and* what is behind the link. The old
+                wording — "every photograph below … across N initiatives" —
+                described the whole archive while the section showed a
+                selection of it, which is a small untruth on a page whose
+                entire argument is that the record is real. */}
             <p className="measure-lead text-mist">
-              Every photograph below was taken at the programme it shows, across{' '}
-              <span className="text-paper">{items.length} initiatives</span>.
+              Every photograph was taken at the programme it shows. The full record runs to{' '}
+              <span className="text-paper">{items.length} documented initiatives</span>.
             </p>
           </div>
         </Reveal>

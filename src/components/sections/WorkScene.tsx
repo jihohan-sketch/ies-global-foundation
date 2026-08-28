@@ -60,7 +60,15 @@ const scenes = workCategories.filter(
 
 export function WorkScene() {
   return (
-    <PinnedScene label="What IES does" vhPerPanel={96}>
+    <PinnedScene
+      label="What IES does"
+      /* The longest pan on the page — five panels — so it is also the one where
+         the per-panel cost compounds hardest: every 8vh trimmed here is 40vh off
+         the page. 88 keeps the "one turn, one panel" reading the pace dial
+         exists to protect; see the note on `vhPerPanel` in PinnedScene. */
+      vhPerPanel={88}
+      runOut={16}
+    >
       {scenes.map((category, index) => (
         <div key={category.id} className="relative flex w-full items-center self-stretch">
           {/*

@@ -67,7 +67,7 @@ export function ImpactLedger({ index = '04' }: { index?: string } = {}) {
        * where it belongs, between the photographs and the work.
        */
       data-ground="light"
-      className="section-edge relative overflow-hidden bg-paper py-20 text-navy sm:py-28 lg:py-32"
+      className="section-edge relative overflow-hidden bg-paper py-16 text-navy sm:py-20 lg:py-24"
     >
       <Container size="wide" className="relative">
         <GhostTitle>Scale</GhostTitle>
@@ -82,7 +82,7 @@ export function ImpactLedger({ index = '04' }: { index?: string } = {}) {
             />
           </Scrub>
 
-          <dl className="mt-16">
+          <dl className="mt-12">
             {headlineStats.map((stat, i) => {
               const note = stat.note ?? noteFor.get(stat.label)
               return (
@@ -90,7 +90,7 @@ export function ImpactLedger({ index = '04' }: { index?: string } = {}) {
                 <Scrub effect="scrub-rule" className="block h-px w-full bg-navy/16" />
 
                 <div
-                  className="flex flex-col gap-x-10 gap-y-3 py-8 lg:flex-row lg:items-baseline lg:py-10"
+                  className="flex flex-col gap-x-10 gap-y-3 py-6 lg:flex-row lg:items-baseline lg:py-7"
                   /* One step of indent per row. Capped by the array length in
                      practice — five rows at 1.6% is a 6.4% drift, which is a
                      diagonal you can feel and not one you have to measure.
@@ -121,7 +121,20 @@ export function ImpactLedger({ index = '04' }: { index?: string } = {}) {
                       that has to be legible. Weight is up from 300 to 500 for
                       the same reason it is everywhere else on the site. */}
                   <Scrub effect="scrub-figure" className="min-w-0 lg:shrink-0">
-                    <dd className="font-serif leading-[0.85] font-medium tracking-[-0.03em] text-navy [font-size:clamp(3.25rem,10vw,8.5rem)]">
+                    {/*
+                      DOWN FROM 10vw / 8.5rem, AND THE REASON IS THE NEW HERO.
+                      Four of these five figures are now on screen in the first
+                      viewport, at the size a headline statistic wants. Printing
+                      them again at 144px makes the ledger a louder repeat of
+                      something the visitor has already been told, and it is not
+                      what this section is for: the ledger's own contribution is
+                      the *note* under each figure, which is the only place on
+                      the page that says what is being counted. At 7vw the
+                      numeral still leads the row and the sentence explaining it
+                      is no longer a footnote to it — and five rows come down
+                      from 202px each to about 150.
+                    */}
+                    <dd className="font-serif leading-[0.85] font-medium tracking-[-0.03em] text-navy [font-size:clamp(2.75rem,7vw,6rem)]">
                       <Counter stat={stat} suffixClassName="text-[var(--accent)]" />
                     </dd>
                   </Scrub>

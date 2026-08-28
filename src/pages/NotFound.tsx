@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Button, Container, Eyebrow } from '@/components/ui/Primitives'
-import { primaryNav } from '@/content/site'
+import { allNav } from '@/content/site'
 import { useSeo } from '@/lib/seo'
 
 export default function NotFound() {
@@ -31,7 +31,7 @@ export default function NotFound() {
 
         <nav aria-label="Site sections" className="mt-16 border-t border-mist/15 pt-8">
           <ul className="grid gap-x-10 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
-            {primaryNav.map((item) => (
+            {allNav.map((item) => (
               <li key={item.href}>
                 <Link
                   to={item.href}

@@ -731,6 +731,54 @@
 }
 
 /* ==========================================================================
+   FIRST-SCREEN ENTRANCE
+   ==========================================================================
+
+   `.reveal` is the site's entrance everywhere, and it is the wrong one for the
+   home hero — which is the only content on the site guaranteed to be on screen
+   before anything has scrolled.
+
+   Two costs, and both land hardest on exactly the content a visitor arrived to
+   see. `.reveal` starts at `opacity: 0` and waits for an IntersectionObserver
+   callback, so the first screen is blank until React has hydrated and the
+   observer has fired; and its transition is 1.1s, tuned for copy a reader has
+   deliberately scrolled to rather than for a headline they are waiting on. A
+   hero that takes over a second to become legible reads as a page that has
+   failed to load, and if the bundle never arrives it never becomes legible at
+   all.
+
+   This runs off the stylesheet instead: no observer, no hydration, no
+   JavaScript. It begins the moment the rule is parsed, which for a first-screen
+   element is the moment it is painted. Shorter, too — 700ms, because an
+   entrance the visitor did not ask for by scrolling should be over by the time
+   they have finished reading the first line.
+
+   `--hero-delay` is the stagger. Keep the ladder short: the last element in the
+   sequence has to be settled well inside the first second.
+
+   Under `prefers-reduced-motion` this is deliberately NOT exempted the way
+   `.reveal` is — the blanket rule below collapses the duration to nothing and
+   the element simply appears, which is the correct behaviour and costs the
+   first screen no legibility.
+   ========================================================================== */
+
+.hero-in {
+  animation: ies-hero-in 700ms var(--ease-out-quint) both;
+  animation-delay: var(--hero-delay, 0ms);
+}
+
+@keyframes ies-hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
    SCROLL REVEAL
    ========================================================================== */
 

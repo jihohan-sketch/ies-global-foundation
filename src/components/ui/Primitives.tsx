@@ -265,11 +265,33 @@ type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'onLight'
  * the highest-contrast pair on the site — right for the one control a section
  * actually wants pressed.
  */
+/*
+ * THE TRANSITION LIST IS EXPLICIT, AND THAT IS THE POINT OF IT.
+ *
+ * This was `transition-all duration-500`, which is two mistakes in one
+ * utility. `all` means the browser watches every animatable property on the
+ * element, including `transform` — and the press state below moves the button
+ * a pixel, which under `all` took half a second to happen and another half to
+ * come back. A press has to be acknowledged inside about 100ms or it does not
+ * read as an acknowledgement at all; at 500ms the button appears to sag some
+ * time after the click it was responding to.
+ *
+ * So colour, border and the glow keep the slow cinematic ease — they are the
+ * hover, and the hover is meant to be a warming rather than a switch — and
+ * `transform` is left out of the list entirely, so the press lands on the
+ * frame it happens.
+ */
 const buttonBase =
-  'group inline-flex min-h-11 items-center justify-center gap-3 rounded-[2px] px-9 py-4 text-[0.75rem] font-semibold tracking-[0.13em] uppercase transition-all duration-500 ease-[var(--ease-cinema)] focus-visible:outline-2 focus-visible:outline-offset-3'
+  'group inline-flex min-h-11 items-center justify-center gap-3 rounded-[2px] px-9 py-4 text-[0.75rem] font-semibold tracking-[0.13em] uppercase transition-[color,background-color,border-color,box-shadow] duration-500 ease-[var(--ease-cinema)] active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-3'
 
 const buttonVariants: Record<ButtonVariant, string> = {
-  primary: 'bg-gold text-navy hover:bg-gold-300',
+  /* The glow, and it is the one place on the site a shadow is allowed.
+     Everything else here is drawn with hairlines, but this is the single
+     control a section actually wants pressed, and a warm bloom off a gold fill
+     on a near-black ground is the same light the seams and the globe cast — it
+     reads as the button lighting up rather than as a card floating. */
+  primary:
+    'bg-gold text-navy hover:bg-gold-300 hover:shadow-[0_0_32px_-8px_rgba(200,169,107,0.6)]',
   secondary:
     'border border-mist/45 text-paper hover:border-gold/70 hover:bg-gold/10 hover:text-gold',
   ghost: 'text-paper hover:text-gold px-0 py-1 tracking-[0.14em]',

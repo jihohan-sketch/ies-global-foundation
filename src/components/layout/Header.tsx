@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { PINNED, observeScroll } from '@/lib/scroll'
-import { primaryNav, site } from '@/content/site'
+import { primaryNav, secondaryNav, site } from '@/content/site'
 import { branches } from '@/content/branches'
 import { Button, Container } from '@/components/ui/Primitives'
 import { Logo } from './Logo'
@@ -385,7 +385,18 @@ export function Header() {
               aria-label="Primary"
               className={cx('overflow-hidden', scrolled && 'invisible')}
             >
-              <ul className="flex items-center justify-between border-t border-[var(--bar-ink)]/15 pt-4 pb-5">
+              {/*
+               * Left-aligned with fixed gaps, not `justify-between`.
+               *
+               * Spread edge to edge was right for nine items — they filled the
+               * rail and the spacing read as a measure. At five the same rule
+               * puts roughly 200px between neighbours on a wide monitor, which
+               * stops reading as a menu and starts reading as five unrelated
+               * words along the top of the page. Fixed gaps give the group a
+               * left edge, and it is the same left edge as the wordmark below
+               * it, every section heading, and the hero's first column.
+               */}
+              <ul className="flex items-center gap-x-9 border-t border-[var(--bar-ink)]/15 pt-4 pb-5 lg:gap-x-12">
                 {primaryNav.map((item) => (
                   <li key={item.href}>
                     <NavLink
@@ -463,8 +474,8 @@ export function Header() {
       >
         {/* `min-h-full` with `place-items-center`, not `h-full`: the column
             centres in the viewport when it fits and scrolls from the top when
-            it does not, which is what a nine-entry menu on a short laptop
-            window needs. */}
+            it does not, which is what a full menu on a short laptop window
+            needs. */}
         <div className="grid min-h-full place-items-center px-6 py-28">
           <div className="w-full max-w-3xl">
             <nav aria-label="Site" className="flex flex-col items-center">
@@ -508,6 +519,43 @@ export function Header() {
               }}
             >
               <div className="mx-auto mt-12 h-px w-full max-w-md bg-mist/15" />
+
+              {/*
+               * THE SECOND TIER, AND THE OVERLAY IS WHERE IT LIVES.
+               *
+               * The header rail carries five destinations now rather than nine
+               * — see the note on `primaryNav`. These four are the rest, and
+               * they are set smaller and in a row rather than at display size
+               * in the column, which is the whole point: the column is the
+               * first-visit path, and this is everything else, one click away
+               * and visibly a second rank rather than hidden.
+               *
+               * A row rather than a dropdown on the rail. A hover menu is the
+               * obvious alternative and it has no answer on a touch screen,
+               * where there is no hover to open it with.
+               */}
+              <p className="mt-10 text-center text-[0.6875rem] font-semibold tracking-[0.12em] text-mist uppercase">
+                More
+              </p>
+              <div className="mt-5 flex flex-wrap justify-center gap-x-9 gap-y-3">
+                {secondaryNav.map((item) => (
+                  <NavLink
+                    key={item.href}
+                    to={item.href}
+                    tabIndex={open ? 0 : -1}
+                    className={({ isActive }) =>
+                      cx(
+                        '-mr-[0.14em] font-serif text-[1.0625rem] tracking-[0.14em] uppercase transition-colors duration-300',
+                        isActive ? 'text-[var(--accent)]' : 'text-paper/85 hover:text-[var(--accent)]',
+                      )
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                ))}
+              </div>
+
+              <div className="mx-auto mt-11 h-px w-full max-w-md bg-mist/15" />
 
               <p className="mt-10 text-center text-[0.6875rem] font-semibold tracking-[0.12em] text-mist uppercase">
                 National Branches
