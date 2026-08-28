@@ -51,7 +51,7 @@ export default function StartChapter() {
       </Section>
 
       {/* ==================================================== EXPECTATIONS */}
-      <Section tone="deep" className="border-y border-mist/12">
+      <Section tone="deep" >
         <Container size="wide">
           <Reveal>
             <SectionHeading
@@ -64,7 +64,7 @@ export default function StartChapter() {
           <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {chapterExpectations.map((item, i) => (
               <Reveal key={item.title} delay={i * 80}>
-                <Card className="h-full p-7">
+                <Card className="h-full">
                   <h3 className="font-serif text-lg text-[var(--accent)]">{item.title}</h3>
                   <p className="mt-3.5 text-[0.9375rem] leading-relaxed text-mist">
                     {item.body}

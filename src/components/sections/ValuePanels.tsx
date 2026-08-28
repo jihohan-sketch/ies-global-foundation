@@ -30,25 +30,33 @@ import { threeAs } from '@/content/site'
  * into the next as they cross, so the boundary is never visible even though the
  * two panels are unmistakably different places.
  */
-const PANELS = [
-  { accent: 'var(--color-sky)', glow: '142, 184, 232' },
-  { accent: 'var(--color-sage)', glow: '143, 191, 168' },
-  { accent: 'var(--color-clay)', glow: '217, 152, 120' },
-] as const
+/*
+ * ONE ACCENT, THREE DEPTHS.
+ *
+ * These three panels used to be sky, sage and clay — a different colour per
+ * value. Three colours across three panels of one framework makes the Three
+ * A's look like three unrelated ideas, which is the opposite of what the
+ * section is for: they are one framework with three faces. The blue is now
+ * constant and the *glow* steps instead, so the pan still rises and falls
+ * across its length without ever changing identity.
+ */
+const GLOW_STRENGTHS = [0.2, 0.15, 0.11] as const
 
-const glowFor = (rgb: string) =>
-  `radial-gradient(ellipse 78% 68% at 50% 50%, rgba(${rgb}, 0.17) 0%, rgba(${rgb}, 0.07) 46%, transparent 76%)`
+const glowFor = (strength: number) =>
+  `radial-gradient(ellipse 78% 68% at 50% 50%, rgba(200, 169, 107, ${strength}) 0%, rgba(200, 169, 107, ${
+    strength * 0.4
+  }) 46%, transparent 76%)`
 
 export function ValuePanels() {
   return (
     <PinnedScene label="The Three A’s" className="border-y border-mist/12" wordmark="Ethics">
       {threeAs.map((item, index) => {
-        const panel = PANELS[index % PANELS.length]
+        const accent = 'var(--color-gold)' 
         return (
           <div
             key={item.title}
             className="relative flex w-full items-center self-stretch"
-            style={{ backgroundImage: glowFor(panel.glow) }}
+            style={{ backgroundImage: glowFor(GLOW_STRENGTHS[index % GLOW_STRENGTHS.length]) }}
           >
             {/* Furthest back: the initial, set enormous and barely visible.
                 aria-hidden — it is the same letter the heading already starts
@@ -66,7 +74,7 @@ export function ValuePanels() {
             >
               <span
                 className="font-serif leading-none select-none"
-                style={{ fontSize: 'min(58vw, 34rem)', color: panel.accent, opacity: 0.06 }}
+                style={{ fontSize: 'min(58vw, 34rem)', color: accent, opacity: 0.07 }}
               >
                 {item.title.charAt(0)}
               </span>
@@ -83,7 +91,7 @@ export function ValuePanels() {
                   fadeIn={0.18}
                   fadeOut={0.44}
                   className="text-[0.6875rem] font-semibold tracking-[0.12em] uppercase"
-                  style={{ color: panel.accent }}
+                  style={{ color: accent }}
                 >
                   {item.title.charAt(0)} · Value {String(index + 1).padStart(2, '0')} /{' '}
                   {String(threeAs.length).padStart(2, '0')}
@@ -108,7 +116,7 @@ export function ValuePanels() {
                   fadeIn={0.26}
                   fadeOut={0.32}
                   className="mt-6 text-[0.75rem] font-medium tracking-[0.2em] uppercase"
-                  style={{ color: panel.accent }}
+                  style={{ color: accent }}
                 >
                   {item.subtitle}
                 </SceneLayer>

@@ -139,7 +139,7 @@ export default function Leadership() {
       </Section>
 
       {/* ================================================= GLOBAL FOUNDATION */}
-      <Section tone="deep" className="border-y border-mist/12">
+      <Section tone="deep" >
         <Container size="wide">
           <Reveal>
             <SectionHeading
@@ -155,7 +155,7 @@ export default function Leadership() {
               const officeTitle = group.map((office) => office.title).join(' · ')
               return (
                 <Reveal key={officeTitle} delay={i * 100}>
-                  <Card className="h-full p-8">
+                  <Card className="h-full">
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <h3 className="font-serif text-xl">{officeTitle}</h3>
@@ -189,7 +189,7 @@ export default function Leadership() {
                             </span>
                           )}
                           <div className="min-w-0">
-                            <p className="text-[0.9375rem] text-paper/90">
+                            <p className="text-[0.9375rem] text-paper">
                               {holder.name}
                               {holder.koreanName && (
                                 <span className="ml-2 text-mist">
@@ -274,7 +274,7 @@ export default function Leadership() {
 
       {/* ================================================ BOARD OF DIRECTORS */}
       {boardLeadership.length > 0 && (
-        <Section tone="deep" className="border-y border-mist/12">
+        <Section tone="deep" >
           <Container size="wide">
             <Reveal>
               <SectionHeading
@@ -344,7 +344,7 @@ export default function Leadership() {
       </Section>
 
       {/* ============================================================ NOTICE */}
-      <Section tone="deep" size="compact" className="border-t border-mist/12">
+      <Section tone="deep" size="compact" >
         <Container size="wide">
           <Reveal>
             <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-20">

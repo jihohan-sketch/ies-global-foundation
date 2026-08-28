@@ -215,7 +215,7 @@ export function WorkScene() {
                        translucent fill means the chip is legible over a lit
                        classroom wall as well as over a dark auditorium, without
                        reading as a solid button. */
-                    className="border border-mist/30 bg-navy/55 px-3.5 py-1.5 text-[0.8125rem] text-paper/90"
+                    className="border border-mist/30 bg-navy/55 px-3.5 py-1.5 text-[0.8125rem] text-paper"
                   >
                     {example}
                   </SceneLayer>

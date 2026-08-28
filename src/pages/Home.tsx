@@ -5,6 +5,7 @@ import { GhostTitle, SectionIndex, Seam, Vignette } from '@/components/ui/Cinema
 import { LitText, MaskedText } from '@/components/ui/MaskedText'
 import { SceneLayer, Scrub } from '@/components/ui/Scrub'
 import { PersonCard } from '@/components/sections/Cards'
+import { Split } from '@/components/ui/Editorial'
 import { CallToAction } from '@/components/sections/CallToAction'
 import { StickyScene } from '@/components/sections/StickyScene'
 import { SectionRail, type RailSection } from '@/components/layout/SectionRail'
@@ -19,7 +20,7 @@ import { galleryItems } from '@/content/activities'
 import { branches } from '@/content/branches'
 import { headlineStats } from '@/content/impact'
 import { personById } from '@/content/leadership'
-import { site, values } from '@/content/site'
+import { site } from '@/content/site'
 import { useSeo } from '@/lib/seo'
 
 /*
@@ -33,15 +34,15 @@ import { useSeo } from '@/lib/seo'
  * page when a section moves.
  */
 const railSections: readonly RailSection[] = [
-  { id: 'origin', label: 'Introduction' },
-  { id: 'network', label: 'Global Presence' },
-  { id: 'programmes', label: 'Programmes' },
-  { id: 'organizations', label: 'Organizations' },
+  { id: 'origin', label: 'Who We Are' },
+  { id: 'why', label: 'Why We Exist' },
+  { id: 'network', label: 'Where We Are' },
+  { id: 'programmes', label: 'What It Looks Like' },
+  { id: 'organizations', label: 'Who We Work With' },
   { id: 'impact', label: 'Impact' },
-  { id: 'our-work', label: 'Our Work' },
-  { id: 'mission', label: 'Mission' },
-  { id: 'three-as', label: 'Ethics in Action' },
-  { id: 'leadership', label: 'Leadership' },
+  { id: 'our-work', label: 'What We Do' },
+  { id: 'three-as', label: 'How We Work' },
+  { id: 'leadership', label: 'Who Runs It' },
 ]
 
 const markers: GlobeMarker[] = branches.map((branch) => ({
@@ -203,7 +204,13 @@ export default function Home() {
              the globe it is no longer protecting. Lighter, too — the band only
              has to hold the type off the graticule, and at 0.82 it was flatting
              the middle of the sphere into a grey stripe. */
-          className="pointer-events-none absolute inset-x-0 top-[calc(50%-9.5rem)] h-[19rem] bg-[linear-gradient(to_bottom,transparent,rgba(5,10,20,0.7)_30%,rgba(5,10,20,0.7)_70%,transparent)]"
+          /* Shorter and lighter again, for the same reason as last time: this
+             band exists only to hold the headline off the graticule, and it was
+             cut for a type block a third taller than the one there now. At
+             0.55 it does that and stops flattening the middle of the sphere
+             into a grey stripe — which was the single biggest reason the globe
+             did not read as clearly visible. */
+          className="pointer-events-none absolute inset-x-0 top-[calc(50%-7.5rem)] h-[15rem] bg-[linear-gradient(to_bottom,transparent,rgba(5,11,22,0.55)_30%,rgba(5,11,22,0.55)_70%,transparent)]"
         />
 
         {/* --- The type, clearing from the outside in.
@@ -237,7 +244,7 @@ export default function Home() {
               {/*
                * The site's one genuinely ceremonial line, so it takes the
                * cinematic register: wide-tracked serif capitals, second line
-               * filled with the metallic gradient.
+               * filled with the sheen gradient.
                *
                * Tracking is applied to the right of every glyph, the last one
                * included, which pushes a centred line half a step left. Each
@@ -248,17 +255,17 @@ export default function Home() {
                * measured 91% of the viewport width and ran edge to edge across
                * the middle of the globe, so the sphere was only ever visible in
                * the corners. The register is unchanged — same face, same
-               * tracking, same metal on the second line — it simply no longer
+               * tracking, same sheen on the second line — it simply no longer
                * occupies the whole frame, which is what lets the thing behind
                * it be seen. The lower bounds come down further still, because
                * a phone has the least room to spare and the globe has to
                * survive there too.
                */}
-              <h1 className="mt-10 font-serif font-light uppercase">
-                <span className="block -mr-[0.18em] text-[clamp(1.05rem,3.2vw,2.5rem)] leading-[1.3] tracking-[0.18em] text-paper/92">
+              <h1 className="mt-10 font-serif font-normal uppercase">
+                <span className="block -mr-[0.16em] text-[clamp(0.9375rem,2.4vw,1.75rem)] leading-[1.32] tracking-[0.16em] text-paper">
                   Building Ethical Leaders
                 </span>
-                <span className="metal mt-3 block -mr-[0.2em] text-[clamp(1.35rem,4.6vw,3.75rem)] leading-[1.12] tracking-[0.2em]">
+                <span className="sheen mt-2.5 block -mr-[0.18em] text-[clamp(1.25rem,3.6vw,2.75rem)] leading-[1.14] tracking-[0.18em]">
                   Across Borders
                 </span>
               </h1>
@@ -278,8 +285,25 @@ export default function Home() {
                * bigger; the measure is what matters, not the box, and 36rem at
                * 22px was breaking a two-line sentence into four.
                */}
-              <p className="text-lead mx-auto mt-8 max-w-2xl text-center text-paper/90">
-                {site.descriptor}
+              {/*
+               * THE SENTENCE THAT HAS TO DO THE EXPLAINING.
+               *
+               * The slogan above is ceremony and says nothing checkable; this
+               * is where a visitor finds out what IES actually is. It is set
+               * at `text-lead` in full paper — second in the hierarchy and set
+               * like it — and the first clause is emphasised because "a
+               * student-run ethics society" is the single fact everything else
+               * on the site depends on.
+               *
+               * `max-w-3xl`, not `2xl`: the sentence is longer than the one it
+               * replaced because it carries three facts instead of none, and
+               * at 36rem it was breaking into five short centred lines.
+               */}
+              <p className="text-lead mx-auto mt-7 max-w-3xl text-center text-paper">
+                A <strong className="font-semibold text-paper">student-run ethics society</strong>{' '}
+                founded in Seoul in April 2023, now working across Korea, the United States,
+                and the United Kingdom. Students run moderated forums on contested questions,
+                then take what they conclude into service in their own communities.
               </p>
             </SceneLayer>
 
@@ -293,11 +317,11 @@ export default function Home() {
               className="scene-exit"
             >
               <div className="pointer-events-auto mt-12 flex flex-wrap justify-center gap-4">
-                <Button to="/global-network" variant="primary" arrow>
-                  Explore the Network
+                <Button to="/our-work" variant="primary" arrow>
+                  See What We Run
                 </Button>
-                <Button to="/our-work" variant="secondary">
-                  Discover Our Work
+                <Button to="/join" variant="secondary">
+                  Join IES
                 </Button>
               </div>
             </SceneLayer>
@@ -393,32 +417,40 @@ export default function Home() {
         <Seam edge="bottom" />
       </StickyScene>
 
-      {/* ==================================================== INTRODUCTION */}
-      {/* Back to ordinary vertical scrolling, and deliberately so — the hero
-          was a held shot, this is a page again. The heading is one of the two
-          statements on this page that assemble themselves; everything else
-          here simply rises. */}
-      <Section id="origin" tone="deep" className="overflow-hidden border-y border-mist/12">
+      {/* ====================================================== WHO WE ARE */}
+      {/*
+       * The narrative order this page now follows, and it is the brief's:
+       *
+       *   WHO WE ARE → WHY WE EXIST → WHAT WE DO → OUR WORK
+       *              → IMPACT → GET INVOLVED
+       *
+       * The page used to run introduction → branches → photographs →
+       * organisations → figures → work → values → framework → leadership,
+       * which is an *inventory of the organisation* rather than an argument.
+       * A visitor could reach the fourth section without having been told why
+       * IES exists. Every section below now does one job in that sequence, and
+       * each one is a headline, a sentence or two, and then the specifics.
+       */}
+      <Section id="origin" tone="deep" className="overflow-hidden">
         <Container size="wide" className="relative">
-          <GhostTitle>Origin</GhostTitle>
-          <div className="relative z-10 grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
+          <GhostTitle>Who</GhostTitle>
+          <div className="relative z-10 grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
             <div>
               <Scrub effect="scrub-rise">
-                <SectionIndex index="01" label="Introduction" />
+                <SectionIndex index="01" label="Who We Are" />
               </Scrub>
               <MaskedText
-                className="text-h2 mt-6 text-paper"
-                text={['A Global Network Rooted', 'in Ethical Leadership']}
+                className="text-h2 mt-5 text-paper"
+                text={['Students who argue', 'for a living.']}
               />
             </div>
 
             <div className="space-y-6">
               <Scrub effect="scrub-rise" offset={0.05}>
-                <p className="text-lead text-paper/90">
-                  Founded in Seoul on 20 April 2023, the{' '}
-                  <span className="text-paper">Interscholastic Ethics Society</span> has grown
-                  from Korea’s largest student-led ethics organization into an international
-                  youth network.
+                <p className="text-lead text-paper">
+                  The Interscholastic Ethics Society was founded in Seoul on 20 April 2023 by
+                  two students. It is now Korea’s largest student-led ethics organization and
+                  runs in three countries.
                 </p>
               </Scrub>
               {/* The one paragraph on this page that lights as it is read.
@@ -428,15 +460,59 @@ export default function Home() {
               <LitText
                 offset={0.12}
                 className="leading-relaxed text-mist"
-                text={site.headquartersStatement}
+                text="Every role in IES is held by a student — including the ones that carry real consequences. Adults advise; students decide, run the programmes, and answer for how they went."
               />
-              <Scrub effect="scrub-rise" offset={0.18} className="pt-4">
+              <Scrub effect="scrub-rise" offset={0.18}>
+                <p className="text-[0.9375rem] leading-relaxed text-mist">
+                  {site.headquartersStatement}
+                </p>
+              </Scrub>
+              <Scrub effect="scrub-rise" offset={0.22} className="pt-2">
                 <Button to="/about" variant="ghost" arrow>
                   Learn about IES
                 </Button>
               </Scrub>
             </div>
           </div>
+        </Container>
+      </Section>
+
+      {/* ==================================================== WHY WE EXIST */}
+      {/*
+       * The section the page was missing, and the reason the rest of it makes
+       * sense. It is deliberately the shortest on the page: one statement, one
+       * paragraph. Nothing here is new material — the argument is the one the
+       * About page already makes, compressed to the two sentences a visitor
+       * needs before they are shown the programmes.
+       *
+       * On paper, because it is the first thing on this page that has to be
+       * *read* rather than watched, and because a light slab between the
+       * introduction and the network is the cheapest possible way to say
+       * "different kind of section".
+       */}
+      <Section id="why" tone="paper" className="overflow-hidden">
+        <Container size="wide">
+          <Split
+            aside={
+              <Scrub effect="scrub-rise">
+                <SectionIndex index="02" label="Why We Exist" tone="dark" />
+              </Scrub>
+            }
+          >
+            <MaskedText
+              as="h2"
+              className="text-h2 max-w-[20ch] text-navy"
+              text={['Students are taught to succeed.', 'They are rarely asked to', 'decide what success is for.']}
+            />
+            <Scrub effect="scrub-rise" offset={0.12}>
+              <p className="text-lead mt-8 max-w-[52ch] text-navy-600">
+                Schools are good at rewarding achievement and offer far fewer chances to
+                take ethics, service and civic responsibility seriously. IES was founded to
+                build those settings — and to insist that what a student concludes in one
+                shows up in what they do afterwards.
+              </p>
+            </Scrub>
+          </Split>
         </Container>
       </Section>
 
@@ -450,11 +526,11 @@ export default function Home() {
         <Container size="wide">
           <Scrub effect="scrub-rise">
             <SectionHeading
-              index="02"
-              eyebrow="Global Presence"
+              index="03"
+              eyebrow="Where We Are"
               ghost="Network"
-              title="One Foundation. Three National Branches."
-              lead="Each branch brings the mission into its own community, connected by one international vision."
+              title="One society, three countries."
+              lead="Korea is the original branch and the operational headquarters. The United States and the United Kingdom run their own programming to the same standards."
             />
           </Scrub>
         </Container>
@@ -465,9 +541,10 @@ export default function Home() {
       <Section size="compact" className="overflow-hidden">
         <Container size="wide">
           <Scrub effect="scrub-rise">
-            <p className="max-w-2xl text-sm leading-relaxed text-mist">
-              The Foundation does not replace the branches. It connects them — shared
-              standards and cross-border programming, each in its own national context.
+            <p className="max-w-[62ch] text-[0.9375rem] leading-relaxed text-mist">
+              The Foundation does not replace the branches. It sets the standards they share
+              and runs the programming that crosses between them; everything local is the
+              branch’s own.
             </p>
           </Scrub>
         </Container>
@@ -477,26 +554,13 @@ export default function Home() {
       {/* Deliberately not directly under the hero. Who IES is and how the three
           branches relate come first; by this point a visitor has the context to
           read the photographs as evidence rather than as decoration. */}
-      <GallerySection id="programmes" items={galleryItems} />
+      <GallerySection id="programmes" index="04" items={galleryItems} />
 
       {/* ============================================== ORGANIZATIONS */}
       {/* Directly after the photographs on purpose: the images show the work,
           and this says who was in the room for it. Separated they are two
           claims; together they are one piece of evidence. */}
-      <NamedPartners id="organizations" />
-
-      {/* ================================================== IMPACT SNAPSHOT */}
-      {/*
-       * Dark, not the bright `paper` interlude this used to be. A full-bleed
-       * white slab between two near-black sections is a cut, and the page reads
-       * as a sequence of shots rather than a stack of slides — the one thing a
-       * cut here destroys.
-       *
-       * The figures themselves moved out into `ImpactLedger`, where they are set
-       * at display scale on full-width rows instead of packed into a grid at
-       * subheading size. See the note at the top of that file.
-       */}
-      <ImpactLedger />
+      <NamedPartners id="organizations" index="05" />
 
       {/* ======================================================== OUR WORK */}
       {/* Second horizontal scene, and the photographic one. Five areas of work,
@@ -505,11 +569,11 @@ export default function Home() {
         <Container size="wide">
           <Scrub effect="scrub-rise">
             <SectionHeading
-              index="05"
-              eyebrow="Our Work"
+              index="06"
+              eyebrow="What We Do"
               ghost="Work"
-              title="From Reflection to Action"
-              lead="Forums, service, leadership programs, partnerships, and student-led civic engagement."
+              title="Five kinds of work."
+              lead="Ethics forums, community service, leadership roles with real consequences, civic campaigns, and programming that runs across all three branches."
             />
           </Scrub>
         </Container>
@@ -527,54 +591,6 @@ export default function Home() {
        */}
       <MissionScene />
 
-      {/* ========================================================== VALUES */}
-      {/* Quiet on purpose, and placed here on purpose: it is the last flat
-          stretch before the third and final horizontal scene. */}
-      <Section tone="deep" className="overflow-hidden border-y border-mist/12" size="compact">
-        <Container size="wide" className="relative">
-          <GhostTitle>Equity</GhostTitle>
-          <div className="relative z-10 grid gap-14 lg:grid-cols-[1fr_1.25fr] lg:gap-24">
-            <div>
-              <Scrub effect="scrub-rise">
-                <Eyebrow>Core Value</Eyebrow>
-              </Scrub>
-              <Scrub effect="scrub-rise" offset={0.06}>
-                <h2 className="metal mt-8 font-serif text-[clamp(3.5rem,9vw,7rem)] leading-none">
-                  {values.primary.title}
-                </h2>
-              </Scrub>
-              <Scrub effect="scrub-rise" offset={0.12}>
-                <p className="mt-8 max-w-md leading-relaxed text-mist">
-                  {values.primary.body}
-                </p>
-              </Scrub>
-            </div>
-
-            <div>
-              <Scrub effect="scrub-rise" offset={0.08}>
-                <p className="text-[0.75rem] font-semibold tracking-[0.14em] text-mist uppercase">
-                  Supporting Values
-                </p>
-              </Scrub>
-              <ul className="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">
-                {values.supporting.map((value, i) => (
-                  <Scrub
-                    key={value.title}
-                    as="li"
-                    effect="scrub-rise"
-                    offset={0.1 + Math.min(i, 7) * 0.025}
-                    className="border-t border-mist/15 pt-4"
-                  >
-                    <h3 className="font-serif text-lg">{value.title}</h3>
-                    <p className="mt-1.5 text-sm text-mist">{value.body}</p>
-                  </Scrub>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </Container>
-      </Section>
-
       {/* ======================================================= THREE A'S */}
       {/* Third horizontal scene, and the most abstract of the three — by this
           point the visitor has been taught how the pan behaves twice. */}
@@ -582,10 +598,10 @@ export default function Home() {
         <Container size="wide">
           <Scrub effect="scrub-rise">
             <SectionHeading
-              index="06"
-              eyebrow="Ethics in Action"
+              index="07"
+              eyebrow="How We Work"
               title="The Three A’s"
-              lead="The framework IES has worked from since 2023, carried into every branch."
+              lead="The test every IES programme is held to, unchanged since 2023 and applied the same way in every branch."
             />
           </Scrub>
         </Container>
@@ -593,14 +609,40 @@ export default function Home() {
 
       <ValuePanels />
 
+      {/* ============================================================ IMPACT */}
+      {/*
+       * MOVED, AND THE MOVE IS THE POINT.
+       *
+       * The figures used to sit in the middle of the page, between the
+       * photographs and the description of the work — which asked a visitor to
+       * accept a number for something they had not yet been told the shape of.
+       * A claim about scale only means anything once the reader knows what is
+       * being counted, so the ledger now comes *after* the five programme
+       * areas and the framework they are held to, and immediately before the
+       * invitation to join. That is the order the brief asks for: what we do,
+       * then what it added up to, then how to take part.
+       */}
+      {/* ================================================== IMPACT SNAPSHOT */}
+      {/*
+       * Dark, not the bright `paper` interlude this used to be. A full-bleed
+       * white slab between two near-black sections is a cut, and the page reads
+       * as a sequence of shots rather than a stack of slides — the one thing a
+       * cut here destroys.
+       *
+       * The figures themselves moved out into `ImpactLedger`, where they are set
+       * at display scale on full-width rows instead of packed into a grid at
+       * subheading size. See the note at the top of that file.
+       */}
+      <ImpactLedger index="08" />
+
       {/* ====================================================== LEADERSHIP */}
-      <Section id="leadership" tone="deep" className="overflow-hidden border-t border-mist/12">
+      <Section id="leadership" tone="deep" className="overflow-hidden">
         <Container size="wide">
           <Scrub effect="scrub-rise">
             <div className="flex flex-wrap items-end justify-between gap-8">
               <SectionHeading
-                index="07"
-                eyebrow="Leadership"
+                index="09"
+                eyebrow="Who Runs It"
                 ghost="Leaders"
                 title="Students holding real responsibility."
                 lead="Students lead at every level — founding, Foundation, and each national branch."
@@ -629,10 +671,10 @@ export default function Home() {
       </Section>
 
       <CallToAction
-        title="Join a Growing Global Network"
-        body="Whether you are a student, educator, organization, or prospective partner, there is a place for you within our global network."
+        title="Three ways in."
+        body="If your school already has an IES chapter, join it. If it does not, start one — you will need a founding team and an annual plan. If you are an organization, we scope partnerships in writing."
         actions={[
-          { label: 'Join IES', to: '/join', variant: 'primary' },
+          { label: 'Join as a Student', to: '/join', variant: 'primary' },
           { label: 'Start a Chapter', to: '/start-a-chapter' },
           { label: 'Partner With Us', to: '/partners' },
         ]}

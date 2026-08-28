@@ -9,95 +9,87 @@
   /*
    * --- Brand palette ---
    *
-   * The ground is deliberately near-black with a navy cast rather than the
-   * mid-navy this site used to sit on. Two reasons, both about the same thing:
+   * Three colours, and that is the whole identity: a near-black navy ground,
+   * the IES light blue lifted straight off the society's own mark (#93cbed,
+   * the ring around the portrait), and paper.
    *
-   *   1. Gold only reads as *metal* against something close to black. On the
-   *      old #071a33 the accent was a warm tan; at #050a14 the same hex reads
-   *      as a lit edge, which is the whole point of a gold-on-dark identity.
-   *   2. The globe, the photography and the section seams all paint light onto
-   *      this ground. A darker floor gives every one of them somewhere to go.
+   * The ground is near-black with a navy cast rather than a mid-navy. Gold
+   * only reads as *light* against something close to black — on a mid-navy the
+   * same hex is merely another blue, and the point of a light-blue-on-deep-navy
+   * identity is that the accent looks lit. The photography, the globe and the
+   * section seams all paint light onto this ground; a dark floor gives every
+   * one of them somewhere to go.
    *
-   * Deepening the ground only ever *raises* contrast for the light type sitting
-   * on it, so every ratio recorded in the mist ladder below remains a floor
-   * rather than a ceiling. `paper` sections are unaffected.
+   * `paper` and `bone` are the other half of the redesign. The site used to be
+   * dark from the first pixel to the last, which flattened it: with nothing to
+   * measure the dark against, a dark section reads as "more page" rather than
+   * as a new place. Light sections now carry the reading-heavy stretches — the
+   * essays, the ledgers, the lists — and the dark ones carry the cinema.
    */
-  --color-navy: #050a14; /* Ground — near-black, navy cast */
+  --color-navy: #050b16; /* Ground — near-black, navy cast */
   --color-navy-700: #0a1526; /* Raised panels, `deep` sections */
   --color-navy-600: #12203a;
   --color-navy-500: #1b2c4a;
-  --color-paper: #f7f9fc; /* White / paper  */
-  --color-gold: #c8a96b; /* Warm gold      */
+
+  --color-paper: #f7f9fc; /* Off-white — light section ground, dark-ground type */
+  --color-bone: #eef2f7; /* The second light ground, one step down from paper */
+
+  /*
+   * GOLD, AND ITS LADDER.
+   *
+   * The brand accent, and it belongs on dark grounds — that is not a
+   * preference, it is arithmetic. Gold reads as *metal* against near-black and
+   * as a washed-out tan against paper, where at 2.2:1 it is below any
+   * legibility floor. So the ladder has two ends, and which end you use is
+   * decided by the ground rather than by taste:
+   *
+   *                       on navy #050b16   on paper #f7f9fc   job
+   *   gold      #c8a96b         8.5:1             2.2:1        dark-ground accent
+   *   gold-300  #dcc59a        11.1:1             1.7:1        highlight
+   *   gold-100  #f2e7cf        15.5:1             1.2:1        sheen stop only
+   *   gold-600  #a5854a         5.2:1             3.4:1        hairlines, marks
+   *   gold-800  #7a5f26         2.6:1             5.6:1        light-ground accent
+   *
+   * On navy, use `gold`. On paper, use `gold-800`. Nothing has to remember
+   * which: `Section` sets `data-ground` and `--accent` re-points itself, so a
+   * component written for one ground is correct on the other.
+   */
+  --color-gold: #c8a96b; /* Warm gold — the brand accent */
   --color-gold-300: #dcc59a;
-  --color-gold-100: #f2e7cf; /* Metallic highlight — gradient stops only */
-  --color-mist: #bcc7d4; /* Secondary copy — brightened, see the ladder below */
+  --color-gold-100: #f2e7cf; /* Sheen highlight — gradient stops only */
+  --color-gold-600: #a5854a;
+  --color-gold-800: #7a5f26; /* The accent, on a light ground */
+
+  --color-mist: #bcc7d4; /* Secondary copy on dark */
   --color-slate: #7f8b9c; /* Metadata — the only tone allowed to recede */
 }
 
 /*
- * THE TEXT LADDER — three tones, measured, and that is the whole set.
+ * THE TEXT LADDER — three tones per ground, measured, and that is the set.
  *
- * The site used to have one secondary tone (`mist`) used at seven different
- * opacities, several of them below the AA line, and the practical result was
- * that a section's *label* and its *sentence* were often the same grey. When
- * everything is the same grey, nothing is primary — which is the single
- * biggest reason the old page was hard to scan.
- *
- * So: three tokens, three jobs, no opacity steps for text.
- *
- *                       on navy #050a14   on navy-700 #0a1526   job
- *   text-paper  #f7f9fc      18.7:1              17.3:1        headings, primary
- *   text-mist   #bcc7d4      11.6:1              10.7:1        body, descriptions
- *   text-slate  #7f8b9c       5.7:1               5.3:1        metadata only
- *
- * Every one of those clears AA for body text, and the top two clear AAA. The
- * rule is now positional rather than numeric: if a visitor is meant to *read*
- * it, it is `mist` or brighter. `slate` is for the date, the category, the
+ * If a visitor is meant to *read* it, it is `mist` (dark ground) or `navy-600`
+ * (light ground) or brighter. `slate` is for the date, the category, the
  * caption credit — information that supports the thing above it and must never
- * out-shout it.
+ * out-shout it. No opacity steps on text: an opacity on a text colour is how
+ * a ladder drifts.
  *
- * `text-mist/80` and friends still parse, but nothing should reach for them:
- * an opacity on a text colour is how the old ladder drifted in the first place.
+ *   ON DARK                on navy #050b16   on navy-700 #0a1526
+ *     text-paper  #f7f9fc       18.9:1              17.5:1
+ *     text-mist   #bcc7d4       11.7:1              10.8:1
+ *     text-slate  #7f8b9c        5.8:1               5.3:1
  *
- * Borders are the other half of this. A border that is the only thing marking
- * out an interactive control (an input, the menu toggle, a filter chip) has to
- * clear 3:1 under WCAG 1.4.11, which `border-mist/45` does at the brightened
- * token. Borders that merely divide — card edges, section seams — carry no such
- * requirement, and they went *up* rather than down: `/18` is the new floor for
- * a seam, because "insufficient separation between sections" was the other half
- * of the scanning problem and a 12% hairline on near-black is not a separation.
+ *   ON LIGHT               on paper #f7f9fc   on bone #eef2f7
+ *     text-navy    #050b16       18.9:1              17.7:1
+ *     text-navy-600 #12203a      14.9:1              14.0:1
+ *     text-gold-800 #7a5f26      5.6:1               5.3:1
+ *
+ * Borders are the other half. A border that is the only thing marking out an
+ * interactive control (an input, the menu toggle, a filter chip) has to clear
+ * 3:1 under WCAG 1.4.11, which `border-mist/45` does on dark and
+ * `border-navy/35` does on light. Borders that merely divide carry no such
+ * requirement, and this design leans on them hard — the thin divider is the
+ * site's main structural device now that the cards are gone.
  */
-
-/*
- * `static`, because these three are only ever read through `var(--accent)` at
- * runtime — no utility class names them. Tailwind drops theme variables no
- * class references, which silently left `--accent` resolving to nothing on the
- * sage and clay routes until this block was split out.
- */
-@theme static {
-  /* --- Section accents ---
-   * Gold stays the brand colour: the logo, buttons and focus ring never move
-   * off it. These three are section identity only — eyebrows, hairline marks
-   * and small labels — so a page reads as its own place without the site
-   * turning into a different design per route.
-   *
-   * All four are measured against both dark grounds, since `deep` sections
-   * paint navy-700 rather than navy:
-   *
-   *                  on navy #071a33   on navy-700 #0d294d
-   *   gold  #c8a96b        7.8:1              6.5:1
-   *   sky   #8eb8e8        8.4:1              7.1:1
-   *   sage  #8fbfa8        8.5:1              7.1:1
-   *   clay  #d99878        7.2:1              6.0:1
-   *
-   * Anything added here needs to clear 4.5:1 on navy-700, the tighter of the
-   * two. Light `paper` sections are unaffected — their eyebrows use the navy
-   * tone, not the accent.
-   */
-  --color-sky: #8eb8e8; /* Cool blue  — network, governance, contact */
-  --color-sage: #8fbfa8; /* Muted green — work, impact                */
-  --color-clay: #d99878; /* Warm clay   — news, partners, joining     */
-}
 
 @theme {
   /* --- Typography --- */
@@ -109,86 +101,104 @@
 
   /* --- Editorial type scale ---
    *
-   * Every step went up, and the gaps between the steps went up further. That
-   * second part is the point: the old scale ran h2 → lead → body at 2.875 →
-   * 1.25 → 1rem, which on a dark ground with a 300 weight is three sizes a
-   * reader has to *compare* to rank. Ranking should be instant.
+   * PULLED BACK ABOUT 30% FROM THE TOP, AND THE HIERARCHY TIGHTENED.
    *
-   * The ratios now sit at roughly 2.6× (h2 to body) and 1.3× (lead to body) at
-   * the desktop cap, which is far enough apart to read as three different
-   * jobs rather than three settings of one. */
-  --text-display: clamp(3rem, 6.4vw, 5.75rem);
-  --text-display--line-height: 1.02;
-  --text-display--letter-spacing: -0.024em;
+   * The previous pass took the display step to 10rem and h1 to 7rem on the
+   * argument that a magazine sets its subject at a size nothing else can be
+   * mistaken for. That is true of a printed spread, which the reader holds at
+   * a fixed distance and sees whole. A screen is neither: at 7rem an h1 eats
+   * the first viewport by itself, so the reader gets a headline and no
+   * evidence, and has to scroll before the page has said anything. Impressive
+   * and uninformative is the wrong trade for a foundation asking to be
+   * trusted.
+   *
+   * Every step below is roughly 65–70% of what it was. The *ratios* are
+   * unchanged — h2 still lands about 3x body — so the hierarchy is exactly as
+   * legible while a heading and the paragraph that explains it now fit on one
+   * screen together. That pairing is the thing the brief is actually asking
+   * for: a strong headline, then one or two sentences, then the specifics.
+   *
+   * The `vw` middle terms matter as much as the caps: every step is fluid, so
+   * a 1280px laptop gets type in proportion to its frame rather than a desktop
+   * cap crammed into it. */
+  --text-display: clamp(2.5rem, 6.4vw, 6.25rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.03em;
 
-  --text-h1: clamp(2.5rem, 5vw, 4.25rem);
-  --text-h1--line-height: 1.06;
-  --text-h1--letter-spacing: -0.02em;
+  --text-h1: clamp(2.125rem, 4.8vw, 4.5rem);
+  --text-h1--line-height: 1.04;
+  --text-h1--letter-spacing: -0.025em;
 
-  --text-h2: clamp(2rem, 3.9vw, 3.25rem);
+  --text-h2: clamp(1.75rem, 3.5vw, 3.125rem);
   --text-h2--line-height: 1.1;
-  --text-h2--letter-spacing: -0.017em;
+  --text-h2--letter-spacing: -0.02em;
 
-  --text-h3: clamp(1.5rem, 2.3vw, 1.9375rem);
-  --text-h3--line-height: 1.22;
+  --text-h3: clamp(1.375rem, 1.9vw, 1.75rem);
+  --text-h3--line-height: 1.24;
   --text-h3--letter-spacing: -0.012em;
 
-  /* The supporting line under a heading. Up from 1.0625–1.25rem, and it stops
-   * carrying `font-light` — a lead is the second thing read on a section and
-   * a 300 weight at 20px on near-black is the definition of "elegant but hard
-   * to scan". */
-  --text-lead: clamp(1.125rem, 1.45vw, 1.375rem);
-  --text-lead--line-height: 1.58;
+  /*
+   * The supporting line under a heading — the one or two sentences that say
+   * what the section is, and the second thing read on every section.
+   *
+   * WEIGHT 500, WHICH IS THE POINT OF IT. Size alone was carrying the whole
+   * distinction between a lead and the body under it, and at 20px against
+   * 17px that is not a difference a reader registers without comparing the
+   * two. A step in weight is read instantly and without comparison — and it
+   * also fixes the thinness: most leads are set in `mist` on near-black,
+   * where Inter at 400 renders optically lighter than the same weight on
+   * white because the dark ground eats the stems.
+   *
+   * 500 rather than 450: Inter is loaded here at discrete weights (see
+   * index.html), so 450 would round to one of its neighbours anyway and which
+   * neighbour is up to the engine.
+   */
+  --text-lead: clamp(1.0625rem, 1.25vw, 1.25rem);
+  --text-lead--line-height: 1.6;
+  --text-lead--letter-spacing: -0.006em;
+  --text-lead--font-weight: 500;
 
   /* Body proper. Named so a paragraph can ask for it rather than inheriting
    * whatever the last author set. */
   --text-body: 1.0625rem;
-  --text-body--line-height: 1.72;
+  --text-body--line-height: 1.7;
 
   /* --- The label registers ---
    *
-   * Three sizes of tracked capital, and nothing smaller than 11px anywhere on
-   * the site. The old set bottomed out at 9px with 0.3em of tracking, which is
-   * the exact combination that turns a word into a row of disconnected
-   * letters — the eye has to spell it rather than recognise it.
-   *
-   * Tracking came down across the board (0.3em → 0.14em) and weight went up
-   * (500 → 600). Wide tracking is a *display* device; at label size it is
-   * simply damage. The serif keeps its wide tracking, because there it is
-   * being used on two ceremonial words rather than on information. */
+   * Three sizes of tracked capital, nothing smaller than 11px. Tracking is a
+   * *display* device; past about 0.16em at label size it stops being elegant
+   * and starts making the eye spell the word rather than recognise it. */
   --text-label: 0.75rem;
   --text-label--line-height: 1.4;
-  --text-label--letter-spacing: 0.14em;
+  --text-label--letter-spacing: 0.13em;
 
   --text-label-sm: 0.6875rem;
   --text-label-sm--line-height: 1.4;
-  --text-label-sm--letter-spacing: 0.12em;
+  --text-label-sm--letter-spacing: 0.11em;
 
   /* --- Cinematic display ---
    *
-   * Wide-tracked capitals, set in the serif. This is the register the site
-   * uses for a section's *name* — never for a sentence. Tracking this open
-   * destroys word-shape, which is exactly why it works on one or two words and
-   * fails on anything longer; keep these to short noun phrases.
+   * Wide-tracked serif capitals — the register for a section's *name*, never
+   * for a sentence. Tracking this open destroys word-shape, which is why it
+   * works on one or two words and fails on anything longer.
    *
-   * `cinema` is the visible title. `ghost` is the same words repeated at
-   * display scale behind the section as texture, and is always aria-hidden. */
-  --text-cinema: clamp(1.5rem, 3.6vw, 3rem);
+   * `ghost` is the section's name repeated at display scale behind it as
+   * texture, and is always aria-hidden. It came down with everything else: a
+   * 15rem ghost behind a 3rem heading was competing with the heading rather
+   * than sitting under it, which is the whole failure mode the brief calls
+   * "decorative and hard to scan". */
+  --text-cinema: clamp(1.375rem, 2.9vw, 2.375rem);
   --text-cinema--line-height: 1.16;
-  --text-cinema--letter-spacing: 0.2em;
+  --text-cinema--letter-spacing: 0.18em;
 
-  --text-ghost: clamp(3.5rem, 13vw, 12rem);
+  --text-ghost: clamp(3rem, 9.5vw, 9rem);
   --text-ghost--line-height: 1;
-  --text-ghost--letter-spacing: 0.16em;
+  --text-ghost--letter-spacing: 0.14em;
 
-  /*
-   * The horizon word — see the `wordmark` utility. Sized off the viewport with
+  /* The horizon word — see the `wordmark` utility. Sized off the viewport with
    * no tracking of its own: the letters are distributed by the flex box, so
-   * this only has to set how *tall* the word is, and `vw` keeps its height in
-   * proportion to the width it is being stretched across. The upper bound stops
-   * an ultrawide monitor from turning it into a wall.
-   */
-  --text-horizon: clamp(2.5rem, 10.5vw, 9rem);
+   * this only sets how *tall* the word is. */
+  --text-horizon: clamp(2rem, 8vw, 6.5rem);
   --text-horizon--line-height: 0.9;
 
   /* --- Motion --- */
@@ -197,7 +207,7 @@
   --ease-cinema: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* --- Layout --- */
-  --spacing-section: 7.5rem;
+  --spacing-section: 6.5rem;
 }
 
 /* ==========================================================================
@@ -207,12 +217,46 @@
 @layer base {
   :root {
     color-scheme: dark;
-    /* Hairline used for the site's thin-border language */
-    --rule: color-mix(in srgb, var(--color-mist) 22%, transparent);
+    /*
+     * THE HAIRLINE, WHICH IS NOW A STRUCTURAL ELEMENT RATHER THAN A DETAIL.
+     *
+     * With the cards gone, a thin rule is what tells a reader where one item
+     * ends and the next begins — down a list of programmes, across the head of
+     * a section, between the columns of a dossier. So it is a token rather
+     * than a scattering of `border-mist/12`, and it flips with the ground:
+     * anything inside `[data-ground='light']` gets the navy hairline without
+     * the caller having to know which ground it landed on.
+     */
+    --rule: color-mix(in srgb, var(--color-mist) 20%, transparent);
     --rule-strong: color-mix(in srgb, var(--color-mist) 34%, transparent);
-    /* The section accent in force. Layout re-points this per route; gold is
-       the fallback, so anything rendered outside a route keeps today's look. */
+
+    /*
+     * The accent in force, and the ground it is sitting on.
+     *
+     * There used to be four of these, re-pointed per route — gold, sky, sage,
+     * clay. That was one identity per section, which is the opposite of what a
+     * premium mark does: the whole value of an accent is that it is the *same*
+     * accent everywhere, so seeing it is recognition rather than decoration.
+     * One blue now, and it changes only for the ground beneath it.
+     */
     --accent: var(--color-gold);
+  }
+
+  /*
+   * LIGHT GROUND.
+   *
+   * Set by `Section` on any `paper` or `bone` tone. Everything that reads
+   * `--accent` or `--rule` — the eyebrows, the section indices, the arrow
+   * links, the dividers, the hover marks — re-points itself here, so a
+   * component written for the dark ground is correct on the light one without
+   * a `tone` prop threaded through it. Components that *set type colour* still
+   * take a `tone`, because a colour is a decision and this is only a default.
+   */
+  [data-ground='light'] {
+    color-scheme: light;
+    --accent: var(--color-gold-800);
+    --rule: color-mix(in srgb, var(--color-navy) 14%, transparent);
+    --rule-strong: color-mix(in srgb, var(--color-navy) 30%, transparent);
   }
 
   * {
@@ -333,8 +377,13 @@
   }
 
   ::selection {
-    background: color-mix(in srgb, var(--color-gold) 32%, transparent);
+    background: color-mix(in srgb, var(--color-gold) 34%, transparent);
     color: var(--color-paper);
+  }
+
+  [data-ground='light'] ::selection {
+    background: color-mix(in srgb, var(--color-gold) 55%, transparent);
+    color: var(--color-navy);
   }
 
   /* Tailwind v4's preflight dropped the pointer cursor on buttons, so every
@@ -360,7 +409,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 2px solid var(--accent);
     outline-offset: 3px;
     border-radius: 2px;
   }
@@ -379,7 +428,7 @@
     border-radius: 999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in srgb, var(--color-gold) 55%, transparent);
+    background: color-mix(in srgb, var(--color-gold) 62%, transparent);
   }
 }
 
@@ -406,15 +455,22 @@
 /*
  * Metallic fill for a display headline.
  *
- * Two things make this read as metal rather than as a coloured gradient: the
+ * Two things make this read as sheen rather than as a coloured gradient: the
  * highlight stop is off-centre (light has a direction), and the darkest stop is
  * warm rather than grey. Applied with `background-clip: text`, so it needs a
  * transparent fill — and a `color` fallback for the handful of engines that
  * support neither, which would otherwise render the text invisible.
  */
-@utility metal {
+@utility sheen {
   color: var(--color-gold-300);
 
+  /*
+   * Two things make this read as metal rather than as a coloured gradient: the
+   * highlight stop is off-centre (light has a direction), and the darkest stop
+   * is warm rather than grey. Applied with `background-clip: text`, so it needs
+   * a transparent fill — and a `color` fallback for the engines that support
+   * neither, which would otherwise render the text invisible.
+   */
   @supports (background-clip: text) or (-webkit-background-clip: text) {
     background: linear-gradient(
       104deg,
@@ -460,9 +516,17 @@
   font-weight: 300;
   text-transform: uppercase;
   white-space: nowrap;
-  color: color-mix(in srgb, var(--color-paper) 2%, transparent);
+  color: color-mix(in srgb, var(--color-paper) 2.5%, transparent);
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 22%, transparent 72%);
   mask-image: linear-gradient(to bottom, #000 0%, #000 22%, transparent 72%);
+
+  /* On paper the same trick needs the opposite ink, and less of it: dark type
+     at 2.5% over white is invisible, and at the value that *is* visible it
+     immediately reads as a second headline. 4% of navy is the width of that
+     window. */
+  [data-ground='light'] & {
+    color: color-mix(in srgb, var(--color-navy) 4%, transparent);
+  }
 }
 
 /*
@@ -497,6 +561,10 @@
   text-transform: uppercase;
   white-space: nowrap;
   color: color-mix(in srgb, var(--color-paper) 5%, transparent);
+
+  [data-ground='light'] & {
+    color: color-mix(in srgb, var(--color-navy) 7%, transparent);
+  }
 }
 
 /*
@@ -566,6 +634,40 @@
  * cannot reach — a lead rendered into a `<div>`, a list item, a `<dd>`. Same
  * number, so there is one definition of "a comfortable line" on the site.
  */
+/*
+ * The same edge on a light ground, where "lit from above" is the wrong
+ * metaphor — light does not fall *onto* paper, ink sits on it. So the hairline
+ * is navy rather than mist and there is no bleed under it at all: on white, a
+ * gradient below a rule reads as a printing fault.
+ */
+[data-ground='light'].section-edge::before {
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--color-navy) 20%, transparent) 18%,
+    color-mix(in srgb, var(--color-navy) 20%, transparent) 82%,
+    transparent
+  );
+}
+
+[data-ground='light'].section-edge::after {
+  display: none;
+}
+
+/*
+ * THE FULL-WIDTH HAIRLINE — the site's main structural device.
+ *
+ * With the card grids gone, this is what separates one item from the next. It
+ * is a utility rather than a `border-t` because it has to be the same weight
+ * everywhere for the rhythm to read, and because it flips ground with `--rule`
+ * rather than being respelled per section.
+ */
+@utility hairline {
+  height: 1px;
+  width: 100%;
+  background: var(--rule);
+}
+
 @utility measure {
   max-width: 74ch;
 }
@@ -978,7 +1080,7 @@
  * THE GLINT — a single pass of light across gold type as its panel crosses.
  *
  * The one flourish in this set, and the rule is one per scene. It is the same
- * gold the `metal` utility mixes, moved rather than repainted: the bar is a
+ * gold the `sheen` utility mixes, moved rather than repainted: the bar is a
  * fixed gradient on a pseudo-element and only its `translate3d` changes, so
  * nothing re-rasterises. Animating `background-position` on the text itself
  * would repaint every glyph on every frame for the same picture.
@@ -990,6 +1092,30 @@
 .scrub-glint {
   position: relative;
   isolation: isolate;
+
+  /*
+   * CLIPS ITS OWN HIGHLIGHT, and this is a bug fix rather than a refinement.
+   *
+   * The bar below is drawn at `inset: -20% -60%` and then translated a further
+   * ±60% of that overwide box, so on a 327px heading the pseudo-element
+   * extended to about 955px. Nothing clipped it: `isolation` creates a
+   * stacking context, not a clip. The result was 600px of horizontal document
+   * overflow wherever a glinted heading appeared — invisible on desktop only
+   * because `html { overflow-x: clip }` hides the paint, and plainly visible on
+   * a phone, where the page could be dragged sideways into empty space.
+   *
+   * Clipping at the element box is also the correct *look*: the highlight is
+   * meant to sweep across the letterforms, and its travel outside them was
+   * never visible by design.
+   *
+   * The padding/negative-margin pair is the same trick `.scrub-line` uses — a
+   * clip on a serif heading would otherwise cut the descender off a `g` or a
+   * `y`, and the identical negative margin takes the space back out of the
+   * layout so the heading's rhythm is unchanged.
+   */
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
 }
 
 .scrub-glint::after {
@@ -1266,6 +1392,13 @@
   transform-origin: left center;
 }
 
+/* The same, drawn downward — for the vertical hairlines that separate the
+   columns of an editorial spread. */
+.scrub-rule-y {
+  transform: scaleY(var(--e));
+  transform-origin: center top;
+}
+
 /*
  * A layer that has left the scene, and must stop existing for everyone else
  * too.
@@ -1486,17 +1619,52 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+  /*
+   * DEEPER AND LONGER THAN IT WAS, because the page now has light sections in
+   * it and the bar has to survive passing over one.
+   *
+   * Over navy the old ramp was invisible either way. Over a `paper` section it
+   * was not enough: the wordmark and the JOIN IES outline are both near-white,
+   * and at the previous 0.78 mid-stop they sat on something closer to grey
+   * than to ink. The stops below hold near-full strength through the whole
+   * height of the bar and only give way underneath it, which is the part that
+   * has to stay soft — a hard bottom edge cuts a visible lid across every
+   * full-bleed scene on the site.
+   */
   background: linear-gradient(
     to bottom,
-    rgba(5, 10, 20, 0.94) 0%,
-    rgba(5, 10, 20, 0.78) 38%,
-    rgba(5, 10, 20, 0.38) 72%,
-    rgba(5, 10, 20, 0) 100%
+    rgba(5, 11, 22, 0.97) 0%,
+    rgba(5, 11, 22, 0.93) 52%,
+    rgba(5, 11, 22, 0.55) 80%,
+    rgba(5, 11, 22, 0) 100%
   );
-  backdrop-filter: blur(16px) saturate(112%);
-  -webkit-backdrop-filter: blur(16px) saturate(112%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 46%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 46%, transparent 100%);
+  backdrop-filter: blur(18px) saturate(112%);
+  -webkit-backdrop-filter: blur(18px) saturate(112%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
+}
+
+/*
+ * The same scrim in paper, for the stretches where the bar is over a light
+ * section. Cross-faded against the dark one by `Header`.
+ *
+ * NO `backdrop-filter` ON THIS ONE. A blur behind a light, essentially flat
+ * ground buys nothing — there is no photograph under it to soften — and it is
+ * what produced the visible grey smudge across the top of every `paper`
+ * section: a masked backdrop blur over near-white samples the page's own
+ * white, darkens it slightly at the mask's edge, and leaves a band the eye
+ * reads as a rendering fault. The gradient alone is enough here.
+ */
+.header-scrim-light {
+  background: linear-gradient(
+    to bottom,
+    rgba(247, 249, 252, 0.97) 0%,
+    rgba(247, 249, 252, 0.93) 52%,
+    rgba(247, 249, 252, 0.55) 80%,
+    rgba(247, 249, 252, 0) 100%
+  );
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 /* ==========================================================================

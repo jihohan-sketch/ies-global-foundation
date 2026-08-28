@@ -1,5 +1,6 @@
 import { Card, Container, Eyebrow, Section, SectionHeading, Button } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
+import { IndexList, Split } from '@/components/ui/Editorial'
 import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
@@ -55,7 +56,7 @@ export default function Partners() {
             {namedPartners.map((group, i) => (
               <RailItem key={group.group}>
                 <Reveal delay={i * 100} className="h-full">
-                <Card className="h-full p-8">
+                <Card className="h-full">
                   <h3 className="font-serif text-xl text-[var(--accent)]">{group.group}</h3>
                   <p className="mt-3 text-[0.875rem] leading-relaxed text-mist">
                     {group.note}
@@ -64,7 +65,7 @@ export default function Partners() {
                     {group.organizations.map((organization) => (
                       <li
                         key={organization}
-                        className="border-t border-mist/12 py-3 text-[0.9375rem] text-paper/85"
+                        className="border-t border-mist/12 py-3 text-[0.9375rem] text-paper"
                       >
                         {organization}
                       </li>
@@ -86,41 +87,61 @@ export default function Partners() {
       </Section>
 
       {/* ======================================================= CATEGORIES */}
-      <Section>
+      {/* ===================================================== CATEGORIES */}
+      {/*
+       * Eight kinds of collaboration, as a register on paper.
+       *
+       * This was a four-across card grid of eight boxes, each with a heading,
+       * a paragraph and a nested list — thirty-odd lines of type in a 300px
+       * column, eight times, at one weight. The information is genuinely
+       * useful to the one reader it is for (someone at an institution working
+       * out whether their organisation is the kind IES works with), and that
+       * reader is *scanning for their own category*. A register with the
+       * category set at heading scale is findable in a second; a grid of
+       * equally-weighted boxes is not findable at all.
+       */}
+      <Section tone="paper" className="overflow-hidden">
         <Container size="wide">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Who We Work With"
-              title="Eight kinds of collaboration"
-              lead="Each partnership is scoped in writing and held to the same safety and conduct standards as our own programs."
-            />
-          </Reveal>
-
-          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {partnerCategories.map((category, i) => (
-              <Reveal key={category.title} delay={i * 70}>
-                <Card className="h-full p-7">
-                  <h3 className="font-serif text-lg text-[var(--accent)]">{category.title}</h3>
-                  <p className="mt-4 text-[0.9375rem] leading-relaxed text-mist">
-                    {category.description}
-                  </p>
-                  <ul className="mt-5 space-y-1.5 border-t border-mist/12 pt-4">
-                    {category.examples.map((example) => (
-                      <li key={example} className="text-[0.8125rem] text-paper/70">
-                        {example}
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
+          <Split
+            aside={
+              <Reveal>
+                <Eyebrow tone="navy">Who We Work With</Eyebrow>
+                <h2 className="text-h2 mt-8 max-w-[11ch] text-navy">
+                  Eight kinds of collaboration
+                </h2>
+                <p className="mt-8 max-w-[38ch] leading-relaxed text-navy-600">
+                  Each partnership is scoped in writing and held to the same safety and conduct
+                  standards as our own programs.
+                </p>
               </Reveal>
-            ))}
-          </div>
+            }
+          >
+            <IndexList
+              tone="dark"
+              items={partnerCategories.map((category) => ({
+                id: category.title,
+                title: category.title,
+                body: (
+                  <>
+                    {category.description}
+                    {/* The examples ride under the description as one tracked
+                        line rather than as a nested bulleted list. They are
+                        instances of the category, not steps — and a list of
+                        five one-line items inside a register row rebuilds the
+                        card this section exists to remove. */}
+                    <span className="text-label-sm mt-3 block font-semibold text-navy/45 uppercase">
+                      {category.examples.join(' · ')}
+                    </span>
+                  </>
+                ),
+              }))}
+            />
+          </Split>
         </Container>
       </Section>
 
-      {/* =========================================================== LOGOS */}
       {partnerLogos.length > 0 && (
-        <Section tone="paper" size="compact" className="border-y border-mist/12">
+        <Section tone="paper" size="compact" >
           <Container size="wide">
             <Reveal>
               <Eyebrow tone="navy">Current Partners</Eyebrow>
@@ -141,7 +162,7 @@ export default function Partners() {
       )}
 
       {/* ==================================================== COLLABORATION */}
-      <Section tone="deep" className="border-y border-mist/12">
+      <Section tone="deep" >
         <Container size="wide">
           <div className="grid gap-14 lg:grid-cols-[1fr_1.3fr] lg:gap-24">
             <Reveal>
@@ -159,7 +180,7 @@ export default function Partners() {
                 {collaborationAreas.map((area) => (
                   <li
                     key={area}
-                    className="border-t border-mist/15 py-5 text-[1.0625rem] text-paper/85"
+                    className="border-t border-mist/15 py-5 text-[1.0625rem] text-paper"
                   >
                     {area}
                   </li>

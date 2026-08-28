@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { ArrowLink, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
+import { SectionIndex } from '@/components/ui/Cinematic'
 import { Reveal } from '@/components/ui/Reveal'
 import { Scrub } from '@/components/ui/Scrub'
 import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
@@ -109,7 +110,7 @@ export function VideoSection({
 }) {
   if (videos.length === 0) return null
   return (
-    <Section id="film" tone={tone} className="border-t border-mist/12">
+    <Section id="film" tone={tone} >
       <Container size="wide">
         <Reveal>
           <SectionHeading eyebrow={eyebrow} title={title} lead={lead} />
@@ -400,7 +401,16 @@ function MosaicTile({
   )
 }
 
-export function GallerySection({ items, id }: { items: GalleryItem[]; id?: string }) {
+export function GallerySection({
+  items,
+  id,
+  index,
+}: {
+  items: GalleryItem[]
+  id?: string
+  /** Position in the host page's running order, for the margin index. */
+  index?: string
+}) {
   if (items.length === 0) return null
 
   /*
@@ -436,7 +446,11 @@ export function GallerySection({ items, id }: { items: GalleryItem[]; id?: strin
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
             <div>
-              <Eyebrow>Programmes</Eyebrow>
+              {index ? (
+                <SectionIndex index={index} label="What It Looks Like" />
+              ) : (
+                <Eyebrow>Programmes</Eyebrow>
+              )}
               <h2 className="text-h2 mt-5 max-w-[20ch] text-paper">
                 What the work actually looks like.
               </h2>
@@ -710,7 +724,7 @@ export function PhotoStrip({
 }) {
   if (photos.length === 0) return null
   return (
-    <Section className="border-t border-mist/12">
+    <Section >
       <Container size="wide">
         <Reveal>
           <Eyebrow>{eyebrow}</Eyebrow>

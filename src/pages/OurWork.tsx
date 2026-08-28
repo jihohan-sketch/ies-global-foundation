@@ -1,30 +1,14 @@
-import { Card, Container, Eyebrow, Section } from '@/components/ui/Primitives'
-import { Reveal } from '@/components/ui/Reveal'
+import { Container, Eyebrow, Section } from '@/components/ui/Primitives'
+import { IndexList, Split, Statement } from '@/components/ui/Editorial'
+import { LitText, MaskedText } from '@/components/ui/MaskedText'
+import { Scrub } from '@/components/ui/Scrub'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
+import { HorizontalStory } from '@/components/sections/HorizontalStory'
 import { ActivityFeed } from '@/components/sections/Activities'
 import { activities, activityPhotoCount } from '@/content/activities'
 import { pillars, workCategories } from '@/content/work'
-import { cx } from '@/lib/utils'
 import { useSeo } from '@/lib/seo'
-import { image, SIZES } from '@/lib/images'
-
-/** The bullet list of example work, shared by both category layouts. */
-function ExampleList({ examples, className }: { examples: string[]; className?: string }) {
-  return (
-    <ul className={cx('space-y-px', className)}>
-      {examples.map((example) => (
-        <li
-          key={example}
-          className="flex items-start gap-4 border-t border-mist/12 py-4 text-[0.9375rem] text-paper/85"
-        >
-          <span aria-hidden className="mt-3 h-px w-4 shrink-0 bg-[var(--accent)]/60" />
-          {example}
-        </li>
-      ))}
-    </ul>
-  )
-}
 
 export default function OurWork() {
   useSeo({
@@ -40,81 +24,170 @@ export default function OurWork() {
         eyebrow="Our Work"
         ghost="Work"
         title="From Reflection to Action"
-        lead="Ethical inquiry joined to practical leadership: forums, service, leadership programs, partnerships, and student-led civic engagement."
+        lead="Five areas of work: ethics forums, community service, leadership roles, civic campaigns, and cross-branch programming. Each one ends in something a student is answerable for."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Our Work' }]}
       />
 
       {/* ========================================================== PILLARS */}
-      <Section size="compact">
+      {/*
+       * A light ground, and the first one a visitor meets on this page.
+       *
+       * The three pillars used to be three cards in a row, which said "here
+       * are three equal things" and nothing else. They are not three equal
+       * things to *look at* — they are the frame the rest of the page hangs
+       * off — so they get the reading ground and the register that goes with
+       * it: a sticky label column on the left, and the pillars themselves as a
+       * numbered register down the right at heading scale.
+       */}
+      <Section tone="paper">
         <Container size="wide">
-          <Reveal>
-            <Eyebrow>Organizational Pillars</Eyebrow>
-          </Reveal>
-
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {pillars.map((pillar, i) => (
-              <Reveal key={pillar.id} delay={i * 110} className="h-full">
-                <Card className="h-full p-8">
-                  <h2 className="font-serif text-xl text-[var(--accent)]">{pillar.title}</h2>
-                  <p className="mt-4 text-[0.9375rem] leading-relaxed text-mist">
-                    {pillar.summary}
+          <Split
+            aside={
+              <>
+                <Scrub effect="scrub-rise">
+                  <Eyebrow tone="navy">Organizational Pillars</Eyebrow>
+                </Scrub>
+                <MaskedText
+                  as="h2"
+                  className="text-h2 mt-8 max-w-[11ch] text-navy"
+                  text={['Three pillars,', 'one standard.']}
+                />
+                <Scrub effect="scrub-rise" offset={0.1}>
+                  <p className="mt-8 max-w-[38ch] text-navy-600">
+                    Everything IES runs sits under one of these three. They are how a chapter
+                    decides whether a proposed programme is IES work or simply a good idea.
                   </p>
-                </Card>
-              </Reveal>
-            ))}
+                </Scrub>
+              </>
+            }
+          >
+            <IndexList
+              tone="dark"
+              items={pillars.map((pillar) => ({
+                id: pillar.id,
+                title: pillar.title,
+                body: pillar.summary,
+              }))}
+            />
+          </Split>
+        </Container>
+      </Section>
+
+      {/* ======================================================= THE STANCE */}
+      {/* One line, oversized, on the dark ground — the hinge between the frame
+          above and the programmes below. */}
+      <Section tone="navy" size="tall" className="overflow-hidden">
+        <Container size="wide">
+          <div className="lg:pl-[22%]">
+            <MaskedText
+              as="h2"
+              className="font-serif text-[clamp(2.25rem,6vw,5rem)] leading-[1.04] font-medium tracking-[-0.03em] text-paper"
+              text={['Reflection that never', 'leaves the seminar', 'room is incomplete.']}
+            />
+            <LitText
+              offset={0.14}
+              className="mt-12 max-w-[54ch] leading-relaxed text-mist"
+              text="Every programme below ends in something a student is accountable for — a session delivered, a partnership kept, a position defended in public. The five areas are how that work is organised."
+            />
           </div>
         </Container>
       </Section>
 
-      {/* ====================================================== CATEGORIES */}
-      {workCategories.map((category, index) => {
-        const alternate = index % 2 === 1
-        return (
-          <Section
-            key={category.id}
-            id={category.id}
-            tone={alternate ? 'deep' : 'navy'}
-            className="border-t border-mist/12"
-          >
-            <Container size="wide">
-              <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
-                <Reveal className={alternate ? 'lg:order-2' : undefined}>
-                  <span className="font-serif text-sm text-[var(--accent)]/70">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <h2 className="text-h2 mt-6">{category.title}</h2>
-                  <p className="text-lead mt-7 text-mist">{category.summary}</p>
+      {/* ==================================================== THE PROGRAMMES */}
+      {/*
+       * The page's centrepiece, and the reason the categories are no longer
+       * five alternating two-column sections stacked vertically.
+       *
+       * Five comparable things read *far* better one at a time at full size
+       * than as a column the reader scrolls past: in the vertical version the
+       * fourth category was 4,000px down a page whose layout had already
+       * repeated three times, so nobody reached it. Here each one takes the
+       * screen in turn, at its own width, with its photograph bled to the
+       * panel edge — and the whole set costs about the same scroll distance as
+       * two of the old sections did.
+       */}
+      <HorizontalStory
+        id="programmes"
+        label="The five programme areas"
+        index="01"
+        eyebrow="Programme Areas"
+        title="Five kinds of work, one mission."
+        lead="Each area has its own methods and its own partners. What they share is the expectation that a student finishes what they started."
+        wordmark="Programmes"
+        panels={workCategories.map((category) => ({
+          id: category.id,
+          title: category.title,
+          body: category.summary,
+          points: category.examples.slice(0, 4),
+          photo: category.image,
+          photoAlt: category.imageAlt,
+        }))}
+      />
 
-                  {/* With a photograph in the other column the examples move here,
-                      so a category never loses its list to having an image. */}
-                  {category.image && <ExampleList examples={category.examples} className="mt-10" />}
-                </Reveal>
+      {/* ================================================= THE FULL REGISTER */}
+      {/*
+       * The horizontal scene shows four examples per area; this is all of
+       * them, on paper, in a form that can be read rather than watched. The
+       * pan is for the first encounter — this is for the visitor who wants the
+       * detail, and for anyone who arrived by search on a specific programme.
+       */}
+      <Section tone="bone">
+        <Container size="wide">
+          <Scrub effect="scrub-rise">
+            <Eyebrow tone="navy">In Full</Eyebrow>
+          </Scrub>
+          <Scrub effect="scrub-rise" offset={0.06}>
+            <Statement tone="dark" as="h2" className="mt-8">
+              Every programme area, in full.
+            </Statement>
+          </Scrub>
 
-                <Reveal delay={120} className={alternate ? 'lg:order-1' : undefined}>
-                  {category.image ? (
-                    <img
-                      {...image(category.image)}
-                      sizes={SIZES.card}
-                      alt={category.imageAlt ?? ''}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full border border-mist/15 object-cover"
-                      style={{ aspectRatio: '4 / 3' }}
-                    />
-                  ) : (
-                    <Card className="h-full p-8 sm:p-10">
-                      <p className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
-                        Examples of this work
+          <div className="mt-20 space-y-24">
+            {workCategories.map((category, index) => (
+              <div key={category.id} id={category.id} className="scroll-mt-32">
+                <Split
+                  sticky={false}
+                  aside={
+                    <Scrub effect="scrub-rise">
+                      <span className="font-serif text-[0.9375rem] text-navy/45 tabular-nums lining-nums">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <h3 className="mt-4 font-serif text-[clamp(1.625rem,2.8vw,2.375rem)] leading-[1.1] tracking-[-0.02em] text-navy">
+                        {category.title}
+                      </h3>
+                      <p className="mt-5 max-w-[40ch] text-[0.9375rem] leading-relaxed text-navy-600">
+                        {category.summary}
                       </p>
-                      <ExampleList examples={category.examples} className="mt-6" />
-                    </Card>
-                  )}
-                </Reveal>
+                    </Scrub>
+                  }
+                >
+                  <ul>
+                    {category.examples.map((example, i) => (
+                      <Scrub
+                        key={example}
+                        as="li"
+                        effect="scrub-rise"
+                        offset={Math.min(i, 6) * 0.04}
+                        travel="26px"
+                        className="flex items-baseline gap-5 border-t py-4 text-[0.9375rem] text-navy-600"
+                        style={{ borderColor: 'var(--rule)' }}
+                      >
+                        <span
+                          aria-hidden
+                          className="text-[0.6875rem] font-semibold text-navy/35 tabular-nums"
+                        >
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                        {example}
+                      </Scrub>
+                    ))}
+                  </ul>
+                </Split>
               </div>
-            </Container>
-          </Section>
-        )
-      })}
+            ))}
+          </div>
+        </Container>
+      </Section>
 
       {/* ======================================================== ACTIVITIES */}
       <ActivityFeed

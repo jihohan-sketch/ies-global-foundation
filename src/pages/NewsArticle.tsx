@@ -16,7 +16,7 @@ function Block({ block }: { block: ArticleBlock }) {
     case 'quote':
       return (
         <blockquote className="my-12 border-l border-[var(--accent)]/50 pl-8">
-          <p className="font-serif text-[clamp(1.375rem,2.4vw,1.75rem)] leading-[1.4] text-paper/95 italic">
+          <p className="font-serif text-[clamp(1.375rem,2.4vw,1.75rem)] leading-[1.4] text-paper italic">
             {block.text}
           </p>
           {block.attribution && (
@@ -40,7 +40,7 @@ function Block({ block }: { block: ArticleBlock }) {
     case 'paragraph':
     default:
       return (
-        <p className="mb-6 text-[1.0625rem] leading-[1.8] text-paper/85">
+        <p className="mb-6 text-[1.0625rem] leading-[1.8] text-paper">
           {block.text}
         </p>
       )
@@ -136,7 +136,7 @@ export default function NewsArticle() {
                 </p>
                 <Link
                   to="/news"
-                  className="text-[0.75rem] font-medium tracking-[0.14em] text-paper/80 uppercase transition-colors hover:text-[var(--accent)]"
+                  className="text-[0.75rem] font-medium tracking-[0.14em] text-paper uppercase transition-colors hover:text-[var(--accent)]"
                 >
                   ← All news
                 </Link>
@@ -148,7 +148,7 @@ export default function NewsArticle() {
 
       {/* ========================================================== RELATED */}
       {related.length > 0 && (
-        <Section tone="deep" className="border-t border-mist/12" size="compact">
+        <Section tone="deep" size="compact">
           <Container size="wide">
             <Reveal>
               <h2 className="text-h3">More from the network</h2>
@@ -170,8 +170,8 @@ export default function NewsArticle() {
       )}
 
       <CallToAction
-        title="Join a Growing Global Network"
-        body="Students, educators, and organizations across Korea, the United States, and the United Kingdom."
+        title="Three ways in."
+        body="Join the chapter at your school, start one if there is not, or bring your organization in as a partner."
         actions={[
           { label: 'Join IES', to: '/join', variant: 'primary' },
           { label: 'Partner With Us', to: '/partners' },

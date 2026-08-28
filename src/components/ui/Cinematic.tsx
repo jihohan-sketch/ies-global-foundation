@@ -201,7 +201,7 @@ export function CinemaLine({
   return (
     <Tag
       className={cx(
-        'text-cinema block font-serif font-light uppercase',
+        'text-cinema block font-serif font-normal uppercase',
         /* The tracking is applied to the right of every glyph including the
            last, which leaves a visible gap at the end of a centred line. The
            negative margin takes exactly that one step back. */

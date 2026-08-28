@@ -70,7 +70,7 @@ export default function Join() {
                       {pathway.points.map((point) => (
                         <li
                           key={point}
-                          className="flex gap-3 text-[0.9375rem] text-paper/80"
+                          className="flex gap-3 text-[0.9375rem] text-paper"
                         >
                           <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                           {point}
@@ -106,7 +106,7 @@ export default function Join() {
       </Section>
 
       {/* ====================================================== WHICH BRANCH */}
-      <Section tone="deep" className="border-y border-mist/12">
+      <Section tone="deep" >
         <Container size="wide">
           <Reveal>
             <Eyebrow>Which Branch Applies to You</Eyebrow>
@@ -123,7 +123,7 @@ export default function Join() {
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {branches.map((branch, i) => (
               <Reveal key={branch.slug} delay={i * 100}>
-                <Card className="h-full p-8">
+                <Card className="h-full">
                   <h3 className="text-h3">{branch.name}</h3>
                   <p className="mt-4 text-[0.9375rem] leading-relaxed text-mist">
                     {branch.role}
@@ -137,7 +137,7 @@ export default function Join() {
                   <div className="mt-6 border-t border-mist/12 pt-5">
                     <Link
                       to={`/global-network/${branch.slug}`}
-                      className="text-[0.6875rem] font-medium tracking-[0.16em] text-paper/75 uppercase transition-colors hover:text-[var(--accent)]"
+                      className="text-[0.6875rem] font-medium tracking-[0.16em] text-paper uppercase transition-colors hover:text-[var(--accent)]"
                     >
                       Branch profile →
                     </Link>
@@ -156,7 +156,7 @@ export default function Join() {
             <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
               <Eyebrow>Before You Apply</Eyebrow>
               <div className="space-y-5">
-                <p className="text-lead text-paper/90">
+                <p className="text-lead text-paper">
                   IES roles come with expectations, not just titles.
                 </p>
                 <p className="leading-relaxed text-mist">
@@ -175,7 +175,7 @@ export default function Join() {
       </Section>
 
       {/* ============================================================ APPLY */}
-      <Section id="apply" tone="deep" className="border-t border-mist/12">
+      <Section id="apply" tone="deep" >
         <Container size="wide">
           {/* The ref sits on the outer grid rather than the heading, so the
               scroll lands on the whole panel and the form is already in view. */}

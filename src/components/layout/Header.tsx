@@ -49,8 +49,88 @@ function ScrollProgress() {
   )
 }
 
+/*
+ * WHICH GROUND IS UNDER THE HEADER RIGHT NOW.
+ *
+ * The redesign puts light sections into a page whose header is drawn for a
+ * dark one, and a fixed bar has to cross them. Three ways to handle that, and
+ * only the third survives contact with a full-bleed page:
+ *
+ *   · Leave it. The wordmark and the menu toggle are near-white; over `paper`
+ *     they sit at about 1.2:1. Not an option.
+ *   · Paint an opaque dark bar always. This is what the scrim tried to do, and
+ *     over a light section a blurred dark band with a masked edge reads as a
+ *     smear across the top of the page rather than as chrome.
+ *   · Flip the bar. Below, and what this hook is for.
+ *
+ * IMPLEMENTED AS AN INTERSECTION OBSERVER WITH A ONE-PIXEL ROOT, not as a
+ * scroll handler calling `elementFromPoint`. The observer's root margin
+ * collapses the viewport to a band at the header's own height, so a light
+ * section "intersects" exactly while it is behind the bar — no work per frame,
+ * no layout read, and the browser does the hit-testing. A scroll handler doing
+ * the same thing costs a forced layout on every frame of every scroll on every
+ * page, to answer a question whose answer changes a handful of times per page.
+ *
+ * The observed set is re-collected on navigation, since each route brings its
+ * own sections. `MutationObserver` would catch late-mounted ones too, but
+ * sections are not added after paint anywhere on this site, and the cost of
+ * watching the whole document for that case is not worth paying.
+ */
+const HEADER_BAND = 96
+
+function useGroundUnderHeader() {
+  const { pathname } = useLocation()
+  const [onLight, setOnLight] = useState(false)
+
+  useEffect(() => {
+    setOnLight(false)
+    if (!('IntersectionObserver' in window)) return
+
+    /* Deferred one frame: this runs on the route's first commit, and the
+       incoming page's sections are not in the document until it has painted. */
+    let observer: IntersectionObserver | null = null
+    const raf = requestAnimationFrame(() => {
+      const lightSections = document.querySelectorAll('[data-ground="light"]')
+      if (lightSections.length === 0) return
+
+      /* Sections that are currently crossing the band. A `Set` rather than a
+         boolean because two of them can touch the band at once — the foot of
+         one and the head of the next, during the pixel or two where they meet.
+         Counting them means the flip never flickers at a section boundary. */
+      const crossing = new Set<Element>()
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) crossing.add(entry.target)
+            else crossing.delete(entry.target)
+          }
+          setOnLight(crossing.size > 0)
+        },
+        { rootMargin: `0px 0px -${Math.max(0, window.innerHeight - HEADER_BAND)}px 0px` },
+      )
+
+      for (const section of lightSections) observer.observe(section)
+    })
+
+    return () => {
+      cancelAnimationFrame(raf)
+      observer?.disconnect()
+    }
+  }, [pathname])
+
+  return onLight
+}
+
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
+  /*
+   * Whether the bar is currently sitting over a light section — see
+   * `useGroundUnderHeader`. Everything in the bar that carries a colour reads
+   * this, because a near-white wordmark over an off-white section is not a
+   * styling preference, it is unreadable.
+   */
+  const onLight = useGroundUnderHeader()
   const [open, setOpen] = useState(false)
   const location = useLocation()
   const toggleRef = useRef<HTMLButtonElement>(null)
@@ -132,7 +212,16 @@ export function Header() {
         Skip to content
       </a>
 
-      <header className="fixed inset-x-0 top-0 z-50">
+      {/*
+       * `data-on-light` is what the wordmark, the nav links, the toggle and
+       * the JOIN IES button read to flip their own ink. It is set on the
+       * header rather than passed down because several of those live inside
+       * `Logo`, which has no reason to know about scroll position.
+       */}
+      <header
+        data-on-light={onLight && !open ? '' : undefined}
+        className="fixed inset-x-0 top-0 z-50 [--bar-ink:var(--color-paper)] [--bar-ink-dim:var(--color-mist)] data-on-light:[--bar-ink:var(--color-navy)] data-on-light:[--bar-ink-dim:var(--color-navy-600)]"
+      >
         {/*
          * The scrim, as its own layer rather than a background on the header.
          *
@@ -145,11 +234,21 @@ export function Header() {
          * It fades rather than switching — a scrim that appears the instant the
          * page moves 24px is a flicker, not a response. See `.header-scrim`.
          */}
+        {/* Two scrims, cross-faded. The light one is the same gradient in
+            paper rather than navy, so the bar dissolves into whichever ground
+            it is over instead of stamping a dark band across a white one. */}
         <div
           aria-hidden
           className={cx(
-            'header-scrim transition-opacity duration-700 ease-[var(--ease-cinema)]',
-            scrolled && !open ? 'opacity-100' : 'opacity-0',
+            'header-scrim transition-opacity duration-500 ease-[var(--ease-cinema)]',
+            scrolled && !open && !onLight ? 'opacity-100' : 'opacity-0',
+          )}
+        />
+        <div
+          aria-hidden
+          className={cx(
+            'header-scrim header-scrim-light transition-opacity duration-500 ease-[var(--ease-cinema)]',
+            scrolled && !open && onLight ? 'opacity-100' : 'opacity-0',
           )}
         />
 
@@ -178,10 +277,10 @@ export function Header() {
                 scrolled || open ? 'opacity-0' : 'opacity-100',
               )}
             >
-              <span className="truncate font-serif text-[0.9375rem] text-paper/70 italic">
+              <span className="truncate font-serif text-[0.9375rem] text-[var(--bar-ink)]/70 italic transition-colors duration-500">
                 {site.missionMotto}
               </span>
-              <span className="text-[0.6875rem] font-semibold tracking-[0.12em] text-slate uppercase">
+              <span className="text-[0.6875rem] font-semibold tracking-[0.12em] text-[var(--bar-ink-dim)] uppercase transition-colors duration-500">
                 {site.motto}
               </span>
             </p>
@@ -191,7 +290,7 @@ export function Header() {
               aria-label="IES Global Foundation — home"
               className="col-start-2 justify-self-center"
             >
-              <Logo />
+              <Logo variant="auto" />
             </Link>
 
             <div className="col-start-3 flex shrink-0 items-center justify-end gap-3">
@@ -209,7 +308,19 @@ export function Header() {
                   open && 'invisible opacity-0',
                 )}
               >
-                <Button to="/join" variant="secondary" className="px-6 py-3">
+                {/* Outlined in whatever ink the bar is currently using, so
+                    the one persistent call to action survives a light section
+                    without a second variant being threaded through Button. */}
+                <Button
+                  to="/join"
+                  variant="secondary"
+                  /* `!` on the colour: `Button`'s `secondary` variant already sets a
+                     text colour, and between two utilities of the same
+                     property it is stylesheet order — not class-attribute
+                     order — that decides, so without it the label stayed paper
+                     white and vanished over a light section. */
+                  className="border-[var(--bar-ink)]/40 px-6 py-3 !text-[var(--bar-ink)] hover:border-[var(--accent)]/70 hover:!text-[var(--accent)]"
+                >
                   Join IES
                 </Button>
               </span>
@@ -226,18 +337,18 @@ export function Header() {
                    visitor with no navigation at all beyond the first screen —
                    the rail is the shortcut, this is the way in, and both belong
                    at every width. */
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-mist/55 transition-colors hover:border-gold/60"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--bar-ink)]/40 transition-colors duration-500 hover:border-[var(--accent)]/70"
               >
                 <span className="relative block h-3 w-5">
                   <span
                     className={cx(
-                      'absolute left-0 block h-px w-5 bg-paper transition-all duration-300',
+                      'absolute left-0 block h-px w-5 bg-[var(--bar-ink)] transition-all duration-300',
                       open ? 'top-1.5 rotate-45' : 'top-0',
                     )}
                   />
                   <span
                     className={cx(
-                      'absolute left-0 block h-px w-5 bg-paper transition-all duration-300',
+                      'absolute left-0 block h-px w-5 bg-[var(--bar-ink)] transition-all duration-300',
                       open ? 'top-1.5 -rotate-45' : 'top-3',
                     )}
                   />
@@ -274,7 +385,7 @@ export function Header() {
               aria-label="Primary"
               className={cx('overflow-hidden', scrolled && 'invisible')}
             >
-              <ul className="flex items-center justify-between border-t border-mist/12 pt-4 pb-5">
+              <ul className="flex items-center justify-between border-t border-[var(--bar-ink)]/15 pt-4 pb-5">
                 {primaryNav.map((item) => (
                   <li key={item.href}>
                     <NavLink
@@ -301,7 +412,7 @@ export function Header() {
                           'after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:rounded-full after:bg-[var(--accent)] after:transition-all after:duration-500',
                           isActive
                             ? 'text-[var(--accent)] after:w-[calc(100%-0.1em)]'
-                            : 'text-paper/85 hover:text-paper after:w-0 hover:after:w-[calc(100%-0.1em)]',
+                            : 'text-[var(--bar-ink)]/85 hover:text-[var(--bar-ink)] after:w-0 hover:after:w-[calc(100%-0.1em)]',
                         )
                       }
                     >
@@ -367,10 +478,10 @@ export function Header() {
                       /* Tracked at 0.22em, and the trailing step taken back so
                          a centred label sits on the centre line rather than
                          half a step left of it. */
-                      'block py-2.5 -mr-[0.22em] font-serif font-light tracking-[0.22em] uppercase',
+                      'block py-2.5 -mr-[0.22em] font-serif font-normal tracking-[0.22em] uppercase',
                       'text-[clamp(1.125rem,3.2vw,1.875rem)] leading-tight',
                       'transition-[color,opacity,transform] duration-500 ease-[var(--ease-cinema)]',
-                      isActive ? 'text-[var(--accent)]' : 'text-paper/80 hover:text-paper',
+                      isActive ? 'text-[var(--accent)]' : 'text-paper hover:text-paper',
                     )
                   }
                   style={{
@@ -407,7 +518,7 @@ export function Header() {
                     key={branch.slug}
                     to={`/global-network/${branch.slug}`}
                     tabIndex={open ? 0 : -1}
-                    className="text-sm text-paper/72 transition-colors hover:text-[var(--accent)]"
+                    className="text-sm text-mist transition-colors hover:text-[var(--accent)]"
                   >
                     {branch.name}
                   </Link>

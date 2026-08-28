@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Globe, type GlobeMarker } from '@/components/Globe'
-import { Button, Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
+import { Button, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
@@ -35,8 +35,8 @@ export default function GlobalNetwork() {
       <PageHero
         eyebrow="Global Network"
         ghost="Network"
-        title="One Foundation. Multiple National Branches."
-        lead="Students across three countries, joined by one commitment to ethical leadership. Each branch works in its own context, to the same standards."
+        title="One society, three countries."
+        lead="Korea is the original branch and the operational headquarters. The United States and the United Kingdom run their own programming, approve their own chapters, and are held to the same standards."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Global Network' }]}
       />
 
@@ -69,7 +69,22 @@ export default function GlobalNetwork() {
                 <Eyebrow>Select a Branch</Eyebrow>
               </Reveal>
 
-              <div className="mt-8 space-y-3">
+              {/*
+               * HAIRLINE ROWS, NOT BOXES.
+               *
+               * These were three bordered panels stacked with a gap — three
+               * cards doing the job of a list of three. The selected state was
+               * carried by a border colour and a background tint, which is a
+               * lot of ink to say "this one", and on the unselected two it
+               * read as though they were also selectable *panels* rather than
+               * entries in a set.
+               *
+               * A shared rule between rows and a solid mark in the accent
+               * says the same thing with less: the mark is the only thing that
+               * moves, and it is the brightest object in the column, so the
+               * selection is findable without being outlined.
+               */}
+              <div className="mt-8">
                 {branches.map((branch, i) => {
                   const selected = branch.slug === activeId
                   return (
@@ -79,27 +94,37 @@ export default function GlobalNetwork() {
                         onClick={() => setActiveId(branch.slug)}
                         aria-pressed={selected}
                         className={cx(
-                          'w-full border px-6 py-5 text-left transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]',
-                          selected
-                            ? 'border-[var(--accent)]/55 bg-navy-700/70'
-                            : 'border-mist/18 bg-navy-700/25 hover:border-mist/40 hover:bg-navy-700/45',
+                          'group grid w-full grid-cols-[0.5rem_minmax(0,1fr)_auto] items-baseline gap-x-5 border-t py-6 text-left transition-colors duration-500 ease-[var(--ease-cinema)]',
+                          selected ? 'border-[var(--accent)]/45' : 'hover:border-mist/40',
                         )}
                       >
-                        <span className="flex items-center justify-between gap-4">
+                        {/* The mark. `scaleY` on a fixed bar rather than a
+                            height change, so the selection animates on the
+                            compositor and the row's baseline never moves. */}
+                        <span
+                          aria-hidden
+                          className={cx(
+                            'block h-[1.4rem] w-0.5 origin-center rounded-full transition-transform duration-500 ease-[var(--ease-cinema)]',
+                            selected
+                              ? 'scale-y-100 bg-[var(--accent)]'
+                              : 'scale-y-0 bg-mist/50 group-hover:scale-y-50',
+                          )}
+                        />
+                        <span className="min-w-0">
                           <span
                             className={cx(
-                              'font-serif text-xl transition-colors',
-                              selected ? 'text-[var(--accent)]' : 'text-paper',
+                              'block font-serif text-[1.5rem] leading-tight transition-colors duration-500',
+                              selected ? 'text-[var(--accent)]' : 'text-paper group-hover:text-mist',
                             )}
                           >
                             {branch.name}
                           </span>
-                          <span className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
-                            {branch.code}
+                          <span className="mt-1.5 block text-[0.8125rem] text-slate">
+                            {branch.role}
                           </span>
                         </span>
-                        <span className="mt-2 block text-[0.8125rem] text-mist">
-                          {branch.role}
+                        <span className="text-label-sm font-semibold text-slate uppercase">
+                          {branch.code}
                         </span>
                       </button>
                     </Reveal>
@@ -107,36 +132,38 @@ export default function GlobalNetwork() {
                 })}
               </div>
 
-              {/* Detail panel for the selected branch */}
+              {/* The selected branch, as a summary under the list rather than
+                  as a card beside it — it belongs to the row above it, and a
+                  box would detach it from the thing that selects it. */}
               <Reveal delay={280}>
-                <Card className="mt-8 p-8">
-                  <h2 className="font-serif text-h3">{active.name}</h2>
-                  <p className="mt-4 text-[0.9375rem] leading-relaxed text-mist">
+                <div className="mt-10 border-t pt-8" style={{ borderColor: 'var(--rule-strong)' }}>
+                  <h2 className="font-serif text-[1.75rem] leading-tight text-paper">
+                    {active.name}
+                  </h2>
+                  <p className="mt-4 max-w-[46ch] text-[0.9375rem] leading-relaxed text-mist">
                     {active.summary}
                   </p>
-
                   {activeLeaders.length > 0 && (
-                    <div className="mt-6 border-t border-mist/12 pt-5">
-                      <p className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
+                    <div className="mt-8 border-t pt-5">
+                      <p className="text-label-sm font-semibold text-slate uppercase">
                         National Leadership
                       </p>
-                      <ul className="mt-3 space-y-1.5">
+                      <ul className="mt-3.5 space-y-2">
                         {activeLeaders.map((person) => (
-                          <li key={person.id} className="text-sm text-paper/85">
+                          <li key={person.id} className="text-[0.9375rem] text-paper">
                             {person.name}
-                            <span className="text-mist"> — {person.title}</span>
+                            <span className="text-slate"> — {person.title}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
                   )}
-
-                  <div className="mt-7">
+                  <div className="mt-9">
                     <Button to={`/global-network/${active.slug}`} variant="secondary" arrow>
                       Open branch profile
                     </Button>
                   </div>
-                </Card>
+                </div>
               </Reveal>
             </div>
           </div>
@@ -144,7 +171,7 @@ export default function GlobalNetwork() {
       </Section>
 
       {/* ======================================================== BRANCH LIST */}
-      <Section tone="deep" className="border-y border-mist/12">
+      <Section tone="deep" >
         <Container size="wide">
           <Reveal>
             <SectionHeading
@@ -197,7 +224,7 @@ export default function GlobalNetwork() {
             </Reveal>
 
             <Reveal delay={120}>
-              <p className="text-lead text-paper/90">{futureExpansion.body}</p>
+              <p className="text-lead text-paper">{futureExpansion.body}</p>
               <p className="mt-6 leading-relaxed text-mist">
                 {futureExpansion.detail}
               </p>
@@ -206,7 +233,7 @@ export default function GlobalNetwork() {
                 {futureExpansion.criteria.map((item) => (
                   <li
                     key={item}
-                    className="border-t border-mist/18 pt-4 text-[0.9375rem] text-paper/80"
+                    className="border-t border-mist/18 pt-4 text-[0.9375rem] text-paper"
                   >
                     {item}
                   </li>
@@ -224,8 +251,8 @@ export default function GlobalNetwork() {
       </Section>
 
       <CallToAction
-        title="Join a Growing Global Network"
-        body="Students, schools, and organizations across three countries — and room for more."
+        title="Three countries. Room for more."
+        body="A fourth branch opens when there are students to lead it and a plan it can be held to — not when it would look good to announce one."
         actions={[
           { label: 'Join IES', to: '/join', variant: 'primary' },
           { label: 'Start a Chapter', to: '/start-a-chapter' },

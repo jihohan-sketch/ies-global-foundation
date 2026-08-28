@@ -49,12 +49,25 @@ const noteFor = new Map(
  * which is the order the organisation itself uses, and re-ranking a foundation's
  * own figures by size is an editorial claim nobody asked for.
  */
-export function ImpactLedger() {
+export function ImpactLedger({ index = '04' }: { index?: string } = {}) {
   return (
     <section
       id="impact"
       aria-label="Impact snapshot"
-      className="relative overflow-hidden border-y border-mist/12 bg-navy-700 py-16 sm:py-20 lg:py-24"
+      /*
+       * ON PAPER, WHICH IS THE POINT OF THIS SECTION IN THE NEW ARRANGEMENT.
+       *
+       * The ledger is the one place on the home page where the reader is being
+       * asked to *believe a number*, and belief is a different mode from the
+       * cinema either side of it. A light slab in the middle of a dark page
+       * does two things at once: it separates the claim from the atmosphere
+       * around it, and it puts the figures on the ground that figures are
+       * normally printed on. It is also, structurally, the moment the home
+       * page stops being a film and becomes a document — which is exactly
+       * where it belongs, between the photographs and the work.
+       */
+      data-ground="light"
+      className="section-edge relative overflow-hidden bg-paper py-20 text-navy sm:py-28 lg:py-32"
     >
       <Container size="wide" className="relative">
         <GhostTitle>Scale</GhostTitle>
@@ -62,8 +75,9 @@ export function ImpactLedger() {
         <div className="relative z-10">
           <Scrub effect="scrub-rise">
             <SectionHeading
-              index="04"
+              index={index}
               eyebrow="Impact Snapshot"
+              tone="dark"
               title="Scale, measured honestly."
             />
           </Scrub>
@@ -73,7 +87,7 @@ export function ImpactLedger() {
               const note = stat.note ?? noteFor.get(stat.label)
               return (
               <div key={stat.label} className="relative">
-                <Scrub effect="scrub-rule" className="block h-px w-full bg-mist/25" />
+                <Scrub effect="scrub-rule" className="block h-px w-full bg-navy/16" />
 
                 <div
                   className="flex flex-col gap-x-10 gap-y-3 py-8 lg:flex-row lg:items-baseline lg:py-10"
@@ -90,9 +104,9 @@ export function ImpactLedger() {
                       own baseline corner rather than translating it — see the
                       note on that preset in index.css.
 
-                      NO LONGER `metal`, AND THAT IS THE POINT OF THIS SECTION.
+                      NO LONGER `sheen`, AND THAT IS THE POINT OF THIS SECTION.
 
-                      The metallic gradient runs from a dark warm stop through a
+                      The sheen gradient runs from a dark warm stop through a
                       highlight and back down, which is beautiful on two
                       ceremonial words and actively destructive on a numeral:
                       the first and last digits of `736,000+` were landing at
@@ -107,7 +121,7 @@ export function ImpactLedger() {
                       that has to be legible. Weight is up from 300 to 500 for
                       the same reason it is everywhere else on the site. */}
                   <Scrub effect="scrub-figure" className="min-w-0 lg:shrink-0">
-                    <dd className="font-serif leading-[0.85] font-medium tracking-[-0.03em] text-paper [font-size:clamp(3.25rem,10vw,8.5rem)]">
+                    <dd className="font-serif leading-[0.85] font-medium tracking-[-0.03em] text-navy [font-size:clamp(3.25rem,10vw,8.5rem)]">
                       <Counter stat={stat} suffixClassName="text-[var(--accent)]" />
                     </dd>
                   </Scrub>
@@ -134,7 +148,7 @@ export function ImpactLedger() {
                       {stat.label}
                     </dt>
                     {note && (
-                      <p className="mt-2.5 max-w-[34ch] text-sm leading-relaxed text-mist">
+                      <p className="mt-2.5 max-w-[34ch] text-sm leading-relaxed text-navy-600">
                         {note}
                       </p>
                     )}
@@ -143,15 +157,15 @@ export function ImpactLedger() {
               </div>
               )
             })}
-            <Scrub effect="scrub-rule" className="block h-px w-full bg-mist/25" />
+            <Scrub effect="scrub-rule" className="block h-px w-full bg-navy/16" />
           </dl>
 
           <Scrub effect="scrub-rise" offset={0.1}>
-            <p className="mt-10 max-w-3xl text-xs leading-relaxed text-mist">
+            <p className="mt-10 max-w-3xl text-xs leading-relaxed text-navy-600">
               {site.statisticsNote}{' '}
               <Link
                 to="/impact"
-                className="text-paper underline underline-offset-4 transition-colors hover:text-[var(--accent)]"
+                className="text-navy underline underline-offset-4 transition-colors hover:text-[var(--accent)]"
               >
                 See the full impact report
               </Link>

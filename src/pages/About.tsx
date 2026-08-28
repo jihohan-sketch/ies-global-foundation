@@ -1,4 +1,6 @@
-import { Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
+import { Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
+import { Split } from '@/components/ui/Editorial'
+import { HorizontalStory } from '@/components/sections/HorizontalStory'
 import { GhostTitle } from '@/components/ui/Cinematic'
 import { LitText, MaskedText } from '@/components/ui/MaskedText'
 import { Reveal } from '@/components/ui/Reveal'
@@ -23,8 +25,8 @@ export default function About() {
       <PageHero
         eyebrow="About IES"
         ghost="About"
-        title="An international youth organization built around ethical leadership."
-        lead="IES began in Korea in April 2023. It is now a network of branches, chapters, and student leaders across three countries."
+        title="Two students, one question, April 2023."
+        lead="They wanted somewhere to argue ethics properly — prepared, in public, against people who disagreed. Three years on that is a society of 1,200+ students across three countries, and every role in it is still held by a student."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]}
       />
 
@@ -68,7 +70,7 @@ export default function About() {
           <div className="mt-14 lg:mt-20 lg:pl-[46%]">
             <LitText
               offset={0.08}
-              className="text-lead text-paper/90"
+              className="text-lead text-paper"
               text={site.mission}
             />
             <Reveal delay={140}>
@@ -87,7 +89,7 @@ export default function About() {
             </Reveal>
 
             <Reveal delay={100} className="space-y-7">
-              <p className="text-lead text-paper/90">
+              <p className="text-lead text-paper">
                 Founded in April 2023, IES began as a student-led initiative in Korea focused
                 on ethics, education, and youth service.
               </p>
@@ -156,38 +158,56 @@ export default function About() {
       {/* ========================================================== VALUES */}
       {/* Dark rather than the bright `paper` interlude this used to be — see the
           note on the matching section in Home.tsx. */}
-      <Section tone="deep" className="overflow-hidden border-y border-mist/12">
+      {/* ========================================================== VALUES */}
+      {/*
+       * The reading ground, and the asymmetric split the site uses for a
+       * "one thing that organises the others" relationship. The eight
+       * supporting values were an eight-cell grid, which gave every one of
+       * them the same weight as Equity — the value that is supposed to
+       * organise the rest.
+       */}
+      <Section tone="paper" className="overflow-hidden">
         <Container size="wide" className="relative">
           <GhostTitle>Values</GhostTitle>
-          <div className="relative z-10 grid gap-14 lg:grid-cols-[1fr_1.3fr] lg:gap-24">
-            <Reveal>
-              <Eyebrow>Core Values</Eyebrow>
-              <p className="metal mt-8 font-serif text-[clamp(3rem,7vw,5.5rem)] leading-none">
-                {values.primary.title}
-              </p>
-              <p className="mt-8 max-w-md leading-relaxed text-mist">
-                {values.primary.body}
-              </p>
-            </Reveal>
-
-            <Reveal delay={140}>
-              <p className="text-[0.75rem] font-semibold tracking-[0.14em] text-mist uppercase">
-                Supporting Values
-              </p>
-              <ul className="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">
-                {values.supporting.map((value) => (
-                  <li key={value.title} className="border-t border-mist/15 pt-4">
-                    <h3 className="font-serif text-lg">{value.title}</h3>
-                    <p className="mt-1.5 text-sm text-mist">{value.body}</p>
-                  </li>
+          <div className="relative z-10">
+            <Split
+              aside={
+                <Reveal>
+                  <Eyebrow tone="navy">Core Values</Eyebrow>
+                  <p className="mt-8 font-serif text-[clamp(3rem,7vw,5.5rem)] leading-none font-medium tracking-[-0.035em] text-navy">
+                    {values.primary.title}
+                  </p>
+                  <p className="mt-8 max-w-[36ch] leading-relaxed text-navy-600">
+                    {values.primary.body}
+                  </p>
+                </Reveal>
+              }
+            >
+              <Reveal delay={140}>
+                <p className="text-label font-semibold text-navy/55 uppercase">
+                  Supporting Values
+                </p>
+              </Reveal>
+              <ul className="mt-8 grid gap-x-14 sm:grid-cols-2">
+                {values.supporting.map((value, i) => (
+                  <Reveal
+                    key={value.title}
+                    as="li"
+                    delay={Math.min(i, 7) * 60}
+                    className="border-t py-5"
+                  >
+                    <h3 className="font-serif text-[1.25rem] text-navy">{value.title}</h3>
+                    <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-navy-600">
+                      {value.body}
+                    </p>
+                  </Reveal>
                 ))}
               </ul>
-            </Reveal>
+            </Split>
           </div>
         </Container>
       </Section>
 
-      {/* ========================================================= PILLARS */}
       <Section>
         <Container size="wide">
           <Reveal>
@@ -212,7 +232,7 @@ export default function About() {
                     </p>
                   </div>
                   <div>
-                    <p className="leading-relaxed text-paper/78">{pillar.body}</p>
+                    <p className="leading-relaxed text-paper">{pillar.body}</p>
                     <ul className="mt-6 space-y-2">
                       {pillar.points.map((point) => (
                         <li
@@ -233,28 +253,28 @@ export default function About() {
       </Section>
 
       {/* ================================================== DIFFERENTIATORS */}
-      <Section tone="deep" className="border-y border-mist/12">
-        <Container size="wide">
-          <Reveal>
-            <SectionHeading eyebrow="What Makes IES Different" title="Five commitments we hold to." />
-          </Reveal>
+      {/*
+       * Five commitments, panned.
+       *
+       * They were six cells of a three-column card grid — five commitments and
+       * a hole — set at 20px in boxes, which is the layout that guarantees
+       * nobody reads past the second. Each of these is a *claim about how the
+       * organisation behaves*, which is the kind of sentence that has to be
+       * read one at a time and at a size that says it is meant seriously.
+       */}
+      <HorizontalStory
+        label="What makes IES different"
+        eyebrow="What Makes IES Different"
+        title="Five commitments we hold to."
+        lead="Not aspirations. Each of these is a rule the organisation can be held to, and each one rules something out."
+        wordmark="Different"
+        panels={differentiators.map((item, i) => ({
+          id: `differentiator-${i}`,
+          title: item.title,
+          body: item.body,
+        }))}
+      />
 
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {differentiators.map((item, i) => (
-              <Reveal key={item.title} delay={i * 90}>
-                <Card className="h-full p-8">
-                  <h3 className="font-serif text-xl leading-snug">{item.title}</h3>
-                  <p className="mt-4 text-[0.9375rem] leading-relaxed text-mist">
-                    {item.body}
-                  </p>
-                </Card>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </Section>
-
-      {/* ====================================================== STRUCTURE */}
       <Section>
         <Container size="wide">
           <Reveal>
@@ -269,43 +289,56 @@ export default function About() {
             <OrgChart className="mt-16" />
           </Reveal>
 
+          {/*
+           * WHO DOES WHAT, AS TWO COLUMNS OF A SPREAD RATHER THAN TWO CARDS.
+           *
+           * The pair is a comparison — the whole point is reading one list
+           * against the other — and two bordered boxes side by side actively
+           * work against that: the border draws a wall down the middle of the
+           * exact comparison the reader is trying to make. A shared hairline
+           * above each column and nothing else lets the eye cross freely.
+           */}
           <Reveal delay={200}>
-            <div className="mt-14 grid gap-6 md:grid-cols-2">
-              <Card className="p-8">
-                <h3 className="font-serif text-xl">The Global Foundation is responsible for</h3>
-                <ul className="mt-5 space-y-2.5">
-                  {[
+            <div className="mt-16 grid gap-12 md:grid-cols-2 md:gap-20">
+              {[
+                {
+                  heading: 'The Global Foundation is responsible for',
+                  items: [
                     'International coordination between branches',
                     'Cross-border initiatives and joint programming',
                     'Global partnerships and institutional relationships',
                     'Branding, identity, and organizational standards',
                     'Branch development and responsible future expansion',
-                  ].map((item) => (
-                    <li key={item} className="flex gap-3 text-[0.9375rem] text-mist">
-                      <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-
-              <Card className="p-8">
-                <h3 className="font-serif text-xl">National branches are responsible for</h3>
-                <ul className="mt-5 space-y-2.5">
-                  {[
+                  ],
+                },
+                {
+                  heading: 'National branches are responsible for',
+                  items: [
                     'Local programming and national events',
                     'Approving and supporting school chapters',
                     'National leadership and officer roles',
                     'Outreach to schools and community organizations',
                     'Meeting IES conduct and participant safety standards',
-                  ].map((item) => (
-                    <li key={item} className="flex gap-3 text-[0.9375rem] text-mist">
-                      <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </Card>
+                  ],
+                },
+              ].map((column) => (
+                <div key={column.heading}>
+                  <h3 className="border-t pt-6 font-serif text-[1.375rem] leading-snug text-paper">
+                    {column.heading}
+                  </h3>
+                  <ul className="mt-7 space-y-4">
+                    {column.items.map((item) => (
+                      <li key={item} className="flex gap-4 text-[0.9375rem] leading-relaxed text-mist">
+                        <span
+                          aria-hidden
+                          className="mt-3 h-px w-4 shrink-0 bg-[var(--accent)]/60"
+                        />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           </Reveal>
 
@@ -320,8 +353,8 @@ export default function About() {
       </Section>
 
       <CallToAction
-        title="Help Build the Next Chapter of IES"
-        body="Whether you are a student, educator, organization, or prospective partner, there is a place for you within our global network."
+        title="Every role here is held by a student."
+        body="Including the ones that carry consequences. If you want one, the fastest route in is your own school — and if there is no chapter there yet, that is the opening."
         actions={[
           { label: 'Join IES', to: '/join', variant: 'primary' },
           { label: 'Partner With Us', to: '/partners' },

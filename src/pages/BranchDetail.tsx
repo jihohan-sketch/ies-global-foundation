@@ -49,7 +49,7 @@ export default function BranchDetail() {
                 <dt className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
                   {fact.label}
                 </dt>
-                <dd className="mt-2 text-[0.9375rem] text-paper/90">{fact.value}</dd>
+                <dd className="mt-2 text-[0.9375rem] text-paper">{fact.value}</dd>
               </div>
             ))}
           </dl>
@@ -64,7 +64,7 @@ export default function BranchDetail() {
               <Eyebrow>Overview</Eyebrow>
             </Reveal>
             <Reveal delay={100}>
-              <p className="text-lead text-paper/90">{branch.intro}</p>
+              <p className="text-lead text-paper">{branch.intro}</p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Button href={`mailto:${branch.contactEmail}`} variant="secondary">
                   Contact {branch.name}
@@ -79,7 +79,7 @@ export default function BranchDetail() {
       </Section>
 
       {/* =========================================================== SECTIONS */}
-      <Section tone="deep" className="border-y border-mist/12">
+      <Section tone="deep" >
         <Container size="wide">
           <div className="space-y-px">
             {branch.sections.map((section, i) => (
@@ -98,7 +98,7 @@ export default function BranchDetail() {
                         {section.items.map((item) => (
                           <li
                             key={item}
-                            className="flex gap-3 text-[0.9375rem] text-paper/80"
+                            className="flex gap-3 text-[0.9375rem] text-paper"
                           >
                             <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                             {item}
@@ -144,7 +144,7 @@ export default function BranchDetail() {
 
       {/* ============================================================== NEWS */}
       {related.length > 0 && (
-        <Section tone="deep" className="border-y border-mist/12" size="compact">
+        <Section tone="deep" size="compact">
           <Container size="wide">
             <Reveal>
               <Eyebrow>From {branch.name}</Eyebrow>

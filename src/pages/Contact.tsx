@@ -110,7 +110,7 @@ export default function Contact() {
               </div>
 
               <Reveal delay={260}>
-                <Card className="mt-10 p-7">
+                <Card className="mt-10">
                   <h3 className="text-[0.6875rem] font-sans font-medium tracking-[0.24em] text-[var(--accent)] uppercase">
                     Follow IES
                   </h3>
@@ -121,7 +121,7 @@ export default function Contact() {
                         href={social.href}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className="border border-mist/55 px-4 py-2 text-[0.6875rem] font-medium tracking-[0.16em] text-paper/80 uppercase transition-colors hover:border-[var(--accent)]/60 hover:text-[var(--accent)]"
+                        className="border border-mist/55 px-4 py-2 text-[0.6875rem] font-medium tracking-[0.16em] text-paper uppercase transition-colors hover:border-[var(--accent)]/60 hover:text-[var(--accent)]"
                       >
                         {social.label}
                       </a>
@@ -140,7 +140,7 @@ export default function Contact() {
                           href={branchSite.href}
                           target="_blank"
                           rel="noreferrer noopener"
-                          className="group inline-flex items-baseline gap-2 text-sm text-paper/80 transition-colors hover:text-paper"
+                          className="group inline-flex items-baseline gap-2 text-sm text-paper transition-colors hover:text-paper"
                         >
                           {branchSite.label}
                           <span className="text-xs text-mist transition-colors group-hover:text-[var(--accent)]">
@@ -159,7 +159,7 @@ export default function Contact() {
       </Section>
 
       {/* ==================================================== SAFETY NOTICE */}
-      <Section tone="deep" size="compact" className="border-t border-mist/12">
+      <Section tone="deep" size="compact" >
         <Container size="wide">
           <Reveal>
             <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-20">

@@ -40,7 +40,7 @@ export default function Governance() {
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {governance.entities.map((entity, i) => (
               <Reveal key={entity.title} delay={i * 100}>
-                <Card className="h-full p-8">
+                <Card className="h-full">
                   <h2 className="text-h3">{entity.title}</h2>
                   <p className="mt-5 leading-relaxed text-mist">{entity.body}</p>
                 </Card>
@@ -51,7 +51,7 @@ export default function Governance() {
       </Section>
 
       {/* ======================================================== STRUCTURE */}
-      <Section tone="deep" className="border-y border-mist/12">
+      <Section tone="deep" >
         <Container size="wide">
           <Reveal>
             <SectionHeading eyebrow="Structure" title="How the network is arranged" />
@@ -88,7 +88,7 @@ export default function Governance() {
           </div>
 
           <Reveal delay={200}>
-            <Card className="mt-14 p-8 sm:p-10">
+            <Card className="mt-14">
               <Eyebrow>Legal Status</Eyebrow>
               <p className="mt-6 leading-relaxed text-mist">{site.legalNote}</p>
               <p className="mt-4 leading-relaxed text-mist">

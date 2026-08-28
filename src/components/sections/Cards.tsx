@@ -11,13 +11,17 @@ export function BranchCard({ branch, index }: { branch: Branch; index: number })
     <Card interactive className="group h-full">
       <Link
         to={`/global-network/${branch.slug}`}
-        className="flex h-full flex-col p-8 sm:p-10"
+        className="flex h-full flex-col"
       >
         <div className="flex items-start justify-between gap-4">
           <span className="font-serif text-sm text-mist">
             {String(index + 1).padStart(2, '0')}
           </span>
-          <span className="border border-[var(--accent)]/35 px-3 py-1 text-[0.75rem] font-semibold tracking-[0.13em] text-[var(--accent)] uppercase">
+          {/* The status, as a tracked capital rather than an outlined chip.
+              A pill inside a rule-panel reintroduces exactly the boxed look
+              the panel exists to avoid, and the status is metadata — it should
+              be findable, not framed. */}
+          <span className="text-label-sm font-semibold text-[var(--accent)] uppercase">
             {branch.status}
           </span>
         </div>
@@ -34,7 +38,7 @@ export function BranchCard({ branch, index }: { branch: Branch; index: number })
           {branch.summary}
         </p>
 
-        <span className="mt-8 inline-flex items-center gap-2 text-[0.75rem] font-medium tracking-[0.14em] text-paper/85 uppercase transition-colors group-hover:text-[var(--accent)]">
+        <span className="mt-8 pb-2 inline-flex items-center gap-2 text-[0.75rem] font-medium tracking-[0.14em] text-paper uppercase transition-colors group-hover:text-[var(--accent)]">
           View branch
           <span
             aria-hidden
@@ -169,7 +173,7 @@ export function PersonCard({ person, branchName }: { person: Person; branchName?
               <p className="text-label-sm font-semibold text-slate uppercase">Responsibilities</p>
               <ul className="mt-2.5 space-y-1.5">
                 {person.responsibilities.map((item) => (
-                  <li key={item} className="flex gap-3 text-[0.8125rem] text-paper/85">
+                  <li key={item} className="flex gap-3 text-[0.8125rem] text-paper">
                     <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-[var(--accent)]/70" />
                     {item}
                   </li>

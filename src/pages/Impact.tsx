@@ -1,6 +1,9 @@
-import { Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
+import { Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
 import { GhostTitle } from '@/components/ui/Cinematic'
 import { Counter } from '@/components/ui/Counter'
+import { Split, Statement } from '@/components/ui/Editorial'
+import { HorizontalStory } from '@/components/sections/HorizontalStory'
+import { MaskedText } from '@/components/ui/MaskedText'
 import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
@@ -33,107 +36,157 @@ export default function Impact() {
       {/* ====================================================== STATISTICS */}
       {/* Dark rather than the bright `paper` interlude this used to be — see the
           note on the matching section in Home.tsx. */}
-      <Section tone="deep" className="overflow-hidden border-y border-mist/12">
+      {/* ========================================================== FIGURES */}
+      {/*
+       * ON PAPER, AND SPLIT RATHER THAN GRIDDED.
+       *
+       * This was a three-column grid of six figures on the dark ground — six
+       * equal cells, which is the layout that says "here are some numbers" and
+       * nothing about which of them matters. The page is called Impact; the
+       * numbers are the argument, and an argument needs an order.
+       *
+       * So: the reading ground, a sticky standfirst on the left saying what
+       * the figures are and are not, and the figures themselves as a hairline
+       * register down the right — largest first, each one carrying the
+       * sentence that says what it counts. The caveat about how they are
+       * gathered sits with the claim rather than three screens below it, which
+       * is the whole point of putting it on paper.
+       */}
+      <Section tone="paper" className="overflow-hidden">
         <Container size="wide" className="relative">
           <GhostTitle>Figures</GhostTitle>
-          <Reveal className="relative z-10">
-            <Eyebrow>Organization-Wide Statistics</Eyebrow>
-          </Reveal>
-
-          {/*
-           * THE FIGURES, AT THE SIZE THE PAGE IS NAMED AFTER.
-           *
-           * Two problems here, and the second was the more serious.
-           *
-           * These were set at `text-h2` — the same size as the section heading
-           * above them — on the one page whose entire subject is the numbers.
-           * They are now display-scale, in the same treatment the home page's
-           * ledger uses: paper-white digits with the accent carried by the
-           * suffix alone, so a `+` reads as gold without any part of the number
-           * itself dropping contrast.
-           *
-           * And the markup was saying the label twice. The `<dt>` was
-           * `sr-only` while `StatBlock` rendered a second, visible copy inside
-           * the `<dd>` — so a screen reader heard "Members, 1,200, Members" and
-           * the description list had a term that was not the visible term. The
-           * `<dt>` is the label now, visible, where it belongs; the `<dd>` is
-           * the figure and nothing else.
-           */}
-          <dl className="relative z-10 mt-12 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-            {impactStats.map((stat, i) => (
-              <Reveal key={stat.label + stat.value} delay={i * 80}>
-                <div className="border-t border-mist/20 pt-6">
-                  <dd className="font-serif leading-[0.85] font-medium tracking-[-0.03em] text-paper [font-size:clamp(3rem,5.2vw,4.75rem)]">
-                    <Counter stat={stat} suffixClassName="text-[var(--accent)]" />
-                  </dd>
-                  <dt className="text-label mt-4 font-semibold text-[var(--accent)] uppercase">
-                    {stat.label}
-                  </dt>
-                  {stat.note && (
-                    <p className="mt-2.5 max-w-[32ch] text-sm leading-relaxed text-mist">
-                      {stat.note}
+          <div className="relative z-10">
+            <Split
+              aside={
+                <>
+                  <Reveal>
+                    <Eyebrow tone="navy">Organization-Wide Statistics</Eyebrow>
+                  </Reveal>
+                  <MaskedText
+                    as="h2"
+                    className="text-h2 mt-8 max-w-[11ch] text-navy"
+                    text={['Counted, not', 'estimated.']}
+                  />
+                  <Reveal delay={120}>
+                    <p className="mt-8 max-w-[38ch] text-[0.9375rem] leading-relaxed text-navy-600">
+                      {site.statisticsNote} Figures are reported by national branches and
+                      consolidated by the Global Foundation. Where a figure cannot be supported
+                      from internal records, it is not published.
                     </p>
-                  )}
-                </div>
-              </Reveal>
-            ))}
-          </dl>
-
-          <Reveal delay={200}>
-            <p className="mt-14 max-w-3xl text-xs leading-relaxed text-mist">
-              {site.statisticsNote} Figures are reported by national branches and consolidated by
-              the Global Foundation. Where a figure cannot be supported from internal records, it
-              is not published.
-            </p>
-          </Reveal>
+                  </Reveal>
+                </>
+              }
+            >
+              <dl>
+                {impactStats.map((stat, i) => (
+                  <Reveal key={stat.label + stat.value} delay={Math.min(i, 6) * 70}>
+                    {/* Figure and label on one baseline rather than stacked in a
+                        cell: the pairing is what a ledger row is for, and
+                        proximity is what makes it read as a pair. */}
+                    <div
+                      /* `auto` for the figure track, with a floor. A fixed
+                         track sized to a typical figure is wrong twice over:
+                         `736,000+` overruns it and lands on top of its own
+                         label, and `3` leaves most of it empty. `auto` sizes
+                         to the widest figure in the list and the floor keeps
+                         the short ones from collapsing against the label. */
+                      className="grid items-baseline gap-x-10 gap-y-2 border-t py-7 sm:grid-cols-[auto_minmax(0,1fr)]"
+                      style={{ borderColor: 'var(--rule)' }}
+                    >
+                      <dd className="min-w-[6rem] font-serif leading-[0.85] font-medium tracking-[-0.03em] text-navy [font-size:clamp(2.5rem,4.6vw,4rem)]">
+                        <Counter stat={stat} suffixClassName="text-[var(--accent)]" />
+                      </dd>
+                      <div>
+                        <dt className="text-label font-semibold text-[var(--accent)] uppercase">
+                          {stat.label}
+                        </dt>
+                        {stat.note && (
+                          <p className="mt-2 max-w-[42ch] text-[0.9375rem] leading-relaxed text-navy-600">
+                            {stat.note}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </dl>
+            </Split>
+          </div>
         </Container>
       </Section>
 
-      {/* ==================================================== IMPACT STORIES */}
-      <Section>
+      {/* =================================================== IMPACT STORIES */}
+      {/*
+       * The four stories, panned rather than stacked.
+       *
+       * They were four cards, each a two-column grid inside a bordered box, and
+       * they had the specific failure that long cards always have: the fourth
+       * one sat below three near-identical rectangles, so by the time a reader
+       * reached it they had already learned that this part of the page was a
+       * list to be skimmed. These are the pieces of evidence the whole page
+       * rests on — each one deserves the screen while it is being read.
+       *
+       * The metrics travel with their story as a two-column dossier at the
+       * foot of the panel, which is where a fact belongs relative to the claim
+       * it supports.
+       */}
+      <HorizontalStory
+        id="stories"
+        label="Impact stories"
+        eyebrow="Impact Stories"
+        title="The work behind the numbers."
+        lead="Statistics describe the scale of the network. These describe what it is for."
+        wordmark="Stories"
+        panels={impactStories.map((story) => ({
+          id: story.id,
+          eyebrow: story.branch,
+          title: story.title,
+          body: story.summary,
+          facts: story.metrics?.map((metric) => ({
+            label: metric.label,
+            value: metric.value,
+          })),
+        }))}
+      />
+
+      {/* The detail behind each story, on paper, for the reader who wants it.
+          The pan carries the claim; this carries the argument. */}
+      <Section tone="bone">
         <Container size="wide">
           <Reveal>
-            <SectionHeading
-              eyebrow="Impact Stories"
-              title="The work behind the numbers"
-              lead="Statistics describe the scale of the network. These describe what it is for."
-            />
+            <Eyebrow tone="navy">In Detail</Eyebrow>
+          </Reveal>
+          <Reveal delay={80}>
+            <Statement tone="dark" as="h2" className="mt-8">
+              How each of these actually runs.
+            </Statement>
           </Reveal>
 
-          <div className="mt-16 space-y-6">
+          <div className="mt-20 space-y-20">
             {impactStories.map((story, i) => (
-              <Reveal key={story.id} delay={i * 100}>
-                <Card className="p-8 sm:p-10">
-                  <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
-                    <div>
-                      <span className="text-[0.75rem] font-semibold tracking-[0.13em] text-[var(--accent)] uppercase">
-                        {story.branch}
-                      </span>
-                      <h3 className="text-h3 mt-4">{story.title}</h3>
-
-                      {story.metrics && (
-                        <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-4">
-                          {story.metrics.map((metric) => (
-                            <div key={metric.label}>
-                              <dt className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
-                                {metric.label}
-                              </dt>
-                              <dd className="mt-1 font-serif text-xl text-paper">
-                                {metric.value}
-                              </dd>
-                            </div>
-                          ))}
-                        </dl>
-                      )}
-                    </div>
-
-                    <div className="space-y-5">
-                      <p className="text-lead text-paper/90">{story.summary}</p>
-                      <p className="leading-relaxed text-mist">{story.detail}</p>
-                    </div>
-                  </div>
-                </Card>
-              </Reveal>
+              <Split
+                key={story.id}
+                sticky={false}
+                aside={
+                  <Reveal>
+                    <span className="font-serif text-[0.9375rem] text-navy/45 tabular-nums lining-nums">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <h3 className="mt-4 font-serif text-[clamp(1.5rem,2.6vw,2.125rem)] leading-[1.12] tracking-[-0.02em] text-navy">
+                      {story.title}
+                    </h3>
+                    <p className="text-label-sm mt-4 font-semibold text-[var(--accent)] uppercase">
+                      {story.branch}
+                    </p>
+                  </Reveal>
+                }
+              >
+                <Reveal delay={100}>
+                  <p className="border-t pt-7 leading-relaxed text-navy-600" style={{ borderColor: 'var(--rule)' }}>
+                    {story.detail}
+                  </p>
+                </Reveal>
+              </Split>
             ))}
           </div>
         </Container>
@@ -161,7 +214,7 @@ export default function Impact() {
           passage of the page the same gesture — and unlike the vertical spine
           this replaces, several entries are on screen at once, so what a
           visitor sees is a sequence rather than a stack of dates. */}
-      <Section tone="deep" size="compact" className="border-t border-mist/12">
+      <Section tone="deep" size="compact" >
         <Container size="wide">
           <Scrub effect="scrub-rise">
             <SectionHeading
@@ -175,7 +228,7 @@ export default function Impact() {
 
       <TimelineScene />
 
-      <Section tone="deep" size="compact" className="border-b border-mist/12">
+      <Section tone="deep" size="compact" >
         <Container size="wide">
           <Scrub effect="scrub-rise">
             <p className="max-w-2xl text-sm leading-relaxed text-mist">

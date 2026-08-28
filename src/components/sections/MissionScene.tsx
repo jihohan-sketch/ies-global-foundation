@@ -123,7 +123,7 @@ export function MissionScene() {
         >
           <SceneLayer effect="scrub-dissolve" fade={0.28} travel="0px">
             <SceneLayer effect="scrub-cross" span="46vw">
-              <span className="block pl-[6vw] font-serif leading-[0.92] font-light tracking-[-0.03em] text-paper/88 [font-size:clamp(3rem,13.5vw,12rem)]">
+              <span className="block pl-[6vw] font-serif leading-[0.92] font-normal tracking-[-0.03em] text-paper [font-size:clamp(3rem,13.5vw,12rem)]">
                 Reflection
               </span>
             </SceneLayer>
@@ -133,7 +133,7 @@ export function MissionScene() {
               apart at the start and closest as they leave. */}
           <SceneLayer effect="scrub-dissolve" offset={0.05} fade={0.28} travel="0px">
             <SceneLayer effect="scrub-cross" span="-46vw">
-              <span className="metal block pr-[6vw] text-right font-serif leading-[0.92] font-light tracking-[-0.03em] [font-size:clamp(3rem,13.5vw,12rem)]">
+              <span className="sheen block pr-[6vw] text-right font-serif leading-[0.92] font-normal tracking-[-0.03em] [font-size:clamp(3rem,13.5vw,12rem)]">
                 Action
               </span>
             </SceneLayer>
@@ -177,7 +177,7 @@ export function MissionScene() {
               offset={0.3}
               stagger={0.016}
               maxOffset={0.12}
-              className="mx-auto mt-10 max-w-5xl font-serif leading-[1.06] font-light tracking-[-0.02em] text-paper [font-size:clamp(1.75rem,5.4vw,4.25rem)]"
+              className="mx-auto mt-10 max-w-5xl font-serif leading-[1.06] font-normal tracking-[-0.02em] text-paper [font-size:clamp(1.75rem,5.4vw,4.25rem)]"
               text={[
                 'We help young people turn ethical',
                 <>
@@ -208,7 +208,7 @@ export function MissionScene() {
             <p className="mt-12">
               <Link
                 to="/our-work"
-                className="group inline-flex items-center gap-3 text-[0.6875rem] font-medium tracking-[0.26em] text-paper/80 uppercase transition-colors duration-500 hover:text-[var(--accent)]"
+                className="group inline-flex items-center gap-3 text-[0.6875rem] font-medium tracking-[0.26em] text-paper uppercase transition-colors duration-500 hover:text-[var(--accent)]"
               >
                 <span className="relative">
                   How the mission is carried out
@@ -291,7 +291,7 @@ function PillarLedger() {
                   words upstairs made, at a tenth the amplitude. Close enough
                   to rhyme, far enough not to repeat. */}
               <Scrub effect="scrub-converge" offset={0.04} span={i % 2 === 0 ? '-7vw' : '7vw'}>
-                <h3 className="font-serif leading-[1.02] font-light tracking-[-0.02em] text-paper [font-size:clamp(1.875rem,4.6vw,3.5rem)]">
+                <h3 className="font-serif leading-[1.02] font-normal tracking-[-0.02em] text-paper [font-size:clamp(1.875rem,4.6vw,3.5rem)]">
                   {pillar.title}
                 </h3>
               </Scrub>

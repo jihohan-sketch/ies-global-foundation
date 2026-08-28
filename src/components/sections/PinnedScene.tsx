@@ -81,6 +81,7 @@ export function PinnedScene({
   trackClassName,
   wordmark,
   depth,
+  pace,
 }: {
   /** One node per panel. Each is given a full-viewport cell to sit in. */
   children: ReactNode[]
@@ -145,6 +146,26 @@ export function PinnedScene({
    * a lens. Below about 900 it reads as a fisheye.
    */
   depth?: number
+  /**
+   * Derive the section's height from how far the track actually has to travel,
+   * rather than from a fixed `vhPerPanel` guess.
+   *
+   * WHY THIS EXISTS. `vhPerPanel` assumes every panel is one viewport wide,
+   * which is true for `panelWidth="screen"` and false the moment panels size
+   * themselves. A scene of five 0.7-viewport panels asks for 5 x 96vh of pin
+   * and needs about 3.5 viewports of pan, so the last third of the pin is a
+   * held frame with an empty track in it — the reader keeps scrolling and
+   * nothing moves, which reads as the page having broken.
+   *
+   * The value is the ratio of vertical scroll to horizontal travel. 1 means a
+   * pixel of wheel moves the track a pixel, which is the setting that feels
+   * like direct manipulation; above 1 the pan is slower and more cinematic,
+   * below 1 it outruns the reader's hand.
+   *
+   * Only meaningful with `panelWidth="auto"` — with fixed-width panels the
+   * arithmetic `vhPerPanel` does is already exact.
+   */
+  pace?: number
 }) {
   const sectionRef = useRef<HTMLElement>(null)
   const frameRef = useRef<HTMLDivElement>(null)
@@ -170,6 +191,17 @@ export function PinnedScene({
     const measure = () => {
       viewport = window.innerWidth
       distance = Math.max(0, track.scrollWidth - viewport)
+      /*
+       * Written as an inline height on the section, which the `max-width:639px`
+       * block in index.css overrides with `height: auto !important` — so a
+       * phone still gets the vertical stack. The scroll engine observes this
+       * node with its own ResizeObserver, so changing the height here
+       * re-measures the pin window rather than leaving it stale.
+       */
+      if (pace && distance > 0) {
+        const vh = window.innerHeight
+        section.style.height = `${100 + (distance * pace * 100) / vh + runOut}vh`
+      }
       lefts.length = 0
       widths.length = 0
       for (const panel of panels) {
@@ -241,7 +273,7 @@ export function PinnedScene({
       resizer.disconnect()
       unobserve()
     }
-  }, [children.length, panelWidth])
+  }, [children.length, panelWidth, pace, runOut])
 
   return (
     <section
@@ -253,6 +285,11 @@ export function PinnedScene({
          own at desktop width. */
       className={cx('pinned-scene relative', className)}
       style={{ height: `${children.length * vhPerPanel + runOut}vh` }}
+      /* The inline height above is the pre-measurement value; with `pace` set,
+         the effect replaces it on the first frame. Keeping a sensible starting
+         value matters because it is what the document is laid out with until
+         then, and a section that jumps from 30vh to 400vh after paint takes
+         the reader's scroll position with it. */
     >
       <div
         ref={frameRef}

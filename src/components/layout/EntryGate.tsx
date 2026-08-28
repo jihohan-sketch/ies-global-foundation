@@ -128,7 +128,7 @@ export function EntryGate() {
       </svg>
 
       <p
-        className="text-cinema mt-10 -mr-[0.2em] font-serif font-light text-paper/90"
+        className="text-cinema mt-10 -mr-[0.2em] font-serif font-normal text-paper"
         style={{ animation: 'ies-gate-rise 1100ms var(--ease-cinema) 300ms both' }}
       >
         {site.motto}

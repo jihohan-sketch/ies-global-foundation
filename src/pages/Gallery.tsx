@@ -177,7 +177,7 @@ export default function Gallery() {
                       'min-h-11 rounded-[3px] border px-4 py-2 text-[0.8125rem] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-3',
                       selected
                         ? 'border-[var(--accent)] bg-[var(--accent)]/12 text-[var(--accent)]'
-                        : 'border-mist/55 text-paper/80 hover:border-[var(--accent)]/60 hover:text-paper',
+                        : 'border-mist/55 text-paper hover:border-[var(--accent)]/60 hover:text-paper',
                     )}
                   >
                     {filter.label}
@@ -222,7 +222,7 @@ export default function Gallery() {
                       {' '}
                       <Link
                         to={photo.href}
-                        className="whitespace-nowrap text-paper/70 underline decoration-mist/30 underline-offset-4 transition-colors hover:text-[var(--accent)]"
+                        className="whitespace-nowrap text-mist underline decoration-mist/30 underline-offset-4 transition-colors hover:text-[var(--accent)]"
                       >
                         {photo.activityTitle}
                       </Link>
@@ -238,7 +238,7 @@ export default function Gallery() {
       </Section>
 
       {/* =========================================================== VIDEOS */}
-      <Section tone="deep" className="border-y border-mist/12">
+      <Section tone="deep" >
         <Container size="wide">
           <Reveal>
             <Eyebrow>Film</Eyebrow>

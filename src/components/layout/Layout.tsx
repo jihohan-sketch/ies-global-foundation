@@ -1,4 +1,4 @@
-import { useEffect, type CSSProperties } from 'react'
+import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Header } from './Header'
 import { Footer } from './Footer'
@@ -46,38 +46,24 @@ function ScrollManager() {
 }
 
 /*
- * Section accent by route. Set once here rather than per page, so a page picks
- * up its colour by existing at a path — there is nothing to remember to pass
- * when a new section is written.
+ * THE ACCENT NO LONGER MOVES.
  *
- * Grouped by what the pages are for, not to spread the colours evenly: the
- * network and the documents that govern it are sky, the programming and what
- * it produced are sage, and the outward-facing invitations are clay. Home,
- * About and Leadership stay on brand gold — they are the site introducing
- * itself, and that is the colour it introduces itself in.
+ * There used to be four of these, re-pointed per route — gold for home and
+ * about, sky for the network, sage for the work, clay for the invitations —
+ * on the argument that a page should "read as its own place". It does read as
+ * its own place; it just stops reading as the same organisation. A mark's
+ * accent is worth something precisely because it is invariant: seeing the IES
+ * blue on the sixth page has to be recognition rather than decoration, and it
+ * cannot be if the fifth page was green.
+ *
+ * `--accent` is still a variable and still the only thing any component reads,
+ * because it does still change — not by route, but by *ground*. `Section` sets
+ * `data-ground="light"` on its paper and bone tones, and the rule in index.css
+ * swaps the blue for its dark counterpart there. That is a legibility flip
+ * rather than an identity one.
  */
-const ROUTE_ACCENTS: Record<string, string> = {
-  'global-network': 'sky',
-  governance: 'sky',
-  contact: 'sky',
-  'our-work': 'sage',
-  impact: 'sage',
-  news: 'clay',
-  partners: 'clay',
-  join: 'clay',
-  'start-a-chapter': 'clay',
-}
-
-function useRouteAccent() {
-  const { pathname } = useLocation()
-  // First segment only: /news/:slug and /global-network/:slug inherit the
-  // accent of the section they belong to.
-  const segment = pathname.split('/')[1] ?? ''
-  return ROUTE_ACCENTS[segment] ?? 'gold'
-}
 
 export function Layout() {
-  const accent = useRouteAccent()
   const { pathname } = useLocation()
 
   return (
@@ -89,11 +75,7 @@ export function Layout() {
           without that, positioned-but-unlayered content would fall behind it. */}
       <GlobeBackdrop />
       <Header />
-      <main
-        id="main"
-        className="relative z-10 flex-1"
-        style={{ '--accent': `var(--color-${accent})` } as CSSProperties}
-      >
+      <main id="main" className="relative z-10 flex-1">
         {/*
          * Keyed on the path so React tears the old page down and mounts the new
          * one, which restarts the arrival animation — a CSS animation on a

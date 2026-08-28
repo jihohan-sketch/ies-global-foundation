@@ -15,12 +15,28 @@ export function Logo({
   subtitle = 'responsive',
 }: {
   className?: string
-  variant?: 'light' | 'dark'
+  /**
+   * `light` = light ink, for a dark ground. `dark` = navy ink, for paper.
+   * `auto` follows `--bar-ink`, which the header re-points as the bar crosses
+   * a light section — see `useGroundUnderHeader`. Anything drawing the logo
+   * inside the fixed header wants `auto`; everything else states its ground.
+   */
+  variant?: 'light' | 'dark' | 'auto'
   compact?: boolean
   subtitle?: 'full' | 'responsive'
 }) {
-  const ink = variant === 'light' ? 'text-paper' : 'text-navy'
-  const sub = variant === 'light' ? 'text-mist' : 'text-navy-700/70'
+  const ink =
+    variant === 'auto'
+      ? 'text-[var(--bar-ink)] transition-colors duration-500'
+      : variant === 'light'
+        ? 'text-paper'
+        : 'text-navy'
+  const sub =
+    variant === 'auto'
+      ? 'text-[var(--bar-ink-dim)] transition-colors duration-500'
+      : variant === 'light'
+        ? 'text-mist'
+        : 'text-navy-700/70'
 
   return (
     <span className={cx('flex items-center gap-3', className)}>

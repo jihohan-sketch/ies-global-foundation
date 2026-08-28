@@ -175,7 +175,7 @@ export function JoinForm({ defaultPathway = 'member' }: { defaultPathway?: strin
             mountedAt.current = Date.now()
             setStatus('idle')
           }}
-          className="mt-8 text-[0.75rem] font-medium tracking-[0.14em] text-paper/80 uppercase underline underline-offset-8 transition-colors hover:text-[var(--accent)]"
+          className="mt-8 text-[0.75rem] font-medium tracking-[0.14em] text-paper uppercase underline underline-offset-8 transition-colors hover:text-[var(--accent)]"
         >
           Submit another application
         </button>

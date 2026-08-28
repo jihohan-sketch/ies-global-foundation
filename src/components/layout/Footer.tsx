@@ -49,7 +49,7 @@ function ContactRow({
       <p className="text-[0.6875rem] font-semibold tracking-[0.12em] text-mist uppercase">
         {label}
       </p>
-      <div className="mt-2 text-[0.8125rem] tracking-[0.06em] text-paper/85">{children}</div>
+      <div className="mt-2 text-[0.8125rem] tracking-[0.06em] text-paper">{children}</div>
     </div>
   )
 }
@@ -120,7 +120,7 @@ export function Footer() {
                 <li key={item.href}>
                   <Link
                     to={item.href}
-                    className="-mr-[0.24em] block py-1.5 font-serif text-[0.9375rem] tracking-[0.24em] text-paper/72 uppercase transition-colors duration-300 hover:text-paper"
+                    className="-mr-[0.24em] block py-1.5 font-serif text-[0.9375rem] tracking-[0.24em] text-mist uppercase transition-colors duration-300 hover:text-paper"
                   >
                     {item.label}
                   </Link>
@@ -143,7 +143,7 @@ export function Footer() {
                 <li key={item.href}>
                   <Link
                     to={item.href}
-                    className="text-[0.8125rem] text-paper/60 transition-colors duration-300 hover:text-paper"
+                    className="text-[0.8125rem] text-mist transition-colors duration-300 hover:text-paper"
                   >
                     {item.label}
                   </Link>
@@ -212,7 +212,7 @@ export function Footer() {
                   href={branchSite.href}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="group inline-flex items-baseline gap-2 text-sm text-paper/72 transition-colors hover:text-paper"
+                  className="group inline-flex items-baseline gap-2 text-sm text-mist transition-colors hover:text-paper"
                 >
                   {branchSite.label}
                   <span className="text-xs text-mist transition-colors group-hover:text-[var(--accent)]">
@@ -231,7 +231,7 @@ export function Footer() {
         <div className="grid gap-10 py-10 lg:grid-cols-[1.1fr_1.4fr] lg:gap-20">
           <div>
             <Logo subtitle="full" />
-            <p className="mt-6 max-w-sm font-serif text-[1.0625rem] leading-snug text-paper/85">
+            <p className="mt-6 max-w-sm font-serif text-[1.0625rem] leading-snug text-paper">
               {site.tagline}
             </p>
           </div>

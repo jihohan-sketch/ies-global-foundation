@@ -32,25 +32,35 @@ const coordinates = ({ lat, lon }: Branch['point']) =>
  * international work already. When U.S. and U.K. photography exists, a
  * `ScrubImage` slots into the layer the code currently occupies.
  *
- * Each panel carries its own accent. The section's point is that the three are
- * different places under one mission, and colour is the fastest way to say it.
+ * Each panel used to carry its own accent — gold, sky, clay — on the argument
+ * that "the three are different places under one mission, and colour is the
+ * fastest way to say it". It is, and it was the wrong thing to say fastest:
+ * three accents in one pan makes the *branches* look like three organisations
+ * rather than one foundation, which is the exact opposite of the section's
+ * heading. One blue across all three, and the difference between them is
+ * carried where it belongs — in the country code, the coordinates and the copy.
+ *
+ * The glow behind each panel still steps, but in depth rather than in hue: the
+ * three sit at slightly different strengths, so the pan has a rise and fall
+ * across it without ever changing colour.
  */
-const ACCENTS = ['var(--color-gold)', 'var(--color-sky)', 'var(--color-clay)'] as const
-const GLOWS = ['200, 169, 107', '142, 184, 232', '217, 152, 120'] as const
+const GLOW_STRENGTHS = [0.16, 0.12, 0.09] as const
 
-const glowFor = (rgb: string) =>
-  `radial-gradient(ellipse 80% 70% at 50% 50%, rgba(${rgb}, 0.13) 0%, rgba(${rgb}, 0.05) 48%, transparent 78%)`
+const glowFor = (strength: number) =>
+  `radial-gradient(ellipse 80% 70% at 50% 50%, rgba(200, 169, 107, ${strength}) 0%, rgba(200, 169, 107, ${
+    strength * 0.38
+  }) 48%, transparent 78%)`
 
 export function NetworkScene() {
   return (
     <PinnedScene label="The three national branches" vhPerPanel={96} wordmark="Network">
       {branches.map((branch, index) => {
-        const accent = ACCENTS[index % ACCENTS.length]
+        const accent = 'var(--color-gold)' 
         return (
           <div
             key={branch.slug}
             className="relative flex w-full items-center self-stretch"
-            style={{ backgroundImage: glowFor(GLOWS[index % GLOWS.length]) }}
+            style={{ backgroundImage: glowFor(GLOW_STRENGTHS[index % GLOW_STRENGTHS.length]) }}
           >
             {/* Furthest back, slowest: the country code at display scale.
                 aria-hidden — the branch's name is read out in full below, and
@@ -176,7 +186,7 @@ export function NetworkScene() {
                       {/* Tabular figures: three coordinate readouts stacked
                           across three panels should hold the same rhythm as
                           they pass, and proportional digits make them wobble. */}
-                      <dd className="mt-1.5 font-sans text-[0.8125rem] tracking-[0.08em] tabular-nums text-paper/85">
+                      <dd className="mt-1.5 font-sans text-[0.8125rem] tracking-[0.08em] tabular-nums text-paper">
                         {coordinates(branch.point)}
                       </dd>
                     </div>

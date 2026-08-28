@@ -21,6 +21,34 @@ export function Container({
 
 /* ---------------------------------------------------------------- Section */
 
+export type SectionTone = 'navy' | 'deep' | 'paper' | 'bone'
+
+/**
+ * A movement of a page.
+ *
+ * FOUR GROUNDS, TWO OF THEM LIGHT — and that is the structural change the
+ * redesign turns on. The site used to be dark from the first pixel to the
+ * last, with `paper` available but used almost nowhere. Uniform darkness has a
+ * specific failure: with nothing to measure it against, a dark section does
+ * not read as *a section*, it reads as more page. A reader scrolling a long
+ * dark document cannot tell movement from length.
+ *
+ * The rule for choosing one is about reading rather than about variety:
+ *
+ *   `navy`  — transparent. The ambient ground, and what the globe reads
+ *             through. Cinema: pinned scenes, statements, photography.
+ *   `deep`  — a raised dark slab. A dark section that needs to separate from
+ *             the dark section next to it.
+ *   `paper` — off-white. The reading grounds: essays, dossiers, lists,
+ *             governance, anything a visitor has to work through rather than
+ *             watch.
+ *   `bone`  — the second light ground, one step down. For a light section
+ *             directly against another light one.
+ *
+ * Both light tones set `data-ground="light"`, which re-points `--accent` and
+ * `--rule` for everything inside them (see index.css). A component written for
+ * the dark ground is therefore correct on the light one without being told.
+ */
 export function Section({
   children,
   className,
@@ -31,48 +59,61 @@ export function Section({
   children: ReactNode
   className?: string
   id?: string
-  tone?: 'navy' | 'deep' | 'paper'
-  size?: 'default' | 'compact' | 'tall'
+  tone?: SectionTone
+  size?: 'default' | 'compact' | 'tall' | 'flush'
 }) {
-  /*
-   * `navy` paints no background of its own — the Layout wrapper already is navy,
-   * and staying transparent lets the fixed globe backdrop read through. `deep`
-   * and `paper` stay opaque, so they land as solid interludes between the
-   * sections the globe shows through.
-   */
-  const tones = {
+  const tones: Record<SectionTone, string> = {
     navy: 'text-paper',
     deep: 'bg-navy-700 text-paper',
     paper: 'bg-paper text-navy',
+    bone: 'bg-bone text-navy',
   }
-  /* Trimmed roughly a quarter off each step. The old scale left several
-     screens of near-empty navy between sections on the longer pages; the
-     rhythm survives the cut, the dead space does not. */
+  const light = tone === 'paper' || tone === 'bone'
+  /*
+   * SPACE THAT SEPARATES, NOT SPACE THAT STRANDS.
+   *
+   * The previous pass took `default` to 160px a side on the argument that
+   * oversized headings need room. They did — but the headings have since come
+   * down about 30%, and padding tuned to the larger type left several screens
+   * on the longer pages where a visitor scrolls past nothing at all. Empty
+   * space only reads as composure when something is about to arrive; past
+   * roughly a screen-height of it, it reads as a page that has finished.
+   *
+   * These are back to roughly two-thirds. The separation between sections is
+   * now carried by the things that are *meant* to carry it — the ground
+   * changing from navy to paper, and the hairline `section-edge` — rather than
+   * by distance, which is the weakest and most expensive way to say "new
+   * section".
+   *
+   * `flush` carries no vertical padding at all, for a section whose child
+   * brings its own frame.
+   */
   const sizes = {
-    compact: 'py-12 sm:py-16',
+    flush: '',
+    compact: 'py-12 sm:py-14',
     default: 'py-16 sm:py-20 lg:py-24',
-    tall: 'py-20 sm:py-24 lg:py-28',
+    tall: 'py-20 sm:py-24 lg:py-32',
   }
   return (
     <section
       id={id}
+      data-ground={light ? 'light' : undefined}
       className={cx(
         'relative',
         tones[tone],
         sizes[size],
         /*
-         * Every section announces its own top edge, rather than relying on the
+         * Every section announces its own top edge rather than relying on the
          * caller to remember a border. A page built from a dozen sections that
          * each looked identical *and* ran into each other without a seam is
-         * the layout half of "the content does not pop" — a reader could not
-         * tell whether they had moved into something new or were still in the
-         * middle of the last thing.
+         * the layout half of "the content does not pop".
          *
-         * `paper` is exempt: a light slab against near-black already is the
-         * strongest edge on the site, and a lit hairline on top of it would
-         * only muddy the cut.
+         * Light grounds get the edge too now — the `[data-ground='light']`
+         * override in index.css swaps it to a navy hairline with no bleed
+         * under it, because on paper a gradient below a rule reads as a
+         * printing fault.
          */
-        tone !== 'paper' && 'section-edge',
+        'section-edge',
         className,
       )}
     >
@@ -145,54 +186,18 @@ export function SectionHeading({
   eyebrow?: string
   title: ReactNode
   lead?: ReactNode
-  /**
-   * One or two words set at display scale behind the heading as texture. Purely
-   * decorative — see `GhostTitle`. Omit it on `paper` sections, where a 4%
-   * white ghost has nothing to sit on.
-   */
   ghost?: string
-  /**
-   * `01`, `02`, … Numbers the section within its page and swaps the eyebrow for
-   * the indexed marker. Purely a presentational choice about the eyebrow: the
-   * label still comes from `eyebrow`, which stays required for it.
-   */
   index?: string
   align?: 'left' | 'center'
+  /** `light` = light type on a dark ground. `dark` = navy type on paper. */
   tone?: 'light' | 'dark'
   className?: string
   as?: ElementType
 }) {
-  /*
-   * PRIMARY / SECONDARY / TERTIARY, AND YOU CAN TELL WHICH IS WHICH.
-   *
-   * The three lines here are the section's whole hierarchy, and they used to
-   * be separated by about as much as a stylesheet can separate three things
-   * without actually distinguishing them: a 10px label, a 2.875rem serif, and
-   * a 1.25rem light grey lead. Two of the three were grey, two of the three
-   * were light-weight, and the eye had to *read* all three to find out which
-   * one mattered.
-   *
-   * Now:
-   *   TERTIARY  the index/eyebrow — 12px, 600, accent, with a solid mark
-   *   PRIMARY   the title — up to 3.25rem serif at weight 500, paper white
-   *   SECONDARY the lead — up to 1.375rem sans at 400, `mist`, capped to 52ch
-   *
-   * Three sizes, three weights, three colours, three measures. Nothing has to
-   * be compared with anything to be ranked.
-   *
-   * `max-w-3xl` is gone from the wrapper. It was capping the *title* at 48rem
-   * on every section of the site, which is why every heading broke to two or
-   * three lines at exactly the same width and every section looked like the
-   * one before it. The title now runs to the width its container gives it and
-   * only the lead is measured, which is what lets a long title be one strong
-   * line and a short one be genuinely short.
-   */
   return (
     <div className={cx('relative', align === 'center' && 'mx-auto text-center', className)}>
-      {ghost && tone === 'light' && (
-        <GhostTitle align={align === 'center' ? 'center' : 'left'}>
-          {ghost}
-        </GhostTitle>
+      {ghost && (
+        <GhostTitle align={align === 'center' ? 'center' : 'left'}>{ghost}</GhostTitle>
       )}
       {/* Lifted over the ghost explicitly. Source order alone is not enough:
           the ghost is positioned, so it would otherwise paint above static
@@ -214,9 +219,16 @@ export function SectionHeading({
               {eyebrow}
             </Eyebrow>
           ))}
+        {/*
+         * 20ch. Headings still break early — three or four words a line, which
+         * is what gives the left edge of a section its shape — but the measure
+         * moved back out with the type size. At 16ch and the smaller h2, a
+         * heading of any length was breaking into four or five stubby lines,
+         * which reads as a column of fragments rather than as a statement.
+         */}
         <Tag
           className={cx(
-            'text-h2 mt-5 max-w-[22ch]',
+            'text-h2 mt-5 max-w-[20ch]',
             align === 'center' && 'mx-auto',
             tone === 'dark' ? 'text-navy' : 'text-paper',
           )}
@@ -228,7 +240,7 @@ export function SectionHeading({
             className={cx(
               'text-lead measure-lead mt-5',
               align === 'center' && 'mx-auto',
-              tone === 'dark' ? 'text-navy-700' : 'text-mist',
+              tone === 'dark' ? 'text-navy-600' : 'text-mist',
             )}
           >
             {lead}
@@ -239,28 +251,28 @@ export function SectionHeading({
   )
 }
 
-/* ------------------------------------------------------------------ Button */
-
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'onLight'
 
 /*
- * `min-h-11` keeps every variant at the 44px minimum touch target, including
- * `ghost`, whose padding alone would leave it around 27px tall.
+ * SQUARER, AND THAT IS THE EDITORIAL TELL.
  *
- * Fully rounded, not the 3px this used to carry. The site's other corners stay
- * sharp — cards, images, inputs — and that contrast is the point: on a page
- * built from hairlines and right angles, a capsule is unmistakably the thing
- * you press. A 3px radius reads as a softened rectangle and competes with every
- * other softened rectangle on the screen.
+ * The buttons were fully rounded pills, which is the house style of the
+ * product website — friendly, soft, and completely at odds with a page built
+ * out of hairlines and hard-set display type. A 2px radius reads as a printed
+ * rule box; it belongs to the same drawing as the dividers.
+ *
+ * The primary fill is the IES blue with navy type on it, which at 11.4:1 is
+ * the highest-contrast pair on the site — right for the one control a section
+ * actually wants pressed.
  */
 const buttonBase =
-  'group inline-flex min-h-11 items-center justify-center gap-2.5 rounded-full px-8 py-3.5 text-[0.8125rem] font-medium tracking-[0.1em] uppercase transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-2 focus-visible:outline-offset-3'
+  'group inline-flex min-h-11 items-center justify-center gap-3 rounded-[2px] px-9 py-4 text-[0.75rem] font-semibold tracking-[0.13em] uppercase transition-all duration-500 ease-[var(--ease-cinema)] focus-visible:outline-2 focus-visible:outline-offset-3'
 
 const buttonVariants: Record<ButtonVariant, string> = {
   primary: 'bg-gold text-navy hover:bg-gold-300',
   secondary:
-    'border border-mist/55 text-paper hover:border-gold/70 hover:bg-gold/8 hover:text-gold-300',
-  ghost: 'text-paper/85 hover:text-gold px-0 py-1 tracking-[0.14em]',
+    'border border-mist/45 text-paper hover:border-gold/70 hover:bg-gold/10 hover:text-gold',
+  ghost: 'text-paper hover:text-gold px-0 py-1 tracking-[0.14em]',
   onLight:
     'border border-navy/25 text-navy hover:border-navy hover:bg-navy hover:text-paper',
 }
@@ -374,7 +386,7 @@ export function ArrowLink({
   align?: 'left' | 'center'
 }) {
   const classes = cx(
-    'group inline-flex items-center gap-5 text-[0.8125rem] tracking-[0.08em] text-paper/85 transition-colors duration-300 hover:text-paper',
+    'group inline-flex items-center gap-5 text-[0.8125rem] tracking-[0.08em] text-paper transition-colors duration-300 hover:text-paper',
     align === 'center' && 'justify-center',
     className,
   )
@@ -424,35 +436,67 @@ export function ArrowLink({
 
 /* -------------------------------------------------------------------- Card */
 
+/**
+ * A block of related content, marked by a rule rather than boxed by a border.
+ *
+ * THIS USED TO BE A CARD, AND THE REDESIGN IS MOSTLY ABOUT IT NO LONGER BEING
+ * ONE.
+ *
+ * A bordered, tinted rectangle does three things, and only the first is
+ * wanted: it groups its contents, it separates them from the page, and it
+ * announces itself as a *component*. The second and third are what make a page
+ * of them read as an inventory — the eye counts boxes before it reads any of
+ * them, and eight boxes at one weight say that eight things matter equally,
+ * which is almost never true.
+ *
+ * What is left is the grouping, carried by a hairline across the top and the
+ * whitespace under it. That is enough: a rule with content beneath it is one
+ * of the oldest grouping devices in print, it costs no visual weight, and it
+ * lets adjacent blocks sit at different heights without looking broken —
+ * which is what makes an asymmetric layout possible at all.
+ *
+ * `interactive` brightens the rule to the accent on hover. The rule is the
+ * only thing that changes, so a grid of these stays still under the cursor
+ * instead of lighting up like a set of tiles.
+ *
+ * `tone` is now only needed where the block sits on a ground the surrounding
+ * `Section` has not declared; inside a `paper` or `bone` section the rule
+ * follows `--rule` and flips on its own.
+ */
 export function Card({
   children,
   className,
   interactive = false,
-  tone = 'dark',
+  tone,
 }: {
   children: ReactNode
   className?: string
   interactive?: boolean
+  /** Forces the rule's ground. Omit and it follows the section it is in. */
   tone?: 'dark' | 'light'
 }) {
   return (
     <div
-      /* Hover shifts the border only — no lift, no shadow. The card stays put,
-         so a grid of them reads as a calm table rather than a set of tiles that
-         jump under the cursor. */
       className={cx(
-        'relative rounded-[3px] border transition-colors duration-300',
-        tone === 'dark' ? 'border-mist/18 bg-navy-700/45' : 'border-navy/12 bg-white',
-        interactive && (tone === 'dark' ? 'hover:border-gold/45' : 'hover:border-navy/35'),
+        'relative border-t pt-7 transition-colors duration-500 ease-[var(--ease-cinema)]',
+        interactive && 'hover:border-[var(--accent)]/70',
         className,
       )}
+      style={
+        tone
+          ? {
+              borderColor:
+                tone === 'light'
+                  ? 'color-mix(in srgb, #050b16 14%, transparent)'
+                  : 'color-mix(in srgb, #bcc7d4 20%, transparent)',
+            }
+          : { borderColor: 'var(--rule)' }
+      }
     >
       {children}
     </div>
   )
 }
-
-/* --------------------------------------------------------------- Hairlines */
 
 export function Rule({ className }: { className?: string }) {
   return <div aria-hidden className={cx('rule-fade w-full', className)} />

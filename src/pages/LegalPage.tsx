@@ -48,7 +48,7 @@ export function LegalPage({ document }: { document: LegalDocument }) {
                       {section.list.map((item) => (
                         <li
                           key={item}
-                          className="flex gap-4 leading-relaxed text-paper/80"
+                          className="flex gap-4 leading-relaxed text-paper"
                         >
                           <span aria-hidden className="mt-3 h-px w-4 shrink-0 bg-[var(--accent)]/60" />
                           {item}

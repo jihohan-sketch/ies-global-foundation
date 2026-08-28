@@ -78,7 +78,7 @@ function ActivityMeta({ activity }: { activity: Activity }) {
           <dt className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase sm:pt-0.5">
             {row.label}
           </dt>
-          <dd className="text-[0.9375rem] text-paper/85">{row.value}</dd>
+          <dd className="text-[0.9375rem] text-paper">{row.value}</dd>
         </div>
       ))}
     </dl>
@@ -126,7 +126,7 @@ export function ActivityEntry({ activity, index }: { activity: Activity; index: 
           <PhotoGrid activity={activity} />
           <div className="mt-8 space-y-5">
             {activity.body.map((paragraph) => (
-              <p key={paragraph.slice(0, 40)} className="leading-relaxed text-paper/80">
+              <p key={paragraph.slice(0, 40)} className="leading-relaxed text-paper">
                 {paragraph}
               </p>
             ))}
@@ -166,7 +166,7 @@ export function ActivityFeed({
   if (activities.length === 0) return null
 
   return (
-    <Section id="activities" tone={tone} className="border-t border-mist/12">
+    <Section id="activities" tone={tone} >
       <Container size="wide">
         <Reveal>
           <Eyebrow>{eyebrow}</Eyebrow>

@@ -3,8 +3,10 @@ import { Container, Eyebrow, Section } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { ArticleCard } from '@/components/sections/Cards'
+import { RevealList } from '@/components/ui/Editorial'
 import { CallToAction } from '@/components/sections/CallToAction'
 import { newsCategories, sortedArticles } from '@/content/news'
+import { formatDate } from '@/lib/utils'
 import { useSeo } from '@/lib/seo'
 import { cx } from '@/lib/utils'
 
@@ -33,7 +35,7 @@ export default function News() {
         eyebrow="News & Updates"
         ghost="News"
         title="From across the network"
-        lead="Announcements, appointments, event recaps, partnerships, and program launches from across the network."
+        lead="Appointments, forums held, partnerships signed, chapters launched — recorded as they happen, by the branch that ran them."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'News' }]}
       />
 
@@ -55,7 +57,7 @@ export default function News() {
                     'inline-flex min-h-11 items-center border px-4 py-2 text-[0.75rem] font-medium tracking-[0.08em] transition-all duration-300',
                     filter === category
                       ? 'border-[var(--accent)]/60 bg-[var(--accent)]/10 text-[var(--accent)]'
-                      : 'border-mist/20 text-paper/70 hover:border-mist/45 hover:text-paper',
+                      : 'border-mist/20 text-mist hover:border-mist/45 hover:text-paper',
                   )}
                 >
                   {category}
@@ -110,16 +112,45 @@ export default function News() {
                * outruns the scroll and the last rows are still arriving after
                * the reader has reached them.
                */}
+              {/*
+               * THE REST OF THE ARCHIVE, AS A REGISTER WITH THE PICTURES ON
+               * HOVER.
+               *
+               * These were stacked list-rows that each carried a small
+               * thumbnail parked at a fixed spot on the right. That thumbnail
+               * was doing the least useful version of a very good idea: the
+               * photograph is often the reason to open the story, and a 192px
+               * box in the margin is not enough of it to be the reason for
+               * anything.
+               *
+               * `RevealList` gives the whole set one large frame that follows
+               * the cursor and swaps its source as the pointer moves down the
+               * list, with the unhovered rows dimming so the hover reads as a
+               * selection rather than as a colour change. On touch, where
+               * there is no cursor, it degrades to exactly the register it
+               * already was.
+               */}
               {rest.length > 0 && (
-                <ol className="mt-4">
-                  {rest.map((article, i) => (
-                    <li key={article.slug}>
-                      <Reveal delay={Math.min(i, 8) * 70}>
-                        <ArticleCard article={article} />
-                      </Reveal>
-                    </li>
-                  ))}
-                </ol>
+                <RevealList
+                  className="mt-4"
+                  start={2}
+                  items={rest.map((article) => ({
+                    id: article.slug,
+                    title: article.title,
+                    body: article.summary,
+                    meta: (
+                      <>
+                        <time dateTime={article.date} className="block tabular-nums lining-nums">
+                          {formatDate(article.date)}
+                        </time>
+                        <span className="mt-1 block text-[var(--accent)]">{article.category}</span>
+                      </>
+                    ),
+                    to: `/news/${article.slug}`,
+                    photo: article.cover,
+                    photoAlt: article.coverAlt,
+                  }))}
+                />
               )}
             </>
           )}
@@ -127,7 +158,7 @@ export default function News() {
       </Section>
 
       {/* ========================================================== NOTICE */}
-      <Section tone="deep" size="compact" className="border-t border-mist/12">
+      <Section tone="deep" size="compact" >
         <Container size="wide">
           <Reveal>
             <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
