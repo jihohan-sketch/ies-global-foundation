@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Container, Eyebrow, Section } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
-import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
 import { PageHero } from '@/components/sections/PageHero'
 import { ArticleCard } from '@/components/sections/Cards'
 import { CallToAction } from '@/components/sections/CallToAction'
@@ -43,7 +42,7 @@ export default function News() {
           {/* ------------------------------------------------------ Filters */}
           <Reveal>
             <div className="flex flex-wrap items-center gap-2 border-b border-mist/15 pb-6">
-              <span className="mr-3 text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
+              <span className="mr-3 text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
                 Filter
               </span>
               {[ALL, ...newsCategories].map((category) => (
@@ -82,7 +81,7 @@ export default function News() {
 
           {filtered.length === 0 ? (
             <Reveal>
-              <p className="py-24 text-center font-light text-mist">
+              <p className="py-24 text-center text-mist">
                 No articles in this category yet.
               </p>
             </Reveal>
@@ -96,16 +95,31 @@ export default function News() {
               )}
 
               {/* ------------------------------------------------- The rest */}
+              {/*
+               * A vertical index, not a horizontal rail.
+               *
+               * The rail was the wrong container for this content twice over.
+               * It showed three stories at a time out of however many exist, so
+               * the reader had no idea how much there was — and a horizontal
+               * scroll is a *browsing* gesture, while someone on a news page is
+               * usually looking for one specific thing. A list they can run
+               * their eye down answers "is it here" in a single pass, and
+               * `Ctrl-F` works on it, which on a rail it effectively does not.
+               *
+               * The stagger is capped at eight steps. Beyond that the delay
+               * outruns the scroll and the last rows are still arriving after
+               * the reader has reached them.
+               */}
               {rest.length > 0 && (
-                <ScrollRail label="more updates" className="mt-6">
+                <ol className="mt-4">
                   {rest.map((article, i) => (
-                    <RailItem key={article.slug}>
-                      <Reveal delay={i * 80} className="h-full">
+                    <li key={article.slug}>
+                      <Reveal delay={Math.min(i, 8) * 70}>
                         <ArticleCard article={article} />
                       </Reveal>
-                    </RailItem>
+                    </li>
                   ))}
-                </ScrollRail>
+                </ol>
               )}
             </>
           )}
@@ -121,7 +135,7 @@ export default function News() {
                 <Eyebrow>Media Inquiries</Eyebrow>
               </h2>
               <div>
-                <p className="leading-relaxed font-light text-mist">
+                <p className="leading-relaxed text-mist">
                   Journalists seeking comment or interviews should contact the Foundation’s
                   media address. Requests involving students under 18 follow our participant
                   safety policy.

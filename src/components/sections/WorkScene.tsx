@@ -60,7 +60,7 @@ const scenes = workCategories.filter(
 
 export function WorkScene() {
   return (
-    <PinnedScene label="What IES does" vhPerPanel={112}>
+    <PinnedScene label="What IES does" vhPerPanel={96}>
       {scenes.map((category, index) => (
         <div key={category.id} className="relative flex w-full items-center self-stretch">
           {/*
@@ -131,15 +131,45 @@ export function WorkScene() {
               opacity on the element that is actually fading. */}
           <div className="relative mx-auto w-full max-w-[88rem] px-6 sm:px-8">
             <SceneLayer effect="scrub-parallax-x" depth="112px" className="max-w-xl">
+              {/*
+               * THE PANEL NUMBER, AT THE SIZE A PANEL NUMBER SHOULD BE.
+               *
+               * This was `01 / 05` set as a 12px tracked label with a hairline
+               * beside it — the same register as every other small label on the
+               * site, which meant the one piece of information telling a reader
+               * *where they are in a five-part sequence* was also the quietest
+               * thing on the panel. In a horizontal scene that matters more than
+               * it does anywhere else: the reader cannot see the panels either
+               * side of the one they are on, so the number is the only thing
+               * that says the section has a length and how far through it they
+               * are.
+               *
+               * Set at display scale in the accent, with the total kept small
+               * beside it — `01` is the position, `/ 05` is the context, and
+               * they are not the same piece of information. Baseline-aligned so
+               * the pair reads as one figure rather than as two.
+               *
+               * `hidden` — SceneLayer's own prop, which is what sets
+               * `aria-hidden` on the rendered element. It does not spread
+               * unknown props, so writing `aria-hidden` directly here would be
+               * collected into the tuning rest and quietly emitted as a CSS
+               * custom property instead. The number is positional information a
+               * screen reader already has from the heading structure and the
+               * scene's own label.
+               */}
               <SceneLayer
-                as="p"
+                hidden
                 effect="scrub-fade"
                 fadeIn={0.18}
                 fadeOut={0.42}
-                className="flex items-center gap-4 text-[0.625rem] font-medium tracking-[0.3em] text-[var(--accent)] uppercase"
+                className="flex items-baseline gap-3 text-[var(--accent)]"
               >
-                <span aria-hidden className="h-px w-10 shrink-0 bg-current opacity-45" />
-                {String(index + 1).padStart(2, '0')} / {String(scenes.length).padStart(2, '0')}
+                <span className="font-serif leading-[0.8] font-medium tabular-nums lining-nums [font-size:clamp(3rem,6vw,5rem)]">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className="text-label-sm font-semibold text-mist">
+                  / {String(scenes.length).padStart(2, '0')}
+                </span>
               </SceneLayer>
 
               <SceneLayer
@@ -148,7 +178,7 @@ export function WorkScene() {
                 offset={0.03}
                 fadeIn={0.22}
                 fadeOut={0.36}
-                className="mt-8 font-serif leading-[1] text-paper"
+                className="mt-5 font-serif leading-[1] text-paper"
                 style={{ fontSize: 'clamp(2.25rem, 5.6vw, 4.5rem)', letterSpacing: '-0.02em' }}
               >
                 {category.title}
@@ -160,7 +190,7 @@ export function WorkScene() {
                 offset={0.06}
                 fadeIn={0.26}
                 fadeOut={0.3}
-                className="text-lead mt-8 leading-relaxed font-light text-mist"
+                className="text-lead mt-8 leading-relaxed text-mist"
               >
                 {category.summary}
               </SceneLayer>
@@ -177,7 +207,15 @@ export function WorkScene() {
                     offset={0.09 + chip * 0.02}
                     fadeIn={0.28}
                     fadeOut={0.26}
-                    className="border border-mist/18 px-3 py-1.5 text-[0.6875rem] font-light text-mist/80"
+                    /* 13px on a 30% border, up from 11px on 18%. These sit over
+                       a photograph — the one place on the site where a chip has
+                       no reliable ground behind it — so both the type and the
+                       box it is in have to carry more weight than they would on
+                       flat navy. `bg-navy/55` is the other half of that: a
+                       translucent fill means the chip is legible over a lit
+                       classroom wall as well as over a dark auditorium, without
+                       reading as a solid button. */
+                    className="border border-mist/30 bg-navy/55 px-3.5 py-1.5 text-[0.8125rem] text-paper/90"
                   >
                     {example}
                   </SceneLayer>

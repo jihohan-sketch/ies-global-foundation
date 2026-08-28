@@ -1,5 +1,6 @@
 import { Card, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
 import { GhostTitle } from '@/components/ui/Cinematic'
+import { LitText, MaskedText } from '@/components/ui/MaskedText'
 import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
@@ -27,8 +28,58 @@ export default function About() {
         crumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]}
       />
 
+      {/* ====================================================== THE STATEMENT */}
+      {/*
+       * ONE SENTENCE, AND NOTHING ELSE ON THE SCREEN.
+       *
+       * The About page used to open on a two-column grid of three paragraphs,
+       * which is a perfectly good way to present history and a poor way to
+       * begin. A reader arriving at "About" is asking one question — *what is
+       * this organisation for* — and the organisation has had a four-word
+       * answer to it since 2023.
+       *
+       * So the answer goes first, at display scale, with the explanation
+       * arriving underneath as the reader scrolls into it. Nothing here is
+       * newly written: `missionMotto` is the existing motto, already used in
+       * the header epigraph and the footer, and the supporting line is the
+       * mission statement that was three sections further down.
+       *
+       * `MaskedText` is the site's one self-assembling headline treatment and
+       * the note on that component asks for at most two per page. This is the
+       * first; the second is the Values heading further down.
+       */}
+      <Section className="overflow-hidden" size="tall">
+        <Container size="wide">
+          <Reveal>
+            <Eyebrow>The Idea</Eyebrow>
+          </Reveal>
+
+          <MaskedText
+            as="h2"
+            className="mt-10 max-w-[14ch] font-serif text-[clamp(2.75rem,8.5vw,7rem)] leading-[0.98] font-medium tracking-[-0.03em] text-paper"
+            text={[site.missionMotto]}
+          />
+
+          {/* Deliberately offset to the right and held to a narrow measure.
+              A statement that runs edge to edge and an explanation that starts
+              at the same left margin read as one block of text; starting the
+              explanation two-thirds across says plainly that it is subordinate
+              to the line above it, before a word of it is read. */}
+          <div className="mt-14 lg:mt-20 lg:pl-[46%]">
+            <LitText
+              offset={0.08}
+              className="text-lead text-paper/90"
+              text={site.mission}
+            />
+            <Reveal delay={140}>
+              <p className="mt-6 text-mist">{site.vision}</p>
+            </Reveal>
+          </div>
+        </Container>
+      </Section>
+
       {/* ======================================================= OUR STORY */}
-      <Section>
+      <Section tone="deep">
         <Container size="wide">
           <div className="grid gap-14 lg:grid-cols-[0.6fr_1.4fr] lg:gap-24">
             <Reveal>
@@ -36,18 +87,18 @@ export default function About() {
             </Reveal>
 
             <Reveal delay={100} className="space-y-7">
-              <p className="text-lead font-light text-paper/90">
+              <p className="text-lead text-paper/90">
                 Founded in April 2023, IES began as a student-led initiative in Korea focused
                 on ethics, education, and youth service.
               </p>
-              <p className="leading-relaxed font-light text-mist">
+              <p className="leading-relaxed text-mist">
                 What started as a local community grew into a network involving students from
                 dozens of schools and multiple countries. Growth was not the original aim. It
                 followed from the fact that the model worked: students given a serious setting
                 for ethical inquiry, and a real expectation that inquiry would lead to action,
                 kept showing up — and then wanted to build the same thing at their own schools.
               </p>
-              <p className="leading-relaxed font-light text-mist">
+              <p className="leading-relaxed text-mist">
                 As IES expanded beyond Korea, the IES Global Foundation was established to
                 connect national branches under one international identity and shared mission.
                 The Foundation coordinates; it does not centralise. {site.headquartersStatement}
@@ -58,7 +109,7 @@ export default function About() {
       </Section>
 
       {/* ====================================================== WHY IES EXISTS */}
-      <Section tone="deep" className="border-y border-mist/12">
+      <Section>
         <Container size="wide">
           <div className="grid gap-14 lg:grid-cols-2 lg:gap-24">
             <Reveal>
@@ -70,18 +121,18 @@ export default function About() {
             </Reveal>
 
             <Reveal delay={120} className="space-y-6">
-              <p className="leading-relaxed font-light text-mist">
+              <p className="leading-relaxed text-mist">
                 Schools are effective at encouraging academic achievement. They offer far fewer
                 opportunities to engage seriously with ethics, responsibility, service, and
                 civic leadership — the questions that determine what an education is eventually
                 used for.
               </p>
-              <p className="leading-relaxed font-light text-mist">
+              <p className="leading-relaxed text-mist">
                 IES was founded to create those opportunities: settings where students argue
                 about difficult questions and are expected to defend their reasoning, and
                 programs where the conclusions they reach are put to work in their communities.
               </p>
-              <p className="leading-relaxed font-light text-mist">
+              <p className="leading-relaxed text-mist">
                 The organization is youth-led by design. Students do not participate in someone
                 else's programming; they run it, and they answer for the results.
               </p>
@@ -90,57 +141,44 @@ export default function About() {
         </Container>
       </Section>
 
-      {/* ================================================ MISSION AND VISION */}
-      <Section>
-        <Container size="wide">
-          <div className="grid gap-6 lg:grid-cols-2">
-            <Reveal>
-              <Card className="h-full p-10 sm:p-14">
-                <Eyebrow>Mission</Eyebrow>
-                <p className="mt-8 font-serif text-[clamp(1.5rem,2.4vw,2rem)] leading-[1.35]">
-                  {site.mission}
-                </p>
-              </Card>
-            </Reveal>
-
-            <Reveal delay={120}>
-              <Card className="h-full p-10 sm:p-14">
-                <Eyebrow>Vision</Eyebrow>
-                <p className="mt-8 font-serif text-[clamp(1.5rem,2.4vw,2rem)] leading-[1.35]">
-                  {site.vision}
-                </p>
-              </Card>
-            </Reveal>
-          </div>
-        </Container>
-      </Section>
+      {/*
+       * MISSION AND VISION USED TO SIT HERE AS A PAIR OF BORDERED CARDS.
+       *
+       * They have moved to the statement section at the top of the page, which
+       * is where a reader looks for them. Repeating both verbatim in the middle
+       * of the page was the clearest example on the site of a section that
+       * existed because the content had to go somewhere rather than because the
+       * page needed it there — and two large bordered cards side by side is
+       * exactly the "TITLE / TEXT / CARD / CARD" shape the redesign is meant to
+       * get rid of.
+       */}
 
       {/* ========================================================== VALUES */}
       {/* Dark rather than the bright `paper` interlude this used to be — see the
           note on the matching section in Home.tsx. */}
       <Section tone="deep" className="overflow-hidden border-y border-mist/12">
         <Container size="wide" className="relative">
-          <GhostTitle className="-top-[0.5em] -translate-y-1/2">Values</GhostTitle>
+          <GhostTitle>Values</GhostTitle>
           <div className="relative z-10 grid gap-14 lg:grid-cols-[1fr_1.3fr] lg:gap-24">
             <Reveal>
               <Eyebrow>Core Values</Eyebrow>
               <p className="metal mt-8 font-serif text-[clamp(3rem,7vw,5.5rem)] leading-none">
                 {values.primary.title}
               </p>
-              <p className="mt-8 max-w-md leading-relaxed font-light text-mist">
+              <p className="mt-8 max-w-md leading-relaxed text-mist">
                 {values.primary.body}
               </p>
             </Reveal>
 
             <Reveal delay={140}>
-              <p className="text-[0.625rem] font-medium tracking-[0.3em] text-mist/80 uppercase">
+              <p className="text-[0.75rem] font-semibold tracking-[0.14em] text-mist uppercase">
                 Supporting Values
               </p>
               <ul className="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">
                 {values.supporting.map((value) => (
                   <li key={value.title} className="border-t border-mist/15 pt-4">
                     <h3 className="font-serif text-lg">{value.title}</h3>
-                    <p className="mt-1.5 text-sm font-light text-mist">{value.body}</p>
+                    <p className="mt-1.5 text-sm text-mist">{value.body}</p>
                   </li>
                 ))}
               </ul>
@@ -169,17 +207,17 @@ export default function About() {
                   </span>
                   <div>
                     <h3 className="text-h3">{pillar.title}</h3>
-                    <p className="mt-4 leading-relaxed font-light text-mist">
+                    <p className="mt-4 leading-relaxed text-mist">
                       {pillar.summary}
                     </p>
                   </div>
                   <div>
-                    <p className="leading-relaxed font-light text-paper/78">{pillar.body}</p>
+                    <p className="leading-relaxed text-paper/78">{pillar.body}</p>
                     <ul className="mt-6 space-y-2">
                       {pillar.points.map((point) => (
                         <li
                           key={point}
-                          className="flex gap-3 text-[0.9375rem] font-light text-mist"
+                          className="flex gap-3 text-[0.9375rem] text-mist"
                         >
                           <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                           {point}
@@ -206,7 +244,7 @@ export default function About() {
               <Reveal key={item.title} delay={i * 90}>
                 <Card className="h-full p-8">
                   <h3 className="font-serif text-xl leading-snug">{item.title}</h3>
-                  <p className="mt-4 text-[0.9375rem] leading-relaxed font-light text-mist">
+                  <p className="mt-4 text-[0.9375rem] leading-relaxed text-mist">
                     {item.body}
                   </p>
                 </Card>
@@ -243,7 +281,7 @@ export default function About() {
                     'Branding, identity, and organizational standards',
                     'Branch development and responsible future expansion',
                   ].map((item) => (
-                    <li key={item} className="flex gap-3 text-[0.9375rem] font-light text-mist">
+                    <li key={item} className="flex gap-3 text-[0.9375rem] text-mist">
                       <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                       {item}
                     </li>
@@ -261,7 +299,7 @@ export default function About() {
                     'Outreach to schools and community organizations',
                     'Meeting IES conduct and participant safety standards',
                   ].map((item) => (
-                    <li key={item} className="flex gap-3 text-[0.9375rem] font-light text-mist">
+                    <li key={item} className="flex gap-3 text-[0.9375rem] text-mist">
                       <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                       {item}
                     </li>
@@ -272,7 +310,7 @@ export default function About() {
           </Reveal>
 
           <Reveal delay={240}>
-            <p className="mt-10 max-w-3xl border-t border-mist/15 pt-6 text-sm leading-relaxed font-light text-mist/75">
+            <p className="mt-10 max-w-3xl border-t border-mist/15 pt-6 text-sm leading-relaxed text-slate">
               IES currently maintains national branches in {branches.map((b) => b.country).join(', ')}.
               Branches are organizational units of the same international network, not independent
               legal entities.

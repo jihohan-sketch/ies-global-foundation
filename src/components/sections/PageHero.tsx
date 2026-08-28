@@ -41,14 +41,14 @@ export function PageHero({
       {/* Sits against the section rather than the container, so it can run past
           the text column's left edge and be cropped by the viewport. */}
       {ghost && (
-        <GhostTitle className="top-28 left-6 sm:left-8" >
+        <GhostTitle className="!top-28 left-6 sm:left-8">
           {ghost}
         </GhostTitle>
       )}
       <Container size="wide" className="relative z-10">
         {crumbs && crumbs.length > 0 && (
           <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 text-xs font-light text-mist">
+            <ol className="flex flex-wrap items-center gap-2 text-xs text-mist">
               {crumbs.map((crumb, i) => (
                 <li key={crumb.label} className="flex items-center gap-2">
                   {crumb.href ? (
@@ -76,7 +76,7 @@ export function PageHero({
           <Eyebrow>{eyebrow}</Eyebrow>
           <h1 className="text-h1 mt-7 max-w-4xl">{title}</h1>
           {lead && (
-            <div className="text-lead mt-8 max-w-2xl font-light text-mist">{lead}</div>
+            <div className="text-lead mt-8 max-w-2xl text-mist">{lead}</div>
           )}
           {meta && <div className="mt-8">{meta}</div>}
           {children && <div className="mt-10">{children}</div>}

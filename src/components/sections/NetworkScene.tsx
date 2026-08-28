@@ -43,7 +43,7 @@ const glowFor = (rgb: string) =>
 
 export function NetworkScene() {
   return (
-    <PinnedScene label="The three national branches" vhPerPanel={118} wordmark="Network">
+    <PinnedScene label="The three national branches" vhPerPanel={96} wordmark="Network">
       {branches.map((branch, index) => {
         const accent = ACCENTS[index % ACCENTS.length]
         return (
@@ -89,7 +89,7 @@ export function NetworkScene() {
                   effect="scrub-fade"
                   fadeIn={0.18}
                   fadeOut={0.44}
-                  className="flex items-center gap-4 text-[0.625rem] font-medium tracking-[0.3em] uppercase"
+                  className="flex items-center gap-4 text-[0.75rem] font-semibold tracking-[0.14em] uppercase"
                   style={{ color: accent }}
                 >
                   <span aria-hidden className="h-px w-10 shrink-0 bg-current opacity-45" />
@@ -126,7 +126,7 @@ export function NetworkScene() {
                   offset={0.08}
                   fadeIn={0.26}
                   fadeOut={0.3}
-                  className="text-lead mt-5 max-w-2xl leading-relaxed font-light text-mist"
+                  className="text-lead mt-5 max-w-2xl leading-relaxed text-mist"
                 >
                   {branch.summary}
                 </SceneLayer>
@@ -146,13 +146,16 @@ export function NetworkScene() {
                  * "IES United Kingdom" that named a programme the U.K. branch
                  * does not run would be a lie told in display type.
                  *
-                 * Two blocks are held back on a phone, and that is a hard
-                 * constraint rather than an editorial preference: a panel here
-                 * is exactly one viewport tall and clips what does not fit, so
-                 * on a short screen the choice is between showing less and
-                 * cutting a sentence in half. The dossier below collapses to
-                 * the density this panel had before it was enriched, and the
-                 * branch's own page carries all of it at any width.
+                 * Two blocks are held back in the 640–768 band, and that is a
+                 * hard constraint rather than an editorial preference: a pinned
+                 * panel is exactly one viewport tall and clips what does not
+                 * fit, so on a short screen the choice is between showing less
+                 * and cutting a sentence in half.
+                 *
+                 * Below 640 they are back. The scene stops pinning there and
+                 * becomes a vertical stack (see index.css), which removes the
+                 * clip that was the only reason to withhold them — a phone now
+                 * gets the whole dossier rather than the least of it.
                  */}
                 <SceneLayer
                   effect="scrub-fade"
@@ -167,7 +170,7 @@ export function NetworkScene() {
                       definition cannot afford to be taller than one. */}
                   <dl className="grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2">
                     <div>
-                      <dt className="text-[0.5625rem] font-medium tracking-[0.28em] text-mist/70 uppercase">
+                      <dt className="text-[0.6875rem] font-semibold tracking-[0.12em] text-slate uppercase">
                         Position
                       </dt>
                       {/* Tabular figures: three coordinate readouts stacked
@@ -177,9 +180,17 @@ export function NetworkScene() {
                         {coordinates(branch.point)}
                       </dd>
                     </div>
+                    {/* The third fact used to be `hidden sm:block` outright.
+                        It is back below `sm`, where the scene is now a vertical
+                        stack and a panel can be as tall as it needs to be; it
+                        stays hidden only in the 640–768 band, which is still a
+                        pinned panel clipped to one screen. */}
                     {branch.facts.slice(0, 3).map((fact, factIndex) => (
-                      <div key={fact.label} className={factIndex === 2 ? 'hidden sm:block' : undefined}>
-                        <dt className="text-[0.5625rem] font-medium tracking-[0.28em] text-mist/70 uppercase">
+                      <div
+                        key={fact.label}
+                        className={factIndex === 2 ? 'block max-sm:block sm:hidden md:block' : undefined}
+                      >
+                        <dt className="text-[0.6875rem] font-semibold tracking-[0.12em] text-slate uppercase">
                           {fact.label}
                         </dt>
                         <dd className="mt-1.5 font-serif text-[1rem] leading-snug text-paper">
@@ -189,15 +200,17 @@ export function NetworkScene() {
                     ))}
                   </dl>
 
-                  <div className="hidden md:block">
-                    <p className="text-[0.5625rem] font-medium tracking-[0.28em] text-mist/70 uppercase">
+                  {/* Same reasoning as the fact above: visible in the mobile
+                      stack, withheld only from the clipped tablet panel. */}
+                  <div className="block sm:hidden md:block">
+                    <p className="text-[0.6875rem] font-semibold tracking-[0.12em] text-slate uppercase">
                       Programme areas
                     </p>
                     <ul className="mt-3.5 space-y-2">
                       {branch.sections.map((section) => (
                         <li
                           key={section.title}
-                          className="flex items-baseline gap-3 text-[0.875rem] font-light text-mist"
+                          className="flex items-baseline gap-3 text-[0.875rem] text-mist"
                         >
                           <span
                             aria-hidden

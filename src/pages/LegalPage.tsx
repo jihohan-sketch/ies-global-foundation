@@ -20,7 +20,7 @@ export function LegalPage({ document }: { document: LegalDocument }) {
         lead={document.intro}
         crumbs={[{ label: 'Home', href: '/' }, { label: document.title }]}
         meta={
-          <p className="text-[0.6875rem] font-medium tracking-[0.18em] text-mist/80 uppercase">
+          <p className="text-[0.6875rem] font-medium tracking-[0.18em] text-mist uppercase">
             Last reviewed — {document.updated}
           </p>
         }
@@ -37,7 +37,7 @@ export function LegalPage({ document }: { document: LegalDocument }) {
                   {section.paragraphs?.map((paragraph) => (
                     <p
                       key={paragraph.slice(0, 40)}
-                      className="mt-5 leading-[1.8] font-light text-mist"
+                      className="mt-5 leading-[1.8] text-mist"
                     >
                       {paragraph}
                     </p>
@@ -48,7 +48,7 @@ export function LegalPage({ document }: { document: LegalDocument }) {
                       {section.list.map((item) => (
                         <li
                           key={item}
-                          className="flex gap-4 leading-relaxed font-light text-paper/80"
+                          className="flex gap-4 leading-relaxed text-paper/80"
                         >
                           <span aria-hidden className="mt-3 h-px w-4 shrink-0 bg-[var(--accent)]/60" />
                           {item}
@@ -62,7 +62,7 @@ export function LegalPage({ document }: { document: LegalDocument }) {
           </div>
 
           <Reveal>
-            <p className="mt-16 border-t border-mist/15 pt-6 text-sm leading-relaxed font-light text-mist/80">
+            <p className="mt-16 border-t border-mist/15 pt-6 text-sm leading-relaxed text-mist">
               Questions about this policy can be sent to{' '}
               <a
                 href="mailto:theiesociety@gmail.com"

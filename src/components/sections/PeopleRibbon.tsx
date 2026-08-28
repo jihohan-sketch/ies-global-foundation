@@ -114,7 +114,7 @@ export function PeopleRibbon({
                 <span className="block font-serif text-[1.125rem] leading-tight text-paper">
                   {person.name}
                   {person.koreanName && (
-                    <span className="ml-2 text-[0.9375rem] font-light text-mist">
+                    <span className="ml-2 text-[0.9375rem] text-mist">
                       {person.koreanName}
                     </span>
                   )}

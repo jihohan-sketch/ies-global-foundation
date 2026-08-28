@@ -56,7 +56,7 @@ export default function GlobalNetwork() {
                   onSelect={setActiveId}
                   className="mx-auto aspect-square w-full max-w-2xl"
                 />
-                <p className="mt-2 text-center text-xs font-light text-mist/80">
+                <p className="mt-2 text-center text-xs text-mist">
                   Select a marker to view that branch. The globe is a schematic
                   representation and is not a cartographic reference.
                 </p>
@@ -94,11 +94,11 @@ export default function GlobalNetwork() {
                           >
                             {branch.name}
                           </span>
-                          <span className="text-[0.625rem] font-medium tracking-[0.16em] text-mist uppercase">
+                          <span className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
                             {branch.code}
                           </span>
                         </span>
-                        <span className="mt-2 block text-[0.8125rem] font-light text-mist">
+                        <span className="mt-2 block text-[0.8125rem] text-mist">
                           {branch.role}
                         </span>
                       </button>
@@ -111,18 +111,18 @@ export default function GlobalNetwork() {
               <Reveal delay={280}>
                 <Card className="mt-8 p-8">
                   <h2 className="font-serif text-h3">{active.name}</h2>
-                  <p className="mt-4 text-[0.9375rem] leading-relaxed font-light text-mist">
+                  <p className="mt-4 text-[0.9375rem] leading-relaxed text-mist">
                     {active.summary}
                   </p>
 
                   {activeLeaders.length > 0 && (
                     <div className="mt-6 border-t border-mist/12 pt-5">
-                      <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
+                      <p className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
                         National Leadership
                       </p>
                       <ul className="mt-3 space-y-1.5">
                         {activeLeaders.map((person) => (
-                          <li key={person.id} className="text-sm font-light text-paper/85">
+                          <li key={person.id} className="text-sm text-paper/85">
                             {person.name}
                             <span className="text-mist"> — {person.title}</span>
                           </li>
@@ -172,7 +172,7 @@ export default function GlobalNetwork() {
                     <p className="mt-2 text-sm text-[var(--accent)]/85">{branch.status}</p>
                   </div>
 
-                  <p className="leading-relaxed font-light text-mist">{branch.summary}</p>
+                  <p className="leading-relaxed text-mist">{branch.summary}</p>
 
                   <span
                     aria-hidden
@@ -197,8 +197,8 @@ export default function GlobalNetwork() {
             </Reveal>
 
             <Reveal delay={120}>
-              <p className="text-lead font-light text-paper/90">{futureExpansion.body}</p>
-              <p className="mt-6 leading-relaxed font-light text-mist">
+              <p className="text-lead text-paper/90">{futureExpansion.body}</p>
+              <p className="mt-6 leading-relaxed text-mist">
                 {futureExpansion.detail}
               </p>
 
@@ -206,7 +206,7 @@ export default function GlobalNetwork() {
                 {futureExpansion.criteria.map((item) => (
                   <li
                     key={item}
-                    className="border-t border-mist/18 pt-4 text-[0.9375rem] font-light text-paper/80"
+                    className="border-t border-mist/18 pt-4 text-[0.9375rem] text-paper/80"
                   >
                     {item}
                   </li>

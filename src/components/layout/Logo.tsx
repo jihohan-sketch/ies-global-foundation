@@ -43,7 +43,7 @@ export function Logo({
           </span>
           <span
             className={cx(
-              'mt-1 text-[0.5625rem] font-medium tracking-[0.22em] uppercase',
+              'mt-1 text-[0.6875rem] font-semibold tracking-[0.12em] uppercase',
               /*
                * The `full` sub-line is 49 characters of wide-tracked type, which
                * cannot fit beside the mark on a phone. Left un-wrapped it pushed

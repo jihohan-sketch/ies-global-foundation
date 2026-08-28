@@ -63,14 +63,14 @@ export default function Join() {
                   </div>
 
                   <div>
-                    <p className="leading-relaxed font-light text-mist">
+                    <p className="leading-relaxed text-mist">
                       {pathway.description}
                     </p>
                     <ul className="mt-5 space-y-2">
                       {pathway.points.map((point) => (
                         <li
                           key={point}
-                          className="flex gap-3 text-[0.9375rem] font-light text-paper/80"
+                          className="flex gap-3 text-[0.9375rem] text-paper/80"
                         >
                           <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                           {point}
@@ -113,7 +113,7 @@ export default function Join() {
             <h2 className="text-h2 mt-6 max-w-2xl">
               Applications are handled by the branch in your country.
             </h2>
-            <p className="mt-6 max-w-2xl leading-relaxed font-light text-mist">
+            <p className="mt-6 max-w-2xl leading-relaxed text-mist">
               If you are outside Korea, the United States, or the United Kingdom, contact the
               Global Foundation directly — we will tell you honestly whether there is a route in
               at the moment.
@@ -125,7 +125,7 @@ export default function Join() {
               <Reveal key={branch.slug} delay={i * 100}>
                 <Card className="h-full p-8">
                   <h3 className="text-h3">{branch.name}</h3>
-                  <p className="mt-4 text-[0.9375rem] leading-relaxed font-light text-mist">
+                  <p className="mt-4 text-[0.9375rem] leading-relaxed text-mist">
                     {branch.role}
                   </p>
                   <a
@@ -156,16 +156,16 @@ export default function Join() {
             <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
               <Eyebrow>Before You Apply</Eyebrow>
               <div className="space-y-5">
-                <p className="text-lead font-light text-paper/90">
+                <p className="text-lead text-paper/90">
                   IES roles come with expectations, not just titles.
                 </p>
-                <p className="leading-relaxed font-light text-mist">
+                <p className="leading-relaxed text-mist">
                   Members are expected to participate, chapter officers to run programming
                   through a full academic year, and national officers to be accountable for
                   outcomes across schools. We would rather you join the pathway you can actually
                   sustain than the one that sounds most impressive.
                 </p>
-                <p className="leading-relaxed font-light text-mist">
+                <p className="leading-relaxed text-mist">
                   All participants agree to our conduct and participant safety standards.
                 </p>
               </div>
@@ -186,7 +186,7 @@ export default function Join() {
                 title="Send your application"
                 lead="Tell us who you are and which pathway you are after. Applications go to the branch in your country, and someone will reply within a few working days."
               />
-              <p className="mt-8 max-w-md text-[0.9375rem] leading-relaxed font-light text-mist">
+              <p className="mt-8 max-w-md text-[0.9375rem] leading-relaxed text-mist">
                 If you already know which chapter or officer you need, writing to your branch
                 directly is just as good — the addresses are above.
               </p>

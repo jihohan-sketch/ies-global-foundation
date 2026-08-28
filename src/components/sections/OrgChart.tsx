@@ -20,7 +20,7 @@ export function OrgChart({ className }: { className?: string }) {
       {/* -------------------------------------------------- Foundation */}
       <div className="mx-auto max-w-md">
         <div className="border border-[var(--accent)]/45 bg-navy-700/50 px-8 py-7 text-center">
-          <p className="text-[0.625rem] font-medium tracking-[0.22em] text-[var(--accent)] uppercase">
+          <p className="text-[0.75rem] font-semibold tracking-[0.13em] text-[var(--accent)] uppercase">
             International Coordination
           </p>
           <p className="mt-3 font-serif text-[1.375rem]">IES Global Foundation</p>
@@ -67,7 +67,7 @@ export function OrgChart({ className }: { className?: string }) {
         {base.map((item) => (
           <div
             key={item}
-            className="border border-mist/15 bg-navy-700/25 px-5 py-4 text-center text-sm font-light text-mist"
+            className="border border-mist/15 bg-navy-700/25 px-5 py-4 text-center text-sm text-mist"
           >
             {item}
           </div>

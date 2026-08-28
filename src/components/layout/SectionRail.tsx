@@ -183,11 +183,11 @@ export function SectionRail({ sections }: { sections: readonly RailSection[] }) 
                  */}
                 <span
                   className={cx(
-                    'hidden text-[0.5625rem] font-medium tracking-[0.26em] whitespace-nowrap uppercase min-[1700px]:block',
+                    'hidden text-[0.6875rem] font-semibold tracking-[0.12em] whitespace-nowrap uppercase min-[1700px]:block',
                     'transition-[opacity,color] duration-500 ease-[var(--ease-cinema)]',
                     isActive
                       ? 'text-[var(--accent)] opacity-100'
-                      : 'text-mist/70 opacity-0 group-hover:opacity-100',
+                      : 'text-slate opacity-0 group-hover:opacity-100',
                   )}
                 >
                   {section.label}

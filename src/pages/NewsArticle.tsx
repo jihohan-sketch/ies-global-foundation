@@ -30,7 +30,7 @@ function Block({ block }: { block: ArticleBlock }) {
       return (
         <ul className="my-8 space-y-3">
           {block.items.map((item) => (
-            <li key={item} className="flex gap-4 leading-relaxed font-light text-mist">
+            <li key={item} className="flex gap-4 leading-relaxed text-mist">
               <span aria-hidden className="mt-3 h-px w-4 shrink-0 bg-[var(--accent)]/60" />
               {item}
             </li>
@@ -40,7 +40,7 @@ function Block({ block }: { block: ArticleBlock }) {
     case 'paragraph':
     default:
       return (
-        <p className="mb-6 text-[1.0625rem] leading-[1.8] font-light text-paper/85">
+        <p className="mb-6 text-[1.0625rem] leading-[1.8] text-paper/85">
           {block.text}
         </p>
       )
@@ -70,7 +70,7 @@ export default function NewsArticle() {
         <header className="relative border-b border-mist/12 pt-40 pb-16 sm:pt-48">
           <Container size="narrow" className="relative">
             <nav aria-label="Breadcrumb" className="mb-8">
-              <ol className="flex flex-wrap items-center gap-2 text-xs font-light text-mist">
+              <ol className="flex flex-wrap items-center gap-2 text-xs text-mist">
                 <li>
                   <Link to="/" className="transition-colors hover:text-[var(--accent)]">
                     Home
@@ -91,15 +91,15 @@ export default function NewsArticle() {
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[0.6875rem] font-medium tracking-[0.18em] uppercase">
                 <span className="text-[var(--accent)]">{article.category}</span>
                 <span aria-hidden className="h-px w-6 bg-mist/30" />
-                <time dateTime={article.date} className="font-light text-mist normal-case">
+                <time dateTime={article.date} className="text-mist normal-case">
                   {formatDate(article.date)}
                 </time>
                 <span aria-hidden className="h-px w-6 bg-mist/30" />
-                <span className="font-light text-mist normal-case">{article.branch}</span>
+                <span className="text-mist normal-case">{article.branch}</span>
               </div>
 
               <h1 className="text-h1 mt-8">{article.title}</h1>
-              <p className="text-lead mt-8 font-light text-mist">{article.summary}</p>
+              <p className="text-lead mt-8 text-mist">{article.summary}</p>
             </Reveal>
           </Container>
         </header>
@@ -130,7 +130,7 @@ export default function NewsArticle() {
 
             <Reveal>
               <div className="mt-16 flex flex-wrap items-center justify-between gap-6 border-t border-mist/15 pt-8">
-                <p className="text-sm font-light text-mist">
+                <p className="text-sm text-mist">
                   Published by {article.branch} ·{' '}
                   <time dateTime={article.date}>{formatDate(article.date)}</time>
                 </p>
@@ -153,13 +153,18 @@ export default function NewsArticle() {
             <Reveal>
               <h2 className="text-h3">More from the network</h2>
             </Reveal>
-            <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {/* A list, not a three-up grid — `ArticleCard` is a full-width
+                editorial row now, and three of them side by side would put a
+                15rem date column inside a 380px cell. */}
+            <ol className="mt-8 border-t border-mist/18">
               {related.map((item, i) => (
-                <Reveal key={item.slug} delay={i * 90}>
-                  <ArticleCard article={item} />
-                </Reveal>
+                <li key={item.slug}>
+                  <Reveal delay={i * 90}>
+                    <ArticleCard article={item} />
+                  </Reveal>
+                </li>
               ))}
-            </div>
+            </ol>
           </Container>
         </Section>
       )}

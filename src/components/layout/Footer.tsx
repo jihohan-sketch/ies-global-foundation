@@ -46,7 +46,7 @@ function ContactRow({
 }) {
   return (
     <div className={cx('border-t border-mist/15 py-4', className)}>
-      <p className="text-[0.5625rem] font-medium tracking-[0.26em] text-mist/80 uppercase">
+      <p className="text-[0.6875rem] font-semibold tracking-[0.12em] text-mist uppercase">
         {label}
       </p>
       <div className="mt-2 text-[0.8125rem] tracking-[0.06em] text-paper/85">{children}</div>
@@ -73,7 +73,7 @@ function BackToTop() {
           behavior: prefersReducedMotion() ? 'auto' : 'smooth',
         })
       }
-      className="group flex flex-col items-center gap-3 text-[0.625rem] font-medium tracking-[0.3em] text-mist/80 uppercase transition-colors duration-300 hover:text-paper"
+      className="group flex flex-col items-center gap-3 text-[0.75rem] font-semibold tracking-[0.14em] text-mist uppercase transition-colors duration-300 hover:text-paper"
     >
       <span
         aria-hidden
@@ -143,7 +143,7 @@ export function Footer() {
                 <li key={item.href}>
                   <Link
                     to={item.href}
-                    className="text-[0.8125rem] font-light text-paper/60 transition-colors duration-300 hover:text-paper"
+                    className="text-[0.8125rem] text-paper/60 transition-colors duration-300 hover:text-paper"
                   >
                     {item.label}
                   </Link>
@@ -185,7 +185,7 @@ export function Footer() {
                       className="group inline-flex items-baseline gap-2 transition-colors hover:text-[var(--accent)]"
                     >
                       {social.handle ?? 'Follow'}
-                      <span aria-hidden className="text-mist/80 transition-colors group-hover:text-[var(--accent)]">
+                      <span aria-hidden className="text-mist transition-colors group-hover:text-[var(--accent)]">
                         ↗
                       </span>
                     </a>
@@ -202,7 +202,7 @@ export function Footer() {
         {/* The branches run their own sites; the navigation above links to
             their pages here, this band links out to the sites themselves. */}
         <div className="flex flex-col gap-5 py-8 lg:flex-row lg:items-baseline lg:gap-10">
-          <h2 className="font-sans text-[0.5625rem] font-medium tracking-[0.26em] whitespace-nowrap text-[var(--accent)] uppercase">
+          <h2 className="font-sans text-[0.6875rem] font-semibold tracking-[0.12em] whitespace-nowrap text-[var(--accent)] uppercase">
             Branch Websites
           </h2>
           <ul className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:gap-x-10 sm:gap-y-3">
@@ -212,10 +212,10 @@ export function Footer() {
                   href={branchSite.href}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="group inline-flex items-baseline gap-2 text-sm font-light text-paper/72 transition-colors hover:text-paper"
+                  className="group inline-flex items-baseline gap-2 text-sm text-paper/72 transition-colors hover:text-paper"
                 >
                   {branchSite.label}
-                  <span className="text-xs text-mist/80 transition-colors group-hover:text-[var(--accent)]">
+                  <span className="text-xs text-mist transition-colors group-hover:text-[var(--accent)]">
                     {branchSite.domain}
                     <span aria-hidden> ↗</span>
                   </span>
@@ -235,17 +235,17 @@ export function Footer() {
               {site.tagline}
             </p>
           </div>
-          <p className="text-xs leading-relaxed font-light text-mist/80">{site.legalNote}</p>
+          <p className="text-xs leading-relaxed text-mist">{site.legalNote}</p>
         </div>
 
         <div className="flex flex-col gap-4 border-t border-mist/10 py-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs font-light text-mist/80">{site.copyright}</p>
+          <p className="text-xs text-mist">{site.copyright}</p>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {legalNav.map((item) => (
               <li key={item.href}>
                 <Link
                   to={item.href}
-                  className="text-xs font-light text-mist/80 transition-colors hover:text-[var(--accent)]"
+                  className="text-xs text-mist transition-colors hover:text-[var(--accent)]"
                 >
                   {item.label}
                 </Link>

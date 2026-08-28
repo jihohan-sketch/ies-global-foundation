@@ -54,7 +54,28 @@ export function Section({
     tall: 'py-20 sm:py-24 lg:py-28',
   }
   return (
-    <section id={id} className={cx('relative', tones[tone], sizes[size], className)}>
+    <section
+      id={id}
+      className={cx(
+        'relative',
+        tones[tone],
+        sizes[size],
+        /*
+         * Every section announces its own top edge, rather than relying on the
+         * caller to remember a border. A page built from a dozen sections that
+         * each looked identical *and* ran into each other without a seam is
+         * the layout half of "the content does not pop" — a reader could not
+         * tell whether they had moved into something new or were still in the
+         * middle of the last thing.
+         *
+         * `paper` is exempt: a light slab against near-black already is the
+         * strongest edge on the site, and a lit hairline on top of it would
+         * only muddy the cut.
+         */
+        tone !== 'paper' && 'section-edge',
+        className,
+      )}
+    >
       {children}
     </section>
   )
@@ -78,17 +99,31 @@ export function Eyebrow({
     mist: 'text-mist',
     navy: 'text-navy-600',
   }
+  /*
+   * 12px / 600 / 0.14em, up from 10px / 500 / 0.3em.
+   *
+   * This is the mark that answers "what section am I in", which the brief puts
+   * first among the three things a reader should get in one second. It was
+   * previously the *smallest and faintest* text in the section it was naming —
+   * set below the legibility floor and tracked so wide the word had to be
+   * spelled rather than recognised.
+   *
+   * The rule beside it went from a 1px hairline at 45% to a 2px bar at full
+   * strength, and short. A hairline reads as decoration; a short solid bar in
+   * the accent reads as a marker, and it is the thing that makes the label
+   * findable at a glance down the page.
+   */
   return (
     <p
       className={cx(
-        'flex items-center gap-4 text-[0.625rem] font-medium tracking-[0.3em] uppercase',
+        'text-label flex items-center gap-3.5 font-semibold uppercase',
         tones[tone],
         className,
       )}
     >
-      {/* `shrink-0` keeps the rule at its intended 40px; as a decorative element
-          it should not be the thing that gives way when space is tight. */}
-      <span aria-hidden className="h-px w-10 shrink-0 bg-current opacity-45" />
+      {/* `shrink-0` keeps the mark at its intended width; as a decorative
+          element it should not be the thing that gives way when space is tight. */}
+      <span aria-hidden className="h-0.5 w-6 shrink-0 rounded-full bg-current" />
       {children}
     </p>
   )
@@ -127,26 +162,35 @@ export function SectionHeading({
   className?: string
   as?: ElementType
 }) {
+  /*
+   * PRIMARY / SECONDARY / TERTIARY, AND YOU CAN TELL WHICH IS WHICH.
+   *
+   * The three lines here are the section's whole hierarchy, and they used to
+   * be separated by about as much as a stylesheet can separate three things
+   * without actually distinguishing them: a 10px label, a 2.875rem serif, and
+   * a 1.25rem light grey lead. Two of the three were grey, two of the three
+   * were light-weight, and the eye had to *read* all three to find out which
+   * one mattered.
+   *
+   * Now:
+   *   TERTIARY  the index/eyebrow — 12px, 600, accent, with a solid mark
+   *   PRIMARY   the title — up to 3.25rem serif at weight 500, paper white
+   *   SECONDARY the lead — up to 1.375rem sans at 400, `mist`, capped to 52ch
+   *
+   * Three sizes, three weights, three colours, three measures. Nothing has to
+   * be compared with anything to be ranked.
+   *
+   * `max-w-3xl` is gone from the wrapper. It was capping the *title* at 48rem
+   * on every section of the site, which is why every heading broke to two or
+   * three lines at exactly the same width and every section looked like the
+   * one before it. The title now runs to the width its container gives it and
+   * only the lead is measured, which is what lets a long title be one strong
+   * line and a short one be genuinely short.
+   */
   return (
-    <div
-      className={cx(
-        'relative max-w-3xl',
-        align === 'center' && 'mx-auto text-center',
-        className,
-      )}
-    >
+    <div className={cx('relative', align === 'center' && 'mx-auto text-center', className)}>
       {ghost && tone === 'light' && (
-        <GhostTitle
-          align={align === 'center' ? 'center' : 'left'}
-          /*
-           * Raised until roughly its top two-thirds sit above the heading, so
-           * the section's own `overflow-hidden` crops it against the top edge.
-           * That is the difference between type used as texture and type used
-           * as a second headline: sat squarely behind the words it competed
-           * with them and made both harder to read.
-           */
-          className="-top-[0.5em] -translate-y-1/2"
-        >
+        <GhostTitle align={align === 'center' ? 'center' : 'left'}>
           {ghost}
         </GhostTitle>
       )}
@@ -172,7 +216,8 @@ export function SectionHeading({
           ))}
         <Tag
           className={cx(
-            'text-h2 mt-6',
+            'text-h2 mt-5 max-w-[22ch]',
+            align === 'center' && 'mx-auto',
             tone === 'dark' ? 'text-navy' : 'text-paper',
           )}
         >
@@ -181,8 +226,9 @@ export function SectionHeading({
         {lead && (
           <div
             className={cx(
-              'text-lead mt-6 font-light',
-              tone === 'dark' ? 'text-navy-700/80' : 'text-mist',
+              'text-lead measure-lead mt-5',
+              align === 'center' && 'mx-auto',
+              tone === 'dark' ? 'text-navy-700' : 'text-mist',
             )}
           >
             {lead}
@@ -328,7 +374,7 @@ export function ArrowLink({
   align?: 'left' | 'center'
 }) {
   const classes = cx(
-    'group inline-flex items-center gap-5 text-[0.8125rem] font-light tracking-[0.08em] text-paper/85 transition-colors duration-300 hover:text-paper',
+    'group inline-flex items-center gap-5 text-[0.8125rem] tracking-[0.08em] text-paper/85 transition-colors duration-300 hover:text-paper',
     align === 'center' && 'justify-center',
     className,
   )

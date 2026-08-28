@@ -46,34 +46,47 @@ export function NamedPartners({ id }: { id?: string }) {
          * entire point of the section. Two columns from `md` up, filling down
          * each column rather than across — `columns` keeps the numbering in
          * reading order without a second array.
+         *
+         * ---------------------------------------------------------------------
+         * THE BRIEF ON THIS SECTION IS ONE WORD: RESTRAINT.
+         *
+         * Three things changed and all three are subtractions. The per-item
+         * `Reveal` is gone — thirty organisations arriving on a stagger is
+         * thirty animations for a list nobody is watching arrive, and it left
+         * half the names invisible at any given scroll position. The group
+         * label under each name moved *beside* it, because a two-line entry for
+         * a single proper noun is a card in all but name. And the name itself
+         * went from `paper/90` to `paper`: these are the section's content, and
+         * there was no reason for them to be dimmer than the heading above.
+         *
+         * What is left is a list of names with numbers, which is what the
+         * section is.
          */}
-        <ol className="mt-14 md:columns-2 md:gap-x-16">
+        <ol className="mt-12 md:columns-2 md:gap-x-16">
           {organizations.map((organization, i) => (
             <li key={organization.name} className="break-inside-avoid">
-              <Reveal delay={Math.min(i, 8) * 60}>
-                <div className="flex items-baseline gap-5 border-t border-mist/12 py-5">
-                  <span
-                    aria-hidden
-                    className="w-7 shrink-0 font-serif text-sm text-[var(--accent)]/70"
-                  >
-                    {String(i + 1).padStart(2, '0')}
+              <div className="flex items-baseline gap-5 border-t border-mist/18 py-4">
+                <span
+                  aria-hidden
+                  className="w-7 shrink-0 font-serif text-sm text-[var(--accent)]/80 tabular-nums lining-nums"
+                >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-4 gap-y-1">
+                  <span className="font-serif text-[1.0625rem] leading-snug text-paper">
+                    {organization.name}
                   </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-serif text-[1.0625rem] leading-snug text-paper/90">
-                      {organization.name}
-                    </span>
-                    <span className="mt-1.5 block text-[0.5625rem] font-medium tracking-[0.28em] text-mist/70 uppercase">
-                      {organization.group}
-                    </span>
+                  <span className="text-label-sm font-semibold text-slate uppercase">
+                    {organization.group}
                   </span>
-                </div>
-              </Reveal>
+                </span>
+              </div>
             </li>
           ))}
         </ol>
 
-        <Reveal delay={200}>
-          <p className="mt-12 max-w-3xl border-t border-mist/15 pt-6 text-xs leading-relaxed font-light text-mist/80">
+        <Reveal>
+          <p className="mt-12 max-w-3xl border-t border-mist/15 pt-6 text-xs leading-relaxed text-mist">
             Naming an organization here records a collaboration; it does not imply that
             organization endorses IES or its positions.{' '}
             <Link

@@ -46,10 +46,10 @@ export default function BranchDetail() {
           <dl className="grid gap-x-10 gap-y-6 border-t border-mist/15 pt-8 sm:grid-cols-2 lg:grid-cols-4">
             {branch.facts.map((fact) => (
               <div key={fact.label}>
-                <dt className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
+                <dt className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
                   {fact.label}
                 </dt>
-                <dd className="mt-2 text-[0.9375rem] font-light text-paper/90">{fact.value}</dd>
+                <dd className="mt-2 text-[0.9375rem] text-paper/90">{fact.value}</dd>
               </div>
             ))}
           </dl>
@@ -64,7 +64,7 @@ export default function BranchDetail() {
               <Eyebrow>Overview</Eyebrow>
             </Reveal>
             <Reveal delay={100}>
-              <p className="text-lead font-light text-paper/90">{branch.intro}</p>
+              <p className="text-lead text-paper/90">{branch.intro}</p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Button href={`mailto:${branch.contactEmail}`} variant="secondary">
                   Contact {branch.name}
@@ -92,13 +92,13 @@ export default function BranchDetail() {
                   <h2 className="text-h3">{section.title}</h2>
 
                   <div>
-                    <p className="leading-relaxed font-light text-mist">{section.body}</p>
+                    <p className="leading-relaxed text-mist">{section.body}</p>
                     {section.items && (
                       <ul className="mt-6 space-y-2.5">
                         {section.items.map((item) => (
                           <li
                             key={item}
-                            className="flex gap-3 text-[0.9375rem] font-light text-paper/80"
+                            className="flex gap-3 text-[0.9375rem] text-paper/80"
                           >
                             <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                             {item}
@@ -151,13 +151,17 @@ export default function BranchDetail() {
               <h2 className="text-h2 mt-6">Recent updates</h2>
             </Reveal>
 
-            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {/* See the note on the same change in NewsArticle: the card is a
+                row, and a row does not tile. */}
+            <ol className="mt-10 border-t border-mist/18">
               {related.map((article, i) => (
-                <Reveal key={article.slug} delay={i * 100}>
-                  <ArticleCard article={article} />
-                </Reveal>
+                <li key={article.slug}>
+                  <Reveal delay={i * 100}>
+                    <ArticleCard article={article} />
+                  </Reveal>
+                </li>
               ))}
-            </div>
+            </ol>
           </Container>
         </Section>
       )}
@@ -175,7 +179,7 @@ export default function BranchDetail() {
                 <Card interactive className="h-full">
                   <Link to={`/global-network/${other.slug}`} className="block p-8">
                     <h3 className="text-h3">{other.name}</h3>
-                    <p className="mt-4 text-[0.9375rem] leading-relaxed font-light text-mist">
+                    <p className="mt-4 text-[0.9375rem] leading-relaxed text-mist">
                       {other.summary}
                     </p>
                   </Link>

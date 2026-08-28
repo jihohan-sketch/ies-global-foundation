@@ -181,7 +181,7 @@ export function Header() {
               <span className="truncate font-serif text-[0.9375rem] text-paper/70 italic">
                 {site.missionMotto}
               </span>
-              <span className="text-[0.5625rem] font-medium tracking-[0.28em] text-mist/60 uppercase">
+              <span className="text-[0.6875rem] font-semibold tracking-[0.12em] text-slate uppercase">
                 {site.motto}
               </span>
             </p>
@@ -282,15 +282,26 @@ export function Header() {
                       tabIndex={scrolled ? -1 : undefined}
                       className={({ isActive }) =>
                         cx(
-                          'relative block py-1 text-[0.6875rem] font-medium whitespace-nowrap uppercase transition-colors duration-300',
-                          /* Tracking this wide needs the trailing step taken
-                             back, or every label sits a notch left of centre in
-                             its own slot. */
-                          'tracking-[0.24em] -mr-[0.24em]',
-                          'after:absolute after:-bottom-0.5 after:left-0 after:h-px after:bg-[var(--accent)] after:transition-all after:duration-500',
+                          /* 12px / 600 / 0.1em, from 11px / 500 / 0.24em.
+                             Navigation is the one piece of text on a site that
+                             is never *read* — it is recognised, at speed, out
+                             of the corner of the eye — and 0.24em of tracking
+                             is precisely what stops a word being recognisable
+                             as a shape. It is also the text most often sitting
+                             over a photograph or the globe, which is why the
+                             resting tone went from `paper/70` to `paper/85`. */
+                          'relative block py-1 text-[0.75rem] font-semibold whitespace-nowrap uppercase transition-colors duration-300',
+                          /* The trailing step still has to come back, or every
+                             label sits a notch left of centre in its own slot. */
+                          'tracking-[0.1em] -mr-[0.1em]',
+                          /* 2px, not 1px, and it stays put under the active
+                             item. A hairline underline is a hover flourish; the
+                             active section marker has to be visible without
+                             being looked for. */
+                          'after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:rounded-full after:bg-[var(--accent)] after:transition-all after:duration-500',
                           isActive
-                            ? 'text-[var(--accent)] after:w-[calc(100%-0.24em)]'
-                            : 'text-paper/70 hover:text-paper after:w-0 hover:after:w-[calc(100%-0.24em)]',
+                            ? 'text-[var(--accent)] after:w-[calc(100%-0.1em)]'
+                            : 'text-paper/85 hover:text-paper after:w-0 hover:after:w-[calc(100%-0.1em)]',
                         )
                       }
                     >
@@ -387,7 +398,7 @@ export function Header() {
             >
               <div className="mx-auto mt-12 h-px w-full max-w-md bg-mist/15" />
 
-              <p className="mt-10 text-center text-[0.5625rem] font-medium tracking-[0.3em] text-mist/80 uppercase">
+              <p className="mt-10 text-center text-[0.6875rem] font-semibold tracking-[0.12em] text-mist uppercase">
                 National Branches
               </p>
               <div className="mt-5 flex flex-wrap justify-center gap-x-10 gap-y-3">
@@ -396,7 +407,7 @@ export function Header() {
                     key={branch.slug}
                     to={`/global-network/${branch.slug}`}
                     tabIndex={open ? 0 : -1}
-                    className="text-sm font-light text-paper/72 transition-colors hover:text-[var(--accent)]"
+                    className="text-sm text-paper/72 transition-colors hover:text-[var(--accent)]"
                   >
                     {branch.name}
                   </Link>

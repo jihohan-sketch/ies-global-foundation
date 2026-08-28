@@ -165,7 +165,7 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
     return (
       <div className="border border-[var(--accent)]/40 bg-[var(--accent)]/6 p-10 text-center" role="status">
         <p className="font-serif text-h3 text-[var(--accent)]">Message sent</p>
-        <p className="mx-auto mt-5 max-w-md leading-relaxed font-light text-mist">
+        <p className="mx-auto mt-5 max-w-md leading-relaxed text-mist">
           Thank you for getting in touch. Inquiries are directed to the relevant branch or team,
           and we aim to respond within a few working days.
         </p>
@@ -241,7 +241,7 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
         <Button type="submit" variant="primary" disabled={status === 'submitting'} arrow>
           {status === 'submitting' ? 'Sending…' : 'Send message'}
         </Button>
-        <p className="text-xs font-light text-mist/80">
+        <p className="text-xs text-mist">
           We use your details only to respond to your inquiry.
         </p>
       </div>

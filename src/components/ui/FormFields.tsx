@@ -16,14 +16,14 @@ export const labelClass = 'block text-xs font-medium tracking-[0.18em] text-mist
    Placeholder sits at /75 — /45 measured 2.67:1 against the field, under AA,
    and /70 still fell short against the lighter focused background. */
 export const inputClass =
-  'w-full border border-mist/55 bg-navy-700/30 px-5 py-3.5 text-[0.9375rem] font-light text-paper placeholder:text-mist/75 transition-colors duration-300 focus:border-[var(--accent)]/70 focus:bg-navy-700/50'
+  'w-full border border-mist/55 bg-navy-700/30 px-5 py-3.5 text-[0.9375rem] text-paper placeholder:text-slate transition-colors duration-300 focus:border-[var(--accent)]/70 focus:bg-navy-700/50'
 
 export const invalidInputClass = 'border-red-400/70 bg-red-400/5'
 
 /** Error text pairs an icon with the colour, so the state survives colour blindness. */
 export function FieldError({ id, children }: { id: string; children: ReactNode }) {
   return (
-    <p id={id} className="mt-2.5 flex items-start gap-2 text-[0.8125rem] font-light text-red-300">
+    <p id={id} className="mt-2.5 flex items-start gap-2 text-[0.8125rem] text-red-300">
       <svg aria-hidden viewBox="0 0 16 16" fill="none" className="mt-0.5 h-4 w-4 shrink-0">
         <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5" />
         <path d="M8 5v3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />

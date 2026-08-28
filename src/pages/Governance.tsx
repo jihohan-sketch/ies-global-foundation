@@ -42,7 +42,7 @@ export default function Governance() {
               <Reveal key={entity.title} delay={i * 100}>
                 <Card className="h-full p-8">
                   <h2 className="text-h3">{entity.title}</h2>
-                  <p className="mt-5 leading-relaxed font-light text-mist">{entity.body}</p>
+                  <p className="mt-5 leading-relaxed text-mist">{entity.body}</p>
                 </Card>
               </Reveal>
             ))}
@@ -81,7 +81,7 @@ export default function Governance() {
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <h3 className="font-serif text-[1.375rem] leading-snug">{principle.title}</h3>
-                  <p className="leading-relaxed font-light text-mist">{principle.body}</p>
+                  <p className="leading-relaxed text-mist">{principle.body}</p>
                 </div>
               </Reveal>
             ))}
@@ -90,8 +90,8 @@ export default function Governance() {
           <Reveal delay={200}>
             <Card className="mt-14 p-8 sm:p-10">
               <Eyebrow>Legal Status</Eyebrow>
-              <p className="mt-6 leading-relaxed font-light text-mist">{site.legalNote}</p>
-              <p className="mt-4 leading-relaxed font-light text-mist">
+              <p className="mt-6 leading-relaxed text-mist">{site.legalNote}</p>
+              <p className="mt-4 leading-relaxed text-mist">
                 Related policies:{' '}
                 <Link to="/privacy" className="text-[var(--accent)] underline underline-offset-6 hover:text-[var(--accent)]">
                   Privacy Policy

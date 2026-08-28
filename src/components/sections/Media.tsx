@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { ArrowLink, Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
-import { CinemaLine } from '@/components/ui/Cinematic'
 import { Reveal } from '@/components/ui/Reveal'
+import { Scrub } from '@/components/ui/Scrub'
 import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
 import { cx } from '@/lib/utils'
 import type { ActivityPhoto, Video } from '@/content/types'
@@ -52,7 +52,7 @@ export function VideoEmbed({ video }: { video: Video }) {
       onClick={() => setPlaying(true)}
       className="group flex aspect-video w-full flex-col justify-between border border-mist/18 bg-navy-700/45 p-6 text-left transition-colors duration-300 hover:border-gold/45 focus-visible:outline-2 focus-visible:outline-offset-3"
     >
-      <span className="flex items-center gap-3 text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
+      <span className="flex items-center gap-3 text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
         <span
           aria-hidden
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/60 text-[var(--accent)] transition-colors duration-300 group-hover:border-[var(--accent)] group-hover:bg-[var(--accent)]/12"
@@ -60,7 +60,7 @@ export function VideoEmbed({ video }: { video: Video }) {
           ▶
         </span>
         {published(video.date)}
-        {video.language === 'ko' && <span className="text-mist/80">· in Korean</span>}
+        {video.language === 'ko' && <span className="text-mist">· in Korean</span>}
       </span>
 
       <span>
@@ -68,11 +68,11 @@ export function VideoEmbed({ video }: { video: Video }) {
           {video.title}
         </span>
         {video.note && (
-          <span className="mt-2 block text-[0.8125rem] leading-relaxed font-light text-mist">
+          <span className="mt-2 block text-[0.8125rem] leading-relaxed text-mist">
             {video.note}
           </span>
         )}
-        <span className="mt-3 block text-[0.6875rem] tracking-[0.12em] text-mist/80 uppercase">
+        <span className="mt-3 block text-[0.6875rem] tracking-[0.12em] text-mist uppercase">
           Play on YouTube
         </span>
       </span>
@@ -257,7 +257,7 @@ export function GalleryRail({ items }: { items: GalleryItem[] }) {
                   className="border-0"
                 />
                 <figcaption className="border-t border-mist/12 p-6">
-                  <span className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
+                  <span className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
                     {item.kind}
                   </span>
                   <span className="mt-3 block font-serif text-[1.1875rem] leading-snug transition-colors duration-300 group-hover:text-[var(--accent)]">
@@ -273,52 +273,196 @@ export function GalleryRail({ items }: { items: GalleryItem[] }) {
   )
 }
 
-/**
- * The gallery as it appears on the home page.
+/*
+ * THE EDITORIAL MOSAIC — the gallery as it appears on the home page.
  *
- * No display headline. The photographs are the statement, and a band of real
- * documentary images reads as evidence on its own — a large caption over the top
- * of it only competes. What is left is a label, one line of provenance, and the
- * route to the full record.
+ * This was a rail of identical 3:2 cards scrolling itself sideways at 26px a
+ * second, and it had two problems that a rail cannot solve. Every photograph
+ * was the same size, so the layout made no claim about which of the thirteen
+ * programmes mattered — thirteen equal tiles is a contact sheet, not an
+ * edit. And it moved on its own, which meant a reader who stopped to look at
+ * one picture was carried off it.
  *
- * The heading still exists for the document outline, just not visibly: removing
- * it outright would leave a whole section of the page unnamed in a screen
- * reader's list of headings.
+ * The mosaic instead runs on a repeating four-photograph measure:
+ *
+ *      ┌───────────────┬───────┐
+ *      │               │   B   │   A  full-bleed, 4:3, spans two rows
+ *      │       A       ├───────┤   B  half, 5:4
+ *      │               │   C   │   C  half, 5:4
+ *      ├───────────────┴───────┤
+ *      │           D           │   D  full width, 21:9 — the horizon shot
+ *      └───────────────────────┘
+ *
+ * The rhythm is the point: a reader's eye lands on A, is handed down the
+ * right-hand column through B and C, and is then swept across D into the next
+ * measure. Four sizes in one screen is what stops a grid from reading as a
+ * grid.
+ *
+ * ---------------------------------------------------------------------------
+ * TWO THINGS THAT ARE NOT DECORATION
+ *
+ * The parallax depths alternate by position rather than being uniform. A and D
+ * drift slowly (they are large and near), B and C drift further (they are small
+ * and read as further back). A parallax field where everything moves at one
+ * speed is just a slow scroll; the differential is what produces depth.
+ *
+ * And the caption is *inside* the frame at the foot of the image rather than in
+ * a bordered strip beneath it. That removes the card — the thing the brief
+ * asked to be rid of — and it means the picture runs to the edge of its own
+ * space, which is what makes a photograph feel immersive rather than filed.
  */
+
+/**
+ * The four slots of the repeating measure, in source order.
+ *
+ * A's `7 / 8` is derived rather than chosen. It spans two rows against B and C
+ * stacked beside it, so its height has to equal theirs or the row leaves a gap
+ * under it — which is exactly what `4 / 3` did. B and C are 5 columns wide at
+ * 5:4, so each is 0.333 of the grid width tall and the pair is 0.667; A is 7
+ * columns, or 0.583 wide. 0.583 / 0.667 is 0.875, which is 7:8.
+ *
+ * If the column split or either aspect changes, this one has to be recomputed —
+ * there is no way to express "as tall as the two beside me" in the grid without
+ * giving up the intrinsic aspect ratios that keep the photographs undistorted.
+ */
+const MOSAIC_SLOTS = [
+  { className: 'sm:col-span-7 sm:row-span-2', aspect: '7 / 8', depth: '34px', sizes: SIZES.half },
+  { className: 'sm:col-span-5', aspect: '5 / 4', depth: '72px', sizes: SIZES.card },
+  { className: 'sm:col-span-5', aspect: '5 / 4', depth: '72px', sizes: SIZES.card },
+  { className: 'sm:col-span-12', aspect: '21 / 9', depth: '30px', sizes: SIZES.full },
+] as const
+
+function MosaicTile({
+  item,
+  slot,
+  eager,
+}: {
+  item: GalleryItem
+  slot: (typeof MOSAIC_SLOTS)[number]
+  eager: boolean
+}) {
+  return (
+    <Scrub
+      effect="scrub-parallax"
+      depth={slot.depth}
+      className={cx('relative', slot.className)}
+    >
+      <Link
+        to={item.href}
+        className="group block overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
+      >
+        <figure className="relative">
+          <GalleryImage
+            src={item.src}
+            alt={item.alt}
+            eager={eager}
+            aspectRatio={slot.aspect}
+            zoomOnHover
+            sizes={slot.sizes}
+            className="border-0"
+          />
+
+          {/*
+           * The scrim, and it is doing contrast work rather than styling.
+           *
+           * A caption laid over a documentary photograph has no idea what is
+           * behind it — these images run from a dark auditorium to a lit
+           * classroom wall — so the only way to promise the type is readable is
+           * to put a known ground under it. It is opaque enough at the foot to
+           * clear AA against white type and gone by 55%, so it darkens the
+           * caption without greying the picture.
+           */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-[linear-gradient(to_top,rgba(5,10,20,0.92),rgba(5,10,20,0.55)_38%,transparent)]"
+          />
+
+          <figcaption className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
+            <span className="text-label-sm block font-semibold text-[var(--accent)] uppercase">
+              {item.kind}
+            </span>
+            <span className="mt-2 block max-w-[26ch] font-serif text-[clamp(1.125rem,1.6vw,1.5rem)] leading-snug text-paper">
+              {item.title}
+            </span>
+            {/* The rule draws itself out from the left on hover — the whole of
+                the tile's hover response, alongside the image's own zoom. A
+                photograph that lifts, shadows or borders itself on hover reads
+                as a widget; one that simply grows a little and underlines its
+                own title reads as a photograph you can open. */}
+            <span
+              aria-hidden
+              className="mt-3 block h-px w-10 origin-left scale-x-100 bg-[var(--accent)]/70 transition-transform duration-500 ease-[var(--ease-cinema)] group-hover:scale-x-[3.4]"
+            />
+          </figcaption>
+        </figure>
+      </Link>
+    </Scrub>
+  )
+}
+
 export function GallerySection({ items, id }: { items: GalleryItem[]; id?: string }) {
   if (items.length === 0) return null
+
+  /*
+   * Two measures — eight photographs — and no more.
+   *
+   * Two constraints meet here. Whole measures only: thirteen photographs into a
+   * four-slot measure leaves an orphan tile in a half-built row, and the
+   * layout's whole argument is that the sizes are chosen, so a stray half-width
+   * tile at the end reads as a bug rather than as an edit.
+   *
+   * And two rather than three, because the mosaic is expensive in page height:
+   * one measure is about 1,500px, so showing all twelve made this single
+   * section of the home page taller than four screens. A home-page gallery
+   * exists to establish that the work is real and photographed, which eight
+   * photographs do as well as twelve; the full record is one link away and
+   * carries every one of them.
+   */
+  const shown = items.slice(0, MOSAIC_SLOTS.length * 2)
+
   return (
-    <Section id={id} tone="deep" className="border-y border-mist/12" size="compact">
+    <Section id={id} tone="deep" size="compact">
       <Container size="wide">
         {/*
-         * Centred, and the only section on the home page that is.
+         * The heading is left-aligned like every other section on the page.
          *
-         * Everything else there is a left-aligned column with a rule and an
-         * index — the register of a document. A rail is not a column: it runs
-         * the full width, it has no left edge to hang a heading off, and a
-         * left-aligned title above a centred band of photographs reads as two
-         * pieces of layout rather than one. The title, the line under it and
-         * the link below all sit on the rail's own centre line instead.
+         * It used to be centred — the one centred block on the home page —
+         * on the reasoning that a full-width rail has no left edge to hang a
+         * title off. The mosaic does have one, and more to the point a page
+         * where one section centres itself for layout reasons is a page whose
+         * sections look arbitrary. Consistency of alignment is most of what
+         * tells a reader they are still in the same document.
          */}
         <Reveal>
-          <div className="text-center">
-            <CinemaLine as="h2" className="text-[clamp(1.25rem,2.6vw,1.875rem)] text-paper/90">
-              Programmes
-            </CinemaLine>
-            <p className="mx-auto mt-5 max-w-xl text-[0.9375rem] font-light text-mist">
-              Photographed at the programmes themselves, across {items.length} initiatives.
+          <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
+            <div>
+              <Eyebrow>Programmes</Eyebrow>
+              <h2 className="text-h2 mt-5 max-w-[20ch] text-paper">
+                What the work actually looks like.
+              </h2>
+            </div>
+            <p className="measure-lead text-mist">
+              Every photograph below was taken at the programme it shows, across{' '}
+              <span className="text-paper">{items.length} initiatives</span>.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-12">
-          <GalleryRail items={items} />
+        <div className="mt-12 grid gap-3 sm:grid-cols-12 sm:gap-4">
+          {shown.map((item, index) => (
+            <MosaicTile
+              key={item.id}
+              item={item}
+              slot={MOSAIC_SLOTS[index % MOSAIC_SLOTS.length]}
+              /* The first measure is above the fold on a laptop; everything
+                 after it can wait for the scroll. */
+              eager={index < 2}
+            />
+          ))}
         </div>
 
-        {/* Closes the section rather than opening one — the rail has already
-            made the case, and this is the way out of it. */}
         <Reveal>
-          <div className="mt-12 flex justify-center">
+          <div className="mt-12">
             <ArrowLink to="/our-work">See the full record</ArrowLink>
           </div>
         </Reveal>
@@ -455,7 +599,7 @@ export function Lightbox({
         className="relative flex h-full flex-col focus-visible:outline-none"
       >
         <div className="flex items-center justify-between gap-4 px-6 py-5 sm:px-10">
-          <span className="text-[0.6875rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
+          <span className="text-[0.6875rem] font-semibold tracking-[0.12em] text-mist uppercase">
             {index + 1} / {shots.length}
           </span>
           <div className="flex gap-2">
@@ -505,7 +649,7 @@ export function Lightbox({
              The photograph cuts and the words under it fade — text that swaps
              instantly under a changing image is the part that reads as jarring. */
           key={shot.src}
-          className="animate-[ies-caption-in_420ms_cubic-bezier(0.22,1,0.36,1)_both] px-6 pb-8 text-center text-[0.8125rem] leading-relaxed font-light text-mist/80 sm:px-10"
+          className="animate-[ies-caption-in_420ms_cubic-bezier(0.22,1,0.36,1)_both] px-6 pb-8 text-center text-[0.8125rem] leading-relaxed text-mist sm:px-10"
         >
           {shot.caption ?? shot.alt}
         </p>
@@ -571,7 +715,7 @@ export function PhotoStrip({
         <Reveal>
           <Eyebrow>{eyebrow}</Eyebrow>
           <h2 className="text-h2 mt-6 max-w-3xl">{title}</h2>
-          {lead && <p className="text-lead mt-7 max-w-3xl font-light text-mist">{lead}</p>}
+          {lead && <p className="text-lead mt-7 max-w-3xl text-mist">{lead}</p>}
         </Reveal>
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -579,7 +723,7 @@ export function PhotoStrip({
             <Reveal key={photo.src} delay={i * 70}>
               <figure>
                 <GalleryImage src={photo.src} alt={photo.alt} eager={i < 3} />
-                <figcaption className="mt-3 text-[0.8125rem] leading-relaxed font-light text-mist/75">
+                <figcaption className="mt-3 text-[0.8125rem] leading-relaxed text-slate">
                   {photo.alt}
                 </figcaption>
               </figure>

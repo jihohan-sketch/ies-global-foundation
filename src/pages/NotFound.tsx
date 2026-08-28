@@ -15,7 +15,7 @@ export default function NotFound() {
       <Container className="relative">
         <Eyebrow>Error 404</Eyebrow>
         <h1 className="text-h1 mt-8 max-w-2xl">This page could not be found.</h1>
-        <p className="text-lead mt-7 max-w-xl font-light text-mist">
+        <p className="text-lead mt-7 max-w-xl text-mist">
           The link may be out of date, or the page may have moved as the site has grown. The
           sections below cover everything on this website.
         </p>
@@ -35,7 +35,7 @@ export default function NotFound() {
               <li key={item.href}>
                 <Link
                   to={item.href}
-                  className="text-[0.9375rem] font-light text-paper/75 transition-colors hover:text-[var(--accent)]"
+                  className="text-[0.9375rem] text-paper/75 transition-colors hover:text-[var(--accent)]"
                 >
                   {item.label}
                 </Link>

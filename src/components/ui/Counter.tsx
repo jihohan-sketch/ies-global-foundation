@@ -6,7 +6,23 @@ import type { Stat } from '@/content/types'
  * Counts up once, when the figure scrolls into view. Large figures are shown
  * in full (736,000) rather than abbreviated — the number is the point.
  */
-export function Counter({ stat, className }: { stat: Stat; className?: string }) {
+export function Counter({
+  stat,
+  className,
+  /**
+   * Applied to the prefix and suffix only.
+   *
+   * The ledger sets its figures in paper white for contrast but wants the `+`
+   * to stay gold, so the section keeps its accent without spending it on the
+   * digits — which are the part that has to be read. Everything else on the
+   * site leaves this alone and gets a single-coloured number.
+   */
+  suffixClassName,
+}: {
+  stat: Stat
+  className?: string
+  suffixClassName?: string
+}) {
   const ref = useRef<HTMLSpanElement>(null)
   const [display, setDisplay] = useState(prefersReducedMotion() ? stat.value : 0)
 
@@ -81,44 +97,29 @@ export function Counter({ stat, className }: { stat: Stat; className?: string })
 
   return (
     <span ref={ref} className={className}>
-      {stat.prefix}
+      {stat.prefix && <span className={suffixClassName}>{stat.prefix}</span>}
       {/* `lining-nums` alongside `tabular-nums`: Tailwind's numeric utilities compose
           into one `font-variant-numeric`, and a class beats the zero-specificity
           `:where()` base rule that gives the rest of the serif its lining figures.
           Without it a counter would slide back to Cormorant's old-style digits. */}
       <span className="tabular-nums lining-nums">{formatNumber(display)}</span>
-      {stat.suffix}
+      {stat.suffix && <span className={suffixClassName}>{stat.suffix}</span>}
     </span>
   )
 }
 
-export function StatBlock({
-  stat,
-  tone = 'dark',
-}: {
-  stat: Stat
-  tone?: 'dark' | 'light'
-}) {
-  return (
-    <div className="flex flex-col">
-      <Counter
-        stat={stat}
-        className={`text-h2 font-serif ${tone === 'dark' ? 'text-paper' : 'text-navy'}`}
-      />
-      <span
-        className={`mt-3 text-[0.8125rem] font-medium tracking-[0.14em] uppercase ${
-          tone === 'dark' ? 'text-[var(--accent)]' : 'text-navy-600'
-        }`}
-      >
-        {stat.label}
-      </span>
-      {stat.note && (
-        <span
-          className={`mt-2 text-sm font-light ${tone === 'dark' ? 'text-mist/75' : 'text-navy-700/65'}`}
-        >
-          {stat.note}
-        </span>
-      )}
-    </div>
-  )
-}
+/*
+ * `StatBlock` lived here and has been removed.
+ *
+ * It rendered a figure, a label and a note as one unit, and had exactly one
+ * caller — the Impact page — which wrapped it in a `<dl>` and then had to add
+ * an `sr-only` `<dt>` alongside, because the component was emitting its own
+ * visible label inside the `<dd>`. The result was a description list whose term
+ * was announced twice and never matched the visible one.
+ *
+ * A statistic's markup belongs to the list it sits in, so the Impact page now
+ * writes its own `<dt>` / `<dd>` around `Counter` — the same shape the home
+ * page's `ImpactLedger` already used. That leaves `Counter` as the single
+ * shared piece: the number that counts itself up. Which is the part that was
+ * ever worth sharing.
+ */

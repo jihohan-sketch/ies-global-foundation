@@ -30,41 +30,42 @@
   --color-gold: #c8a96b; /* Warm gold      */
   --color-gold-300: #dcc59a;
   --color-gold-100: #f2e7cf; /* Metallic highlight — gradient stops only */
-  --color-mist: #aab4c2; /* Muted gray     */
+  --color-mist: #bcc7d4; /* Secondary copy — brightened, see the ladder below */
+  --color-slate: #7f8b9c; /* Metadata — the only tone allowed to recede */
 }
 
 /*
- * MIST OPACITY LADDER — measured, not eyeballed.
+ * THE TEXT LADDER — three tones, measured, and that is the whole set.
  *
- * `mist` is the site's secondary tone, and it gets used at an opacity rather
- * than as a second token. That is fine, but only two steps actually clear AA
- * for text, and the ladder had drifted to seven ad-hoc values (/30 … /80) with
- * several of them below the line. These are the ratios against both dark
- * grounds — `deep` sections paint navy-700, which is the tighter of the two.
+ * The site used to have one secondary tone (`mist`) used at seven different
+ * opacities, several of them below the AA line, and the practical result was
+ * that a section's *label* and its *sentence* were often the same grey. When
+ * everything is the same grey, nothing is primary — which is the single
+ * biggest reason the old page was hard to scan.
  *
- * Measured against the *previous*, lighter grounds and kept that way on
- * purpose: the palette above has since dropped to #050a14 / #0a1526, which can
- * only raise every figure here. Treat these as guaranteed minimums.
+ * So: three tokens, three jobs, no opacity steps for text.
  *
- *                    on navy #071a33   on navy-700 #0d294d
- *   text-mist              8.3:1              7.0:1
- *   text-mist/80           5.8:1              5.0:1   ← floor for body text
- *   text-mist/75           5.2:1              4.6:1   (placeholders only)
- *   text-mist/70           4.7:1              4.2:1   ✗ fails on navy-700
- *   text-mist/60           3.8:1              3.4:1   ✗
- *   text-mist/50           3.0:1              2.8:1   ✗
+ *                       on navy #050a14   on navy-700 #0a1526   job
+ *   text-paper  #f7f9fc      18.7:1              17.3:1        headings, primary
+ *   text-mist   #bcc7d4      11.6:1              10.7:1        body, descriptions
+ *   text-slate  #7f8b9c       5.7:1               5.3:1        metadata only
  *
- * So: `text-mist` for primary secondary-copy, `text-mist/80` for anything
- * quieter. Below /80 is reserved for things exempt from contrast rules —
- * `aria-hidden` separators and `:disabled` states — never for text a sighted
- * visitor is meant to read.
+ * Every one of those clears AA for body text, and the top two clear AAA. The
+ * rule is now positional rather than numeric: if a visitor is meant to *read*
+ * it, it is `mist` or brighter. `slate` is for the date, the category, the
+ * caption credit — information that supports the thing above it and must never
+ * out-shout it.
+ *
+ * `text-mist/80` and friends still parse, but nothing should reach for them:
+ * an opacity on a text colour is how the old ladder drifted in the first place.
  *
  * Borders are the other half of this. A border that is the only thing marking
  * out an interactive control (an input, the menu toggle, a filter chip) has to
- * clear 3:1 under WCAG 1.4.11, which `border-mist/55` (3.4:1) does and the
- * /22–/35 these used to sit at did not. Borders that merely divide or decorate
- * — card edges, hairline rules — carry no such requirement and stay at /12–/18
- * so the layout keeps its quiet.
+ * clear 3:1 under WCAG 1.4.11, which `border-mist/45` does at the brightened
+ * token. Borders that merely divide — card edges, section seams — carry no such
+ * requirement, and they went *up* rather than down: `/18` is the new floor for
+ * a seam, because "insufficient separation between sections" was the other half
+ * of the scanning problem and a 12% hairline on near-black is not a separation.
  */
 
 /*
@@ -106,25 +107,62 @@
     'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
     Arial, sans-serif;
 
-  /* --- Editorial type scale --- */
-  --text-display: clamp(2.75rem, 6.2vw, 5.25rem);
+  /* --- Editorial type scale ---
+   *
+   * Every step went up, and the gaps between the steps went up further. That
+   * second part is the point: the old scale ran h2 → lead → body at 2.875 →
+   * 1.25 → 1rem, which on a dark ground with a 300 weight is three sizes a
+   * reader has to *compare* to rank. Ranking should be instant.
+   *
+   * The ratios now sit at roughly 2.6× (h2 to body) and 1.3× (lead to body) at
+   * the desktop cap, which is far enough apart to read as three different
+   * jobs rather than three settings of one. */
+  --text-display: clamp(3rem, 6.4vw, 5.75rem);
   --text-display--line-height: 1.02;
-  --text-display--letter-spacing: -0.022em;
+  --text-display--letter-spacing: -0.024em;
 
-  --text-h1: clamp(2.25rem, 4.6vw, 3.75rem);
-  --text-h1--line-height: 1.08;
-  --text-h1--letter-spacing: -0.018em;
+  --text-h1: clamp(2.5rem, 5vw, 4.25rem);
+  --text-h1--line-height: 1.06;
+  --text-h1--letter-spacing: -0.02em;
 
-  --text-h2: clamp(1.875rem, 3.4vw, 2.875rem);
-  --text-h2--line-height: 1.14;
-  --text-h2--letter-spacing: -0.014em;
+  --text-h2: clamp(2rem, 3.9vw, 3.25rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.017em;
 
-  --text-h3: clamp(1.375rem, 2.1vw, 1.75rem);
-  --text-h3--line-height: 1.25;
-  --text-h3--letter-spacing: -0.01em;
+  --text-h3: clamp(1.5rem, 2.3vw, 1.9375rem);
+  --text-h3--line-height: 1.22;
+  --text-h3--letter-spacing: -0.012em;
 
-  --text-lead: clamp(1.0625rem, 1.35vw, 1.25rem);
-  --text-lead--line-height: 1.65;
+  /* The supporting line under a heading. Up from 1.0625–1.25rem, and it stops
+   * carrying `font-light` — a lead is the second thing read on a section and
+   * a 300 weight at 20px on near-black is the definition of "elegant but hard
+   * to scan". */
+  --text-lead: clamp(1.125rem, 1.45vw, 1.375rem);
+  --text-lead--line-height: 1.58;
+
+  /* Body proper. Named so a paragraph can ask for it rather than inheriting
+   * whatever the last author set. */
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.72;
+
+  /* --- The label registers ---
+   *
+   * Three sizes of tracked capital, and nothing smaller than 11px anywhere on
+   * the site. The old set bottomed out at 9px with 0.3em of tracking, which is
+   * the exact combination that turns a word into a row of disconnected
+   * letters — the eye has to spell it rather than recognise it.
+   *
+   * Tracking came down across the board (0.3em → 0.14em) and weight went up
+   * (500 → 600). Wide tracking is a *display* device; at label size it is
+   * simply damage. The serif keeps its wide tracking, because there it is
+   * being used on two ceremonial words rather than on information. */
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.14em;
+
+  --text-label-sm: 0.6875rem;
+  --text-label-sm--line-height: 1.4;
+  --text-label-sm--letter-spacing: 0.12em;
 
   /* --- Cinematic display ---
    *
@@ -200,13 +238,27 @@
     scroll-padding-top: 7rem;
   }
 
+  /*
+   * WEIGHT 400, NOT 300.
+   *
+   * This one line is the largest single readability change on the site. Inter
+   * at 300 on a near-black ground is thinner than it looks in a design tool:
+   * the light ground of the glyph is being eaten by the dark around it, so the
+   * stems render optically lighter than the same weight on white. At 16px/300
+   * the body copy was, measurably, the least legible text on the page and it
+   * was also most of the page.
+   *
+   * `font-optical-sizing` and the antialiasing hints stay — they were never
+   * the problem. The 17px base is the other half: 16px is a minimum, not a
+   * target, and this site asks people to read paragraphs.
+   */
   body {
     background-color: var(--color-navy);
     color: var(--color-paper);
     font-family: var(--font-sans);
-    font-size: 1rem;
-    line-height: 1.7;
-    font-weight: 300;
+    font-size: var(--text-body);
+    line-height: 1.72;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -217,9 +269,42 @@
   h3,
   h4 {
     font-family: var(--font-serif);
-    font-weight: 400;
+    /*
+     * 500, not 400. Cormorant is a display face cut on the light side — its
+     * 400 is nearer most families' 300 — and every heading on this site sits
+     * on near-black, where it thins further. At 500 the headings finally have
+     * the weight the layout has always implied they had, without moving to a
+     * different face or losing the editorial character.
+     */
+    font-weight: 500;
     color: var(--color-paper);
     text-wrap: balance;
+  }
+
+  /*
+   * Paragraph defaults, so a `<p>` is readable before anyone styles it. The
+   * measure cap is the important half: unbounded body copy on a `max-w-[88rem]`
+   * container ran to well over 120 characters a line on a wide monitor, which
+   * no amount of contrast rescues. 74ch is the upper end of the comfortable
+   * range and leaves the editorial layouts room to breathe.
+   *
+   * `:where()` keeps it at zero specificity — any `max-w-*` utility wins.
+   *
+   * TWO EXCLUSIONS, BOTH FOUND THE HARD WAY.
+   *
+   * A centred paragraph must not be capped: `max-width` shrinks the *box* and
+   * leaves it at the start of its container, so `text-center` then centres the
+   * words inside a 74ch box sitting against the left edge — visibly off-centre,
+   * which is what it did to the drawer's "National Branches" label.
+   *
+   * And a paragraph used as a flex container is not prose. `Eyebrow` is a `<p>`
+   * laying out a rule and a label in a row; capped and centred, its whole row
+   * drifted left of the hero's centre line. The `[class*='flex']` test catches
+   * `flex`, `inline-flex` and `flex-1` alike, which is the right net: every one
+   * of them means the element is doing layout rather than holding a sentence.
+   */
+  :where(p:not([class*='text-center']):not([class*='flex'])) {
+    max-width: 74ch;
   }
 
   /*
@@ -353,12 +438,20 @@
  * also `pointer-events-none` and `select-none` so a drag across the section
  * never selects a word the visitor cannot see themselves having clicked.
  *
- * 3% is not an arbitrary "faint". Below about 2% it disappears on a calibrated
- * laptop screen; by 5% it stops being texture and starts being a second
- * headline competing with the real one for the eye — which is exactly what it
- * did at the 4% this was first drawn at, over a `deep` section where the
- * lighter ground gives it more to push against. It is decorative, so it is
- * exempt from contrast minimums by design.
+ * ---------------------------------------------------------------------------
+ * TWO CHANGES, BOTH ABOUT THE SAME COMPLAINT: THE DECORATION WAS COMPETING.
+ *
+ * 3% → 2%. On the previous, lighter ground 3% was texture; against #050a14 the
+ * same value is a legible second headline, and on the Impact section it was
+ * literally spelling SCALE across the words "Scale, measured honestly." Two
+ * copies of a section's name at two sizes, overlapping, is the exact thing the
+ * eye cannot resolve in the one second a section gets.
+ *
+ * And it now carries a vertical mask that takes it to nothing across its lower
+ * half. A ghost is meant to be *felt above* the heading and gone by the time
+ * the reading line starts. The mask enforces that no matter where a caller
+ * positions it, which the old fixed offsets could not — every section placed
+ * its ghost by hand and several placed it badly.
  */
 @utility ghost-title {
   pointer-events: none;
@@ -367,7 +460,9 @@
   font-weight: 300;
   text-transform: uppercase;
   white-space: nowrap;
-  color: color-mix(in srgb, var(--color-paper) 3%, transparent);
+  color: color-mix(in srgb, var(--color-paper) 2%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 22%, transparent 72%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 22%, transparent 72%);
 }
 
 /*
@@ -385,7 +480,7 @@
  * `letter-spacing` is a fixed step, so the word overshoots a phone and leaves
  * a third of a desktop empty.
  *
- * 7%, against the ghost's 3%. This one is meant to be *seen* — it is the
+ * 5%, against the ghost's 2%. This one is meant to be *seen* — it is the
  * section's name, structurally placed — where the ghost is only meant to be
  * felt behind other type. Both are decorative and `aria-hidden`, so both are
  * exempt from contrast minimums; the real heading is elsewhere in the flow.
@@ -401,7 +496,7 @@
   line-height: 0.9;
   text-transform: uppercase;
   white-space: nowrap;
-  color: color-mix(in srgb, var(--color-paper) 7%, transparent);
+  color: color-mix(in srgb, var(--color-paper) 5%, transparent);
 }
 
 /*
@@ -417,6 +512,69 @@
 
 @utility seam-bottom {
   background: linear-gradient(to top, var(--color-navy), transparent);
+}
+
+/*
+ * SECTION SEPARATION — the fix for "I cannot tell where one section ends".
+ *
+ * The site's sections were divided by `border-mist/12`, which on near-black is
+ * a line you have to go looking for. But a heavier hairline is the wrong
+ * answer: this is a dark, cinematic page and a bright rule across it reads as
+ * a table border.
+ *
+ * `section-edge` is the answer instead — a hairline that is *brightest in the
+ * middle and gone at the gutters*, plus a short gradient of light bleeding
+ * down from it. The eye reads the pair as an edge lit from above, which is
+ * both stronger and quieter than a uniform 1px line. Applied as a top border
+ * replacement on any section that needs to announce itself.
+ */
+@utility section-edge {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in srgb, var(--color-mist) 30%, transparent) 22%,
+      color-mix(in srgb, var(--color-mist) 30%, transparent) 78%,
+      transparent
+    );
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 1px;
+    height: 4.5rem;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-paper) 3.5%, transparent),
+      transparent
+    );
+  }
+}
+
+/*
+ * The measure cap as an explicit opt-in, for the places the base `p` rule
+ * cannot reach — a lead rendered into a `<div>`, a list item, a `<dd>`. Same
+ * number, so there is one definition of "a comfortable line" on the site.
+ */
+@utility measure {
+  max-width: 74ch;
+}
+
+/* The tighter measure, for a lead paragraph sitting directly under a heading.
+   A lead is scanned rather than read, and it wants to be visibly shorter than
+   the body it introduces or it just looks like a first paragraph. */
+@utility measure-lead {
+  max-width: 52ch;
 }
 
 /*
@@ -915,6 +1073,31 @@
 }
 
 /*
+ * The same dissolve with a sideways component, for a line that should leave
+ * *across* the frame rather than straight up.
+ *
+ * Distinct from `scrub-cross`, which is driven off the signed `--drift` and
+ * therefore never sits still — right for a word whose whole job is to travel,
+ * wrong for a headline that has to be readable before anything has moved. This
+ * one is identity at rest and only starts to slide as it goes, so the drift
+ * reads as the line being carried off rather than as type that will not settle.
+ *
+ * `--scrub-span` in `vw` for the same reason `scrub-cross` uses it: the gesture
+ * has to scale with the frame, or it is a sweep on a laptop and a twitch on a
+ * display.
+ */
+.scrub-dissolve-x {
+  --dissolve: clamp(0, calc(var(--sp) / var(--scrub-fade, 0.34)), 1);
+  opacity: calc(1 - var(--dissolve));
+  transform: translate3d(
+      calc(var(--dissolve) * var(--scrub-span, 5vw)),
+      calc(var(--dissolve) * var(--scrub-travel, -40px)),
+      0
+    )
+    scale(calc(1 - var(--dissolve) * 0.05));
+}
+
+/*
  * Opens *into* full size — starts at `1 − grow` and settles at exactly 1.
  *
  * The direction matters more than it looks. `scrub-expand` below ends
@@ -1172,6 +1355,105 @@
   }
 
   .scrub-soften:not([data-motion-always] *) {
+    filter: none;
+  }
+}
+
+/* ==========================================================================
+   HORIZONTAL SCENES ON A PHONE
+   ==========================================================================
+
+   Below 640px a `PinnedScene` stops being a pinned horizontal track and becomes
+   an ordinary vertical stack.
+
+   THE REASON IS NOT THAT SIDEWAYS MOTION IS BAD ON A PHONE. The pan is driven
+   by vertical scroll, so it never asks for a horizontal gesture, and it works.
+   The reason is width. A panel in these scenes is a full viewport wide and is
+   laid out as one — a dossier in two columns, a heading beside a photograph,
+   a number beside a paragraph — and at 390px every one of those becomes a
+   single narrow column that then has to fit in `h-dvh` because a pinned panel
+   is exactly one screen tall and clips what does not fit. The scenes had
+   already started responding to that by *hiding* content on small screens
+   (`hidden sm:block`, `hidden md:block` inside NetworkScene), which is the
+   clearest possible signal that the container was wrong rather than the copy.
+
+   Stacked vertically the same panels can be as tall as they need to be, and
+   nothing has to be withheld from a phone.
+
+   ---------------------------------------------------------------------------
+   HOW IT IS SWITCHED OFF
+
+   Three inline styles have to be beaten, which is why `!important` appears
+   here and almost nowhere else in this file: the section's height, the track's
+   transform, and the perspective on the frame are all written by the component
+   (the first two are recomputed on every scroll frame, so they cannot be moved
+   into a class).
+
+   The engine needs no change. `measure()` derives the pan distance from
+   `track.scrollWidth - viewport`, which in a column is zero or less, and
+   `apply()` returns early on exactly that condition — so it writes no transform
+   and, importantly, no per-panel `--p`. That is why the pin below is necessary:
+   without it every panel would sit at `--sp: 0`, and `scrub-fade` would hold
+   the whole scene at opacity 0. It is the same pin the reduced-motion block
+   uses, for the same reason, and it is spelled out again rather than shared
+   because the two have different selectors and will drift apart if joined.
+   ========================================================================== */
+
+@media (max-width: 639px) {
+  .pinned-scene {
+    height: auto !important;
+  }
+
+  .pinned-scene-frame {
+    position: static;
+    height: auto;
+    overflow: visible;
+    perspective: none !important;
+  }
+
+  .pinned-scene-track {
+    flex-direction: column;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .pinned-scene-track > * {
+    width: 100%;
+    height: auto;
+  }
+
+  /* The horizon word is drawn at the foot of the *frame*, which in a stack is
+     the foot of the whole section — so it would land across the last panel
+     rather than under the scene. It is decorative and `aria-hidden`; on a
+     phone it simply goes. */
+  .pinned-scene-wordmark {
+    display: none;
+  }
+
+  /* The pin. See the note above. */
+  .pinned-scene .scrub {
+    --sp: 1;
+    --e: 1;
+    --in: 1;
+    --out: 1;
+    --band: 1;
+    --drift: 0;
+  }
+
+  .pinned-scene .scrub-dissolve,
+  .pinned-scene .scrub-open,
+  .pinned-scene .scrub-expand,
+  .pinned-scene .scrub-cross,
+  .pinned-scene .scrub-cross-band,
+  .pinned-scene .scrub-converge,
+  .pinned-scene .scrub-figure,
+  .pinned-scene .scrub-rule {
+    --dissolve: 0;
+    opacity: 1;
+    transform: none;
+  }
+
+  .pinned-scene .scrub-soften {
     filter: none;
   }
 }

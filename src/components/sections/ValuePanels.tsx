@@ -82,7 +82,7 @@ export function ValuePanels() {
                   effect="scrub-fade"
                   fadeIn={0.18}
                   fadeOut={0.44}
-                  className="text-[0.6875rem] font-medium tracking-[0.24em] uppercase"
+                  className="text-[0.6875rem] font-semibold tracking-[0.12em] uppercase"
                   style={{ color: panel.accent }}
                 >
                   {item.title.charAt(0)} · Value {String(index + 1).padStart(2, '0')} /{' '}
@@ -119,7 +119,7 @@ export function ValuePanels() {
                   offset={0.1}
                   fadeIn={0.3}
                   fadeOut={0.26}
-                  className="text-lead mx-auto mt-10 max-w-2xl leading-relaxed font-light text-mist"
+                  className="text-lead mx-auto mt-10 max-w-2xl leading-relaxed text-mist"
                 >
                   {item.body}
                 </SceneLayer>

@@ -130,7 +130,7 @@ export function PhotoReel({
                 >
                   {shot.caption}
                 </Link>
-                <span className="mt-1.5 block text-[0.8125rem] leading-relaxed font-light text-mist/80">
+                <span className="mt-1.5 block text-[0.8125rem] leading-relaxed text-mist">
                   {shot.alt}
                 </span>
               </span>

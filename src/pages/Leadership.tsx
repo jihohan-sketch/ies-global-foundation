@@ -68,11 +68,21 @@ const hasPersonCard = (person: { id: string }) => cardedIds.has(person.id)
  * row sits at a fraction of the width with empty space beside it, which reads
  * as a card that failed to load rather than as a deliberate layout.
  */
+/*
+ * Column counts went up by one at every size, because the card underneath
+ * changed shape: `PersonCard` used to be a wide panel with the portrait beside
+ * the text and could not survive a narrow column, and it is now a 4:5 portrait
+ * tile whose text sits over the image. Two of those on a desktop row is a
+ * poster, not a directory.
+ *
+ * Two columns on a phone rather than one, for the same reason: a column of
+ * full-width portraits makes a fifteen-person page fifteen screens long.
+ */
 const gridFor = (count: number) =>
   cx(
-    'mt-14 grid gap-6',
+    'mt-14 grid grid-cols-2 gap-3 sm:gap-4',
     count === 2 && 'lg:grid-cols-2',
-    count > 2 && 'md:grid-cols-2 lg:grid-cols-3',
+    count > 2 && 'md:grid-cols-3 lg:grid-cols-4',
   )
 
 export default function Leadership() {
@@ -179,10 +189,10 @@ export default function Leadership() {
                             </span>
                           )}
                           <div className="min-w-0">
-                            <p className="text-[0.9375rem] font-light text-paper/90">
+                            <p className="text-[0.9375rem] text-paper/90">
                               {holder.name}
                               {holder.koreanName && (
-                                <span className="ml-2 font-light text-mist">
+                                <span className="ml-2 text-mist">
                                   {holder.koreanName}
                                 </span>
                               )}
@@ -205,7 +215,7 @@ export default function Leadership() {
                                 above, not on tier: the opening pair mixes
                                 founders with Foundation officers, so tier alone
                                 stopped answering the question. */}
-                            <p className="mt-4 text-[0.875rem] leading-relaxed font-light text-mist">
+                            <p className="mt-4 text-[0.875rem] leading-relaxed text-mist">
                               {hasPersonCard(holder)
                                 ? group.map((office) => office.holderNote).find(Boolean)
                                 : holder.bio}
@@ -213,7 +223,7 @@ export default function Leadership() {
                           </div>
                         </div>
                       ) : (
-                        <p className="text-[0.8125rem] font-light text-mist/80 italic">
+                        <p className="text-[0.8125rem] text-mist italic">
                           Appointment to be confirmed.
                         </p>
                       )}
@@ -223,7 +233,7 @@ export default function Leadership() {
                       {group.flatMap((office) => office.responsibilities).map((item) => (
                         <li
                           key={item}
-                          className="flex gap-3 text-[0.875rem] font-light text-mist"
+                          className="flex gap-3 text-[0.875rem] text-mist"
                         >
                           <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
                           {item}
@@ -325,7 +335,7 @@ export default function Leadership() {
           </div>
 
           <Reveal delay={160}>
-            <p className="mt-16 max-w-2xl border-t border-mist/15 pt-6 text-sm leading-relaxed font-light text-mist/80">
+            <p className="mt-16 max-w-2xl border-t border-mist/15 pt-6 text-sm leading-relaxed text-mist">
               Additional national officers are listed once appointments are finalised and
               confirmed by the relevant branch.
             </p>
@@ -340,14 +350,14 @@ export default function Leadership() {
             <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
               <Eyebrow>Governance Note</Eyebrow>
               <div className="space-y-5">
-                <p className="leading-relaxed font-light text-mist">
+                <p className="leading-relaxed text-mist">
                   Leadership positions within IES carry defined responsibilities and reporting
                   expectations. National branches are organizational units of the same
                   international network — they are not independent legal entities, and holding a
                   national title does not confer authority beyond the responsibilities described
                   here.
                 </p>
-                <p className="leading-relaxed font-light text-mist">
+                <p className="leading-relaxed text-mist">
                   Questions about the organization’s structure or the scope of any role can be
                   directed to the Global Foundation.
                 </p>

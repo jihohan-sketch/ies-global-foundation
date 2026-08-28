@@ -33,25 +33,54 @@ export function SectionIndex({
   tone?: 'light' | 'dark'
   className?: string
 }) {
+  /*
+   * THE NUMBER IS NOW A NUMBER.
+   *
+   * All three parts of this used to be set identically — 10px, tracked to
+   * 0.3em, in the same grey — so `01 ——— IMPACT SNAPSHOT` read as one
+   * undifferentiated string of small capitals, and the number carried none of
+   * the "you are here" weight it exists to carry.
+   *
+   * The index is now serif, at 1.5rem, in the section accent, sitting on its
+   * own against a short solid mark. The label beside it stays a label but at a
+   * legible size in a legible colour. It reads as a chapter number and a
+   * chapter name, which is what it always was.
+   */
   return (
     <div
       aria-hidden
-      className={cx(
-        'flex items-center gap-4 text-[0.625rem] font-medium tracking-[0.3em] uppercase',
-        tone === 'dark' ? 'text-navy-600' : 'text-mist/80',
-        className,
-      )}
+      className={cx('flex items-baseline gap-3.5', className)}
     >
-      <span className={tone === 'dark' ? 'text-navy' : 'text-[var(--accent)]'}>{index}</span>
-      {/* `shrink-0` on the rule, `min-w-0` nowhere: the label is short by
-          construction, and a rule that collapses reads as a rendering fault. */}
       <span
         className={cx(
-          'h-px w-10 shrink-0',
-          tone === 'dark' ? 'bg-navy/25' : 'bg-mist/25',
+                    /* `lining-nums` alongside `tabular-nums`, and it is load-bearing:
+             Tailwind's numeric utilities compose into one `font-variant-numeric`
+             declaration, and a utility class beats the zero-specificity
+             `:where()` base rule that gives the rest of the serif its lining
+             figures. Without it Cormorant falls back to its old-style default
+             and `01` renders as `OI` — which is exactly what it did. */
+          'font-serif text-[1.5rem] leading-none font-medium tabular-nums lining-nums',
+          tone === 'dark' ? 'text-navy' : 'text-[var(--accent)]',
+        )}
+      >
+        {index}
+      </span>
+      {/* `shrink-0` on the mark, `min-w-0` nowhere: the label is short by
+          construction, and a mark that collapses reads as a rendering fault. */}
+      <span
+        className={cx(
+          'h-0.5 w-6 shrink-0 translate-y-[-0.35em] rounded-full',
+          tone === 'dark' ? 'bg-navy/45' : 'bg-[var(--accent)]/70',
         )}
       />
-      <span className="truncate">{label}</span>
+      <span
+        className={cx(
+          'text-label truncate font-semibold uppercase',
+          tone === 'dark' ? 'text-navy-600' : 'text-mist',
+        )}
+      >
+        {label}
+      </span>
     </div>
   )
 }
@@ -91,7 +120,21 @@ export function GhostTitle({
     <span
       aria-hidden
       className={cx(
-        'ghost-title text-ghost absolute top-0 z-0 block',
+        /*
+         * The vertical placement lives here, not at the call site.
+         *
+         * Every section used to position its own ghost by hand — `-top-24` on
+         * three of them, `-top-[0.5em] -translate-y-1/2` on two others — and
+         * the ones using a fixed pixel offset dropped half a 190px word
+         * squarely behind their own heading. A decorative element that each
+         * caller can place badly will be placed badly.
+         *
+         * `-0.45em` is measured in the ghost's own font-size, so it scales
+         * with the clamp instead of drifting apart from it, and it puts the
+         * masked-solid top third of the word above the heading at every
+         * viewport width. Callers may still override the horizontal side.
+         */
+        'ghost-title text-ghost absolute -top-[0.45em] z-0 block',
         placement,
         className,
       )}

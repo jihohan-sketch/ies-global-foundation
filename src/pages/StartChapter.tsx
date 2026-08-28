@@ -42,7 +42,7 @@ export default function StartChapter() {
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <h2 className="font-serif text-[1.375rem] leading-snug">{step.title}</h2>
-                  <p className="leading-relaxed font-light text-mist">{step.body}</p>
+                  <p className="leading-relaxed text-mist">{step.body}</p>
                 </div>
               </Reveal>
             ))}
@@ -66,7 +66,7 @@ export default function StartChapter() {
               <Reveal key={item.title} delay={i * 80}>
                 <Card className="h-full p-7">
                   <h3 className="font-serif text-lg text-[var(--accent)]">{item.title}</h3>
-                  <p className="mt-3.5 text-[0.9375rem] leading-relaxed font-light text-mist">
+                  <p className="mt-3.5 text-[0.9375rem] leading-relaxed text-mist">
                     {item.body}
                   </p>
                 </Card>
@@ -97,7 +97,7 @@ export default function StartChapter() {
                         +
                       </span>
                     </summary>
-                    <p className="mt-4 max-w-2xl leading-relaxed font-light text-mist">
+                    <p className="mt-4 max-w-2xl leading-relaxed text-mist">
                       {faq.answer}
                     </p>
                   </details>

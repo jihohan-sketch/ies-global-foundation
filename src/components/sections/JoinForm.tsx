@@ -165,7 +165,7 @@ export function JoinForm({ defaultPathway = 'member' }: { defaultPathway?: strin
         role="status"
       >
         <p className="font-serif text-h3 text-[var(--accent)]">Application received</p>
-        <p className="mx-auto mt-5 max-w-md leading-relaxed font-light text-mist">
+        <p className="mx-auto mt-5 max-w-md leading-relaxed text-mist">
           Thank you for applying. Your request goes to the branch in your country, and someone
           will reply within a few working days.
         </p>
@@ -257,7 +257,7 @@ export function JoinForm({ defaultPathway = 'member' }: { defaultPathway?: strin
         <Button type="submit" variant="primary" disabled={status === 'submitting'} arrow>
           {status === 'submitting' ? 'Sending…' : 'Submit application'}
         </Button>
-        <p className="text-xs font-light text-mist/80">
+        <p className="text-xs text-mist">
           We use your details only to respond to your application.
         </p>
       </div>

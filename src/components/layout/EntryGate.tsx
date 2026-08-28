@@ -135,7 +135,7 @@ export function EntryGate() {
       </p>
 
       <p
-        className="mt-6 text-[0.625rem] font-medium tracking-[0.3em] text-mist/70 uppercase"
+        className="mt-6 text-[0.75rem] font-semibold tracking-[0.14em] text-slate uppercase"
         style={{ animation: 'ies-gate-rise 1100ms var(--ease-cinema) 600ms both' }}
       >
         {site.shortName} Global Foundation

@@ -56,7 +56,7 @@ export default function Contact() {
                 {/* Stated once, up front. Without it, seeing the same address
                     under four headings reads as an oversight rather than a
                     small team being straight about how it operates. */}
-                <p className="mt-5 max-w-md text-sm leading-relaxed font-light text-mist/80">
+                <p className="mt-5 max-w-md text-sm leading-relaxed text-mist">
                   IES is student-run and every inquiry reaches the same team. Choosing a
                   category below fills in the subject line so your message gets to the
                   right person faster.
@@ -68,7 +68,7 @@ export default function Contact() {
                   <Reveal key={channel.label} delay={i * 70}>
                     <div className="border-t border-mist/15 py-6">
                       <h3 className="font-serif text-lg">{channel.label}</h3>
-                      <p className="mt-1.5 text-sm font-light text-mist">
+                      <p className="mt-1.5 text-sm text-mist">
                         {channel.description}
                       </p>
                       <a
@@ -101,7 +101,7 @@ export default function Contact() {
                           {channel.email}
                         </a>
                       </div>
-                      <p className="mt-1.5 text-xs font-light text-mist">
+                      <p className="mt-1.5 text-xs text-mist">
                         {channel.description}
                       </p>
                     </div>
@@ -140,10 +140,10 @@ export default function Contact() {
                           href={branchSite.href}
                           target="_blank"
                           rel="noreferrer noopener"
-                          className="group inline-flex items-baseline gap-2 text-sm font-light text-paper/80 transition-colors hover:text-paper"
+                          className="group inline-flex items-baseline gap-2 text-sm text-paper/80 transition-colors hover:text-paper"
                         >
                           {branchSite.label}
-                          <span className="text-xs text-mist/80 transition-colors group-hover:text-[var(--accent)]">
+                          <span className="text-xs text-mist transition-colors group-hover:text-[var(--accent)]">
                             {branchSite.domain}
                             <span aria-hidden> ↗</span>
                           </span>
@@ -164,7 +164,7 @@ export default function Contact() {
           <Reveal>
             <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
               <Eyebrow>A Note on Participant Safety</Eyebrow>
-              <p className="leading-relaxed font-light text-mist">
+              <p className="leading-relaxed text-mist">
                 IES works with students, including minors. We do not request personal details
                 beyond what is needed to answer an inquiry, and we do not pass contact details to
                 third parties. Concerns about the conduct of any IES participant, chapter, or

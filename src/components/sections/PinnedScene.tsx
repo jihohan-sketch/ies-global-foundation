@@ -59,7 +59,23 @@ export function PinnedScene({
   className,
   panelClassName,
   id,
-  vhPerPanel = 120,
+  /*
+   * SCROLL COST PER PANEL, AND WHY IT CAME DOWN.
+   *
+   * This is how far the page has to be scrolled to move the scene one panel
+   * sideways. It was 120vh, which meant a five-panel scene like Our Work spent
+   * six screens of wheel to show five things — and on the home page the three
+   * pinned scenes plus the pinned hero came to roughly fourteen screens of
+   * scrolling between the top of the page and the leadership section.
+   *
+   * 96vh is not a cosmetic trim. Below about 85 the panels change too fast to
+   * read and the scene starts to feel like a flick; above about 110 the reader
+   * is turning the wheel through a held frame and cannot tell whether the page
+   * has stopped responding. Just under one screen per panel is the point where
+   * the gesture reads as "one turn, one panel", which is the thing that makes a
+   * horizontal scene legible at all.
+   */
+  vhPerPanel = 96,
   runOut = 30,
   panelWidth = 'screen',
   trackClassName,
@@ -232,7 +248,10 @@ export function PinnedScene({
       ref={sectionRef}
       id={id}
       aria-label={label}
-      className={cx('relative', className)}
+      /* `pinned-scene` is the hook for the mobile stack in index.css — see the
+         "HORIZONTAL SCENES ON A PHONE" block there. It carries no styles of its
+         own at desktop width. */
+      className={cx('pinned-scene relative', className)}
       style={{ height: `${children.length * vhPerPanel + runOut}vh` }}
     >
       <div
@@ -242,7 +261,7 @@ export function PinnedScene({
            below this point reading live progress rather than being pinned to
            its arrived state. */
         data-motion-always
-        className="relative flex w-full items-center overflow-hidden sticky top-0 h-dvh"
+        className="pinned-scene-frame relative flex w-full items-center overflow-hidden sticky top-0 h-dvh"
         style={depth ? { perspective: `${depth}px` } : undefined}
       >
         {/*
@@ -261,7 +280,7 @@ export function PinnedScene({
             hidden
             effect="scrub-parallax-x"
             depth="120px"
-            className="pointer-events-none absolute inset-x-0 bottom-0 z-0 translate-y-[22%] px-[3vw]"
+            className="pinned-scene-wordmark pointer-events-none absolute inset-x-0 bottom-0 z-0 translate-y-[22%] px-[3vw]"
           >
             <Wordmark>{wordmark}</Wordmark>
           </SceneLayer>
@@ -274,7 +293,7 @@ export function PinnedScene({
                enough — the word is positioned and the track is not, so without
                this the word would paint on top of the panels it is meant to sit
                behind. */
-            'relative z-10 flex will-change-transform',
+            'pinned-scene-track relative z-10 flex will-change-transform',
             trackClassName,
           )}
           style={{
@@ -306,7 +325,17 @@ export function PinnedScene({
                * rectangle changing brightness.
                */
               className={cx(
-                'scrub scrub-fade relative flex shrink-0 items-center overflow-hidden',
+                /* `overflow-hidden` stays on in the mobile stack, and it has
+                   to. It reads like a height clip — the thing that makes a
+                   pinned panel exactly one screen tall — but it is also what
+                   contains the horizontal overscan the parallax layers are
+                   drawn with: `WorkScene`'s photograph is deliberately wider
+                   than its panel so it has somewhere to drift. Turning it off
+                   in the stack let that overscan out and gave the document a
+                   70px horizontal scroll on a phone. Vertically there is
+                   nothing left to clip anyway, because the media query gives
+                   the panel `height: auto`. */
+                'scrub scrub-fade relative flex shrink-0 items-center overflow-hidden max-sm:py-16',
                 panelWidth === 'screen' ? 'h-dvh w-screen' : 'h-dvh',
                 panelClassName,
               )}

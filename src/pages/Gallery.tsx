@@ -138,7 +138,7 @@ export default function Gallery() {
             <Scrub as="h2" effect="scrub-glint" className="text-h2 mt-6 max-w-2xl">
               Nine programmes, one pass
             </Scrub>
-            <p className="text-lead mt-7 max-w-2xl font-light text-mist">
+            <p className="text-lead mt-7 max-w-2xl text-mist">
               Scroll on. The frames travel sideways at the speed you set — nothing
               here captures the wheel, and the grid below stays the place to
               search.
@@ -174,7 +174,7 @@ export default function Gallery() {
                     onClick={() => changeFilter(filter.id)}
                     aria-pressed={selected}
                     className={cx(
-                      'min-h-11 rounded-[3px] border px-4 py-2 text-[0.8125rem] font-light transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-3',
+                      'min-h-11 rounded-[3px] border px-4 py-2 text-[0.8125rem] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-3',
                       selected
                         ? 'border-[var(--accent)] bg-[var(--accent)]/12 text-[var(--accent)]'
                         : 'border-mist/55 text-paper/80 hover:border-[var(--accent)]/60 hover:text-paper',
@@ -187,7 +187,7 @@ export default function Gallery() {
             </div>
           </Reveal>
 
-          <p className="mt-6 text-sm font-light text-mist/80" aria-live="polite">
+          <p className="mt-6 text-sm text-mist" aria-live="polite">
             {photos.length} {photos.length === 1 ? 'photograph' : 'photographs'}
             {active !== 'all' && ' in this programme'}
           </p>
@@ -215,7 +215,7 @@ export default function Gallery() {
                     className="transition-colors duration-300 group-hover:border-gold/45"
                   />
                 </button>
-                <figcaption className="mt-3 text-[0.8125rem] leading-relaxed font-light text-mist/75">
+                <figcaption className="mt-3 text-[0.8125rem] leading-relaxed text-slate">
                   {photo.alt}
                   {active === 'all' && (
                     <>
@@ -243,7 +243,7 @@ export default function Gallery() {
           <Reveal>
             <Eyebrow>Film</Eyebrow>
             <h2 className="text-h2 mt-6 max-w-3xl">Every video, in one place</h2>
-            <p className="text-lead mt-7 max-w-3xl font-light text-mist">
+            <p className="text-lead mt-7 max-w-3xl text-mist">
               Embedded from the{' '}
               <a
                 href={channelUrl}
@@ -262,7 +262,7 @@ export default function Gallery() {
               <Reveal key={video.youtubeId} delay={Math.min(i, 5) * 70}>
                 <VideoEmbed video={video} />
                 {video.activityTitle && (
-                  <p className="mt-3 text-[0.8125rem] font-light text-mist/80">
+                  <p className="mt-3 text-[0.8125rem] text-mist">
                     <Link
                       to={video.href ?? '/our-work'}
                       className="underline decoration-mist/30 underline-offset-4 transition-colors hover:text-[var(--accent)]"

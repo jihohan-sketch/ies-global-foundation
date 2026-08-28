@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom'
 import { Globe } from '@/components/Globe'
 
 /**
@@ -27,7 +28,28 @@ import { Globe } from '@/components/Globe'
  * nothing on any page becomes harder to click, which also means this globe
  * cannot be dragged — the hero's globe is the one the visitor turns by hand.
  */
+/*
+ * WHERE THE GLOBE IS THE STORY, AND WHERE IT IS IN THE WAY.
+ *
+ * This backdrop is fixed, so as a visitor scrolls a text page the *limb* of the
+ * sphere — the one part the readability scrim deliberately preserves, because
+ * it is what makes the thing read as a world — travels up the page and crosses
+ * whatever is being read at the time. On the home page that is the point: the
+ * globe is the subject, and every section there is short and set large. On the
+ * news index it means a curved line sweeping through a list of headlines.
+ *
+ * The distinction is not "long page" but "is this page *about* the network".
+ * On the two routes that are, the globe stays at full ambient strength and the
+ * content is composed around it. Everywhere else it drops to roughly half, at
+ * which point it still colours the margins and no longer draws a line through
+ * a paragraph. Same component, same scrim, one number.
+ */
+const GLOBE_ROUTES = new Set(['', 'global-network'])
+
 export function GlobeBackdrop() {
+  const { pathname } = useLocation()
+  const foreground = GLOBE_ROUTES.has(pathname.split('/')[1] ?? '')
+
   return (
     <div
       aria-hidden
@@ -36,7 +58,10 @@ export function GlobeBackdrop() {
       <Globe
         markers={[]}
         maxDpr={1.25}
-        intensity={0.15}
+        /* 0.15 is the measured ambient ceiling documented above; 0.08 is that
+           halved, which keeps the silhouette present in the margins without
+           putting a drawn edge under a line of type. */
+        intensity={foreground ? 0.15 : 0.08}
         className="h-[min(115vmin,62rem)] w-[min(115vmin,62rem)]"
       />
 

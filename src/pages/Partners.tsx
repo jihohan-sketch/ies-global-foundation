@@ -57,14 +57,14 @@ export default function Partners() {
                 <Reveal delay={i * 100} className="h-full">
                 <Card className="h-full p-8">
                   <h3 className="font-serif text-xl text-[var(--accent)]">{group.group}</h3>
-                  <p className="mt-3 text-[0.875rem] leading-relaxed font-light text-mist">
+                  <p className="mt-3 text-[0.875rem] leading-relaxed text-mist">
                     {group.note}
                   </p>
                   <ul className="mt-6 space-y-px">
                     {group.organizations.map((organization) => (
                       <li
                         key={organization}
-                        className="border-t border-mist/12 py-3 text-[0.9375rem] font-light text-paper/85"
+                        className="border-t border-mist/12 py-3 text-[0.9375rem] text-paper/85"
                       >
                         {organization}
                       </li>
@@ -77,7 +77,7 @@ export default function Partners() {
           </ScrollRail>
 
           <Reveal delay={200}>
-            <p className="mt-10 max-w-3xl text-sm leading-relaxed font-light text-mist/80">
+            <p className="mt-10 max-w-3xl text-sm leading-relaxed text-mist">
               Naming an organization here records a collaboration; it does not imply that
               organization endorses IES or its positions.
             </p>
@@ -101,12 +101,12 @@ export default function Partners() {
               <Reveal key={category.title} delay={i * 70}>
                 <Card className="h-full p-7">
                   <h3 className="font-serif text-lg text-[var(--accent)]">{category.title}</h3>
-                  <p className="mt-4 text-[0.9375rem] leading-relaxed font-light text-mist">
+                  <p className="mt-4 text-[0.9375rem] leading-relaxed text-mist">
                     {category.description}
                   </p>
                   <ul className="mt-5 space-y-1.5 border-t border-mist/12 pt-4">
                     {category.examples.map((example) => (
-                      <li key={example} className="text-[0.8125rem] font-light text-paper/70">
+                      <li key={example} className="text-[0.8125rem] text-paper/70">
                         {example}
                       </li>
                     ))}
@@ -147,7 +147,7 @@ export default function Partners() {
             <Reveal>
               <Eyebrow>Collaboration Areas</Eyebrow>
               <h2 className="text-h2 mt-6">Where partnerships usually start</h2>
-              <p className="mt-6 leading-relaxed font-light text-mist">
+              <p className="mt-6 leading-relaxed text-mist">
                 Most collaborations begin with a single concrete thing — a speaker, a service
                 day, a joint forum — and grow from there once both sides know the work is
                 reliable.
@@ -159,7 +159,7 @@ export default function Partners() {
                 {collaborationAreas.map((area) => (
                   <li
                     key={area}
-                    className="border-t border-mist/15 py-5 text-[1.0625rem] font-light text-paper/85"
+                    className="border-t border-mist/15 py-5 text-[1.0625rem] text-paper/85"
                   >
                     {area}
                   </li>
@@ -189,7 +189,7 @@ export default function Partners() {
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <h3 className="mt-4 font-serif text-xl">{step.title}</h3>
-                  <p className="mt-3 text-[0.9375rem] leading-relaxed font-light text-mist">
+                  <p className="mt-3 text-[0.9375rem] leading-relaxed text-mist">
                     {step.body}
                   </p>
                 </div>
@@ -198,7 +198,7 @@ export default function Partners() {
           </div>
 
           <Reveal delay={200}>
-            <p className="mt-14 max-w-2xl border-t border-mist/15 pt-6 text-sm leading-relaxed font-light text-mist/80">
+            <p className="mt-14 max-w-2xl border-t border-mist/15 pt-6 text-sm leading-relaxed text-mist">
               Partner logos are displayed only with written permission from the organization
               concerned. IES does not imply endorsement, affiliation, or accreditation that has
               not been agreed in writing.

@@ -74,7 +74,7 @@ export function TimelineScene() {
                 <time
                   className={cx(
                     'text-[0.75rem] font-medium tracking-[0.14em] uppercase',
-                    entry.milestone ? 'text-[var(--accent)]' : 'text-mist/80',
+                    entry.milestone ? 'text-[var(--accent)]' : 'text-mist',
                   )}
                 >
                   {entry.date}
@@ -90,7 +90,7 @@ export function TimelineScene() {
               </div>
 
               <div className="flex-1 basis-0 pt-9 pl-8">
-                <p className="text-[0.9375rem] leading-relaxed font-light text-mist">
+                <p className="text-[0.9375rem] leading-relaxed text-mist">
                   {entry.body}
                 </p>
               </div>

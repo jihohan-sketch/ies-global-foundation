@@ -60,7 +60,13 @@ export function MissionScene() {
     <>
       <StickyScene
         id="mission"
-        vh={300}
+        /* 250, down from 300. Three screens of pin for a scene whose beats
+           are all spent by 0.94 left roughly half a screen of held frame at the
+           end — and a held frame at the end of a three-screen pin is exactly
+           the point at which a reader starts to wonder whether the page has
+           stopped responding. The beat sheet below is unchanged; only the
+           distance the wheel has to cover to run it is shorter. */
+        vh={250}
         label="Our mission"
         className="bg-navy"
         frameClassName="bg-navy"
@@ -190,7 +196,7 @@ export function MissionScene() {
               stagger={0.008}
               maxOffset={0.06}
               as="p"
-              className="text-lead mx-auto mt-12 max-w-2xl leading-relaxed font-light text-mist"
+              className="text-lead mx-auto mt-12 max-w-2xl leading-relaxed text-mist"
               text={[
                 'Reflection that never leaves the seminar room is incomplete,',
                 'and service without reflection is thin.',
@@ -276,7 +282,7 @@ function PillarLedger() {
               style={{ paddingLeft: `${i * 2.5}%` }}
             >
               <Scrub effect="scrub-rise" travel="32px">
-                <span className="font-serif text-sm text-[var(--accent)] tabular-nums">
+                <span className="font-serif text-sm text-[var(--accent)] tabular-nums lining-nums">
                   {String(i + 1).padStart(2, '0')}
                 </span>
               </Scrub>
@@ -291,7 +297,7 @@ function PillarLedger() {
               </Scrub>
 
               <Scrub effect="scrub-rise" offset={0.1} travel="40px" className="lg:self-start lg:pt-2">
-                <p className="text-[0.9375rem] leading-relaxed font-light text-mist">
+                <p className="text-[0.9375rem] leading-relaxed text-mist">
                   {pillar.summary}
                 </p>
               </Scrub>

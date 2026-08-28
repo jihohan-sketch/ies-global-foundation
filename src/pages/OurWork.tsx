@@ -16,7 +16,7 @@ function ExampleList({ examples, className }: { examples: string[]; className?: 
       {examples.map((example) => (
         <li
           key={example}
-          className="flex items-start gap-4 border-t border-mist/12 py-4 text-[0.9375rem] font-light text-paper/85"
+          className="flex items-start gap-4 border-t border-mist/12 py-4 text-[0.9375rem] text-paper/85"
         >
           <span aria-hidden className="mt-3 h-px w-4 shrink-0 bg-[var(--accent)]/60" />
           {example}
@@ -56,7 +56,7 @@ export default function OurWork() {
               <Reveal key={pillar.id} delay={i * 110} className="h-full">
                 <Card className="h-full p-8">
                   <h2 className="font-serif text-xl text-[var(--accent)]">{pillar.title}</h2>
-                  <p className="mt-4 text-[0.9375rem] leading-relaxed font-light text-mist">
+                  <p className="mt-4 text-[0.9375rem] leading-relaxed text-mist">
                     {pillar.summary}
                   </p>
                 </Card>
@@ -83,7 +83,7 @@ export default function OurWork() {
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <h2 className="text-h2 mt-6">{category.title}</h2>
-                  <p className="text-lead mt-7 font-light text-mist">{category.summary}</p>
+                  <p className="text-lead mt-7 text-mist">{category.summary}</p>
 
                   {/* With a photograph in the other column the examples move here,
                       so a category never loses its list to having an image. */}
@@ -103,7 +103,7 @@ export default function OurWork() {
                     />
                   ) : (
                     <Card className="h-full p-8 sm:p-10">
-                      <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
+                      <p className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
                         Examples of this work
                       </p>
                       <ExampleList examples={category.examples} className="mt-6" />

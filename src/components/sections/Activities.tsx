@@ -75,10 +75,10 @@ function ActivityMeta({ activity }: { activity: Activity }) {
     <dl className="mt-8 space-y-px">
       {rows.map((row) => (
         <div key={row.label} className="grid gap-1 border-t border-mist/12 py-3 sm:grid-cols-[5rem_1fr] sm:gap-4">
-          <dt className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase sm:pt-0.5">
+          <dt className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase sm:pt-0.5">
             {row.label}
           </dt>
-          <dd className="text-[0.9375rem] font-light text-paper/85">{row.value}</dd>
+          <dd className="text-[0.9375rem] text-paper/85">{row.value}</dd>
         </div>
       ))}
     </dl>
@@ -94,13 +94,13 @@ export function ActivityEntry({ activity, index }: { activity: Activity; index: 
             <span className="font-serif text-sm text-[var(--accent)]/70">
               {String(index + 1).padStart(2, '0')}
             </span>
-            <span className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
+            <span className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
               {activity.kind}
             </span>
           </div>
 
           <h3 className="text-h3 mt-5">{activity.title}</h3>
-          <p className="mt-6 leading-relaxed font-light text-mist">{activity.summary}</p>
+          <p className="mt-6 leading-relaxed text-mist">{activity.summary}</p>
           <ActivityMeta activity={activity} />
 
           {/* The guest's own portrait sits with the details, not in the grid —
@@ -115,7 +115,7 @@ export function ActivityEntry({ activity, index }: { activity: Activity; index: 
                 decoding="async"
                 className="h-20 w-20 shrink-0 rounded-[3px] border border-mist/15 object-cover"
               />
-              <figcaption className="text-[0.8125rem] leading-relaxed font-light text-mist/80">
+              <figcaption className="text-[0.8125rem] leading-relaxed text-mist">
                 {activity.participants ?? 'Guest speaker'}
               </figcaption>
             </figure>
@@ -126,7 +126,7 @@ export function ActivityEntry({ activity, index }: { activity: Activity; index: 
           <PhotoGrid activity={activity} />
           <div className="mt-8 space-y-5">
             {activity.body.map((paragraph) => (
-              <p key={paragraph.slice(0, 40)} className="leading-relaxed font-light text-paper/80">
+              <p key={paragraph.slice(0, 40)} className="leading-relaxed text-paper/80">
                 {paragraph}
               </p>
             ))}
@@ -134,7 +134,7 @@ export function ActivityEntry({ activity, index }: { activity: Activity; index: 
 
           {activity.videos && activity.videos.length > 0 && (
             <div className="mt-10">
-              <p className="text-[0.625rem] font-medium tracking-[0.2em] text-mist/80 uppercase">
+              <p className="text-[0.75rem] font-semibold tracking-[0.13em] text-mist uppercase">
                 Footage
               </p>
               <VideoGrid videos={activity.videos} className="mt-5" />
@@ -171,7 +171,7 @@ export function ActivityFeed({
         <Reveal>
           <Eyebrow>{eyebrow}</Eyebrow>
           <h2 className="text-h2 mt-6 max-w-3xl">{title}</h2>
-          {lead && <p className="text-lead mt-7 max-w-3xl font-light text-mist">{lead}</p>}
+          {lead && <p className="text-lead mt-7 max-w-3xl text-mist">{lead}</p>}
         </Reveal>
 
         <div className="mt-16 space-y-20">
