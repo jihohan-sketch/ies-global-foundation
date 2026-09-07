@@ -1,4 +1,4 @@
-import type { Person } from './types'
+import type { LeadershipMessage, Person } from './types'
 
 /**
  * ⚠ REVIEW BEFORE PUBLISHING
@@ -163,6 +163,50 @@ export const people: Person[] = [
       'Oversight of the Foundation’s governance and conduct',
       'Review of how the Foundation is run against its own standards',
       'Guidance for the students leading the Foundation and its branches',
+    ],
+  },
+]
+
+/**
+ * ⚠ REVIEW BEFORE PUBLISHING — DRAFT, WRITTEN FOR APPROVAL
+ *
+ * The two signed messages on the About page. Both are drafts: they were
+ * assembled from facts already published elsewhere on this site — the founding
+ * date and city, the two founders, the three branches, the figures in
+ * `impact.ts`, and the forum-then-service model in `work.ts` — and nothing in
+ * them is a claim the site does not already make. No new fact, figure,
+ * programme, or achievement has been introduced.
+ *
+ * They still have to be read and approved, in their own words, by the person
+ * whose name is under them before this page goes live. A message is the one
+ * thing on the site written in the first person; the person it is signed by
+ * owns it.
+ *
+ * Order here is the order they render. The founder speaks first because his
+ * message is about where IES came from and the president's is about where it
+ * is now — that is the sequence, not a ranking.
+ */
+export const leadershipMessages: LeadershipMessage[] = [
+  {
+    personId: 'joseph-hahmmin-kang',
+    label: 'Founder’s Message',
+    signature: 'Co-Founder · Vice Chairman, IES Global Foundation',
+    body: [
+      'In April 2023 there were two of us and one complaint: our schools were very good at teaching us how to win an argument, and had almost nothing to say about which arguments were worth winning.',
+      'So we booked a room. The rule was that you arrived having done the reading, you argued in front of people who disagreed with you, and you did not get to leave with only an opinion — you left with something you had committed to do.',
+      'That rule is the whole organisation. Everything since — the chapters, the three national branches, the forums running in countries I have never been to — is that same room, repeated by students I have never met.',
+      'I now hold IES to the standards I set while I was its president. The one that matters is the oldest: a conclusion you are not willing to act on was never a conclusion.',
+    ],
+  },
+  {
+    personId: 'sean-han',
+    label: 'President’s Message',
+    signature: 'President, IES Global Foundation',
+    body: [
+      'IES is much larger than the room it started in — 1,200+ students, 23+ chapters, and three national branches. Every role in it, including this one, is held by a student.',
+      'That is the part people find hardest to believe, so it is the part we are most careful about. We do not publish a figure we cannot show you the work behind, and we do not open a chapter a branch has no capacity to support.',
+      'What I answer for is that a chapter in Seoul, a founding team in the United States, and a branch in London are describing the same organisation — and holding to the same standard for how a question is argued and what happens afterwards.',
+      'If that is something you want to be part of, the fastest way in is your own school. If there is no chapter there yet, that is the opening.',
     ],
   },
 ]

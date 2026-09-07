@@ -6,6 +6,7 @@ import { LitText, MaskedText } from '@/components/ui/MaskedText'
 import { Reveal } from '@/components/ui/Reveal'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
+import { LeadershipMessages } from '@/components/sections/LeadershipMessages'
 import { OrgChart } from '@/components/sections/OrgChart'
 import { branches } from '@/content/branches'
 import { site, values } from '@/content/site'
@@ -142,6 +143,22 @@ export default function About() {
           </div>
         </Container>
       </Section>
+
+      {/* ============================================ FOUNDER AND PRESIDENT */}
+      {/*
+       * The two signed messages, placed after "Why IES Exists" and before
+       * Values.
+       *
+       * They belong here and not next to "Our Story", which is the obvious
+       * slot and the wrong one: the founder's message covers the same April
+       * 2023 room the story does, and running them back to back makes the
+       * second read as a restatement of the first. Set after the institutional
+       * case instead, the pair does something the surrounding page cannot —
+       * it puts a name and a face behind the argument the sections above make
+       * in the organisation's voice, immediately before the values that
+       * argument rests on.
+       */}
+      <LeadershipMessages />
 
       {/*
        * MISSION AND VISION USED TO SIT HERE AS A PAIR OF BORDERED CARDS.

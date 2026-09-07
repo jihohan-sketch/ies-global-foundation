@@ -11,45 +11,41 @@ import { cx } from '@/lib/utils'
    HOME HERO
    ==========================================================================
 
-   WHAT CHANGED, AND WHY IT IS A DIFFERENT COMPONENT RATHER THAN A TWEAK.
+   SIMPLIFIED. WHAT CAME OUT, AND WHY EACH THING WENT.
 
-   The hero this replaces was a `StickyScene` pinned for 165vh — 1,249px on a
-   813px window — in which a centred slogan dissolved off a rotating globe and
-   the four headline figures rose into the space it left at 46% of the way
-   through the pin. Read as a film it was well made. Read as the first screen of
-   a website it had three problems, and they are the ones the brief names:
+   The hero this replaces was already down to one screen and two columns, which
+   was the right structure. What it was not was quiet. On the right it carried a
+   three-frame photo cluster, each frame with a caption and a venue that arrived
+   on hover; on the left, a 48-word paragraph; underneath, four figures. Six
+   separate pieces of copy, three of them behind an interaction, all competing
+   for the same first three seconds.
 
-     · IT COST A SCREEN AND A HALF TO SAY ONE THING. A visitor had to scroll
-       past most of two viewports before the page delivered any second idea.
-     · THE ONLY EVIDENCE WAS INVISIBLE. The figures — the single strongest
-       reason to believe a student organisation is real — did not exist in the
-       first viewport. They were a reward for scrolling through the pin.
-     · THERE WERE NO PEOPLE IN IT. A globe is a diagram of an ambition. This is
-       an organisation whose entire proposition is *students doing this
-       themselves*, and the first screen showed none of them.
+   None of that was badly made. It was simply too much for the one job a first
+   screen has, which is to be understood at a glance.
 
-   So: one screen, two columns, and the world moved behind the people rather
-   than in front of them.
+     THE PARAGRAPH   48 words → 26, in two short sentences. It still answers
+                     what IES is and what students actually do; it no longer
+                     asks for a second read to get there.
+     THE PHOTOGRAPHS 3 → 1. The cluster was a composition a reader had to
+                     parse. One large frame is an image they receive. The one
+                     kept is the student at the microphone — the only picture on
+                     the site of the act the organisation is actually about.
+     THE CAPTIONS    Gone from the frame, down to a single quiet line beneath
+                     it. A hover that reveals a venue is a nice detail on a
+                     gallery tile and a distraction on the first screen; it also
+                     meant the venue did not exist at all for a touch reader.
+     THE FIGURES     4 → 3. Members, chapters, branches — scale, reach, and
+                     spread, with nothing that repeats another. "Schools
+                     represented" and "people reached" are on the Impact page,
+                     which is where a visitor who wants the fuller count goes.
 
-     LEFT   the argument — what IES is, in one readable sentence, and the two
-            things a visitor can do about it.
-     RIGHT  the evidence — three photographs of the work actually happening,
-            each captioned with where and when.
-     FOOT   the scale — the four headline figures, on screen from the first
-            frame instead of at 46% of a pin.
+   What did not change: the slogan, the globe, the ground, and the two actions.
+   The globe is still the identity and still the ground rather than the subject
+   — dimmed, offset right, read through and around the photograph.
 
-   The globe is still here and still the identity; it is now the ground the
-   composition sits on rather than the subject of it. Dimmed, offset behind the
-   photographs, and read through the gaps between them. `intensity` is down from
-   1 to 0.62 for the same reason: it is atmosphere now, and atmosphere that
-   competes with a photograph of a face loses on merit.
-
-   NOTHING HERE PINS, and that is the single biggest cut on the page. The
-   entrances are a CSS stagger rather than the site's `Reveal` — a first screen
-   should assemble once and then be finished, and it should not wait on React
-   and an IntersectionObserver to become legible. Scroll-scrubbing is still the
-   site's language everywhere below; it simply is not the language of the
-   thing that is already on screen.
+   NOTHING HERE PINS. The entrances are a CSS stagger rather than the site's
+   `Reveal`: a first screen should assemble once and be finished, and it should
+   not wait on React and an IntersectionObserver to become legible.
    ========================================================================== */
 
 const markers: GlobeMarker[] = branches.map((branch) => ({
@@ -60,129 +56,35 @@ const markers: GlobeMarker[] = branches.map((branch) => ({
 }))
 
 /*
- * The three photographs, and the choice is editorial rather than aesthetic.
+ * The photograph, and why it is this one.
  *
- * Each one has to answer a different objection a visitor arrives with, and
- * between them they have to show students of both the "arguing" and the
- * "serving" halves of the proposition — because the sentence beside them
- * claims both.
+ * A student at a microphone, mid-sentence, reading from her own brief in a
+ * working council chamber. Of every image the site holds it is the only one
+ * that shows the thing the sentence beside it claims — a student arguing a
+ * prepared position in public. A service photograph would be warmer and a
+ * photograph of six students across a table from a general is better evidence
+ * that this is a real organisation, but neither of those is what the headline
+ * is about, and the point of cutting three frames to one is that the one left
+ * has to be the argument rather than a sample of the range.
  *
- *   speaking  — a student at a microphone, mid-sentence, reading from her own
- *               brief in a working council chamber. The one image on the site
- *               that shows the actual act the organisation is about. It is the
- *               large frame for that reason.
- *   table     — six students across a table from a US Army general. Answers
- *               "is this a real organisation or a club with a logo".
- *   service   — volunteers on the floor with children at a partner centre.
- *               The warmth, and the second half of the sentence.
- *
- * Captions are not decoration. An uncaptioned photograph on a foundation site
- * is indistinguishable from stock, which is the exact charge this hero exists
- * to answer; naming the venue and the month is what makes it evidence.
+ * The caption is not decoration. An uncaptioned photograph on a foundation
+ * site is indistinguishable from stock, which is precisely the charge a
+ * student-run organisation has to answer; naming the venue is what turns a
+ * picture into a record.
  */
-const shots = [
-  {
-    src: '/activities/environmental-ethics-forum/speaking.jpg',
-    alt: 'An IES student speaking into a chamber microphone from a prepared brief during the Environmental Ethics Forum, with a second student following the text behind her.',
-    caption: 'Environmental Ethics Forum',
-    place: 'Nowon-gu Council, Seoul',
-    className: 'col-span-3 row-span-2',
-    sizes: '(max-width: 1024px) 55vw, 27vw',
-  },
-  {
-    src: '/activities/camp-humphreys-cadets/table.jpg',
-    alt: 'Six IES students with laptops and briefing papers along one side of a conference table, in session with a US Army officer.',
-    caption: 'Session with US Army leadership',
-    place: 'Camp Humphreys, Pyeongtaek',
-    className: 'col-span-2',
-    sizes: '(max-width: 1024px) 38vw, 18vw',
-  },
-  {
-    src: '/activities/jiguchon-childrens-center/activity.jpg',
-    alt: 'IES student volunteers seated among children around a low table during a session at Jiguchon Children’s Center.',
-    caption: 'Recurring mentorship',
-    place: 'Jiguchon Children’s Center',
-    className: 'col-span-2',
-    sizes: '(max-width: 1024px) 38vw, 18vw',
-  },
-] as const
+const shot = {
+  src: '/activities/environmental-ethics-forum/speaking.jpg',
+  alt: 'An IES student speaking into a chamber microphone from a prepared brief during the Environmental Ethics Forum, with a second student following the text behind her.',
+  caption: 'Environmental Ethics Forum',
+  place: 'Nowon-gu Council, Seoul',
+} as const
 
-/* ---------------------------------------------------------------- Shot */
+/** The three figures the first screen carries. Order is the order shown. */
+const HERO_STATS: readonly string[] = ['Members', 'Chapters', 'National branches']
 
-/**
- * One photograph in the cluster.
- *
- * The caption lives *inside* the frame rather than under it, and only fully
- * arrives on hover. Three frames each carrying two permanent lines of type
- * would turn the evidence column into a second body of text competing with the
- * one beside it — so at rest the caption is a single small line held down by a
- * gradient, and the venue joins it when the cursor asks.
- *
- * `group-hover` moves three things at once and each is small: the picture takes
- * a 3% step in, the hairline warms to the accent, and the caption block lifts.
- * One gesture, three confirmations — which is what makes a hover read as the
- * frame responding rather than as an animation firing.
- */
-function Shot({
-  src,
-  alt,
-  caption,
-  place,
-  className,
-  sizes,
-  priority,
-}: {
-  src: string
-  alt: string
-  caption: string
-  place: string
-  className?: string
-  sizes: string
-  priority?: boolean
-}) {
-  return (
-    <figure
-      className={cx(
-        'group relative overflow-hidden rounded-[3px] border border-mist/15 bg-navy-700/50',
-        'transition-colors duration-500 ease-[var(--ease-cinema)] hover:border-[var(--accent)]/55',
-        className,
-      )}
-    >
-      <img
-        {...image(src)}
-        sizes={sizes}
-        alt={alt}
-        loading="eager"
-        fetchPriority={priority ? 'high' : undefined}
-        decoding="async"
-        className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[var(--ease-cinema)] group-hover:scale-[1.03]"
-      />
-
-      {/* The scrim is the caption's ground, not a darkening of the picture —
-          it is short, sits on the bottom edge only, and is what lets a light
-          photograph carry white type without the whole frame being dimmed. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-[linear-gradient(to_top,rgba(5,11,22,0.92),rgba(5,11,22,0.55)_45%,transparent)]"
-      />
-
-      <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 p-3 sm:p-4">
-        <span className="block text-[0.6875rem] leading-tight font-semibold tracking-[0.08em] text-paper uppercase">
-          {caption}
-        </span>
-        {/* `grid-rows-[0fr]` → `[1fr]`, so the venue has no height at rest and
-            no magic pixel value to keep in sync with its own font size. */}
-        <span className="grid grid-rows-[0fr] transition-all duration-500 ease-[var(--ease-cinema)] group-hover:grid-rows-[1fr]">
-          <span className="overflow-hidden">
-            <span className="block pt-1 text-[0.6875rem] leading-tight text-[var(--accent)] opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-              {place}
-            </span>
-          </span>
-        </span>
-      </figcaption>
-    </figure>
-  )
-}
+const stats = HERO_STATS.map((label) => headlineStats.find((s) => s.label === label)).filter(
+  (s): s is (typeof headlineStats)[number] => Boolean(s),
+)
 
 /* --------------------------------------------------------------- Enter */
 
@@ -226,28 +128,17 @@ export function HomeHero() {
        * Offset to 58% rather than centred, and bled off the right edge.
        *
        * Centred, the sphere's brightest band runs straight under the headline
-       * and the old hero needed a wash across the middle of the frame to hold
-       * the type off it — a fix that flattened the globe into a grey stripe to
-       * protect text that should not have been sitting there in the first
-       * place. Pushed right, the type column sits over the dark left field and
-       * needs no wash at all; what shows through the gaps between the
-       * photographs is the limb and the graticule, which is the part that
-       * reads as *globe*.
-       *
-       * Not draggable here. The drag belongs on Global Network, where turning
-       * the world is the point; in a hero it is an affordance competing with
-       * three photographs for the same square inches.
+       * and the type needs a wash across the middle of the frame to hold it
+       * off — a fix that flattens the globe into a grey stripe to protect text
+       * that should not be sitting there in the first place. Pushed right, the
+       * type column sits over the dark left field and needs no wash at all;
+       * what shows past the photograph is the limb and the graticule, which is
+       * the part that reads as *globe*.
        */}
       <div
         aria-hidden
         className="pointer-events-none absolute top-1/2 left-[58%] -z-10 -translate-x-1/2 -translate-y-1/2 max-lg:left-[64%] max-lg:opacity-45"
       >
-        {/* No `onSelect`, and no `draggable`. Both were carried over from the
-            pinned hero and neither can fire: the wrapper is
-            `pointer-events-none` so the photographs above it stay hoverable,
-            which makes a click handler on the globe a promise the layer cannot
-            keep. Turning and selecting belong on Global Network, where the
-            world is the subject rather than the ground. */}
         <Globe
           markers={markers}
           intensity={0.7}
@@ -255,12 +146,11 @@ export function HomeHero() {
         />
       </div>
 
-      {/* One low warm wash behind the photographs, and it is doing a job the
-          brief names: the ground here is near-black and the section it opens is
-          about people, so a frame lit only by a blue globe reads cold no matter
-          what is photographed in it. Gold at 9% is under the threshold where it
-          would be seen as a colour and over the one where the corner stops
-          feeling lit. */}
+      {/* One low warm wash behind the photograph. The ground here is near-black
+          and the section it opens is about people, so a frame lit only by a
+          blue globe reads cold whatever is photographed in it. Gold at 9% is
+          under the threshold where it would be seen as a colour and over the
+          one where the corner stops feeling lit. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_58%_54%_at_74%_38%,rgba(200,169,107,0.09),transparent_70%)]"
@@ -269,8 +159,8 @@ export function HomeHero() {
       <Vignette className="-z-10" />
 
       {/* The reading scrim: solid on the left where the sentence is, gone by
-          the middle of the frame. One gradient replaces both the horizontal
-          wash and the opacity reduction the old hero needed. */}
+          the middle of the frame. One gradient replaces both a horizontal wash
+          and any opacity reduction on the globe. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(5,11,22,0.96)_0%,rgba(5,11,22,0.86)_26%,rgba(5,11,22,0.45)_52%,rgba(5,11,22,0.2)_74%,transparent_100%)] max-lg:bg-[linear-gradient(to_bottom,rgba(5,11,22,0.94)_0%,rgba(5,11,22,0.7)_48%,rgba(5,11,22,0.9)_100%)]"
@@ -286,30 +176,27 @@ export function HomeHero() {
           'pt-28 pb-14 sm:pt-32 sm:pb-16 xl:pt-40',
         )}
       >
-        <div className="grid items-center gap-y-10 lg:grid-cols-[1.04fr_0.96fr] lg:gap-x-14 xl:gap-x-20">
+        <div className="grid items-center gap-y-12 lg:grid-cols-[1.04fr_0.96fr] lg:gap-x-14 xl:gap-x-20">
           {/* ------------------------------------------------- the argument */}
           <div className="max-w-2xl lg:max-w-none">
             <Enter>
-              <Eyebrow>Founded 20 April 2023 · Seoul</Eyebrow>
+              {/* "Founded 20 April 2023 · Seoul" — the exact date is a fact for
+                  the About page, not for a label above a slogan. City and year
+                  say the same thing in half the width. */}
+              <Eyebrow>Seoul · 2023</Eyebrow>
             </Enter>
 
             <Enter delay={80}>
               {/*
-               * The ceremonial register is unchanged — wide-tracked serif
-               * capitals, the second line filled with the sheen gradient —
-               * but it is left-aligned now and a step larger.
-               *
-               * Centred was correct when the headline was the only thing on
-               * the screen and the globe was symmetrical behind it. In a
-               * two-column composition a centred column has no edge to hang
-               * off, and the eyebrow, the sentence, the buttons and the
-               * figures below all want the same left margin. Aligning them
-               * gives the whole column one spine.
+               * The ceremonial register: wide-tracked serif capitals, the
+               * second line filled with the sheen gradient, left-aligned so the
+               * eyebrow, the sentence, the buttons and the figures below all
+               * share one spine.
                *
                * Tracking is applied to the right of every glyph, the last one
                * included, so each line takes that trailing step back with a
-               * negative margin — otherwise the two lines do not agree on
-               * where the left edge is.
+               * negative margin — otherwise the two lines do not agree on where
+               * the left edge is.
                */}
               <h1 className="mt-6 font-serif font-normal uppercase">
                 <span className="block -mr-[0.16em] text-[clamp(1rem,1.9vw,1.625rem)] leading-[1.3] tracking-[0.16em] text-paper">
@@ -323,28 +210,29 @@ export function HomeHero() {
 
             <Enter delay={140}>
               {/*
-               * THE SENTENCE THAT HAS TO DO THE EXPLAINING.
+               * THE SENTENCE THAT HAS TO DO THE EXPLAINING, AT HALF THE LENGTH.
                *
-               * The line above is ceremony and says nothing checkable; this is
-               * where a visitor finds out what IES actually is. Second in the
-               * hierarchy and set like it, with the first clause emphasised
-               * because "a student-run ethics society" is the single fact
-               * everything else on the site depends on.
+               * It was 48 words across two clauses apiece — true, complete, and
+               * a paragraph. A visitor does not read a paragraph before they
+               * have decided the site is worth reading. Two short sentences
+               * carry the same two facts: what IES is, and what students in it
+               * actually do. Everything cut — the founding city, the year, the
+               * word "moderated", "in their own communities" — is either in the
+               * eyebrow above or on the About page one click away.
+               *
+               * The first clause stays emphasised because "a student-run ethics
+               * society" is the single fact everything else on the site depends
+               * on.
                */}
-              <p className="text-lead mt-6 max-w-[46ch] text-paper">
+              <p className="text-lead mt-6 max-w-[42ch] text-paper">
                 A <strong className="font-semibold text-paper">student-run ethics society</strong>{' '}
-                founded in Seoul in 2023, now working across Korea, the United States, and the
-                United Kingdom. Students run moderated forums on contested questions, then take
-                what they conclude into service in their own communities.
+                in Korea, the United States, and the United Kingdom. Students argue hard
+                questions in public — then act on what they decide.
               </p>
             </Enter>
 
             <Enter delay={200}>
               <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
-                {/* "See What We Run" read as jargon — it is the language of an
-                    operator describing their own portfolio, not of a visitor
-                    asking a question. "See What We Do" is what the section it
-                    leads to is actually called. */}
                 <Button to="/our-work" variant="primary" arrow>
                   See What We Do
                 </Button>
@@ -357,45 +245,68 @@ export function HomeHero() {
 
           {/* ------------------------------------------------- the evidence */}
           {/*
-           * A fixed-height grid rather than three aspect-ratio boxes.
+           * One photograph, and the caption underneath it rather than inside
+           * it.
            *
-           * The three source photographs are 1564×1506, 1600×1200 and
-           * 1362×1398 — three different shapes. Left to size themselves they
-           * produce a ragged cluster; given one height and `object-cover` they
-           * crop to a composition. The tall frame takes three of five columns
-           * and both rows, which is the proportion that makes it read as *the*
-           * photograph with two supporting it rather than as three tiles.
+           * Three frames needed a fixed-height grid and `object-cover` to crop
+           * three different source shapes into a composition. One frame needs
+           * none of that — it is given an aspect ratio and left alone, which is
+           * both less machinery and a better picture, because nothing is being
+           * cropped to fit a cell.
+           *
+           * `loading="eager"` and `fetchpriority="high"`: it is the first
+           * screen's only image, so there is nothing to prioritise it against
+           * and no reason to defer it.
            */}
           <Enter delay={120}>
-            {/* All three frames are above the fold, so all three load eagerly —
-                lazy-loading a first-screen image only guarantees it arrives
-                after the visitor is already looking at the space it should be
-                in. Only the large frame gets `fetchpriority`: prioritising all
-                three prioritises none of them. */}
-            <div className="grid h-[clamp(15rem,44vw,20rem)] grid-cols-5 grid-rows-2 gap-2.5 sm:gap-3 lg:h-[min(56vh,30rem)]">
-              {shots.map((shot, i) => (
-                <Shot key={shot.src} {...shot} priority={i === 0} />
-              ))}
-            </div>
+            <figure className="relative">
+              <div className="overflow-hidden rounded-[3px] border border-mist/15 bg-navy-700/50">
+                <img
+                  {...image(shot.src)}
+                  sizes="(max-width: 1024px) 92vw, 46vw"
+                  alt={shot.alt}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  /* The source is 1564×1506 — near square — so every frame
+                     this sits in is wider than it and the crop is entirely
+                     vertical; `object-position` only matters on the y axis
+                     here. 36% rather than centre keeps the speaker's head and
+                     the microphone in frame and spends the crop on the desk
+                     in the foreground, which is the part carrying nothing. */
+                  className="aspect-[4/3] w-full object-cover object-[center_36%] lg:aspect-[5/4]"
+                />
+              </div>
+              {/* Outside the frame and set small. Inside it, a caption needs a
+                  scrim to sit on and starts competing with the photograph for
+                  the same corner; beneath it, it reads as what it is — a line
+                  of record under a picture. */}
+              <figcaption className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[0.75rem] leading-tight">
+                <span className="font-semibold tracking-[0.06em] text-mist uppercase">
+                  {shot.caption}
+                </span>
+                <span className="text-[var(--accent)]">{shot.place}</span>
+              </figcaption>
+            </figure>
           </Enter>
         </div>
 
         {/* ----------------------------------------------------- the scale */}
         {/*
-         * ON SCREEN FROM THE FIRST FRAME, which is the whole change.
+         * Three figures, on screen from the first frame.
          *
-         * These are the same four figures the old hero had; they were simply
-         * unreachable without scrolling most of a pinned scene. A visitor
-         * deciding whether a student organisation is serious is asking a
-         * question of scale, and the answer costs 90px.
-         *
-         * The label is the readable half. `1,200+` above `MEMBERS` at a legible
-         * size beats a display figure over a 9px tracked caption, which is what
-         * this was — a number a sighted reader met with no idea what it counted.
+         * A visitor deciding whether a student organisation is serious is
+         * asking a question of scale, and the answer costs 90px. Three rather
+         * than four because each of these says something the others do not —
+         * how many students, how many chapters, how many countries — where the
+         * fourth was another way of saying "a lot". The label is the readable
+         * half: `1,200+` above `MEMBERS` at a legible size beats a display
+         * figure over a 9px tracked caption a reader meets with no idea what it
+         * counts.
          */}
         <Enter delay={260}>
-          <dl className="mt-12 grid grid-cols-2 gap-x-6 gap-y-7 border-t border-mist/20 pt-7 sm:grid-cols-4 sm:gap-x-10 lg:mt-14">
-            {headlineStats.slice(0, 4).map((stat) => (
+          <dl className="mt-12 grid grid-cols-3 gap-x-6 border-t border-mist/20 pt-7 sm:gap-x-10 lg:mt-14">
+            {stats.map((stat) => (
               <div key={stat.label}>
                 <dd className="font-serif text-[1.75rem] leading-none font-medium text-paper tabular-nums lining-nums sm:text-[2.125rem]">
                   {stat.value.toLocaleString('en-US')}

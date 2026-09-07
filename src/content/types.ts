@@ -97,6 +97,30 @@ export interface Person {
   linkedin?: string
 }
 
+/**
+ * A signed message from one named officer, shown on the About page.
+ *
+ * This is the one place on the site where the organisation speaks in the first
+ * person, which is exactly why it is typed and authored here rather than
+ * written into a component: a message is attributable, and the person it is
+ * attributed to has to be able to change their own words without touching JSX.
+ *
+ * `personId` is a `Person.id` — the portrait, the name, and the Korean name all
+ * come from that record, so a headshot swapped in `leadership.ts` follows here
+ * automatically and there is no second copy of anyone's title to fall out of
+ * date.
+ */
+export interface LeadershipMessage {
+  /** Matches `Person.id` in `leadership.ts`. */
+  personId: string
+  /** The heading above the message — "Founder’s Message". */
+  label: string
+  /** Paragraphs, in order. Kept short; this is read, not skimmed. */
+  body: string[]
+  /** The role printed under the signature, as that person signs it. */
+  signature: string
+}
+
 export interface Pillar {
   id: string
   title: string
