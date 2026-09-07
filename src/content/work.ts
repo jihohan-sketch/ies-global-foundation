@@ -6,8 +6,8 @@ export const pillars: Pillar[] = [
     id: 'education',
     title: 'Education',
     summary:
-      'Creating opportunities for students to explore ethics, leadership, public policy, debate, philosophy, technology, and global affairs.',
-    body: 'Students get plenty of chances to perform academically and few to think seriously about hard questions without a grade attached. IES builds settings where that thinking is the point, and where students defend their reasoning.',
+      'Ethics, leadership, public policy, debate, philosophy, technology, and global affairs.',
+    body: 'Students get plenty of chances to perform academically and few to think hard without a grade attached. IES builds settings where that thinking is the point, and students defend their reasoning.',
     points: [
       'Moderated ethics discussions and public forums',
       'Debate, philosophy, and public policy sessions',
@@ -19,8 +19,8 @@ export const pillars: Pillar[] = [
     id: 'well-being',
     title: 'Well-Being',
     summary:
-      'Supporting young people and communities through service, mentorship, inclusion, and initiatives that promote personal and social well-being.',
-    body: 'Reflection that never leaves the seminar room is incomplete. This pillar covers the work IES does with communities — mentorship, service partnerships, inclusion — and the well-being of its own students.',
+      'Service, mentorship, and inclusion — for the communities we work with, and for our own students.',
+    body: 'Reflection that never leaves the seminar room is incomplete. This is the work IES does with communities — mentorship, service partnerships, inclusion — and the well-being of its own students.',
     points: [
       'Children’s center programs and mentorship',
       'Volunteer and community outreach initiatives',
@@ -32,8 +32,8 @@ export const pillars: Pillar[] = [
     id: 'civil-responsibility',
     title: 'Civil Responsibility and Governance',
     summary:
-      'Encouraging informed civic participation, ethical decision-making, responsible leadership, and constructive engagement with social institutions.',
-    body: 'Students are citizens before they are voters. This pillar builds the habits that make participation substantive rather than symbolic: understanding how institutions work, engaging them, and owning the consequences.',
+      'Informed civic participation, ethical decisions, and real engagement with institutions.',
+    body: 'Students are citizens before they are voters. This builds the habits that make participation real: understanding how institutions work, engaging them, and owning the consequences.',
     points: [
       'Governance and policy education',
       'Student-led civic campaigns and petitions',
@@ -49,7 +49,7 @@ export const workCategories: WorkCategory[] = [
     id: 'education-and-ethics',
     title: 'Education and Ethics',
     summary:
-      'Structured settings where students engage hard questions directly — in discussion, argument, and writing. Sessions are student-led, with preparation expected rather than passive attendance.',
+      'Hard questions taken on directly — in discussion, argument, and writing. Sessions are student-led, and you come prepared.',
     examples: [
       'Ethics discussions on contested contemporary issues',
       'Public forums open to students across schools',
@@ -66,7 +66,7 @@ export const workCategories: WorkCategory[] = [
     id: 'community-service',
     title: 'Community Service',
     summary:
-      'Sustained relationships with community organizations rather than one-off volunteering. Programs are built around what partners actually need, and measured by whether students keep showing up.',
+      'Sustained partnerships, not one-off volunteering. Built around what partners actually need, and measured by whether students keep showing up.',
     examples: [
       'Children’s center educational programs',
       'Mentorship for younger students',
@@ -82,7 +82,7 @@ export const workCategories: WorkCategory[] = [
     id: 'leadership-development',
     title: 'Leadership Development',
     summary:
-      'Real responsibility with real consequences. Students in IES roles run programs, manage teams, represent the organization, and answer for the results.',
+      'Real responsibility, real consequences. Students run programs, manage teams, represent IES, and answer for the results.',
     examples: [
       'Executive and national branch leadership roles',
       'Chapter leadership and officer positions',
@@ -98,7 +98,7 @@ export const workCategories: WorkCategory[] = [
     id: 'civic-responsibility',
     title: 'Civic Responsibility',
     summary:
-      'Programs that treat students as participants in public life — understanding institutions well enough to engage them, and telling informed advocacy from performance.',
+      'Students as participants in public life: understanding institutions well enough to engage them, and telling advocacy from performance.',
     examples: [
       'Policy awareness sessions',
       'Student petitions and campaigns',
@@ -114,7 +114,7 @@ export const workCategories: WorkCategory[] = [
     id: 'global-collaboration',
     title: 'Global Collaboration',
     summary:
-      'The work only an international network can do. Cross-branch programming puts students from three countries in the same conversation, where local assumptions get tested.',
+      'The work only an international network can do. Students from three countries in one conversation, where local assumptions get tested.',
     examples: [
       'Cross-branch events and joint sessions',
       'International panels and forums',
@@ -132,7 +132,7 @@ export const workCategories: WorkCategory[] = [
 export const featuredWork = [
   {
     title: 'Youth Ethics Forums',
-    body: 'Moderated public discussions where students take positions on contested questions and defend them.',
+    body: 'Students take positions on contested questions and defend them in public.',
     href: '/our-work#education-and-ethics',
   },
   {
@@ -159,23 +159,23 @@ export const featuredWork = [
 
 export const differentiators = [
   {
-    title: 'Youth-led but professionally structured',
-    body: 'Every role is held by a student. Every role also comes with defined responsibilities, reporting expectations, and standards that hold across borders.',
+    title: 'Youth-led, properly structured',
+    body: 'Every role is held by a student — and comes with defined responsibilities, reporting, and standards that hold across borders.',
   },
   {
     title: 'International but locally grounded',
     body: 'Branches run their own programming in their own national context. What they share is a mission, an identity, and a set of standards — not a template.',
   },
   {
-    title: 'Focused on both ideas and action',
+    title: 'Both ideas and action',
     body: 'Ethical inquiry that stops at discussion is incomplete, and service without reflection is thin. IES insists on both.',
   },
   {
-    title: 'Built around ethical leadership, not prestige',
+    title: 'Leadership, not prestige',
     body: 'Positions in IES exist because work needs doing. We do not create titles to decorate applications.',
   },
   {
     title: 'Open to collaboration',
-    body: 'We work with schools, universities, nonprofits, community centers, and public institutions rather than operating in isolation.',
+    body: 'We work with schools, universities, nonprofits, community centers, and public institutions — not in isolation.',
   },
 ]

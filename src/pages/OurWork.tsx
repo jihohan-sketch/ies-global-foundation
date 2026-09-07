@@ -24,7 +24,7 @@ export default function OurWork() {
         eyebrow="Our Work"
         ghost="Work"
         title="From Reflection to Action"
-        lead="Five areas of work: ethics forums, community service, leadership roles, civic campaigns, and cross-branch programming. Each one ends in something a student is answerable for."
+        lead="Ethics forums, community service, leadership roles, civic campaigns, and cross-branch programming. Each ends in something a student is answerable for."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Our Work' }]}
       />
 
@@ -54,8 +54,8 @@ export default function OurWork() {
                 />
                 <Scrub effect="scrub-rise" offset={0.1}>
                   <p className="mt-8 max-w-[38ch] text-navy-600">
-                    Everything IES runs sits under one of these three. They are how a chapter
-                    decides whether a proposed programme is IES work or simply a good idea.
+                    Everything IES runs sits under one of these three — how a chapter tells
+                    IES work from a good idea.
                   </p>
                 </Scrub>
               </>
@@ -112,7 +112,7 @@ export default function OurWork() {
         index="01"
         eyebrow="Programme Areas"
         title="Five kinds of work, one mission."
-        lead="Each area has its own methods and its own partners. What they share is the expectation that a student finishes what they started."
+        lead="Each area has its own methods and partners. What they share is the expectation that a student finishes what they started."
         wordmark="Programmes"
         panels={workCategories.map((category) => ({
           id: category.id,
@@ -195,12 +195,12 @@ export default function OurWork() {
         tone="deep"
         eyebrow="Programs and Activities"
         title="Real programs, documented."
-        lead={`Every entry below is an event the branch that ran it has published, photographed at the event itself — ${activityPhotoCount} photographs in total. We do not use stock imagery.`}
+        lead={`Every entry is an event the branch that ran it has published, photographed there — ${activityPhotoCount} photographs in total. No stock imagery.`}
       />
 
       <CallToAction
         title="Do this work with us"
-        body="Chapters, national branches, and partner organizations all run IES programming. Find the one that fits."
+        body="Chapters, branches, and partner organizations all run IES programming. Find the one that fits."
         actions={[
           { label: 'Join IES', to: '/join', variant: 'primary' },
           { label: 'See Our Impact', to: '/impact' },

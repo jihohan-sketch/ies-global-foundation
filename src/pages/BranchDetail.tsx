@@ -119,7 +119,7 @@ export default function BranchDetail() {
         activities={branchActivities}
         eyebrow="Programs and Activities"
         title={`What ${branch.name} has run`}
-        lead={`Forums, service partnerships, scholarships, and civic work — as published by ${branch.name}, photographed at the events themselves.`}
+        lead={`Forums, service partnerships, scholarships, and civic work — published by ${branch.name}, photographed at the events themselves.`}
       />
 
       {/* ========================================================= LEADERSHIP */}

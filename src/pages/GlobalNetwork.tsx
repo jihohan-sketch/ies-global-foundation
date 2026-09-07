@@ -36,7 +36,7 @@ export default function GlobalNetwork() {
         eyebrow="Global Network"
         ghost="Network"
         title="One society, three countries."
-        lead="Korea is the original branch and the operational headquarters. The United States and the United Kingdom run their own programming, approve their own chapters, and are held to the same standards."
+        lead="Korea is the original branch and the headquarters. The United States and the United Kingdom run their own programming, approve their own chapters, and meet the same standards."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Global Network' }]}
       />
 
@@ -57,8 +57,7 @@ export default function GlobalNetwork() {
                   className="mx-auto aspect-square w-full max-w-2xl"
                 />
                 <p className="mt-2 text-center text-xs text-mist">
-                  Select a marker to view that branch. The globe is a schematic
-                  representation and is not a cartographic reference.
+                  Select a marker to open that branch. The globe is a schematic, not a map.
                 </p>
               </div>
             </Reveal>
@@ -252,7 +251,7 @@ export default function GlobalNetwork() {
 
       <CallToAction
         title="Three countries. Room for more."
-        body="A fourth branch opens when there are students to lead it and a plan it can be held to — not when it would look good to announce one."
+        body="A fourth branch opens when there are students to lead it and a plan it can be held to — not when announcing one would look good."
         actions={[
           { label: 'Join IES', to: '/join', variant: 'primary' },
           { label: 'Start a Chapter', to: '/start-a-chapter' },

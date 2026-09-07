@@ -166,8 +166,8 @@ export function JoinForm({ defaultPathway = 'member' }: { defaultPathway?: strin
       >
         <p className="font-serif text-h3 text-[var(--accent)]">Application received</p>
         <p className="mx-auto mt-5 max-w-md leading-relaxed text-mist">
-          Thank you for applying. Your request goes to the branch in your country, and someone
-          will reply within a few working days.
+          Your application goes to the branch in your country. Someone will reply within a few
+          working days.
         </p>
         <button
           type="button"
@@ -233,7 +233,7 @@ export function JoinForm({ defaultPathway = 'member' }: { defaultPathway?: strin
         name="message"
         required
         rows={5}
-        placeholder="Tell us what you want to take on, and what you are hoping to get out of it."
+        placeholder="What you want to take on, and what you hope to get out of it."
         error={fieldErrors.message}
         onBlur={handleBlur}
         onInput={handleInput}
@@ -247,7 +247,7 @@ export function JoinForm({ defaultPathway = 'member' }: { defaultPathway?: strin
               href={fallbackHref}
               className="mt-3 inline-block text-[0.8125rem] text-paper underline underline-offset-4 transition-colors hover:text-[var(--accent)]"
             >
-              Send it as an email instead — your answers are already filled in
+              Send as an email instead — your answers are already filled in
             </a>
           )}
         </div>
@@ -258,7 +258,7 @@ export function JoinForm({ defaultPathway = 'member' }: { defaultPathway?: strin
           {status === 'submitting' ? 'Sending…' : 'Submit application'}
         </Button>
         <p className="text-xs text-mist">
-          We use your details only to respond to your application.
+          Your details are used only to reply.
         </p>
       </div>
     </form>

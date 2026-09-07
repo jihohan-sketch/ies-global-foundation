@@ -41,7 +41,7 @@ export const site = {
    * rather than in a conclusion (see threeAs).
    */
   descriptor:
-    'A student-run ethics society founded in Seoul in April 2023, now working across Korea, the United States, and the United Kingdom. Students run moderated forums on contested questions, then take what they conclude into service in their own communities.',
+    'A student-run ethics society in Korea, the United States, and the United Kingdom. Students run moderated forums on contested questions, then act on what they conclude.',
 
   /*
    * "Create change" was doing no work here, and neither was "lead with
@@ -53,7 +53,7 @@ export const site = {
    * the service partnerships all rest on.
    */
   mission:
-    'IES exists so that students argue hard questions properly — with preparation, in public, against people who disagree — and are then held to what they concluded.',
+    'Students argue hard questions properly — prepared, in public, against people who disagree — then are held to what they concluded.',
 
   missionShort: 'Argue it properly. Then be accountable for it.',
 
@@ -69,7 +69,7 @@ export const site = {
    * standard.
    */
   vision:
-    'Student-led chapters in every country IES reaches, each running its own programming, each held to the same standard for how a question is argued and what happens afterwards.',
+    'Student-led chapters in every country IES reaches — each running its own programming, all held to one standard for how a question is argued and what follows.',
 
   /** Used verbatim wherever the Korea / Foundation relationship is described. */
   headquartersStatement:
@@ -77,12 +77,12 @@ export const site = {
 
   /** Shown beneath every statistics block. */
   statisticsNote:
-    'Figures are current as of the latest reporting period, reviewed by branch leadership.',
+    'Current as of the latest reporting period, reviewed by branch leadership.',
 
   copyright: '© 2026 IES Global Foundation. All rights reserved.',
 
   legalNote:
-    'The Interscholastic Ethics Society is a student-led nonprofit founded in Seoul, South Korea. The IES Global Foundation coordinates its international network of national branches, which are organizational units of that network rather than separately incorporated entities.',
+    'The Interscholastic Ethics Society is a student-led nonprofit founded in Seoul, South Korea. The IES Global Foundation coordinates its national branches, which are units of that network, not separately incorporated entities.',
 } as const
 
 /**
@@ -98,7 +98,7 @@ export const threeAs = [
   {
     title: 'Academic Vitality',
     subtitle: 'Fostering Intellectual Curiosity',
-    body: 'Students prepare, argue from evidence, and take hard questions seriously rather than settle them quickly.',
+    body: 'Students prepare, argue from evidence, and sit with hard questions instead of settling them quickly.',
   },
   {
     title: 'Advancing Equity',
@@ -110,15 +110,15 @@ export const threeAs = [
 export const values = {
   primary: {
     title: 'Equity',
-    body: 'Equity organizes everything else. It shapes who we invite in, which communities we serve, and how leadership is earned and shared.',
+    body: 'Equity organizes everything else: who we invite in, which communities we serve, and how leadership is earned and shared.',
   },
   supporting: [
-    { title: 'Integrity', body: 'Doing careful, honest work — especially when no one is checking.' },
+    { title: 'Integrity', body: 'Careful, honest work — especially when no one is checking.' },
     { title: 'Responsibility', body: 'Owning outcomes, not only intentions.' },
-    { title: 'Service', body: 'Contributing to communities on their terms, not ours.' },
+    { title: 'Service', body: 'Serving communities on their terms, not ours.' },
     { title: 'Collaboration', body: 'Working across schools, branches, and borders.' },
     { title: 'Intellectual Curiosity', body: 'Taking difficult questions seriously.' },
-    { title: 'Global Citizenship', body: 'Understanding local action in an international context.' },
+    { title: 'Global Citizenship', body: 'Seeing local action in an international context.' },
     { title: 'Respect', body: 'Engaging disagreement without diminishing people.' },
     { title: 'Compassion', body: 'Recognising the human stakes behind every issue.' },
   ],
@@ -145,16 +145,16 @@ export const values = {
  * the other way to solve this and the one that fails on a touch screen.
  */
 export const primaryNav: NavItem[] = [
-  { label: 'About', href: '/about', description: 'Our story, structure, and purpose' },
-  { label: 'Our Work', href: '/our-work', description: 'Programs across five areas' },
+  { label: 'About', href: '/about', description: 'Story, structure, purpose' },
+  { label: 'Our Work', href: '/our-work', description: 'Five programme areas' },
   { label: 'Global Network', href: '/global-network', description: 'Korea, United States, United Kingdom' },
-  { label: 'Impact', href: '/impact', description: 'Results, stories, and timeline' },
+  { label: 'Impact', href: '/impact', description: 'Results, stories, timeline' },
   { label: 'Contact', href: '/contact', description: 'Reach the right team' },
 ]
 
 /** The second tier — see the note on `primaryNav`. Never shown in the bar. */
 export const secondaryNav: NavItem[] = [
-  { label: 'Leadership', href: '/leadership', description: 'Global and national leadership' },
+  { label: 'Leadership', href: '/leadership', description: 'Who runs IES' },
   { label: 'Gallery', href: '/gallery', description: 'Every photograph and film' },
   { label: 'Partners', href: '/partners', description: 'Institutional collaboration' },
   { label: 'News', href: '/news', description: 'Announcements and updates' },
@@ -218,12 +218,12 @@ export const contactChannels: ContactChannel[] = [
   {
     label: 'Partnerships',
     email: PRIMARY_EMAIL,
-    description: 'Schools, universities, nonprofits, and institutional collaboration.',
+    description: 'Schools, universities, nonprofits, and institutions.',
   },
   {
     label: 'Media',
     email: PRIMARY_EMAIL,
-    description: 'Press inquiries, interviews, and organizational statements.',
+    description: 'Press inquiries, interviews, and statements.',
   },
   {
     label: 'Chapters',
@@ -236,7 +236,7 @@ export const branchContacts: ContactChannel[] = [
   {
     label: 'IES Korea',
     email: PRIMARY_EMAIL,
-    description: 'Original branch and primary operational headquarters.',
+    description: 'Original branch and headquarters.',
   },
   {
     label: 'IES United States',

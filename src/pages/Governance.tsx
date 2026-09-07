@@ -69,7 +69,7 @@ export default function Governance() {
             <SectionHeading
               eyebrow="Standards of Accuracy"
               title="What we will not claim"
-              lead="These principles govern what appears on this website and in any material carrying the IES name."
+              lead="These govern what appears on this website and anything carrying the IES name."
             />
           </Reveal>
 
@@ -117,7 +117,7 @@ export default function Governance() {
       <CallToAction
         eyebrow="Questions"
         title="Ask us anything about how IES works"
-        body="Schools, partners, and parents are welcome to ask how the organization is structured and what any role involves."
+        body="Schools, partners, and parents are welcome to ask how IES is structured and what any role involves."
         actions={[
           { label: 'Contact Us', to: '/contact', variant: 'primary' },
           { label: 'Leadership', to: '/leadership' },

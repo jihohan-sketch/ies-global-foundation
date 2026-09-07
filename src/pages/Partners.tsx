@@ -48,7 +48,7 @@ export default function Partners() {
               ghost="Named"
               eyebrow="Organizations We Work With"
               title="Named collaborations"
-              lead="We work alongside community organizations, academic institutions, and public bodies — the relationships behind our service work."
+              lead="Community organizations, academic institutions, and public bodies — the relationships behind our service work."
             />
           </Reveal>
 
@@ -79,8 +79,8 @@ export default function Partners() {
 
           <Reveal delay={200}>
             <p className="mt-10 max-w-3xl text-sm leading-relaxed text-mist">
-              Naming an organization here records a collaboration; it does not imply that
-              organization endorses IES or its positions.
+              Naming an organization records a collaboration. It does not imply they endorse
+              IES or its positions.
             </p>
           </Reveal>
         </Container>
@@ -169,9 +169,8 @@ export default function Partners() {
               <Eyebrow>Collaboration Areas</Eyebrow>
               <h2 className="text-h2 mt-6">Where partnerships usually start</h2>
               <p className="mt-6 leading-relaxed text-mist">
-                Most collaborations begin with a single concrete thing — a speaker, a service
-                day, a joint forum — and grow from there once both sides know the work is
-                reliable.
+                Most collaborations start with one concrete thing — a speaker, a service day,
+                a joint forum — and grow once both sides know the work is reliable.
               </p>
             </Reveal>
 
@@ -198,7 +197,7 @@ export default function Partners() {
             <SectionHeading
               eyebrow="How It Works"
               title="A short, deliberate process"
-              lead="We would rather scope a partnership properly than start one that quietly lapses."
+              lead="Better to scope a partnership properly than start one that quietly lapses."
             />
           </Reveal>
 
@@ -220,9 +219,8 @@ export default function Partners() {
 
           <Reveal delay={200}>
             <p className="mt-14 max-w-2xl border-t border-mist/15 pt-6 text-sm leading-relaxed text-mist">
-              Partner logos are displayed only with written permission from the organization
-              concerned. IES does not imply endorsement, affiliation, or accreditation that has
-              not been agreed in writing.
+              Logos appear only with written permission. IES implies no endorsement,
+              affiliation, or accreditation that has not been agreed in writing.
             </p>
           </Reveal>
         </Container>
@@ -231,7 +229,7 @@ export default function Partners() {
       <CallToAction
         eyebrow="Partnerships"
         title="Partner With IES"
-        body="Tell us who you are and what you have in mind. A short message is enough to start the conversation."
+        body="Tell us who you are and what you have in mind. A short message is enough."
         actions={[
           { label: 'Contact the partnerships team', to: '/contact?topic=partnership', variant: 'primary' },
           { label: 'See Our Work', to: '/our-work' },

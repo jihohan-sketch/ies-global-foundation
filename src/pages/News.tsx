@@ -35,7 +35,7 @@ export default function News() {
         eyebrow="News & Updates"
         ghost="News"
         title="From across the network"
-        lead="Appointments, forums held, partnerships signed, chapters launched — recorded as they happen, by the branch that ran them."
+        lead="Appointments, forums, partnerships, chapters launched — recorded as they happen, by the branch that ran them."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'News' }]}
       />
 
@@ -167,9 +167,9 @@ export default function News() {
               </h2>
               <div>
                 <p className="leading-relaxed text-mist">
-                  Journalists seeking comment or interviews should contact the Foundation’s
-                  media address. Requests involving students under 18 follow our participant
-                  safety policy.
+                  Journalists wanting comment or interviews should use the Foundation’s media
+                  address. Requests involving students under 18 follow our participant safety
+                  policy.
                 </p>
                 <a
                   href="mailto:theiesociety@gmail.com"
@@ -185,7 +185,7 @@ export default function News() {
 
       <CallToAction
         title="Stay close to the network"
-        body="Follow the branches, or get in touch about something you would like to see covered."
+        body="Follow the branches, or tell us about something you would like covered."
         actions={[
           { label: 'Contact Us', to: '/contact', variant: 'primary' },
           { label: 'Global Network', to: '/global-network' },

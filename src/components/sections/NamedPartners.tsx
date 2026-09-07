@@ -36,7 +36,7 @@ export function NamedPartners({ id, index = '03' }: { id?: string; index?: strin
             eyebrow="Organizations We Work With"
             ghost="Partners"
             title={`${organizations.length} institutions, named.`}
-            lead="Community organizations, academic institutions, and public bodies that IES has worked alongside — not a logo wall, a record."
+            lead="Community organizations, academic institutions, and public bodies IES has worked alongside — a record, not a logo wall."
           />
         </Reveal>
 

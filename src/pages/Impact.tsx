@@ -69,9 +69,8 @@ export default function Impact() {
                   />
                   <Reveal delay={120}>
                     <p className="mt-8 max-w-[38ch] text-[0.9375rem] leading-relaxed text-navy-600">
-                      {site.statisticsNote} Figures are reported by national branches and
-                      consolidated by the Global Foundation. Where a figure cannot be supported
-                      from internal records, it is not published.
+                      {site.statisticsNote} Branches report; the Foundation consolidates. A
+                      figure we cannot support from internal records is not published.
                     </p>
                   </Reveal>
                 </>
@@ -135,7 +134,7 @@ export default function Impact() {
         label="Impact stories"
         eyebrow="Impact Stories"
         title="The work behind the numbers."
-        lead="Statistics describe the scale of the network. These describe what it is for."
+        lead="The figures describe the scale. These describe what it is for."
         wordmark="Stories"
         panels={impactStories.map((story) => ({
           id: story.id,
@@ -197,7 +196,7 @@ export default function Impact() {
         photos={fieldPhotos}
         eyebrow="In the Field"
         title="The work as it happens"
-        lead="Photographs from IES programs — forums in session, volunteers mid-shift, a petition on the public record. The full set, event by event, is on Our Work."
+        lead="Forums in session, volunteers mid-shift, a petition on the public record. The full set, event by event, is on Our Work."
       />
 
       {/* ============================================================= FILM */}
@@ -205,7 +204,7 @@ export default function Impact() {
         videos={organizationVideos}
         eyebrow="Film"
         title="The organization in its own words"
-        lead="From the IES YouTube channel. Nothing loads from YouTube until you press play."
+        lead="From the IES YouTube channel. Nothing loads until you press play."
       />
 
       {/* ========================================================= TIMELINE */}
@@ -220,7 +219,7 @@ export default function Impact() {
             <SectionHeading
               eyebrow="Timeline"
               title="From April 2023 onward"
-              lead="The sequence of the organization’s development, from a single student initiative to an international network."
+              lead="From a single student initiative to an international network."
             />
           </Scrub>
         </Container>
@@ -232,8 +231,8 @@ export default function Impact() {
         <Container size="wide">
           <Scrub effect="scrub-rise">
             <p className="max-w-2xl text-sm leading-relaxed text-mist">
-              Entries marked “date to be confirmed” are sequenced correctly but await
-              verification against internal records before publication.
+              Entries marked “date to be confirmed” are in the right order, but await
+              verification against internal records.
             </p>
           </Scrub>
         </Container>
@@ -241,7 +240,7 @@ export default function Impact() {
 
       <CallToAction
         title="Add to what comes next"
-        body="The next set of figures depends on students who take on real responsibility this year."
+        body="The next set of figures depends on students taking on real responsibility this year."
         actions={[
           { label: 'Join IES', to: '/join', variant: 'primary' },
           { label: 'Partner With Us', to: '/partners' },

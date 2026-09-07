@@ -24,7 +24,7 @@ export const people: Person[] = [
     spotlight: true,
     photo: '/leadership/joseph-hahmmin-kang.jpg',
     affiliations: ['Student, Seoul International School'],
-    bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 2nd President to January 2026, setting the standards branches and chapters now operate under. Now Vice Chairman of the Global Foundation and its Director of Global Operations, holding the organization to those standards and coordinating the work that runs between the national branches.',
+    bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 2nd President to January 2026, setting the standards branches and chapters now run under. As Vice Chairman and Director of Global Operations, he holds the organization to those standards and coordinates the work that runs between branches.',
     responsibilities: [
       'Organizational direction and long-term strategy',
       'Mission, standards, and institutional identity',
@@ -39,7 +39,7 @@ export const people: Person[] = [
     tier: 'global',
     spotlight: true,
     photo: '/leadership/yura-shin.jpg',
-    bio: 'Directs the Foundation’s outreach — schools asking what a chapter involves, organizations proposing a partnership, and students in countries where IES has no branch yet. Decides how those conversations open, which are worth carrying forward, and who takes each one on. As Vice Chairman she also works on the Foundation’s direction and the standards that growth is held to, alongside the President.',
+    bio: 'Directs the Foundation’s outreach — schools asking what a chapter involves, organizations proposing a partnership, students in countries with no branch yet. She decides how those conversations open, which are worth carrying forward, and who takes each one on. As Vice Chairman she also works on the Foundation’s direction alongside the President.',
     responsibilities: [
       'Governance and long-term direction of the Foundation',
       'First contact for schools, partners, and prospective chapters',
@@ -55,7 +55,7 @@ export const people: Person[] = [
     tier: 'founding',
     photo: '/leadership/jaesuh-joshua-shin.jpg',
     affiliations: ['Student, Seoul Foreign School'],
-    bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 1st President to October 2025, designing IES programming and growing the school chapter network.',
+    bio: 'Co-founded IES in Seoul in April 2023. Co-President to August 2025, then 1st President to October 2025, designing IES programming and growing the chapter network.',
     responsibilities: [
       'Program design and organizational planning',
       'School chapter development',
@@ -72,7 +72,7 @@ export const people: Person[] = [
     tier: 'global',
     spotlight: true,
     photo: '/leadership/sean-han.jpg',
-    bio: 'Sean Han is President of the Global Foundation and its Director of Global Marketing. As President they lead the Foundation’s offices and its work with the national branches. As Director of Global Marketing they are responsible for how IES presents itself across Korea, the United States, and the United Kingdom: the organization’s brand, this website, and its social channels, together with the approval process every public statement passes through before publication. Much of that work is consistency — a chapter in Seoul, a founding team in the United States, and a branch in London all describe the same organization, and it should read that way to a school deciding whether to work with IES. They also set the standards branches follow in building their own communications.',
+    bio: 'President of the Global Foundation and its Director of Global Marketing. As President, leads the Foundation’s offices and its work with the national branches. As Director of Global Marketing, responsible for how IES presents itself across Korea, the United States, and the United Kingdom — the brand, this website, the social channels, and the approval every public statement passes through. Much of that is consistency: a chapter in Seoul, a founding team in the United States, and a branch in London all describe the same organization, and it should read that way to a school deciding whether to work with IES.',
     responsibilities: [
       'Executive leadership of the Global Foundation',
       'Coordination across the Foundation’s offices',
@@ -108,7 +108,7 @@ export const people: Person[] = [
     tier: 'national',
     branch: 'united-states',
     photo: '/leadership/aden-lee.jpg',
-    bio: 'Co-President of IES United States. Focused on establishing founding chapters and adapting IES programming to American schools without loosening shared standards.',
+    bio: 'Co-President of IES United States. Establishing founding chapters and adapting IES programming to American schools without loosening shared standards.',
     responsibilities: [
       'National strategy for IES United States',
       'Chapter formation and school outreach',
@@ -140,7 +140,7 @@ export const people: Person[] = [
     tier: 'national',
     branch: 'united-kingdom',
     photo: '/leadership/jimin-lee.jpg',
-    bio: 'President of IES UK Society, the newest branch. Recruiting the first national officers and founding chapters, and leading the branch’s early programming.',
+    bio: 'President of IES UK Society, the newest branch. Recruiting the first national officers and founding chapters, and leading its early programming.',
     responsibilities: [
       'National leadership of IES UK Society',
       'Founding chapter establishment',
@@ -158,7 +158,7 @@ export const people: Person[] = [
     tier: 'board',
     photo: '/leadership/hyundoo-cho.jpg',
     affiliations: ['Chairman, Nanoom Korea (사단법인 나눔코리아)'],
-    bio: 'Chairman of Nanoom Korea, a non-profit that supports isolated older people, single-parent and multicultural families, North Korean defectors, and young children through home visits, living costs, medicine, and scholarships. Nanoom Korea is one of the organizations IES Korea returns to as a service partner, so he brings to the board a direct view of the work students do there. The board reviews how the Foundation is governed and advises the students leading it; it does not run the programming.',
+    bio: 'Chairman of Nanoom Korea, a non-profit supporting isolated older people, single-parent and multicultural families, North Korean defectors, and young children through home visits, living costs, medicine, and scholarships. It is one of the partners IES Korea returns to, so he brings the board a direct view of the work students do there. The board reviews governance and advises the students leading IES; it does not run the programming.',
     responsibilities: [
       'Oversight of the Foundation’s governance and conduct',
       'Review of how the Foundation is run against its own standards',
@@ -272,7 +272,7 @@ export const globalOffices: {
     ],
     holder: 'yura-shin',
     holderNote:
-      'Outreach exists because growth arrives as an inquiry from outside — a teacher who saw a forum, a charity looking for student volunteers, a student in a country with no branch. Shin decides which of those IES can genuinely support, makes sure a school knows what it is taking on before it commits, and hands each one to whoever will carry it. An approach that goes unanswered, or is passed to a branch with no capacity for it, costs the network more than never having been made. As Vice Chairman she also answers for whether that growth stays inside the standards the rest of the network works to.',
+      'Growth arrives as an inquiry from outside — a teacher who saw a forum, a charity looking for volunteers, a student in a country with no branch. Shin decides which IES can genuinely support, makes sure a school knows what it is taking on, and hands each one to whoever will carry it. An approach left unanswered, or passed to a branch with no capacity for it, costs more than never having been made. As Vice Chairman she also answers for whether that growth stays inside the network’s standards.',
   },
   {
     title: 'Vice Chairman',
@@ -284,7 +284,7 @@ export const globalOffices: {
     ],
     holder: 'joseph-hahmmin-kang',
     holderNote:
-      'As Vice Chairman, Kang holds the organization to the standards he set as president — the conduct rules, the chapter guidelines, and the reporting each branch answers to. As Director of Global Operations he runs the work that crosses borders: coordination between Korea, the United States, and the United Kingdom, the reporting cycle the branches keep to, and the logistics behind programming that runs in more than one country at once. The role exists because three branches working to one set of standards need someone accountable for whether that is actually happening.',
+      'As Vice Chairman, Kang holds IES to the standards he set as president — the conduct rules, the chapter guidelines, the reporting each branch answers to. As Director of Global Operations he runs the work that crosses borders: coordination between the three branches, the reporting cycle they keep to, and the logistics behind programming that runs in more than one country at once. Three branches on one set of standards need someone accountable for whether that is actually happening.',
   },
   {
     title: 'Director of Global Operations',
@@ -300,13 +300,13 @@ export const globalOffices: {
 
 export const leadershipIntro = {
   foundation:
-    'The officers who run the Foundation day to day, across governance, international operations, and outreach.',
+    'The officers who run the Foundation day to day — governance, international operations, and outreach.',
   board:
-    'IES is run by students. The board is the oversight they answer to — it reviews how the Foundation is governed and advises the students leading it, without taking over the work.',
+    'IES is run by students. The board is the oversight they answer to: it reviews governance and advises, without taking over the work.',
   founding:
-    'Founded in Seoul on 20 April 2023 by two students, who led it jointly and then each served a term as president.',
+    'Founded in Seoul on 20 April 2023 by two students, who led it jointly and then each served as president.',
   global:
-    'The Foundation handles international coordination, partnerships, branding, and branch development. Offices are filled as we grow — unfilled ones are shown as pending, not padded out.',
+    'International coordination, partnerships, branding, and branch development. Offices fill as we grow — unfilled ones are shown as pending, not padded out.',
   national: 'Each branch is led by students in that country, to the same shared standards.',
 }
 

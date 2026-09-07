@@ -16,11 +16,11 @@ export const branches: Branch[] = [
     name: 'IES Korea',
     country: 'Korea',
     code: 'KR',
-    role: 'Original national branch and operational headquarters',
+    role: 'Original branch and operational headquarters',
     summary:
-      'Where IES began in April 2023, and the branch that carries the largest share of the organization’s programming, chapters, and day-to-day operations.',
+      'Where IES began in April 2023, and the branch carrying most of its programming, chapters, and daily operations.',
     intro:
-      'The original branch and the organization’s operational headquarters. Founded in Seoul on 20 April 2023, it is the largest student-led ethics organization in South Korea, with the deepest history, the largest chapter network, and the programs the rest of the network now works from — ethics forums, policy advocacy, and sustained service partnerships.',
+      'The original branch and the operational headquarters. Founded in Seoul on 20 April 2023, it is the largest student-led ethics organization in South Korea, and the source of the programs the rest of the network works from — ethics forums, policy advocacy, and sustained service partnerships.',
     established: '20 April 2023',
     headquarters: 'Seoul, Republic of Korea',
     status: 'Headquarters',
@@ -34,7 +34,7 @@ export const branches: Branch[] = [
     sections: [
       {
         title: 'National leadership',
-        body: 'IES Korea is led by a national president working with an executive team across departments — education, projects, external partnerships, and media — together with chapter leaders at participating schools. The branch coordinates directly with the Global Foundation on standards, branding, and cross-border programming.',
+        body: 'A national president leads an executive team across education, projects, external partnerships, and media, alongside chapter leaders at participating schools. The branch works directly with the Global Foundation on standards, branding, and cross-border programming.',
         items: [
           'Ryan Jimyung Cha — President, IES Korea (since January 2026)',
           'Executive departments: education, projects, external partnerships, media',
@@ -43,7 +43,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'Ethics forums',
-        body: 'The branch’s flagship programming is a recurring series of moderated forums on contested questions, each prepared and led by students and frequently featuring outside speakers.',
+        body: 'The branch’s flagship programming: a recurring series of moderated forums on contested questions, each prepared and led by students, often with outside speakers.',
         items: [
           'Medical ethics',
           'AI and technology ethics',
@@ -54,7 +54,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'Policy advocacy',
-        body: 'IES Korea takes positions into formal civic channels rather than stopping at discussion. Its advocacy work has reached the National Assembly of Korea.',
+        body: 'IES Korea takes positions into formal civic channels rather than stopping at discussion. Its advocacy has reached the National Assembly of Korea.',
         items: [
           'Petition to the National Assembly on regulating generative AI for children under 12',
           'Public statements and informative publications',
@@ -63,7 +63,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'Community service',
-        body: 'The branch runs sustained service partnerships rather than one-off volunteering, returning to the same organizations on a recurring schedule so that mentorship is actually possible.',
+        body: 'Sustained service partnerships rather than one-off volunteering — returning to the same organizations on a schedule, so mentorship is actually possible.',
         items: [
           'Nanoom Korea',
           'Jiguchon Children’s Center',
@@ -74,7 +74,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'School chapters',
-        body: 'IES Korea maintains the largest concentration of school chapters in the network, across international and domestic schools nationwide. Each chapter is student-led, operates under the shared IES chapter guidelines, and submits periodic updates to the national branch.',
+        body: 'The largest concentration of chapters in the network, across international and domestic schools nationwide. Each is student-led, runs under the shared chapter guidelines, and reports periodically to the branch.',
         items: [
           'Chapter leadership teams at participating schools',
           'Termly programming plans reviewed by the national branch',
@@ -94,11 +94,11 @@ export const branches: Branch[] = [
     name: 'IES United States',
     country: 'United States',
     code: 'US',
-    role: 'Expanding ethical leadership and youth engagement across the United States',
+    role: 'Building the IES network across the United States',
     summary:
-      'Extends the IES mission into U.S. schools and communities, with a growth strategy built around school outreach, chapter formation, and partnerships.',
+      'Bringing IES into U.S. schools and communities, through outreach, chapter formation, and partnerships.',
     intro:
-      'Brings the IES mission into the American educational context. Led by two co-presidents, the branch is building a durable base of school chapters, a U.S. programming calendar, and partnerships with schools, universities, and community organizations — to the standards shared across the network.',
+      'IES in the American school context. Led by two co-presidents, the branch is building a base of school chapters, a U.S. programming calendar, and partnerships with schools, universities, and community organizations — to the standards shared across the network.',
     established: 'Established as a national branch under the IES Global Foundation',
     headquarters: 'United States',
     status: 'Active',
@@ -112,12 +112,12 @@ export const branches: Branch[] = [
     sections: [
       {
         title: 'National leadership',
-        body: 'The branch is led by two co-presidents who share responsibility for national strategy, chapter development, and coordination with the Global Foundation.',
+        body: 'Two co-presidents share national strategy, chapter development, and coordination with the Global Foundation.',
         items: ['Aden Lee — Co-President, IES United States', 'Onew Choi — Co-President, IES United States'],
       },
       {
         title: 'Growth strategy',
-        body: 'U.S. growth is deliberately sequenced: establish a small number of strong founding chapters, prove the programming model in an American school context, then expand regionally through students who have already run successful chapter activity.',
+        body: 'Growth is sequenced on purpose: a few strong founding chapters first, prove the model in American schools, then expand regionally through students who have already run one.',
         items: [
           'Founding chapters at schools with committed student leadership',
           'Regional clusters rather than scattered single chapters',
@@ -126,7 +126,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'School outreach',
-        body: 'Outreach centers on students and faculty advisors who want structured opportunities for ethical inquiry, service, and civic engagement that existing school activities do not already provide.',
+        body: 'Aimed at students and faculty advisors who want structured ethical inquiry, service, and civic engagement that existing school activities do not offer.',
         items: [
           'Introductory sessions for interested student groups',
           'Chapter guidelines and branding resources',
@@ -135,7 +135,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'Opportunities for U.S.-based students',
-        body: 'Students in the United States can participate at several levels depending on how much responsibility they want to take on.',
+        body: 'Several levels, depending on how much responsibility you want.',
         items: [
           'Membership and participation in national events',
           'Founding or joining a school chapter',
@@ -151,11 +151,11 @@ export const branches: Branch[] = [
     name: 'IES UK Society',
     country: 'United Kingdom',
     code: 'GB',
-    role: 'Building a growing network of students and schools across the United Kingdom',
+    role: 'Building the IES network across the United Kingdom',
     summary:
-      'The newest national branch, focused on establishing founding chapters, recruiting student leadership, and building relationships with U.K. schools.',
+      'The newest branch: founding chapters, student leadership, and relationships with U.K. schools.',
     intro:
-      'The newest branch in the network. The current priority is foundational: recruiting student leaders, establishing the first chapters, and building relationships with schools that want a serious setting for ethical inquiry — the same standards as the rest of the network, adapted to the U.K. school system.',
+      'The newest branch in the network. The priority is foundational: recruiting student leaders, opening the first chapters, and building relationships with schools that want a serious setting for ethical inquiry — the network’s standards, adapted to U.K. schools.',
     established: 'Established as a national branch under the IES Global Foundation',
     headquarters: 'United Kingdom',
     status: 'Establishing',
@@ -169,12 +169,12 @@ export const branches: Branch[] = [
     sections: [
       {
         title: 'National leadership',
-        body: 'The branch is led by a national president, with additional officer roles to be confirmed as the founding team is completed.',
+        body: 'A national president leads, with further officer roles confirmed as the founding team fills out.',
         items: ['Jimin Lee — President, IES UK Society'],
       },
       {
         title: 'Expansion plan',
-        body: 'The U.K. branch is building deliberately rather than quickly. The first phase is a small founding cohort of chapters with committed leadership, followed by a national programming calendar once those chapters are running consistently.',
+        body: 'Built deliberately rather than quickly: a small founding cohort of chapters with committed leadership first, then a national programming calendar once they run consistently.',
         items: [
           'Phase one — founding student leadership team',
           'Phase two — first school chapters and introductory programming',
@@ -183,7 +183,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'Recruitment priorities',
-        body: 'The branch is looking for students who want responsibility rather than a title: people willing to organise sessions, sustain a chapter through a full academic year, and hold to the network’s conduct and safety standards.',
+        body: 'Students who want responsibility rather than a title — willing to organise sessions, carry a chapter through a full academic year, and keep to the network’s conduct and safety standards.',
         items: [
           'Founding chapter leaders',
           'National branch officers',
@@ -192,7 +192,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'Upcoming initiatives',
-        body: 'Initial U.K. programming will follow the network’s core model, adapted for local schools, with cross-branch sessions connecting U.K. students to the wider network.',
+        body: 'The network’s core model adapted for local schools, with cross-branch sessions connecting U.K. students to the rest of IES.',
         items: [
           'Introductory ethics discussion series',
           'School outreach and information sessions',
@@ -209,9 +209,9 @@ export const branchBySlug = (slug: string): Branch | undefined =>
 
 export const futureExpansion = {
   title: 'Future Expansion',
-  body: 'IES intends to expand responsibly into additional countries through qualified national leadership, institutional partnerships, and sustainable local programming.',
+  body: 'IES expands into new countries only through qualified national leadership, institutional partnerships, and programming that can be sustained locally.',
   detail:
-    'A new national branch is established only when there is leadership capable of sustaining it, a realistic plan for local programming, and institutional relationships to support it. We do not announce countries before those conditions are met.',
+    'A branch opens only when there is leadership capable of sustaining it, a realistic plan for local programming, and institutions to support it. We do not announce countries before that.',
   criteria: [
     'Qualified national leadership already in place',
     'A realistic first-year programming plan',

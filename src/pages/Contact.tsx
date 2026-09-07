@@ -33,7 +33,7 @@ export default function Contact() {
         eyebrow="Contact"
         ghost="Contact"
         title="Reach the right team."
-        lead="Inquiries are routed to the Foundation or the relevant branch. If you know which branch you need, contact them directly."
+        lead="Inquiries go to the Foundation or the relevant branch. If you know which branch you need, contact them directly."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Contact' }]}
       />
 
@@ -57,9 +57,8 @@ export default function Contact() {
                     under four headings reads as an oversight rather than a
                     small team being straight about how it operates. */}
                 <p className="mt-5 max-w-md text-sm leading-relaxed text-mist">
-                  IES is student-run and every inquiry reaches the same team. Choosing a
-                  category below fills in the subject line so your message gets to the
-                  right person faster.
+                  Every inquiry reaches the same team. Picking a category fills in the subject
+                  line, so it gets to the right person faster.
                 </p>
               </Reveal>
 
@@ -165,10 +164,10 @@ export default function Contact() {
             <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
               <Eyebrow>A Note on Participant Safety</Eyebrow>
               <p className="leading-relaxed text-mist">
-                IES works with students, including minors. We do not request personal details
-                beyond what is needed to answer an inquiry, and we do not pass contact details to
-                third parties. Concerns about the conduct of any IES participant, chapter, or
-                event should be raised directly with the Global Foundation.
+                IES works with students, including minors. We ask for no more detail than
+                answering your inquiry needs, and pass nothing to third parties. Raise
+                concerns about any IES participant, chapter, or event directly with the Global
+                Foundation.
               </p>
             </div>
           </Reveal>

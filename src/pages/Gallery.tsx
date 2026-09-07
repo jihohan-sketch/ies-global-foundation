@@ -119,7 +119,7 @@ export default function Gallery() {
         eyebrow="Gallery"
         ghost="Record"
         title="The complete record"
-        lead={`Every photograph and every film IES has published — ${allPhotos.length} photographs across ${activities.length} programmes, and ${allVideos.length} videos. Nothing here is stock imagery, and every photograph was taken at the programme it shows.`}
+        lead={`Every photograph and film IES has published — ${allPhotos.length} photographs across ${activities.length} programmes, and ${allVideos.length} videos. No stock imagery: each one was taken at the programme it shows.`}
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Gallery' }]}
       />
 
@@ -139,9 +139,8 @@ export default function Gallery() {
               Nine programmes, one pass
             </Scrub>
             <p className="text-lead mt-7 max-w-2xl text-mist">
-              Scroll on. The frames travel sideways at the speed you set — nothing
-              here captures the wheel, and the grid below stays the place to
-              search.
+              Scroll on. The frames travel sideways at the speed you set — nothing captures
+              the wheel, and the grid below is still where you search.
             </p>
           </Reveal>
         </Container>
@@ -279,7 +278,7 @@ export default function Gallery() {
 
       <CallToAction
         title="Read what happened"
-        body="Each programme has its own entry — what it was, who took part, and what came of it."
+        body="Each programme has its own entry: what it was, who took part, and what came of it."
         actions={[
           { label: 'Our Work', to: '/our-work', variant: 'primary' },
           { label: 'See Our Impact', to: '/impact' },

@@ -32,7 +32,7 @@ export const privacyPolicy: LegalDocument = {
   eyebrow: 'Legal',
   updated: lastReviewed,
   intro:
-    'This policy explains what information the IES Global Foundation collects through this website, why we collect it, and what we do with it. We collect as little as possible.',
+    'What the IES Global Foundation collects through this website, why, and what we do with it. We collect as little as possible.',
   sections: [
     {
       heading: 'Information we collect',
@@ -201,41 +201,41 @@ export const legalDocuments = [privacyPolicy, termsOfUse, participantSafety]
 
 export const governance = {
   intro:
-    'This page describes how IES is organized and what each part of the organization is and is not. It exists because clarity about structure is part of operating credibly.',
+    'How IES is organized, and what each part of it is and is not. Clarity about structure is part of operating credibly.',
   entities: [
     {
       title: 'IES Global Foundation',
-      body: 'The international body that coordinates the IES network. It is responsible for international coordination, cross-border initiatives, global partnerships, branding, standards, branch development, and future expansion. It does not run local programming.',
+      body: 'The international body coordinating the IES network: cross-border initiatives, global partnerships, branding, standards, branch development, and expansion. It does not run local programming.',
     },
     {
       title: 'National branches',
-      body: 'IES Korea, IES United States, and IES UK Society. Each is an organizational unit of the same international network, led by students in that country, responsible for local programming, chapters, and outreach. They are not independent legal entities.',
+      body: 'IES Korea, IES United States, and IES UK Society. Each is a unit of the same network, led by students in that country and responsible for local programming, chapters, and outreach. They are not independent legal entities.',
     },
     {
       title: 'School chapters',
-      body: 'Student-led groups at individual schools, approved and supported by their national branch. Chapters operate under shared guidelines and may use IES branding only as issued to them.',
+      body: 'Student-led groups at individual schools, approved and supported by their national branch. They run under shared guidelines and may use IES branding only as issued.',
     },
     {
       title: 'External partners',
-      body: 'Schools, universities, nonprofits, community centers, and public institutions that collaborate with IES. Partnership does not imply endorsement, accreditation, or affiliation beyond what has been agreed in writing.',
+      body: 'Schools, universities, nonprofits, community centers, and public institutions that work with IES. Partnership implies no endorsement, accreditation, or affiliation beyond what is agreed in writing.',
     },
   ],
   principles: [
     {
       title: 'Accurate representation',
-      body: 'IES describes itself as a student-led nonprofit organization founded in South Korea. It does not claim registered charitable or NGO status in any other country, and nothing on this site should be read as such a claim.',
+      body: 'IES is a student-led nonprofit founded in South Korea. It claims no registered charitable or NGO status in any other country, and nothing here should be read as such a claim.',
     },
     {
       title: 'Defined authority',
-      body: 'A title within IES carries the responsibilities described for that role and no authority beyond them. National leadership does not speak for the Foundation, and the Foundation does not run branch programming.',
+      body: 'A title carries the responsibilities described for that role and no authority beyond them. Branch leadership does not speak for the Foundation, and the Foundation does not run branch programming.',
     },
     {
       title: 'Verifiable reporting',
-      body: 'Published figures come from internal branch reporting consolidated by the Foundation. Where a figure cannot be supported from records, it is not published.',
+      body: 'Published figures come from branch reporting, consolidated by the Foundation. A figure we cannot support from records is not published.',
     },
     {
       title: 'Reviewed publication',
-      body: 'Substantive changes to this website — leadership, statistics, branch information, and organizational claims — are reviewed by founding leadership and the relevant national branch president before publication.',
+      body: 'Substantive changes to this site — leadership, statistics, branch information, organizational claims — are reviewed by founding leadership and the relevant branch president before publication.',
     },
   ],
 }

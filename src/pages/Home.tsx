@@ -113,9 +113,8 @@ export default function Home() {
             <div className="space-y-6">
               <Scrub effect="scrub-rise" offset={0.05}>
                 <p className="text-lead text-paper">
-                  The Interscholastic Ethics Society was founded in Seoul on 20 April 2023 by
-                  two students. It is now Korea’s largest student-led ethics organization and
-                  runs in three countries.
+                  Founded in Seoul on 20 April 2023 by two students. Now Korea’s largest
+                  student-led ethics organization, running in three countries.
                 </p>
               </Scrub>
               {/* The one paragraph on this page that lights as it is read.
@@ -125,7 +124,7 @@ export default function Home() {
               <LitText
                 offset={0.12}
                 className="leading-relaxed text-mist"
-                text="Every role in IES is held by a student — including the ones that carry real consequences. Adults advise; students decide, run the programmes, and answer for how they went."
+                text="Every role in IES is held by a student, including the ones with real consequences. Adults advise; students decide, run the programmes, and answer for them."
               />
               <Scrub effect="scrub-rise" offset={0.18}>
                 <p className="text-[0.9375rem] leading-relaxed text-mist">
@@ -134,7 +133,7 @@ export default function Home() {
               </Scrub>
               <Scrub effect="scrub-rise" offset={0.22} className="pt-2">
                 <Button to="/about" variant="ghost" arrow>
-                  Learn about IES
+                  About IES
                 </Button>
               </Scrub>
             </div>
@@ -171,10 +170,9 @@ export default function Home() {
             />
             <Scrub effect="scrub-rise" offset={0.12}>
               <p className="text-lead mt-8 max-w-[52ch] text-navy-600">
-                Schools are good at rewarding achievement and offer far fewer chances to
-                take ethics, service and civic responsibility seriously. IES was founded to
-                build those settings — and to insist that what a student concludes in one
-                shows up in what they do afterwards.
+                Schools reward achievement and offer far fewer chances to take ethics,
+                service, and civic responsibility seriously. IES builds those settings — and
+                insists that what a student concludes shows up in what they do next.
               </p>
             </Scrub>
           </Split>
@@ -205,14 +203,12 @@ export default function Home() {
               lead={
                 <>
                   <span className="block">
-                    Korea is the original branch and the operational headquarters. The United
-                    States and the United Kingdom run their own programming to the same
-                    standards.
+                    Korea is the original branch and the headquarters. The United States and
+                    the United Kingdom run their own programming to the same standards.
                   </span>
                   <span className="mt-4 block text-[0.9375rem] text-mist">
-                    The Foundation does not replace the branches. It sets the standards they
-                    share and runs the programming that crosses between them; everything local
-                    is the branch’s own.
+                    The Foundation does not replace the branches. It sets the shared standards
+                    and runs what crosses between them; everything local is the branch’s own.
                   </span>
                 </>
               }
@@ -246,7 +242,7 @@ export default function Home() {
               eyebrow="What We Do"
               ghost="Work"
               title="Five kinds of work."
-              lead="Ethics forums, community service, leadership roles with real consequences, civic campaigns, and programming that runs across all three branches."
+              lead="Ethics forums, community service, leadership roles that carry consequences, civic campaigns, and programming across all three branches."
             />
           </Scrub>
         </Container>
@@ -346,33 +342,33 @@ export default function Home() {
        */}
       <CallToAction
         title="Three ways in."
-        body="Every one of them leads to real responsibility rather than a membership list. Pick the one that matches what you actually want to take on."
+        body="Each one leads to real responsibility, not a membership list. Pick the one that matches what you want to take on."
         routes={[
           {
             audience: 'Students',
             title: 'Join as a student',
-            body: 'If your school already has an IES chapter, join it — programming runs week to week, and officer roles open to members who want them.',
+            body: 'If your school has a chapter, join it. Programming runs week to week, and officer roles open to members who want them.',
             linkLabel: 'See the pathways',
             to: '/join',
           },
           {
             audience: 'Students without a chapter',
             title: 'Start a chapter',
-            body: 'The most demanding way in and the one with the most ownership. You will need a founding team and a plan for your school’s first year.',
+            body: 'The most demanding way in, and the one with the most ownership. You need a founding team and a plan for your first year.',
             linkLabel: 'See the process',
             to: '/start-a-chapter',
           },
           {
             audience: 'Schools and organizations',
             title: 'Partner with us',
-            body: 'Partnerships are scoped in writing, against the same conduct and participant safety standards as our own programming.',
-            linkLabel: 'Start a conversation',
+            body: 'Partnerships are scoped in writing, to the same conduct and safety standards as our own programming.',
+            linkLabel: 'Get in touch',
             to: '/partners',
           },
         ]}
         actions={[
           { label: 'Join IES', to: '/join', variant: 'primary' },
-          { label: 'Contact the team', to: '/contact' },
+          { label: 'Contact Us', to: '/contact' },
         ]}
       />
     </>

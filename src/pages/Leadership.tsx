@@ -99,7 +99,7 @@ export default function Leadership() {
         eyebrow="Leadership"
         ghost="Leaders"
         title="Students holding real responsibility."
-        lead="IES is led by students at every level. Roles exist because work needs doing — we do not create titles to fill a page."
+        lead="Students lead at every level. Roles exist because work needs doing — we do not create titles to fill a page."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Leadership' }]}
       />
 
@@ -336,8 +336,7 @@ export default function Leadership() {
 
           <Reveal delay={160}>
             <p className="mt-16 max-w-2xl border-t border-mist/15 pt-6 text-sm leading-relaxed text-mist">
-              Additional national officers are listed once appointments are finalised and
-              confirmed by the relevant branch.
+              Further national officers are listed once the branch confirms the appointment.
             </p>
           </Reveal>
         </Container>
@@ -351,15 +350,13 @@ export default function Leadership() {
               <Eyebrow>Governance Note</Eyebrow>
               <div className="space-y-5">
                 <p className="leading-relaxed text-mist">
-                  Leadership positions within IES carry defined responsibilities and reporting
-                  expectations. National branches are organizational units of the same
-                  international network — they are not independent legal entities, and holding a
-                  national title does not confer authority beyond the responsibilities described
-                  here.
+                  Every position carries defined responsibilities and reporting. Branches are
+                  units of the same network, not independent legal entities, and a national
+                  title confers no authority beyond what is described here.
                 </p>
                 <p className="leading-relaxed text-mist">
-                  Questions about the organization’s structure or the scope of any role can be
-                  directed to the Global Foundation.
+                  Questions about the structure, or the scope of any role, go to the Global
+                  Foundation.
                 </p>
               </div>
             </div>
@@ -369,7 +366,7 @@ export default function Leadership() {
 
       <CallToAction
         title="Take on a role within IES"
-        body="Chapter officers, national branch positions, and Foundation roles open as the network grows."
+        body="Chapter officers, branch positions, and Foundation roles open as the network grows."
         actions={[
           { label: 'Join IES', to: '/join', variant: 'primary' },
           { label: 'Contact Us', to: '/contact' },

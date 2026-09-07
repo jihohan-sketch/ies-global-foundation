@@ -27,7 +27,7 @@ export default function About() {
         eyebrow="About IES"
         ghost="About"
         title="Two students, one question, April 2023."
-        lead="They wanted somewhere to argue ethics properly — prepared, in public, against people who disagreed. Three years on that is a society of 1,200+ students across three countries, and every role in it is still held by a student."
+        lead="They wanted somewhere to argue ethics properly — prepared, in public, against people who disagreed. Three years on: 1,200+ students across three countries, and every role still held by a student."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]}
       />
 
@@ -91,20 +91,20 @@ export default function About() {
 
             <Reveal delay={100} className="space-y-7">
               <p className="text-lead text-paper">
-                Founded in April 2023, IES began as a student-led initiative in Korea focused
-                on ethics, education, and youth service.
+                IES began in April 2023 as a student-led initiative in Korea, focused on
+                ethics, education, and youth service.
               </p>
               <p className="leading-relaxed text-mist">
-                What started as a local community grew into a network involving students from
-                dozens of schools and multiple countries. Growth was not the original aim. It
-                followed from the fact that the model worked: students given a serious setting
-                for ethical inquiry, and a real expectation that inquiry would lead to action,
-                kept showing up — and then wanted to build the same thing at their own schools.
+                A local community grew into a network across dozens of schools and several
+                countries. Growth was never the aim; it followed from the model working.
+                Students given a serious setting for ethical inquiry — and a real expectation
+                that it would lead to action — kept showing up, then wanted the same thing at
+                their own schools.
               </p>
               <p className="leading-relaxed text-mist">
-                As IES expanded beyond Korea, the IES Global Foundation was established to
-                connect national branches under one international identity and shared mission.
-                The Foundation coordinates; it does not centralise. {site.headquartersStatement}
+                As IES grew beyond Korea, the Global Foundation was established to connect
+                the branches under one identity and shared mission. It coordinates; it does
+                not centralise. {site.headquartersStatement}
               </p>
             </Reveal>
           </div>
@@ -125,19 +125,18 @@ export default function About() {
 
             <Reveal delay={120} className="space-y-6">
               <p className="leading-relaxed text-mist">
-                Schools are effective at encouraging academic achievement. They offer far fewer
-                opportunities to engage seriously with ethics, responsibility, service, and
-                civic leadership — the questions that determine what an education is eventually
-                used for.
+                Schools are good at encouraging academic achievement. They offer far fewer
+                chances to engage seriously with ethics, responsibility, service, and civic
+                leadership — the questions that decide what an education gets used for.
               </p>
               <p className="leading-relaxed text-mist">
-                IES was founded to create those opportunities: settings where students argue
-                about difficult questions and are expected to defend their reasoning, and
-                programs where the conclusions they reach are put to work in their communities.
+                IES was founded to create them: settings where students argue difficult
+                questions and defend their reasoning, and programs that put those conclusions
+                to work in their communities.
               </p>
               <p className="leading-relaxed text-mist">
-                The organization is youth-led by design. Students do not participate in someone
-                else's programming; they run it, and they answer for the results.
+                Youth-led by design. Students do not take part in someone else's programming;
+                they run it, and answer for the results.
               </p>
             </Reveal>
           </div>
@@ -298,7 +297,7 @@ export default function About() {
             <SectionHeading
               eyebrow="Organizational Structure"
               title="How the network fits together."
-              lead="The Global Foundation sets international direction and coordinates branches. Each branch runs its own local work within that shared mission and standard."
+              lead="The Global Foundation sets international direction and coordinates. Each branch runs its own local work to the shared mission and standard."
             />
           </Reveal>
 
@@ -361,9 +360,8 @@ export default function About() {
 
           <Reveal delay={240}>
             <p className="mt-10 max-w-3xl border-t border-mist/15 pt-6 text-sm leading-relaxed text-slate">
-              IES currently maintains national branches in {branches.map((b) => b.country).join(', ')}.
-              Branches are organizational units of the same international network, not independent
-              legal entities.
+              IES has national branches in {branches.map((b) => b.country).join(', ')}.
+              Branches are units of the same network, not independent legal entities.
             </p>
           </Reveal>
         </Container>
@@ -371,7 +369,7 @@ export default function About() {
 
       <CallToAction
         title="Every role here is held by a student."
-        body="Including the ones that carry consequences. If you want one, the fastest route in is your own school — and if there is no chapter there yet, that is the opening."
+        body="Including the ones that carry consequences. The fastest route in is your own school — and if there is no chapter there yet, that is the opening."
         actions={[
           { label: 'Join IES', to: '/join', variant: 'primary' },
           { label: 'Partner With Us', to: '/partners' },

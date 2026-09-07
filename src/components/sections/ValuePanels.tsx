@@ -65,7 +65,7 @@ export function ValuePanels({ id, index = '07' }: { id?: string; index?: string 
             eyebrow="How We Work"
             ghost="Ethics"
             title="The Three A’s"
-            lead="The test every IES programme is held to, unchanged since 2023 and applied the same way in every branch."
+            lead="The test every IES programme is held to — unchanged since 2023, applied the same way in every branch."
           />
         </Scrub>
 

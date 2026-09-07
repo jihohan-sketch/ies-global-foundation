@@ -16,8 +16,8 @@ export default function NotFound() {
         <Eyebrow>Error 404</Eyebrow>
         <h1 className="text-h1 mt-8 max-w-2xl">This page could not be found.</h1>
         <p className="text-lead mt-7 max-w-xl text-mist">
-          The link may be out of date, or the page may have moved as the site has grown. The
-          sections below cover everything on this website.
+          The link may be out of date, or the page may have moved. Everything on the site is
+          listed below.
         </p>
 
         <div className="mt-11 flex flex-wrap gap-4">

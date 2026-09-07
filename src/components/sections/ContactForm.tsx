@@ -166,8 +166,7 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
       <div className="border border-[var(--accent)]/40 bg-[var(--accent)]/6 p-10 text-center" role="status">
         <p className="font-serif text-h3 text-[var(--accent)]">Message sent</p>
         <p className="mx-auto mt-5 max-w-md leading-relaxed text-mist">
-          Thank you for getting in touch. Inquiries are directed to the relevant branch or team,
-          and we aim to respond within a few working days.
+          Your message goes to the relevant branch or team. We reply within a few working days.
         </p>
         <button
           type="button"
@@ -220,7 +219,7 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
         error={fieldErrors.message}
         onBlur={handleBlur}
         onInput={handleInput}
-        placeholder="Tell us a little about who you are and what you are looking for."
+        placeholder="Who you are, and what you are looking for."
       />
 
       {error && (
@@ -231,7 +230,7 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
               href={fallbackHref}
               className="mt-3 inline-block text-[0.8125rem] text-paper underline underline-offset-4 transition-colors hover:text-[var(--accent)]"
             >
-              Send it as an email instead — your answers are already filled in
+              Send as an email instead — your answers are already filled in
             </a>
           )}
         </div>
@@ -242,7 +241,7 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
           {status === 'submitting' ? 'Sending…' : 'Send message'}
         </Button>
         <p className="text-xs text-mist">
-          We use your details only to respond to your inquiry.
+          Your details are used only to reply.
         </p>
       </div>
     </form>

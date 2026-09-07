@@ -114,9 +114,8 @@ export default function Join() {
               Applications are handled by the branch in your country.
             </h2>
             <p className="mt-6 max-w-2xl leading-relaxed text-mist">
-              If you are outside Korea, the United States, or the United Kingdom, contact the
-              Global Foundation directly — we will tell you honestly whether there is a route in
-              at the moment.
+              Outside Korea, the United States, or the United Kingdom? Contact the Global
+              Foundation directly — we will tell you honestly whether there is a route in yet.
             </p>
           </Reveal>
 
@@ -160,10 +159,9 @@ export default function Join() {
                   IES roles come with expectations, not just titles.
                 </p>
                 <p className="leading-relaxed text-mist">
-                  Members are expected to participate, chapter officers to run programming
-                  through a full academic year, and national officers to be accountable for
-                  outcomes across schools. We would rather you join the pathway you can actually
-                  sustain than the one that sounds most impressive.
+                  Members turn up, chapter officers run programming through a full academic
+                  year, and national officers answer for outcomes across schools. Join the
+                  pathway you can actually sustain, not the one that sounds most impressive.
                 </p>
                 <p className="leading-relaxed text-mist">
                   All participants agree to our conduct and participant safety standards.
@@ -184,11 +182,11 @@ export default function Join() {
               <SectionHeading
                 eyebrow="Apply"
                 title="Send your application"
-                lead="Tell us who you are and which pathway you are after. Applications go to the branch in your country, and someone will reply within a few working days."
+                lead="Tell us who you are and which pathway you want. Applications go to the branch in your country; someone replies within a few working days."
               />
               <p className="mt-8 max-w-md text-[0.9375rem] leading-relaxed text-mist">
-                If you already know which chapter or officer you need, writing to your branch
-                directly is just as good — the addresses are above.
+                If you know which chapter or officer you need, write to your branch directly —
+                the addresses are above.
               </p>
             </Reveal>
 

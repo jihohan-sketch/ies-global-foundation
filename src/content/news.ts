@@ -16,23 +16,23 @@ import type { NewsArticle } from './types'
 export const articles: NewsArticle[] = [
   {
     slug: 'ies-global-foundation-established',
-    title: 'IES Global Foundation Established to Connect National Branches',
+    title: 'IES Global Foundation Established',
     date: '2026-06-18',
     category: 'Organizational Update',
     branch: 'Global Foundation',
     featured: true,
     summary:
-      'The Foundation formalises the relationship between IES Korea, IES United States, and IES UK Society under one international identity and a shared set of standards.',
+      'One international identity and one set of standards across IES Korea, IES United States, and IES UK Society.',
     cover: '/activities/un-human-rights-office-visit/delegation.jpg',
     coverAlt: 'Four IES students in formal dress in front of a UN-branded backdrop at the OHCHR office in Seoul.',
     body: [
       {
         type: 'paragraph',
-        text: 'IES has established the IES Global Foundation to coordinate its national branches under a single international identity. The Foundation does not replace the branches. It connects them — providing international direction, shared branding, branch coordination, cross-border programming, and partnership development, while national branches continue to manage their own local initiatives.',
+        text: 'IES has established the Global Foundation to coordinate its national branches under a single international identity. It does not replace the branches; it connects them — international direction, shared branding, coordination, cross-border programming, and partnership development. Branches keep running their own local work.',
       },
       {
         type: 'paragraph',
-        text: 'The change formalises a structure that had been developing in practice since students outside Korea began participating in IES programming. As activity spread across countries, the organization needed a way to keep its identity and standards consistent without imposing a single national model on every branch.',
+        text: 'It formalises a structure that had been forming in practice since students outside Korea started taking part. As activity spread, IES needed a way to keep its identity and standards consistent without imposing one national model on every branch.',
       },
       { type: 'heading', text: 'What the Foundation is responsible for' },
       {
@@ -40,14 +40,14 @@ export const articles: NewsArticle[] = [
         items: [
           'International coordination between national branches',
           'Cross-border initiatives and joint programming',
-          'Global partnerships with institutions operating in more than one country',
+          'Global partnerships with institutions in more than one country',
           'Branding, standards, and organizational identity',
           'Branch development and responsible future expansion',
         ],
       },
       {
         type: 'paragraph',
-        text: 'IES Korea remains the organization’s original branch and primary operational headquarters, carrying the largest share of programming and chapters. IES United States and IES UK Society extend the mission into their own national contexts.',
+        text: 'IES Korea remains the original branch and operational headquarters, carrying the largest share of programming and chapters. IES United States and IES UK Society extend the mission into their own contexts.',
       },
       {
         type: 'quote',
@@ -63,7 +63,7 @@ export const articles: NewsArticle[] = [
     branch: 'IES UK Society',
     featured: true,
     summary:
-      'The network’s newest national branch begins with founding leadership, first chapter recruitment, and outreach to U.K. schools.',
+      'The newest branch begins: founding leadership, first chapter recruitment, and outreach to U.K. schools.',
     body: [
       {
         type: 'paragraph',
@@ -91,12 +91,12 @@ export const articles: NewsArticle[] = [
   },
   {
     slug: 'ies-united-states-co-presidents',
-    title: 'IES United States Confirms Co-Presidential Leadership',
+    title: 'IES United States Confirms Co-Presidents',
     date: '2026-04-22',
     category: 'Leadership',
     branch: 'IES United States',
     summary:
-      'Aden Lee and Onew Choi share national leadership of the U.S. branch, with responsibility split across strategy, chapter development, and programming.',
+      'Aden Lee and Onew Choi share national leadership of the U.S. branch across strategy, chapter development, and programming.',
     cover: '/activities/camp-humphreys-cadets/delegation.jpg',
     coverAlt: 'Six IES students with Major General Charles Lombardo, photographed between the United States flag and unit colours at Camp Humphreys.',
     body: [
@@ -116,7 +116,7 @@ export const articles: NewsArticle[] = [
   },
   {
     slug: 'cross-branch-ethics-forum',
-    title: 'Cross-Branch Ethics Forum Brings Three Countries Into One Discussion',
+    title: 'Cross-Branch Ethics Forum Joins Three Countries',
     date: '2026-03-14',
     category: 'Event',
     branch: 'Cross-branch',
@@ -157,7 +157,7 @@ export const articles: NewsArticle[] = [
     category: 'Community Service',
     branch: 'IES Korea',
     summary:
-      'IES Korea’s longest-running service partnership continues, with student volunteers returning on a recurring schedule to run educational sessions and mentorship.',
+      'IES Korea’s longest-running service partnership continues, with volunteers returning on a recurring schedule for lessons and mentorship.',
     cover: '/activities/jiguchon-childrens-center/lesson.jpg',
     coverAlt: 'An IES volunteer leading a lesson while children sit at the tables.',
     body: [
@@ -177,12 +177,12 @@ export const articles: NewsArticle[] = [
   },
   {
     slug: 'chapter-guidelines-update',
-    title: 'Updated Chapter Guidelines Issued Across the Network',
+    title: 'Updated Chapter Guidelines Issued',
     date: '2026-01-15',
     category: 'Program',
     branch: 'Global Foundation',
     summary:
-      'Revised guidelines clarify chapter approval, annual planning, reporting expectations, and participant safety standards for all branches.',
+      'Revised guidelines cover chapter approval, annual planning, reporting, and participant safety across all branches.',
     cover: '/activities/environmental-ethics-forum/desk.jpg',
     coverAlt: 'An IES student at a council desk with the session\'s printed papers.',
     body: [
