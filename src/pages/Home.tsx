@@ -16,7 +16,6 @@ import { NamedPartners } from '@/components/sections/NamedPartners'
 import { ValuePanels } from '@/components/sections/ValuePanels'
 import { galleryItems } from '@/content/activities'
 import { personById } from '@/content/leadership'
-import { site } from '@/content/site'
 import { useSeo } from '@/lib/seo'
 
 /*
@@ -124,13 +123,8 @@ export default function Home() {
               <LitText
                 offset={0.12}
                 className="leading-relaxed text-mist"
-                text="Every role is held by a student. Adults advise; students decide, run the programmes, and answer for them."
+                text="Every role is held by a student. Adults advise; students decide and answer for it."
               />
-              <Scrub effect="scrub-rise" offset={0.18}>
-                <p className="text-[0.9375rem] leading-relaxed text-mist">
-                  {site.headquartersStatement}
-                </p>
-              </Scrub>
               <Scrub effect="scrub-rise" offset={0.22} className="pt-2">
                 <Button to="/about" variant="ghost" arrow>
                   About IES
@@ -199,15 +193,7 @@ export default function Home() {
               eyebrow="Where We Are"
               ghost="Network"
               title="One society, three countries."
-              lead={
-                <>
-                  <span className="block">
-                    Korea is the original branch and the headquarters. The United States and
-                    the United Kingdom run their own programming to the same standards. The
-                    Foundation sets those standards; everything local is the branch’s own.
-                  </span>
-                </>
-              }
+lead="Korea is the original branch and the headquarters. The United States and the United Kingdom run their own programming. The Foundation sets the standards they share; everything local is the branch’s own."
             />
           </Scrub>
         </Container>
@@ -238,7 +224,7 @@ export default function Home() {
               eyebrow="What We Do"
               ghost="Work"
               title="Five kinds of work."
-              lead="Ethics forums, community service, leadership roles that carry consequences, civic campaigns, and programming across all three branches."
+              lead="Ethics forums, community service, leadership roles, civic campaigns, and programming across all three branches."
             />
           </Scrub>
         </Container>

@@ -153,9 +153,6 @@ export default function OurWork() {
                       <h3 className="mt-4 font-serif text-[clamp(1.625rem,2.8vw,2.375rem)] leading-[1.1] tracking-[-0.02em] text-navy">
                         {category.title}
                       </h3>
-                      <p className="mt-5 max-w-[40ch] text-[0.9375rem] leading-relaxed text-navy-600">
-                        {category.summary}
-                      </p>
                     </Scrub>
                   }
                 >

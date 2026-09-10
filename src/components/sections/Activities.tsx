@@ -124,13 +124,28 @@ export function ActivityEntry({ activity, index }: { activity: Activity; index: 
 
         <Reveal delay={120}>
           <PhotoGrid activity={activity} />
-          <div className="mt-8 space-y-5">
-            {activity.body.map((paragraph) => (
-              <p key={paragraph.slice(0, 40)} className="leading-relaxed text-paper">
-                {paragraph}
-              </p>
-            ))}
-          </div>
+          {/* The full account sits behind a disclosure rather than inline.
+              Fifteen events, each with two paragraphs, made this page a wall of
+              prose you had to scroll past to reach the next photograph — the
+              summary and the pictures are what the feed is for, and the account
+              is there for whoever wants it. Native <details>, so it needs no
+              JavaScript, stays in the DOM for search, and prints open. */}
+          {activity.body.length > 0 && (
+            <details className="group mt-8">
+              <summary className="inline-flex cursor-pointer list-none items-center gap-3 text-[0.75rem] font-semibold tracking-[0.13em] text-[var(--accent)] uppercase transition-opacity hover:opacity-70 [&::-webkit-details-marker]:hidden">
+                <span aria-hidden className="h-px w-6 bg-[var(--accent)]/60" />
+                <span className="group-open:hidden">Read the full account</span>
+                <span className="hidden group-open:inline">Hide</span>
+              </summary>
+              <div className="mt-6 space-y-5">
+                {activity.body.map((paragraph) => (
+                  <p key={paragraph.slice(0, 40)} className="leading-relaxed text-paper">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </details>
+          )}
 
           {activity.videos && activity.videos.length > 0 && (
             <div className="mt-10">

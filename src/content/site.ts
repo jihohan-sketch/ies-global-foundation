@@ -69,7 +69,7 @@ export const site = {
    * standard.
    */
   vision:
-    'Student-led chapters in every country IES reaches — each running its own programming, all held to one standard for how a question is argued and what follows.',
+    'Student-led chapters in every country IES reaches, each running its own programming to one shared standard.',
 
   /** Used verbatim wherever the Korea / Foundation relationship is described. */
   headquartersStatement:

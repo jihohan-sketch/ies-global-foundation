@@ -27,7 +27,7 @@ export default function About() {
         eyebrow="About IES"
         ghost="About"
         title="Two students, one question, April 2023."
-        lead="They wanted somewhere to argue ethics properly — prepared, in public, against people who disagreed. Three years on: 1,200+ students across three countries."
+        lead="The question was where you could take ethics seriously. Three years on: 1,200+ students across three countries."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]}
       />
 
@@ -100,9 +100,9 @@ export default function About() {
                 up, then wanted the same thing at their own schools.
               </p>
               <p className="leading-relaxed text-mist">
-                As IES grew beyond Korea, the Global Foundation was established to connect
-                the branches under one identity and shared mission. It coordinates; it does
-                not centralise. {site.headquartersStatement}
+                As IES grew beyond Korea, the Global Foundation was established to connect the
+                branches under one identity — it coordinates, it does not centralise. IES Korea
+                remains the original branch and operational headquarters.
               </p>
             </Reveal>
           </div>
@@ -123,14 +123,9 @@ export default function About() {
 
             <Reveal delay={120} className="space-y-6">
               <p className="leading-relaxed text-mist">
-                Schools are good at encouraging academic achievement, and offer far fewer
-                chances to take ethics, service, and civic leadership seriously. IES was
-                founded to build those settings — and to put what a student concludes to work
-                in their community.
-              </p>
-              <p className="leading-relaxed text-mist">
-                Youth-led by design. Students do not take part in someone else's programming;
-                they run it, and answer for the results.
+                Schools are good at encouraging academic achievement. IES was founded for
+                the rest of it — and for putting what a student concludes to work in their
+                community.
               </p>
             </Reveal>
           </div>
