@@ -34,7 +34,7 @@ export const branches: Branch[] = [
     sections: [
       {
         title: 'National leadership',
-        body: 'A national president leads an executive team across education, projects, external partnerships, and media, alongside chapter leaders at participating schools. The branch works directly with the Global Foundation on standards, branding, and cross-border programming.',
+        body: 'A national president leads an executive team across education, projects, external partnerships, and media, alongside chapter leaders at participating schools.',
         items: [
           'Ryan Jimyung Cha — President, IES Korea (since January 2026)',
           'Executive departments: education, projects, external partnerships, media',
@@ -43,7 +43,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'Ethics forums',
-        body: 'The branch’s flagship programming: a recurring series of moderated forums on contested questions, each prepared and led by students, often with outside speakers.',
+        body: 'A recurring series of moderated forums on contested questions, prepared and led by students, often with outside speakers.',
         items: [
           'Medical ethics',
           'AI and technology ethics',
@@ -54,7 +54,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'Policy advocacy',
-        body: 'IES Korea takes positions into formal civic channels rather than stopping at discussion. Its advocacy has reached the National Assembly of Korea.',
+        body: 'IES Korea takes positions into formal civic channels rather than stopping at discussion — as far as the National Assembly of Korea.',
         items: [
           'Petition to the National Assembly on regulating generative AI for children under 12',
           'Public statements and informative publications',
@@ -63,7 +63,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'Community service',
-        body: 'Sustained service partnerships rather than one-off volunteering — returning to the same organizations on a schedule, so mentorship is actually possible.',
+        body: 'Returning to the same organizations on a schedule, so mentorship is actually possible.',
         items: [
           'Nanoom Korea',
           'Jiguchon Children’s Center',
@@ -74,7 +74,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'School chapters',
-        body: 'The largest concentration of chapters in the network, across international and domestic schools nationwide. Each is student-led, runs under the shared chapter guidelines, and reports periodically to the branch.',
+        body: 'The largest concentration of chapters in the network. Each is student-led, runs under the shared guidelines, and reports periodically to the branch.',
         items: [
           'Chapter leadership teams at participating schools',
           'Termly programming plans reviewed by the national branch',

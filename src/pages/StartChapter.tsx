@@ -19,7 +19,7 @@ export default function StartChapter() {
         eyebrow="Start a Chapter"
         ghost="Chapter"
         title="Bring IES to your school."
-        lead="The most demanding way into IES, and the one with the most ownership. Here is what it takes."
+        lead="The most demanding way into IES, and the one with the most ownership."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Start a Chapter' }]}
       />
 
@@ -57,7 +57,7 @@ export default function StartChapter() {
             <SectionHeading
               eyebrow="Chapter Expectations"
               title="What an IES chapter agrees to"
-              lead="What carrying the IES name requires. Chapters that fall short are supported first, and closed if that does not work."
+              lead="Chapters that fall short are supported first, and closed if that does not work."
             />
           </Reveal>
 

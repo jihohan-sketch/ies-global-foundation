@@ -69,8 +69,8 @@ export default function Impact() {
                   />
                   <Reveal delay={120}>
                     <p className="mt-8 max-w-[38ch] text-[0.9375rem] leading-relaxed text-navy-600">
-                      {site.statisticsNote} Branches report; the Foundation consolidates. A
-                      figure we cannot support from internal records is not published.
+                      {site.statisticsNote} A figure we cannot support from internal
+                      records is not published.
                     </p>
                   </Reveal>
                 </>
@@ -134,7 +134,7 @@ export default function Impact() {
         label="Impact stories"
         eyebrow="Impact Stories"
         title="The work behind the numbers."
-        lead="The figures describe the scale. These describe what it is for."
+        lead="What the figures are for."
         wordmark="Stories"
         panels={impactStories.map((story) => ({
           id: story.id,
@@ -196,7 +196,7 @@ export default function Impact() {
         photos={fieldPhotos}
         eyebrow="In the Field"
         title="The work as it happens"
-        lead="Forums in session, volunteers mid-shift, a petition on the public record. The full set, event by event, is on Our Work."
+        lead="The full set, event by event, is on Our Work."
       />
 
       {/* ============================================================= FILM */}

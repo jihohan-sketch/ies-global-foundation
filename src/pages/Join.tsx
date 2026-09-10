@@ -160,8 +160,8 @@ export default function Join() {
                 </p>
                 <p className="leading-relaxed text-mist">
                   Members turn up, chapter officers run programming through a full academic
-                  year, and national officers answer for outcomes across schools. Join the
-                  pathway you can actually sustain, not the one that sounds most impressive.
+                  year, and national officers answer for outcomes across schools. Join the one
+                  you can sustain, not the one that sounds most impressive.
                 </p>
                 <p className="leading-relaxed text-mist">
                   All participants agree to our conduct and participant safety standards.
@@ -182,7 +182,7 @@ export default function Join() {
               <SectionHeading
                 eyebrow="Apply"
                 title="Send your application"
-                lead="Tell us who you are and which pathway you want. Applications go to the branch in your country; someone replies within a few working days."
+                lead="Applications go to the branch in your country; someone replies within a few working days."
               />
               <p className="mt-8 max-w-md text-[0.9375rem] leading-relaxed text-mist">
                 If you know which chapter or officer you need, write to your branch directly —

@@ -28,7 +28,7 @@ export const impactStats: Stat[] = [
 ]
 
 export const impactIntro =
-  'IES measures itself by whether students take on real responsibility, and whether communities are better served for it. The figures show the scale of the network; the stories show what it is for.'
+  'The figures show the scale of the network; the stories show what it is for.'
 
 export const impactStories: ImpactStory[] = [
   {
@@ -38,7 +38,7 @@ export const impactStories: ImpactStory[] = [
     summary:
       'A recurring mentorship and education partnership with a local children’s center — not a one-off visit.',
     detail:
-      'Volunteers plan and deliver sessions around what the center says it needs, not what is convenient to organise. The same students return each time, which is what makes mentorship possible. It is now the model IES uses for service partnerships in other branches.',
+      'Volunteers plan sessions around what the center says it needs, and the same students return each time — which is what makes mentorship possible. It is now the model IES uses for service partnerships elsewhere.',
     metrics: [
       { value: 'Recurring', label: 'Session cadence' },
       { value: 'Korea', label: 'Branch' },
@@ -51,7 +51,7 @@ export const impactStories: ImpactStory[] = [
     summary:
       'Moderated forums putting students from several schools — and now several countries — into structured argument.',
     detail:
-      'Forums are prepared, moderated, and led by students. You arrive having done the reading and defend a position under questioning. The cross-branch format matters: an argument that goes unchallenged in one country rarely survives students from another.',
+      'Prepared, moderated, and led by students: you arrive having done the reading and defend a position under questioning. An argument that goes unchallenged in one country rarely survives students from another.',
     metrics: [
       { value: '3', label: 'Branches participating' },
       { value: 'Student-led', label: 'Format' },
@@ -64,7 +64,7 @@ export const impactStories: ImpactStory[] = [
     summary:
       'From one student initiative in Korea to chapters across dozens of schools, all under shared guidelines.',
     detail:
-      'Growth is governed, not opportunistic. A chapter is approved once it has a founding team, an annual plan, and leaders willing to answer for it. Periodic updates to the national branch are what let the network grow without IES thinning out.',
+      'Growth is governed, not opportunistic. A chapter is approved once it has a founding team, an annual plan, and leaders willing to answer for it.',
     metrics: [
       { value: '23+', label: 'Chapters' },
       { value: '42+', label: 'Schools represented' },
@@ -77,7 +77,7 @@ export const impactStories: ImpactStory[] = [
     summary:
       'Relationships with schools, community organizations, and institutions that give student programming real footing.',
     detail:
-      'Partnerships give IES reach a student organization cannot generate alone, and give partners a reliable volunteer base. Each is held to the same conduct and safety standards as our own programming.',
+      'Partnerships give IES reach a student organization cannot generate alone, and give partners a reliable volunteer base — to the same conduct and safety standards as our own programming.',
   },
 ]
 

@@ -1,7 +1,7 @@
 import type { FaqItem, JoinPathway, ProcessStep } from './types'
 
 export const joinIntro =
-  'Each pathway asks for a different level of commitment. Pick the one that matches what you want to take on — all of them lead to real responsibility, not a membership list.'
+  'Each pathway asks for a different level of commitment. Pick the one that matches what you want to take on.'
 
 export const joinPathways: JoinPathway[] = [
   {
@@ -23,7 +23,7 @@ export const joinPathways: JoinPathway[] = [
     title: 'Join a School Chapter',
     audience: 'Students at schools with an IES chapter',
     description:
-      'For students whose school already has a chapter. Chapters run their own programming — the most direct way to be involved week to week.',
+      'For students whose school already has a chapter — the most direct way to be involved week to week.',
     points: [
       'Participate in chapter programming',
       'Take on an officer role',
@@ -79,7 +79,7 @@ export const joinPathways: JoinPathway[] = [
 export const chapterSteps: ProcessStep[] = [
   {
     title: 'Submit an interest form',
-    body: 'Who you are, your school, and why you want a chapter there. This is a first conversation, not a test.',
+    body: 'Who you are, your school, and why you want a chapter there — a first conversation, not a test.',
   },
   {
     title: 'Meet your national branch',
@@ -91,11 +91,11 @@ export const chapterSteps: ProcessStep[] = [
   },
   {
     title: 'Get the guidelines',
-    body: 'The standards your chapter runs under, plus the branding and programming resources the network shares.',
+    body: 'The standards your chapter runs under, and the resources the network shares.',
   },
   {
     title: 'Submit an annual plan',
-    body: 'A realistic plan for your first year: what you will run, roughly when, and who is responsible for each part.',
+    body: 'What you will run in your first year, roughly when, and who is responsible for each part.',
   },
   {
     title: 'Complete approval',
@@ -110,7 +110,7 @@ export const chapterSteps: ProcessStep[] = [
 export const chapterExpectations = [
   {
     title: 'Uphold IES values',
-    body: 'Equity, integrity, and respect are not decorative. They govern how your chapter treats participants and communities.',
+    body: 'Equity, integrity, and respect govern how your chapter treats participants and communities.',
   },
   {
     title: 'Maintain active leadership',

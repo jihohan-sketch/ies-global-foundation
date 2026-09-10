@@ -48,7 +48,7 @@ export default function Partners() {
               ghost="Named"
               eyebrow="Organizations We Work With"
               title="Named collaborations"
-              lead="Community organizations, academic institutions, and public bodies — the relationships behind our service work."
+              lead="The relationships behind our service work."
             />
           </Reveal>
 
@@ -169,8 +169,8 @@ export default function Partners() {
               <Eyebrow>Collaboration Areas</Eyebrow>
               <h2 className="text-h2 mt-6">Where partnerships usually start</h2>
               <p className="mt-6 leading-relaxed text-mist">
-                Most collaborations start with one concrete thing — a speaker, a service day,
-                a joint forum — and grow once both sides know the work is reliable.
+                Most start with one concrete thing — a speaker, a service day, a joint forum
+                — and grow from there.
               </p>
             </Reveal>
 

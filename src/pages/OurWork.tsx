@@ -24,7 +24,7 @@ export default function OurWork() {
         eyebrow="Our Work"
         ghost="Work"
         title="From Reflection to Action"
-        lead="Ethics forums, community service, leadership roles, civic campaigns, and cross-branch programming. Each ends in something a student is answerable for."
+        lead="Ethics forums, community service, leadership roles, civic campaigns, and cross-branch programming."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Our Work' }]}
       />
 
@@ -54,8 +54,7 @@ export default function OurWork() {
                 />
                 <Scrub effect="scrub-rise" offset={0.1}>
                   <p className="mt-8 max-w-[38ch] text-navy-600">
-                    Everything IES runs sits under one of these three — how a chapter tells
-                    IES work from a good idea.
+                    Everything IES runs sits under one of these three.
                   </p>
                 </Scrub>
               </>
@@ -87,7 +86,7 @@ export default function OurWork() {
             <LitText
               offset={0.14}
               className="mt-12 max-w-[54ch] leading-relaxed text-mist"
-              text="Every programme below ends in something a student is accountable for — a session delivered, a partnership kept, a position defended in public. The five areas are how that work is organised."
+              text="A session delivered, a partnership kept, a position defended in public — every programme below ends in something a student is accountable for."
             />
           </div>
         </Container>
@@ -112,13 +111,12 @@ export default function OurWork() {
         index="01"
         eyebrow="Programme Areas"
         title="Five kinds of work, one mission."
-        lead="Each area has its own methods and partners. What they share is the expectation that a student finishes what they started."
+        lead="Each area has its own methods and partners."
         wordmark="Programmes"
         panels={workCategories.map((category) => ({
           id: category.id,
           title: category.title,
           body: category.summary,
-          points: category.examples.slice(0, 4),
           photo: category.image,
           photoAlt: category.imageAlt,
         }))}

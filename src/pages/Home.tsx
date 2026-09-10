@@ -124,7 +124,7 @@ export default function Home() {
               <LitText
                 offset={0.12}
                 className="leading-relaxed text-mist"
-                text="Every role in IES is held by a student, including the ones with real consequences. Adults advise; students decide, run the programmes, and answer for them."
+                text="Every role is held by a student. Adults advise; students decide, run the programmes, and answer for them."
               />
               <Scrub effect="scrub-rise" offset={0.18}>
                 <p className="text-[0.9375rem] leading-relaxed text-mist">
@@ -171,8 +171,7 @@ export default function Home() {
             <Scrub effect="scrub-rise" offset={0.12}>
               <p className="text-lead mt-8 max-w-[52ch] text-navy-600">
                 Schools reward achievement and offer far fewer chances to take ethics,
-                service, and civic responsibility seriously. IES builds those settings — and
-                insists that what a student concludes shows up in what they do next.
+                service, and civic responsibility seriously. IES builds those settings.
               </p>
             </Scrub>
           </Split>
@@ -204,11 +203,8 @@ export default function Home() {
                 <>
                   <span className="block">
                     Korea is the original branch and the headquarters. The United States and
-                    the United Kingdom run their own programming to the same standards.
-                  </span>
-                  <span className="mt-4 block text-[0.9375rem] text-mist">
-                    The Foundation does not replace the branches. It sets the shared standards
-                    and runs what crosses between them; everything local is the branch’s own.
+                    the United Kingdom run their own programming to the same standards. The
+                    Foundation sets those standards; everything local is the branch’s own.
                   </span>
                 </>
               }
@@ -342,26 +338,26 @@ export default function Home() {
        */}
       <CallToAction
         title="Three ways in."
-        body="Each one leads to real responsibility, not a membership list. Pick the one that matches what you want to take on."
+        body="Pick the one that matches what you want to take on."
         routes={[
           {
             audience: 'Students',
             title: 'Join as a student',
-            body: 'If your school has a chapter, join it. Programming runs week to week, and officer roles open to members who want them.',
+            body: 'If your school has a chapter, join it. Officer roles open to members who want them.',
             linkLabel: 'See the pathways',
             to: '/join',
           },
           {
             audience: 'Students without a chapter',
             title: 'Start a chapter',
-            body: 'The most demanding way in, and the one with the most ownership. You need a founding team and a plan for your first year.',
+            body: 'The most demanding way in. You need a founding team and a plan for your first year.',
             linkLabel: 'See the process',
             to: '/start-a-chapter',
           },
           {
             audience: 'Schools and organizations',
             title: 'Partner with us',
-            body: 'Partnerships are scoped in writing, to the same conduct and safety standards as our own programming.',
+            body: 'Scoped in writing, to the same conduct and safety standards as our own programming.',
             linkLabel: 'Get in touch',
             to: '/partners',
           },

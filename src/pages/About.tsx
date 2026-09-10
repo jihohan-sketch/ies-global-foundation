@@ -27,7 +27,7 @@ export default function About() {
         eyebrow="About IES"
         ghost="About"
         title="Two students, one question, April 2023."
-        lead="They wanted somewhere to argue ethics properly — prepared, in public, against people who disagreed. Three years on: 1,200+ students across three countries, and every role still held by a student."
+        lead="They wanted somewhere to argue ethics properly — prepared, in public, against people who disagreed. Three years on: 1,200+ students across three countries."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]}
       />
 
@@ -95,11 +95,9 @@ export default function About() {
                 ethics, education, and youth service.
               </p>
               <p className="leading-relaxed text-mist">
-                A local community grew into a network across dozens of schools and several
-                countries. Growth was never the aim; it followed from the model working.
-                Students given a serious setting for ethical inquiry — and a real expectation
-                that it would lead to action — kept showing up, then wanted the same thing at
-                their own schools.
+                It grew into a network across dozens of schools and several countries. Growth
+                was never the aim; it followed from the model working — students kept showing
+                up, then wanted the same thing at their own schools.
               </p>
               <p className="leading-relaxed text-mist">
                 As IES grew beyond Korea, the Global Foundation was established to connect
@@ -125,14 +123,10 @@ export default function About() {
 
             <Reveal delay={120} className="space-y-6">
               <p className="leading-relaxed text-mist">
-                Schools are good at encouraging academic achievement. They offer far fewer
-                chances to engage seriously with ethics, responsibility, service, and civic
-                leadership — the questions that decide what an education gets used for.
-              </p>
-              <p className="leading-relaxed text-mist">
-                IES was founded to create them: settings where students argue difficult
-                questions and defend their reasoning, and programs that put those conclusions
-                to work in their communities.
+                Schools are good at encouraging academic achievement, and offer far fewer
+                chances to take ethics, service, and civic leadership seriously. IES was
+                founded to build those settings — and to put what a student concludes to work
+                in their community.
               </p>
               <p className="leading-relaxed text-mist">
                 Youth-led by design. Students do not take part in someone else's programming;
@@ -230,7 +224,7 @@ export default function About() {
             <SectionHeading
               eyebrow="Organizational Pillars"
               title="Three areas of work, held together."
-              lead="Every IES program sits within one of these pillars, and the strongest ones sit across all three."
+              lead="Every IES program sits within one of these pillars."
             />
           </Reveal>
 
@@ -243,9 +237,6 @@ export default function About() {
                   </span>
                   <div>
                     <h3 className="text-h3">{pillar.title}</h3>
-                    <p className="mt-4 leading-relaxed text-mist">
-                      {pillar.summary}
-                    </p>
                   </div>
                   <div>
                     <p className="leading-relaxed text-paper">{pillar.body}</p>
@@ -297,7 +288,7 @@ export default function About() {
             <SectionHeading
               eyebrow="Organizational Structure"
               title="How the network fits together."
-              lead="The Global Foundation sets international direction and coordinates. Each branch runs its own local work to the shared mission and standard."
+              lead="The Foundation coordinates and sets the standard. Each branch runs its own local work."
             />
           </Reveal>
 
@@ -324,7 +315,6 @@ export default function About() {
                     'Cross-border initiatives and joint programming',
                     'Global partnerships and institutional relationships',
                     'Branding, identity, and organizational standards',
-                    'Branch development and responsible future expansion',
                   ],
                 },
                 {
@@ -333,7 +323,6 @@ export default function About() {
                     'Local programming and national events',
                     'Approving and supporting school chapters',
                     'National leadership and officer roles',
-                    'Outreach to schools and community organizations',
                     'Meeting IES conduct and participant safety standards',
                   ],
                 },
@@ -369,7 +358,7 @@ export default function About() {
 
       <CallToAction
         title="Every role here is held by a student."
-        body="Including the ones that carry consequences. The fastest route in is your own school — and if there is no chapter there yet, that is the opening."
+        body="The fastest route in is your own school — and if there is no chapter there yet, that is the opening."
         actions={[
           { label: 'Join IES', to: '/join', variant: 'primary' },
           { label: 'Partner With Us', to: '/partners' },

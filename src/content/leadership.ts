@@ -81,6 +81,21 @@ export const people: Person[] = [
       'Publication approval workflow',
     ],
   },
+  {
+    id: 'jaehoo-lee',
+    name: 'Jaehoo Lee',
+    title: 'Business Analyst',
+    tier: 'global',
+    spotlight: true,
+    photo: '/leadership/jaehoo-lee.jpg',
+    bio: 'Business Analyst for the Global Foundation. His work is the Foundation itself rather than the branches: what its own records show, what its programmes take to run, and whether a figure it puts in front of a school or a partner is backed by something. He turns that into the analysis the President works from — where the Foundation’s effort is actually going, what it has the capacity to commit to, and what it should hold off on until the numbers say otherwise.',
+    responsibilities: [
+      'Analysis and reporting for the Global Foundation',
+      'Review of the Foundation’s figures before they are published',
+      'Cost and capacity analysis for Foundation programmes',
+      'Analysis supporting the President’s decisions',
+    ],
+  },
 
   /* ---------------------------------------------------- National — IES Korea */
   {
@@ -241,6 +256,8 @@ export const globalOffices: {
       'Support for national branch leadership',
     ],
     holder: 'sean-han',
+    holderNote:
+      'The President answers for what the Foundation actually does — the offices under him, the work that runs between them, and whether the branches are being supported rather than only supervised. As Director of Global Marketing he also owns what IES says in public: the website, the social channels, and the approval every statement passes through before it goes out. Students in three countries produce a great deal of public material, and someone has to be accountable for whether it is accurate and whether it reads as one organisation.',
   },
   {
     title: 'Director of Global Marketing',
@@ -300,7 +317,7 @@ export const globalOffices: {
 
 export const leadershipIntro = {
   foundation:
-    'The officers who run the Foundation day to day — governance, international operations, and outreach.',
+    'The officers who run the Foundation day to day — governance, international operations, outreach, and analysis.',
   board:
     'IES is run by students. The board is the oversight they answer to: it reviews governance and advises, without taking over the work.',
   founding:

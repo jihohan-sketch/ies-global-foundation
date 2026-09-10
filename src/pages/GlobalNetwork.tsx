@@ -36,7 +36,7 @@ export default function GlobalNetwork() {
         eyebrow="Global Network"
         ghost="Network"
         title="One society, three countries."
-        lead="Korea is the original branch and the headquarters. The United States and the United Kingdom run their own programming, approve their own chapters, and meet the same standards."
+        lead="Korea is the original branch and the headquarters. The United States and the United Kingdom run their own programming to the same standards."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Global Network' }]}
       />
 
