@@ -313,6 +313,19 @@ export const globalOffices: {
     ],
     holder: 'joseph-hahmmin-kang',
   },
+  {
+    title: 'Business Analyst',
+    scope: 'Reporting and analysis',
+    responsibilities: [
+      'Analysis and reporting for the Global Foundation',
+      'Review of the Foundation’s figures before they are published',
+      'Cost and capacity analysis for Foundation programmes',
+      'Analysis supporting the President’s decisions',
+    ],
+    holder: 'jaehoo-lee',
+    holderNote:
+      'The Foundation publishes figures — members, chapters, schools, people reached — and each one has to be traceable to what a branch actually reported. This office does that checking before anything is stated publicly, and turns the same records into what the President plans from: what a programme takes to run, what the Foundation has the capacity for, and which commitments the numbers do not yet support. An organisation that asks to be judged on its record has to be able to produce it.',
+  },
 ]
 
 export const leadershipIntro = {
