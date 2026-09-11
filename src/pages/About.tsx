@@ -193,18 +193,15 @@ export default function About() {
                   Supporting Values
                 </p>
               </Reveal>
-              <ul className="mt-8 grid gap-x-14 sm:grid-cols-2">
+              <ul className="mt-8 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
                 {values.supporting.map((value, i) => (
                   <Reveal
                     key={value.title}
                     as="li"
                     delay={Math.min(i, 7) * 60}
-                    className="border-t py-5"
+                    className="border-t py-4"
                   >
                     <h3 className="font-serif text-[1.25rem] text-navy">{value.title}</h3>
-                    <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-navy-600">
-                      {value.body}
-                    </p>
                   </Reveal>
                 ))}
               </ul>

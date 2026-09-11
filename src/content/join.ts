@@ -13,7 +13,6 @@ export const joinPathways: JoinPathway[] = [
     points: [
       'Attend forums, workshops, and discussions',
       'Participate in service initiatives',
-      'Receive announcements from your national branch',
       'Move into chapter or branch roles when you are ready',
     ],
     cta: { label: 'Apply', href: '/contact?topic=membership' },
@@ -28,7 +27,6 @@ export const joinPathways: JoinPathway[] = [
       'Participate in chapter programming',
       'Take on an officer role',
       'Lead sessions and service projects',
-      'Represent your chapter to the national branch',
     ],
     cta: { label: 'Find your chapter', href: '/contact?topic=chapter' },
   },
@@ -40,7 +38,6 @@ export const joinPathways: JoinPathway[] = [
       'For students bringing IES to their school. The most demanding pathway, and the one with the most ownership.',
     points: [
       'Build a founding chapter team',
-      'Receive chapter guidelines and branding resources',
       'Design your school’s first year of programming',
       'Work directly with your national branch',
     ],
@@ -55,7 +52,6 @@ export const joinPathways: JoinPathway[] = [
     points: [
       'National officer and director roles',
       'Programming, outreach, and partnerships',
-      'Support for chapter leadership teams',
       'Cross-branch collaboration',
     ],
     cta: { label: 'Ask about roles', href: '/contact?topic=branch' },
@@ -69,7 +65,6 @@ export const joinPathways: JoinPathway[] = [
     points: [
       'Speak at forums and workshops',
       'Advise a school chapter',
-      'Host or co-run a service initiative',
       'Establish an institutional partnership',
     ],
     cta: { label: 'Partner with us', href: '/partners' },

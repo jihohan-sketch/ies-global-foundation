@@ -12,7 +12,6 @@ export const pillars: Pillar[] = [
       'Moderated ethics discussions and public forums',
       'Debate, philosophy, and public policy sessions',
       'Responsible technology and AI education',
-      'Student-led research and writing',
     ],
   },
   {
@@ -25,7 +24,6 @@ export const pillars: Pillar[] = [
       'Children’s center programs and mentorship',
       'Volunteer and community outreach initiatives',
       'Inclusion and accessibility in programming',
-      'Peer support within chapters and branches',
     ],
   },
   {
@@ -38,7 +36,6 @@ export const pillars: Pillar[] = [
       'Governance and policy education',
       'Student-led civic campaigns and petitions',
       'Community problem-solving projects',
-      'Ethical decision-making in leadership roles',
     ],
   },
 ]
@@ -55,8 +52,6 @@ export const workCategories: WorkCategory[] = [
       'Public forums open to students across schools',
       'Debate and philosophy sessions',
       'Workshops on argument, evidence, and reasoning',
-      'Student-led research projects',
-      'Responsible technology and AI education',
     ],
     image: '/activities/environmental-ethics-forum/chamber.jpg',
     imageAlt:
@@ -71,7 +66,6 @@ export const workCategories: WorkCategory[] = [
       'Children’s center educational programs',
       'Mentorship for younger students',
       'Volunteer initiatives with local organizations',
-      'Scholarship-related service work',
       'Community outreach and support drives',
     ],
     image: '/activities/guro-happy-childrens-center/lesson.jpg',
@@ -88,7 +82,6 @@ export const workCategories: WorkCategory[] = [
       'Chapter leadership and officer positions',
       'Public speaking and moderation practice',
       'Project and event management',
-      'International collaboration across branches',
     ],
     image: '/activities/nanoom-korea-scholarship/ceremony.jpg',
     imageAlt:
@@ -104,7 +97,6 @@ export const workCategories: WorkCategory[] = [
       'Student petitions and campaigns',
       'Governance education',
       'Community problem-solving initiatives',
-      'Youth participation in public issues',
     ],
     image: '/activities/environmental-ethics-forum/assembly.jpg',
     imageAlt:
@@ -119,7 +111,6 @@ export const workCategories: WorkCategory[] = [
       'Cross-branch events and joint sessions',
       'International panels and forums',
       'Shared campaigns across branches',
-      'Guest speakers reaching the whole network',
       'Cultural and educational exchange',
     ],
     image: '/activities/un-human-rights-office-visit/delegation.jpg',

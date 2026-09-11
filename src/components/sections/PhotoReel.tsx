@@ -130,9 +130,10 @@ export function PhotoReel({
                 >
                   {shot.caption}
                 </Link>
-                <span className="mt-1.5 block text-[0.8125rem] leading-relaxed text-mist">
-                  {shot.alt}
-                </span>
+                {/* The description is the image's `alt` and nothing else.
+                    Printing it here as well set the same sentence twice on the
+                    frame and made a screen reader announce it twice — the
+                    caption names the programme, the alt describes the picture. */}
               </span>
             </figcaption>
           </SceneLayer>

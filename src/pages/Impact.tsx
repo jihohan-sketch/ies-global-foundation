@@ -1,7 +1,7 @@
 import { Container, Eyebrow, Section, SectionHeading } from '@/components/ui/Primitives'
 import { GhostTitle } from '@/components/ui/Cinematic'
 import { Counter } from '@/components/ui/Counter'
-import { Split, Statement } from '@/components/ui/Editorial'
+import { Split } from '@/components/ui/Editorial'
 import { HorizontalStory } from '@/components/sections/HorizontalStory'
 import { MaskedText } from '@/components/ui/MaskedText'
 import { Reveal } from '@/components/ui/Reveal'
@@ -147,49 +147,6 @@ export default function Impact() {
           })),
         }))}
       />
-
-      {/* The detail behind each story, on paper, for the reader who wants it.
-          The pan carries the claim; this carries the argument. */}
-      <Section tone="bone">
-        <Container size="wide">
-          <Reveal>
-            <Eyebrow tone="navy">In Detail</Eyebrow>
-          </Reveal>
-          <Reveal delay={80}>
-            <Statement tone="dark" as="h2" className="mt-8">
-              How each of these actually runs.
-            </Statement>
-          </Reveal>
-
-          <div className="mt-20 space-y-20">
-            {impactStories.map((story, i) => (
-              <Split
-                key={story.id}
-                sticky={false}
-                aside={
-                  <Reveal>
-                    <span className="font-serif text-[0.9375rem] text-navy/45 tabular-nums lining-nums">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <h3 className="mt-4 font-serif text-[clamp(1.5rem,2.6vw,2.125rem)] leading-[1.12] tracking-[-0.02em] text-navy">
-                      {story.title}
-                    </h3>
-                    <p className="text-label-sm mt-4 font-semibold text-[var(--accent)] uppercase">
-                      {story.branch}
-                    </p>
-                  </Reveal>
-                }
-              >
-                <Reveal delay={100}>
-                  <p className="border-t pt-7 leading-relaxed text-navy-600" style={{ borderColor: 'var(--rule)' }}>
-                    {story.detail}
-                  </p>
-                </Reveal>
-              </Split>
-            ))}
-          </div>
-        </Container>
-      </Section>
 
       {/* ====================================================== IN THE FIELD */}
       <PhotoStrip

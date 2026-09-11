@@ -24,7 +24,6 @@ export const impactStats: Stat[] = [
   { value: 23, suffix: '+', label: 'Chapters', note: 'Student-led chapters under IES standards' },
   { value: 3, label: 'National branches', note: 'Korea, United States, United Kingdom' },
   { value: 736000, suffix: '+', label: 'People reached', note: 'Across programs and campaigns' },
-  { value: 3, label: 'Countries', note: 'Where IES has a national branch' },
 ]
 
 export const impactIntro =
@@ -90,36 +89,36 @@ export const timeline: TimelineEntry[] = [
   {
     date: '20 April 2023',
     title: 'IES is founded in Seoul',
-    body: 'The Interscholastic Ethics Society begins in Seoul, founded by Jaesuh Joshua Shin and Joseph Hahmmin Kang, who lead it jointly as co-presidents.',
+    body: 'Founded by Jaesuh Joshua Shin and Joseph Hahmmin Kang, who lead it jointly as co-presidents.',
     milestone: true,
   },
   {
     date: '2023 – 2025',
     title: 'Chapter network and programming take shape',
-    body: 'Ethics forums on medical, environmental, military, AI, and human rights questions become recurring, alongside service partnerships with Nanoom Korea and Jiguchon Children’s Center and a run of grassroots fundraising campaigns.',
+    body: 'Ethics forums on medical, environmental, military, AI, and human rights questions become recurring, alongside service partnerships with Nanoom Korea and Jiguchon Children’s Center.',
   },
   {
     /* Dated from the petition record itself, which is reproduced on Our Work:
        the consent window ran 6 November to 6 December 2025. */
     date: 'November – December 2025',
     title: 'Petition to the National Assembly',
-    body: 'IES petitions the National Assembly of Korea on regulating generative AI for children under 12, with a video campaign alongside it. The consent window closed with 514 signatures — its clearest move from discussion into formal civic process.',
+    body: 'IES petitions the National Assembly of Korea on regulating generative AI for children under 12. The consent window closed with 514 signatures — its clearest move from discussion into formal civic process.',
     milestone: true,
   },
   {
     date: 'August 2025',
     title: 'Jaesuh Joshua Shin becomes 1st President',
-    body: 'The co-presidency ends and IES moves to a single-president structure, with Shin as 1st President.',
+    body: 'The co-presidency ends and IES moves to a single-president structure.',
   },
   {
     date: 'October 2025',
     title: 'Joseph Hahmmin Kang becomes 2nd President',
-    body: 'Kang takes over as 2nd President, growing the chapter network and external partnerships.',
+    body: 'Growing the chapter network and external partnerships.',
   },
   {
     date: 'January 2026',
     title: 'Ryan Jimyung Cha becomes 3rd President',
-    body: 'Cha takes the presidency, leading IES Korea — the branch carrying most of the programming and operations.',
+    body: 'Leading IES Korea — the branch carrying most of the programming and operations.',
     milestone: true,
   },
   {
@@ -130,19 +129,19 @@ export const timeline: TimelineEntry[] = [
   {
     date: 'Date to be confirmed',
     title: 'IES United States established',
-    body: 'A national branch is established in the United States under co-presidential leadership.',
+    body: 'Established under co-presidential leadership.',
     milestone: true,
   },
   {
     date: 'Date to be confirmed',
     title: 'IES UK Society established',
-    body: 'A national branch is established in the United Kingdom, starting with founding leadership and first chapters.',
+    body: 'Starting with founding leadership and first chapters.',
     milestone: true,
   },
   {
     date: 'Date to be confirmed',
     title: 'IES Global Foundation established',
-    body: 'The Global Foundation is formed to connect the branches under one identity, shared standards, and coordinated programming.',
+    body: 'Formed to connect the branches under one identity, shared standards, and coordinated programming.',
     milestone: true,
   },
 ]

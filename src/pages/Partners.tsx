@@ -5,7 +5,6 @@ import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
 import {
-  collaborationAreas,
   namedPartners,
   partnerCategories,
   partnerLogos,
@@ -161,35 +160,6 @@ export default function Partners() {
         </Section>
       )}
 
-      {/* ==================================================== COLLABORATION */}
-      <Section tone="deep" >
-        <Container size="wide">
-          <div className="grid gap-14 lg:grid-cols-[1fr_1.3fr] lg:gap-24">
-            <Reveal>
-              <Eyebrow>Collaboration Areas</Eyebrow>
-              <h2 className="text-h2 mt-6">Where partnerships usually start</h2>
-              <p className="mt-6 leading-relaxed text-mist">
-                Most start with one concrete thing — a speaker, a service day, a joint forum
-                — and grow from there.
-              </p>
-            </Reveal>
-
-            <Reveal delay={120}>
-              <ul className="grid gap-px sm:grid-cols-2">
-                {collaborationAreas.map((area) => (
-                  <li
-                    key={area}
-                    className="border-t border-mist/15 py-5 text-[1.0625rem] text-paper"
-                  >
-                    {area}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
-        </Container>
-      </Section>
-
       {/* ========================================================= PROCESS */}
       <Section>
         <Container size="wide">
@@ -229,7 +199,7 @@ export default function Partners() {
       <CallToAction
         eyebrow="Partnerships"
         title="Partner With IES"
-        body="Tell us who you are and what you have in mind. A short message is enough."
+        body="Tell us who you are and what you have in mind."
         actions={[
           { label: 'Contact the partnerships team', to: '/contact?topic=partnership', variant: 'primary' },
           { label: 'See Our Work', to: '/our-work' },

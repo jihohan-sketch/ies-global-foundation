@@ -210,7 +210,7 @@ export const leadershipMessages: LeadershipMessage[] = [
       'In April 2023 there were two of us and one complaint: our schools were very good at teaching us how to win an argument, and had almost nothing to say about which arguments were worth winning.',
       'So we booked a room. The rule was that you arrived having done the reading, you argued in front of people who disagreed with you, and you did not get to leave with only an opinion — you left with something you had committed to do.',
       'That rule is the whole organisation. Everything since — the chapters, the three national branches, the forums running in countries I have never been to — is that same room, repeated by students I have never met.',
-      'I now hold IES to the standards I set while I was its president. The one that matters is the oldest: a conclusion you are not willing to act on was never a conclusion.',
+      'The standard I now hold IES to is the oldest one: a conclusion you are not willing to act on was never a conclusion.',
     ],
   },
   {
@@ -220,8 +220,7 @@ export const leadershipMessages: LeadershipMessage[] = [
     body: [
       'IES is much larger than the room it started in — 1,200+ students, 23+ chapters, and three national branches. Every role in it, including this one, is held by a student.',
       'That is the part people find hardest to believe, so it is the part we are most careful about. We do not publish a figure we cannot show you the work behind, and we do not open a chapter a branch has no capacity to support.',
-      'What I answer for is that a chapter in Seoul, a founding team in the United States, and a branch in London are describing the same organisation — and holding to the same standard for how a question is argued and what happens afterwards.',
-      'If that is something you want to be part of, the fastest way in is your own school. If there is no chapter there yet, that is the opening.',
+      'What I answer for is that a chapter in Seoul, a founding team in the United States, and a branch in London are describing the same organisation. If that is something you want to be part of, the fastest way in is your own school.',
     ],
   },
 ]
@@ -257,7 +256,7 @@ export const globalOffices: {
     ],
     holder: 'sean-han',
     holderNote:
-      'The President answers for what the Foundation actually does — the offices under him, the work that runs between them, and whether the branches are being supported rather than only supervised. As Director of Global Marketing he also owns what IES says in public: the website, the social channels, and the approval every statement passes through before it goes out. Students in three countries produce a great deal of public material, and someone has to be accountable for whether it is accurate and whether it reads as one organisation.',
+      'The President answers for what the Foundation does — the offices under him, and whether the branches are being supported rather than only supervised. As Director of Global Marketing he also owns what IES says in public: the website, the social channels, and the approval every statement passes through before it goes out.',
   },
   {
     title: 'Director of Global Marketing',
@@ -289,7 +288,7 @@ export const globalOffices: {
     ],
     holder: 'yura-shin',
     holderNote:
-      'Growth arrives as an inquiry from outside — a teacher who saw a forum, a charity looking for volunteers, a student in a country with no branch. Shin decides which IES can genuinely support, makes sure a school knows what it is taking on, and hands each one to whoever will carry it. An approach left unanswered, or passed to a branch with no capacity for it, costs more than never having been made. As Vice Chairman she also answers for whether that growth stays inside the network’s standards.',
+      'Growth arrives as an inquiry from outside — a teacher who saw a forum, a charity looking for volunteers, a student in a country with no branch. Shin decides which IES can genuinely support and hands each one to whoever will carry it. An approach passed to a branch with no capacity for it costs more than never having been made.',
   },
   {
     title: 'Vice Chairman',
@@ -301,7 +300,7 @@ export const globalOffices: {
     ],
     holder: 'joseph-hahmmin-kang',
     holderNote:
-      'As Vice Chairman, Kang holds IES to the standards he set as president — the conduct rules, the chapter guidelines, the reporting each branch answers to. As Director of Global Operations he runs the work that crosses borders: coordination between the three branches, the reporting cycle they keep to, and the logistics behind programming that runs in more than one country at once. Three branches on one set of standards need someone accountable for whether that is actually happening.',
+      'As Vice Chairman, Kang holds IES to the standards he set as president. As Director of Global Operations he runs the work that crosses borders: coordination between the three branches, the reporting cycle they keep to, and programming that runs in more than one country at once.',
   },
   {
     title: 'Director of Global Operations',
@@ -324,7 +323,7 @@ export const globalOffices: {
     ],
     holder: 'jaehoo-lee',
     holderNote:
-      'The Foundation publishes figures — members, chapters, schools, people reached — and each one has to be traceable to what a branch actually reported. This office does that checking before anything is stated publicly, and turns the same records into what the President plans from: what a programme takes to run, what the Foundation has the capacity for, and which commitments the numbers do not yet support. An organisation that asks to be judged on its record has to be able to produce it.',
+      'Every figure the Foundation publishes has to be traceable to what a branch actually reported. This office does that checking before anything is stated publicly, and turns the same records into what the President plans from: what a programme takes to run, and what the Foundation has the capacity to commit to.',
   },
 ]
 
@@ -332,11 +331,11 @@ export const leadershipIntro = {
   foundation:
     'The officers who run the Foundation day to day — governance, international operations, outreach, and analysis.',
   board:
-    'IES is run by students. The board is the oversight they answer to: it reviews governance and advises, without taking over the work.',
+    'The board reviews governance and advises. It does not take over the work.',
   founding:
     'Founded in Seoul on 20 April 2023 by two students, who led it jointly and then each served as president.',
   global:
-    'International coordination, partnerships, branding, and branch development. Offices fill as we grow — unfilled ones are shown as pending, not padded out.',
+    'International coordination, partnerships, branding, and branch development. Unfilled offices are shown as pending, not padded out.',
   national: 'Each branch is led by students in that country, to the same shared standards.',
 }
 

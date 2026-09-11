@@ -20,7 +20,7 @@ export const branches: Branch[] = [
     summary:
       'Where IES began in April 2023, and the branch carrying most of its programming, chapters, and daily operations.',
     intro:
-      'The original branch and the operational headquarters. Founded in Seoul on 20 April 2023, it is the largest student-led ethics organization in South Korea, and the source of the programs the rest of the network works from — ethics forums, policy advocacy, and sustained service partnerships.',
+      'Founded in Seoul on 20 April 2023, the largest student-led ethics organization in South Korea, and the source of the programs the rest of the network works from — ethics forums, policy advocacy, and service partnerships.',
     established: '20 April 2023',
     headquarters: 'Seoul, Republic of Korea',
     status: 'Headquarters',
@@ -98,7 +98,7 @@ export const branches: Branch[] = [
     summary:
       'Bringing IES into U.S. schools and communities, through outreach, chapter formation, and partnerships.',
     intro:
-      'IES in the American school context. Led by two co-presidents, the branch is building a base of school chapters, a U.S. programming calendar, and partnerships with schools, universities, and community organizations — to the standards shared across the network.',
+      'Led by two co-presidents, building a base of school chapters, a U.S. programming calendar, and partnerships with schools, universities, and community organizations.',
     established: 'Established as a national branch under the IES Global Foundation',
     headquarters: 'United States',
     status: 'Active',
@@ -112,12 +112,12 @@ export const branches: Branch[] = [
     sections: [
       {
         title: 'National leadership',
-        body: 'Two co-presidents share national strategy, chapter development, and coordination with the Global Foundation.',
+        body: 'Two co-presidents share national strategy and chapter development.',
         items: ['Aden Lee — Co-President, IES United States', 'Onew Choi — Co-President, IES United States'],
       },
       {
         title: 'Growth strategy',
-        body: 'Growth is sequenced on purpose: a few strong founding chapters first, prove the model in American schools, then expand regionally through students who have already run one.',
+        body: 'Sequenced on purpose: a few strong founding chapters first, then regional expansion through students who have already run one.',
         items: [
           'Founding chapters at schools with committed student leadership',
           'Regional clusters rather than scattered single chapters',
@@ -126,7 +126,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'School outreach',
-        body: 'Aimed at students and faculty advisors who want structured ethical inquiry, service, and civic engagement that existing school activities do not offer.',
+        body: 'For students and faculty advisors who want what existing school activities do not offer.',
         items: [
           'Introductory sessions for interested student groups',
           'Chapter guidelines and branding resources',
@@ -155,7 +155,7 @@ export const branches: Branch[] = [
     summary:
       'The newest branch: founding chapters, student leadership, and relationships with U.K. schools.',
     intro:
-      'The newest branch in the network. The priority is foundational: recruiting student leaders, opening the first chapters, and building relationships with schools that want a serious setting for ethical inquiry — the network’s standards, adapted to U.K. schools.',
+      'The newest branch. The priority is foundational: recruiting student leaders, opening the first chapters, and building relationships with U.K. schools.',
     established: 'Established as a national branch under the IES Global Foundation',
     headquarters: 'United Kingdom',
     status: 'Establishing',
@@ -174,7 +174,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'Expansion plan',
-        body: 'Built deliberately rather than quickly: a small founding cohort of chapters with committed leadership first, then a national programming calendar once they run consistently.',
+        body: 'A small founding cohort of chapters first, then a national programming calendar once they run consistently.',
         items: [
           'Phase one — founding student leadership team',
           'Phase two — first school chapters and introductory programming',
@@ -183,7 +183,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'Recruitment priorities',
-        body: 'Students who want responsibility rather than a title — willing to organise sessions, carry a chapter through a full academic year, and keep to the network’s conduct and safety standards.',
+        body: 'Students who want responsibility rather than a title, and will carry a chapter through a full academic year.',
         items: [
           'Founding chapter leaders',
           'National branch officers',
@@ -192,7 +192,7 @@ export const branches: Branch[] = [
       },
       {
         title: 'Upcoming initiatives',
-        body: 'The network’s core model adapted for local schools, with cross-branch sessions connecting U.K. students to the rest of IES.',
+        body: 'The network’s core model adapted for local schools.',
         items: [
           'Introductory ethics discussion series',
           'School outreach and information sessions',

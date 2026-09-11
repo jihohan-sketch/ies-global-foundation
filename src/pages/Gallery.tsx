@@ -91,6 +91,37 @@ export default function Gallery() {
     [active],
   )
 
+  /*
+   * The grid is grouped by programme, with one heading per run.
+   *
+   * It used to caption every tile with that photograph's own description,
+   * which is written for a screen reader — a full sentence naming everyone in
+   * frame — and 112 of them turned this page into more words than the rest of
+   * the site put together. Captioning each tile with its programme instead
+   * only moved the problem: six photographs from one visit printed the same
+   * title six times, which reads as a rendering fault.
+   *
+   * So the title is said once, above the photographs it belongs to. Each
+   * image keeps its description as `alt`, and the lightbox still reads it out
+   * in full — nothing is lost to anyone who needs it.
+   */
+  const groups = useMemo(() => {
+    const runs: { id: string; title: string; href: string; start: number; shots: Shot[] }[] = []
+    photos.forEach((shot, i) => {
+      const last = runs[runs.length - 1]
+      if (last && last.id === shot.activityId) last.shots.push(shot)
+      else
+        runs.push({
+          id: shot.activityId,
+          title: shot.activityTitle,
+          href: shot.href,
+          start: i,
+          shots: [shot],
+        })
+    })
+    return runs
+  }, [photos])
+
   /* The lightbox indexes into the filtered set, so stepping through it stays
      inside the programme being looked at. Changing the filter closes it, since
      the index it was holding no longer means the same photograph. */
@@ -191,44 +222,45 @@ export default function Gallery() {
             {active !== 'all' && ' in this programme'}
           </p>
 
-          {/* Captions are the photographs' own alt text throughout, so nothing
-              written under an image can drift from what it is recorded as
-              showing. */}
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {photos.map((photo, i) => (
-              <figure key={photo.src} className="flex flex-col">
-                {/* A button, not a div with a click handler: enlarging a
-                    photograph has to be reachable by keyboard, and the browser
-                    gives that away free on the right element. */}
-                <button
-                  type="button"
-                  onClick={() => setViewing(i)}
-                  aria-label={`Enlarge: ${photo.alt}`}
-                  className="group block cursor-zoom-in focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--accent)]"
-                >
-                  <GalleryImage
-                    src={photo.src}
-                    alt={photo.alt}
-                    eager={i < 6}
-                    zoomOnHover
-                    className="transition-colors duration-300 group-hover:border-gold/45"
-                  />
-                </button>
-                <figcaption className="mt-3 text-[0.8125rem] leading-relaxed text-slate">
-                  {photo.alt}
-                  {active === 'all' && (
-                    <>
-                      {' '}
-                      <Link
-                        to={photo.href}
-                        className="whitespace-nowrap text-mist underline decoration-mist/30 underline-offset-4 transition-colors hover:text-[var(--accent)]"
+          <div className="mt-10 space-y-14">
+            {groups.map((group) => (
+              <section key={group.id + group.start} aria-label={group.title}>
+                {/* Said once, above its photographs — see the note on `groups`. */}
+                <h3 className="border-t border-mist/15 pt-4 text-[0.8125rem] leading-relaxed">
+                  <Link
+                    to={group.href}
+                    className="text-mist underline decoration-mist/30 underline-offset-4 transition-colors hover:text-[var(--accent)]"
+                  >
+                    {group.title}
+                  </Link>
+                </h3>
+
+                <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.shots.map((photo, j) => {
+                    const i = group.start + j
+                    return (
+                      /* A button, not a div with a click handler: enlarging a
+                         photograph has to be reachable by keyboard, and the
+                         browser gives that away free on the right element. */
+                      <button
+                        key={photo.src}
+                        type="button"
+                        onClick={() => setViewing(i)}
+                        aria-label={`Enlarge: ${photo.alt}`}
+                        className="group block cursor-zoom-in focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--accent)]"
                       >
-                        {photo.activityTitle}
-                      </Link>
-                    </>
-                  )}
-                </figcaption>
-              </figure>
+                        <GalleryImage
+                          src={photo.src}
+                          alt={photo.alt}
+                          eager={i < 6}
+                          zoomOnHover
+                          className="transition-colors duration-300 group-hover:border-gold/45"
+                        />
+                      </button>
+                    )
+                  })}
+                </div>
+              </section>
             ))}
           </div>
 
