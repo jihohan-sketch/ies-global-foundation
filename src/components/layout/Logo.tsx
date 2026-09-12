@@ -71,14 +71,12 @@ export function Logo({
               sub,
             )}
           >
-            {subtitle === 'full' ? (
-              FULL_SUBTITLE
-            ) : (
-              <>
-                <span className="hidden 2xl:inline">{FULL_SUBTITLE}</span>
-                <span className="2xl:hidden">Est. 2023</span>
-              </>
-            )}
+            {/* The header takes the short line at every width now. The full
+                one names the three countries, which the home page's first
+                screen also does directly beneath it — the same 49 characters
+                twice in one viewport, in a bar whose whole revision was about
+                carrying less. The footer still renders `full`. */}
+            {subtitle === 'full' ? FULL_SUBTITLE : 'Est. 2023'}
           </span>
         </span>
       )}

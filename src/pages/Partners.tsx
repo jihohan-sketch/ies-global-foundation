@@ -1,11 +1,10 @@
-import { Card, Container, Eyebrow, Section, SectionHeading, Button } from '@/components/ui/Primitives'
+import { Container, Eyebrow, Section, SectionHeading, Button } from '@/components/ui/Primitives'
 import { Reveal } from '@/components/ui/Reveal'
 import { IndexList, Split } from '@/components/ui/Editorial'
-import { RailItem, ScrollRail } from '@/components/ui/ScrollRail'
+import { NamedPartners } from '@/components/sections/NamedPartners'
 import { PageHero } from '@/components/sections/PageHero'
 import { CallToAction } from '@/components/sections/CallToAction'
 import {
-  namedPartners,
   partnerCategories,
   partnerLogos,
   partnersIntro,
@@ -35,55 +34,21 @@ export default function Partners() {
         </Button>
       </PageHero>
 
-      {/* Named collaborations lead, ahead of the categories. A visitor asking
-          whether IES is serious wants the institutions, not the taxonomy — the
-          eight categories describe what a partnership *can* be, which only
-          becomes interesting once you believe some already exist. */}
       {/* =================================================== NAMED PARTNERS */}
-      <Section className="overflow-hidden">
-        <Container size="wide">
-          <Reveal>
-            <SectionHeading
-              ghost="Named"
-              eyebrow="Organizations We Work With"
-              title="Named collaborations"
-              lead="The relationships behind our service work."
-            />
-          </Reveal>
-
-          <ScrollRail label="partner organizations" className="mt-14">
-            {namedPartners.map((group, i) => (
-              <RailItem key={group.group}>
-                <Reveal delay={i * 100} className="h-full">
-                <Card className="h-full">
-                  <h3 className="font-serif text-xl text-[var(--accent)]">{group.group}</h3>
-                  <p className="mt-3 text-[0.875rem] leading-relaxed text-mist">
-                    {group.note}
-                  </p>
-                  <ul className="mt-6 space-y-px">
-                    {group.organizations.map((organization) => (
-                      <li
-                        key={organization}
-                        className="border-t border-mist/12 py-3 text-[0.9375rem] text-paper"
-                      >
-                        {organization}
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
-                </Reveal>
-              </RailItem>
-            ))}
-          </ScrollRail>
-
-          <Reveal delay={200}>
-            <p className="mt-10 max-w-3xl text-sm leading-relaxed text-mist">
-              Naming an organization records a collaboration. It does not imply they endorse
-              IES or its positions.
-            </p>
-          </Reveal>
-        </Container>
-      </Section>
+      {/*
+       * Named collaborations lead, ahead of the categories. A visitor asking
+       * whether IES is serious wants the institutions, not the taxonomy — the
+       * eight categories describe what a partnership *can* be, which only
+       * becomes interesting once you believe some already exist.
+       *
+       * The names were a horizontal rail of four bordered cards, each holding a
+       * group heading, a note and a list — which meant the reader met the list
+       * of organisations as a set of boxes to be dragged through rather than as
+       * a record to be read, and most of the names were off-screen at any
+       * moment. `NamedPartners` sets the same names, from the same source, as a
+       * numbered register in two columns with the group beside each name.
+       */}
+      <NamedPartners showLink={false} />
 
       {/* ======================================================= CATEGORIES */}
       {/* ===================================================== CATEGORIES */}

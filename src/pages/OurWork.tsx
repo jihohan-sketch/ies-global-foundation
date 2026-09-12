@@ -60,12 +60,25 @@ export default function OurWork() {
               </>
             }
           >
+            {/* The pillar's own paragraph, with what sits under it as one
+                tracked line beneath — the same shape the partner categories
+                use. This register carried only the one-line summary until the
+                About page's duplicate of it was removed; the fuller text came
+                here rather than being dropped, because this is the page the
+                material belongs to. */}
             <IndexList
               tone="dark"
               items={pillars.map((pillar) => ({
                 id: pillar.id,
                 title: pillar.title,
-                body: pillar.summary,
+                body: (
+                  <>
+                    {pillar.body}
+                    <span className="text-label-sm mt-3 block font-semibold text-navy/45 uppercase">
+                      {pillar.points.join(' · ')}
+                    </span>
+                  </>
+                ),
               }))}
             />
           </Split>

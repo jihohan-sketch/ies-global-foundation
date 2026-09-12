@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { PINNED, observeScroll } from '@/lib/scroll'
-import { primaryNav, secondaryNav, site } from '@/content/site'
+import { primaryNav, secondaryNav } from '@/content/site'
 import { branches } from '@/content/branches'
 import { Button, Container } from '@/components/ui/Primitives'
 import { Logo } from './Logo'
@@ -11,43 +10,6 @@ import { cx } from '@/lib/utils'
    above the overlay and belongs inside the focus cycle rather than outside it. */
 const FOCUSABLE =
   'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
-
-/**
- * How far through the document the visitor is, as a hairline under the header.
- *
- * Measures `document.body` on the pinned window — 0 with the body's top at the
- * top of the viewport, 1 with its bottom at the bottom — which is exactly the
- * definition of document scroll progress, so no second scroll system is needed
- * for it.
- *
- * `always`, because this reports a position rather than performing a movement.
- * On a site with several sections that are deliberately many screens long, the
- * scrollbar is the only other thing telling anyone how much is left, and it is
- * the first thing a trackpad hides.
- */
-function ScrollProgress() {
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const bar = ref.current
-    if (!bar) return
-    return observeScroll(document.body, { ...PINNED, target: bar, always: true })
-  }, [])
-
-  return (
-    /*
-     * At the very top of the viewport, not under the header.
-     *
-     * Under the header it was a second horizontal line a few pixels below the
-     * header's own border — two rules doing one job, and the reading was
-     * ambiguous: neither one obviously meant "position in the document". On the
-     * top edge there is nothing else for it to be.
-     */
-    <div aria-hidden className="absolute inset-x-0 top-0 h-px overflow-hidden">
-      <div ref={ref} className="scroll-progress h-full w-full bg-[var(--accent)]/60" />
-    </div>
-  )
-}
 
 /*
  * WHICH GROUND IS UNDER THE HEADER RIGHT NOW.
@@ -252,194 +214,163 @@ export function Header() {
           )}
         />
 
+        {/*
+         * ONE ROW, AND THAT IS THE CHANGE.
+         *
+         * The bar used to be two: a primary row carrying an ambient epigraph on
+         * the left, the wordmark centred, and the actions on the right — and
+         * beneath it a second row holding the navigation, which collapsed the
+         * moment the page was scrolled. Plus a scroll-progress hairline along
+         * the very top edge. Five distinct pieces of chrome, two of them
+         * decorative, occupying 150px of every screen before a word of the page
+         * had been read.
+         *
+         * What a visitor needs from a header is: whose site this is, where they
+         * can go, and the one thing the organisation wants them to do. That is
+         * three things, and they fit on one line — mark left, navigation right,
+         * the ask at the end of it. Nothing here collapses on scroll, so the
+         * navigation is available for the whole page rather than only its first
+         * screen, which is what the menu button was compensating for.
+         *
+         * WHAT WENT, AND WHY:
+         *   THE EPIGRAPH  A serif motto and a tracked tagline in the top-left
+         *                 corner, repeating what the footer already says and
+         *                 hidden from assistive tech because of it. Ambient
+         *                 texture is the first thing to cut from a bar that is
+         *                 asking for attention it does not need.
+         *   THE PROGRESS  A hairline reporting how far down the document the
+         *                 reader is. It made sense on a home page of eleven
+         *                 movements and several pinned scenes; the longest page
+         *                 on the site is now an ordinary scroll, and the
+         *                 scrollbar already answers the question.
+         *   THE CENTRING  A centred wordmark needs equal flanking columns to
+         *                 stay centred, which is what forced the three-track
+         *                 grid and the epigraph that filled the left one. Left
+         *                 is where a reader looks for a mark, and it costs
+         *                 nothing to hold it there.
+         */}
         <Container size="wide" className="relative">
-          {/* ------------------------------------------------- Primary row */}
-          {/* Three tracks, not `justify-between`: the wordmark is centred on the
-              *viewport*, which only holds if the flanking columns are equal
-              regardless of what they contain. With space-between it drifted
-              left or right as the quote and the actions changed width. */}
           <div
             className={cx(
-              'grid grid-cols-[1fr_auto_1fr] items-center transition-all duration-500',
-              scrolled ? 'h-18 py-3' : 'h-24 py-5',
+              'flex items-center justify-between gap-6 transition-all duration-500',
+              scrolled ? 'h-18 py-3' : 'h-22 py-4',
             )}
           >
-            {/* The ambient epigraph. Decorative texture in the reference
-                language, and treated as such: it repeats the motto already in
-                the footer, so it is hidden from assistive tech rather than
-                read out on every page. */}
-            <p
-              aria-hidden
-              className={cx(
-                'hidden min-w-0 flex-col gap-0.5 leading-tight transition-opacity duration-500 xl:flex',
-                /* Also clears for the overlay: the epigraph is ambient texture
-                   for the page, and the menu is not the page. */
-                scrolled || open ? 'opacity-0' : 'opacity-100',
-              )}
-            >
-              <span className="truncate font-serif text-[0.9375rem] text-[var(--bar-ink)]/70 italic transition-colors duration-500">
-                {site.missionMotto}
-              </span>
-              <span className="text-[0.6875rem] font-semibold tracking-[0.12em] text-[var(--bar-ink-dim)] uppercase transition-colors duration-500">
-                {site.motto}
-              </span>
-            </p>
-
-            <Link
-              to="/"
-              aria-label="IES Global Foundation — home"
-              className="col-start-2 justify-self-center"
-            >
+            <Link to="/" aria-label="IES Global Foundation — home" className="shrink-0">
               <Logo variant="auto" />
             </Link>
 
-            <div className="col-start-3 flex shrink-0 items-center justify-end gap-3">
-              {/* Wrapped rather than given `hidden` directly: Button's base class
-                  sets `inline-flex`, and utility order in the stylesheet — not
-                  the class attribute — decides which display rule wins. */}
-              {/* Withdrawn while the menu is open — the overlay carries its own
-                  pair of these, and two live "Join IES" controls a few hundred
-                  pixels apart is one too many. `invisible` rather than
-                  `hidden` so the row keeps its width and the toggle beside it
-                  does not slide sideways as the menu opens. */}
-              <span
+            <div className="flex shrink-0 items-center gap-6 xl:gap-9">
+              {/* The navigation, inline and permanent from `xl`. Below that the
+                  menu button is the navigation, which is what it is for. */}
+              {/* Withdrawn while the overlay is up: the overlay carries the
+                  whole of this nav at display size, and leaving the row in
+                  place put its ABOUT directly above the overlay's. `invisible`
+                  alongside the fade so the duplicate links leave the tab order
+                  too. */}
+              <nav
+                aria-label="Primary"
                 className={cx(
-                  'hidden transition-opacity duration-300 sm:block',
+                  'hidden transition-opacity duration-300 xl:block',
                   open && 'invisible opacity-0',
                 )}
               >
-                {/* Outlined in whatever ink the bar is currently using, so
-                    the one persistent call to action survives a light section
-                    without a second variant being threaded through Button. */}
-                <Button
-                  to="/join"
-                  variant="secondary"
-                  /* `!` on the colour: `Button`'s `secondary` variant already sets a
-                     text colour, and between two utilities of the same
-                     property it is stylesheet order — not class-attribute
-                     order — that decides, so without it the label stayed paper
-                     white and vanished over a light section. */
-                  className="border-[var(--bar-ink)]/40 px-6 py-3 !text-[var(--bar-ink)] hover:border-[var(--accent)]/70 hover:!text-[var(--accent)]"
-                >
-                  Join IES
-                </Button>
-              </span>
+                <ul className="flex items-center gap-x-9">
+                  {primaryNav.map((item) => (
+                    <li key={item.href}>
+                      <NavLink
+                        to={item.href}
+                        className={({ isActive }) =>
+                          cx(
+                            /* 12px / 600 / 0.1em. Navigation is the one piece
+                               of text on a site that is never *read* — it is
+                               recognised, at speed, out of the corner of the
+                               eye — and wide tracking is precisely what stops a
+                               word being recognisable as a shape. */
+                            'relative block py-1 text-[0.75rem] font-semibold whitespace-nowrap uppercase transition-colors duration-300',
+                            'tracking-[0.1em] -mr-[0.1em]',
+                            /* 2px, and it stays put under the active item. A
+                               hairline underline is a hover flourish; the
+                               active marker has to be visible without being
+                               looked for. */
+                            'after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:rounded-full after:bg-[var(--accent)] after:transition-all after:duration-500',
+                            isActive
+                              ? 'text-[var(--accent)] after:w-[calc(100%-0.1em)]'
+                              : 'text-[var(--bar-ink)]/85 hover:text-[var(--bar-ink)] after:w-0 hover:after:w-[calc(100%-0.1em)]',
+                          )
+                        }
+                      >
+                        {item.label}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
 
-              <button
-                ref={toggleRef}
-                type="button"
-                onClick={() => setOpen((v) => !v)}
-                aria-expanded={open}
-                aria-controls="mobile-nav"
-                aria-label={open ? 'Close menu' : 'Open menu'}
-                /* No longer `xl:hidden`. The nav rail below collapses the
-                   moment the page is scrolled, which used to leave a desktop
-                   visitor with no navigation at all beyond the first screen —
-                   the rail is the shortcut, this is the way in, and both belong
-                   at every width. */
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--bar-ink)]/40 transition-colors duration-500 hover:border-[var(--accent)]/70"
-              >
-                <span className="relative block h-3 w-5">
-                  <span
-                    className={cx(
-                      'absolute left-0 block h-px w-5 bg-[var(--bar-ink)] transition-all duration-300',
-                      open ? 'top-1.5 rotate-45' : 'top-0',
-                    )}
-                  />
-                  <span
-                    className={cx(
-                      'absolute left-0 block h-px w-5 bg-[var(--bar-ink)] transition-all duration-300',
-                      open ? 'top-1.5 -rotate-45' : 'top-3',
-                    )}
-                  />
+              <div className="flex shrink-0 items-center gap-3">
+                {/* Wrapped rather than given `hidden` directly: Button's base
+                    class sets `inline-flex`, and utility order in the
+                    stylesheet — not the class attribute — decides which display
+                    rule wins. */}
+                {/* Withdrawn while the menu is open — the overlay carries its
+                    own pair of these. `invisible` rather than `hidden` so the
+                    row keeps its width and the toggle beside it does not slide
+                    sideways as the menu opens. */}
+                <span
+                  className={cx(
+                    'hidden transition-opacity duration-300 sm:block',
+                    open && 'invisible opacity-0',
+                  )}
+                >
+                  {/* Outlined in whatever ink the bar is currently using, so
+                      the one persistent call to action survives a light section
+                      without a second variant being threaded through Button. */}
+                  <Button
+                    to="/join"
+                    variant="secondary"
+                    /* `!` on the colour: `Button`'s `secondary` variant already
+                       sets a text colour, and between two utilities of the same
+                       property it is stylesheet order — not class-attribute
+                       order — that decides, so without it the label stayed
+                       paper white and vanished over a light section. */
+                    className="border-[var(--bar-ink)]/40 px-6 py-3 !text-[var(--bar-ink)] hover:border-[var(--accent)]/70 hover:!text-[var(--accent)]"
+                  >
+                    Join IES
+                  </Button>
                 </span>
-              </button>
+
+                <button
+                  ref={toggleRef}
+                  type="button"
+                  onClick={() => setOpen((v) => !v)}
+                  aria-expanded={open}
+                  aria-controls="mobile-nav"
+                  aria-label={open ? 'Close menu' : 'Open menu'}
+                  /* Present at every width. Below `xl` it is the navigation;
+                     at and above it, it is the way to the destinations the bar
+                     does not carry — leadership, gallery, partners, news, and
+                     the three branches. */
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--bar-ink)]/40 transition-colors duration-500 hover:border-[var(--accent)]/70"
+                >
+                  <span className="relative block h-3 w-5">
+                    <span
+                      className={cx(
+                        'absolute left-0 block h-px w-5 bg-[var(--bar-ink)] transition-all duration-300',
+                        open ? 'top-1.5 rotate-45' : 'top-0',
+                      )}
+                    />
+                    <span
+                      className={cx(
+                        'absolute left-0 block h-px w-5 bg-[var(--bar-ink)] transition-all duration-300',
+                        open ? 'top-1.5 -rotate-45' : 'top-3',
+                      )}
+                    />
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
-
-          {/* ---------------------------------------------------- Nav rail */}
-          {/*
-           * The nav in the reference register: wide-tracked capitals spread
-           * edge to edge under a hairline, rather than a cluster of links.
-           *
-           * It collapses on scroll — `grid-rows-[0fr]` to `[1fr]` rather than a
-           * height, so nothing here carries a magic pixel value that breaks
-           * when a label is added. The inner element needs `overflow-hidden`
-           * for that to clip, and `invisible` at the collapsed end keeps the
-           * links out of the tab order rather than merely out of sight.
-           */}
-          <div
-            className={cx(
-              'hidden grid-rows-[1fr] transition-all duration-500 ease-[var(--ease-cinema)] xl:grid',
-              scrolled && 'grid-rows-[0fr] opacity-0',
-              /* Withdrawn while the menu is open, for the same reason the Join
-                 button above is: the overlay carries the whole of this nav at
-                 display size, and leaving the rail up meant two live copies of
-                 every link on screen at once — the rail's ABOUT sitting
-                 directly on top of the overlay's. `invisible` alongside the
-                 fade so the duplicate links leave the tab order too. */
-              open && 'invisible opacity-0',
-            )}
-          >
-            <nav
-              aria-label="Primary"
-              className={cx('overflow-hidden', scrolled && 'invisible')}
-            >
-              {/*
-               * Left-aligned with fixed gaps, not `justify-between`.
-               *
-               * Spread edge to edge was right for nine items — they filled the
-               * rail and the spacing read as a measure. At five the same rule
-               * puts roughly 200px between neighbours on a wide monitor, which
-               * stops reading as a menu and starts reading as five unrelated
-               * words along the top of the page. Fixed gaps give the group a
-               * left edge, and it is the same left edge as the wordmark below
-               * it, every section heading, and the hero's first column.
-               */}
-              <ul className="flex items-center gap-x-9 border-t border-[var(--bar-ink)]/15 pt-4 pb-5 lg:gap-x-12">
-                {primaryNav.map((item) => (
-                  <li key={item.href}>
-                    <NavLink
-                      to={item.href}
-                      tabIndex={scrolled ? -1 : undefined}
-                      className={({ isActive }) =>
-                        cx(
-                          /* 12px / 600 / 0.1em, from 11px / 500 / 0.24em.
-                             Navigation is the one piece of text on a site that
-                             is never *read* — it is recognised, at speed, out
-                             of the corner of the eye — and 0.24em of tracking
-                             is precisely what stops a word being recognisable
-                             as a shape. It is also the text most often sitting
-                             over a photograph or the globe, which is why the
-                             resting tone went from `paper/70` to `paper/85`. */
-                          'relative block py-1 text-[0.75rem] font-semibold whitespace-nowrap uppercase transition-colors duration-300',
-                          /* The trailing step still has to come back, or every
-                             label sits a notch left of centre in its own slot. */
-                          'tracking-[0.1em] -mr-[0.1em]',
-                          /* 2px, not 1px, and it stays put under the active
-                             item. A hairline underline is a hover flourish; the
-                             active section marker has to be visible without
-                             being looked for. */
-                          'after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:rounded-full after:bg-[var(--accent)] after:transition-all after:duration-500',
-                          isActive
-                            ? 'text-[var(--accent)] after:w-[calc(100%-0.1em)]'
-                            : 'text-[var(--bar-ink)]/85 hover:text-[var(--bar-ink)] after:w-0 hover:after:w-[calc(100%-0.1em)]',
-                        )
-                      }
-                    >
-                      {item.label}
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
         </Container>
-
-        {/* Outside the Container so the line runs the full width of the
-            viewport rather than stopping at the content gutters, and hidden
-            while the menu is open — the overlay is not the document. */}
-        {!open && <ScrollProgress />}
       </header>
 
       {/* --------------------------------------------------------- Overlay */}

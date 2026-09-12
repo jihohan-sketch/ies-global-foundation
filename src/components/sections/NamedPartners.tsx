@@ -26,7 +26,23 @@ const organizations = namedPartners.flatMap((group) =>
   group.organizations.map((name) => ({ name, group: group.group })),
 )
 
-export function NamedPartners({ id, index = '03' }: { id?: string; index?: string }) {
+export function NamedPartners({
+  id,
+  index,
+  /**
+   * The trailing "see how partnerships work" link.
+   *
+   * On any page but /partners this section is a pointer as well as a record,
+   * so the link is on by default. On /partners itself it would send the reader
+   * to the page they are already reading, which is why it can be turned off —
+   * the disclaimer above it always stays, wherever the names appear.
+   */
+  showLink = true,
+}: {
+  id?: string
+  index?: string
+  showLink?: boolean
+}) {
   return (
     <Section id={id} tone="deep" className="overflow-hidden">
       <Container size="wide">
@@ -88,14 +104,19 @@ export function NamedPartners({ id, index = '03' }: { id?: string; index?: strin
         <Reveal>
           <p className="mt-12 max-w-3xl border-t border-mist/15 pt-6 text-xs leading-relaxed text-mist">
             Naming an organization here records a collaboration; it does not imply that
-            organization endorses IES or its positions.{' '}
-            <Link
-              to="/partners"
-              className="text-paper underline underline-offset-4 hover:text-[var(--accent)]"
-            >
-              See how partnerships work
-            </Link>
-            .
+            organization endorses IES or its positions.
+            {showLink && (
+              <>
+                {' '}
+                <Link
+                  to="/partners"
+                  className="text-paper underline underline-offset-4 hover:text-[var(--accent)]"
+                >
+                  See how partnerships work
+                </Link>
+                .
+              </>
+            )}
           </p>
         </Reveal>
       </Container>

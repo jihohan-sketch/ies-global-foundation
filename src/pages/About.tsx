@@ -9,8 +9,8 @@ import { CallToAction } from '@/components/sections/CallToAction'
 import { LeadershipMessages } from '@/components/sections/LeadershipMessages'
 import { OrgChart } from '@/components/sections/OrgChart'
 import { branches } from '@/content/branches'
-import { site, values } from '@/content/site'
-import { differentiators, pillars } from '@/content/work'
+import { site, threeAs, values } from '@/content/site'
+import { differentiators } from '@/content/work'
 import { useSeo } from '@/lib/seo'
 
 export default function About() {
@@ -81,51 +81,47 @@ export default function About() {
         </Container>
       </Section>
 
-      {/* ======================================================= OUR STORY */}
+      {/* ============================================= WHY IES EXISTS, AND HOW */}
+      {/*
+       * ONE SECTION WHERE THERE WERE TWO.
+       *
+       * "Our Story" and "Why IES Exists" were consecutive sections carrying one
+       * idea between them: the organisation exists because school rewards
+       * achievement and rarely asks what it is for, and it began when two
+       * students decided to do something about that. Split across two screens,
+       * the reason arrived after the history it explains.
+       *
+       * The claim leads now, in the left column, and the history follows in the
+       * right as the answer to it. Nothing was cut — every sentence from both
+       * sections is still here.
+       */}
       <Section tone="deep">
         <Container size="wide">
-          <div className="grid gap-14 lg:grid-cols-[0.6fr_1.4fr] lg:gap-24">
-            <Reveal>
-              <Eyebrow>Our Story</Eyebrow>
-            </Reveal>
-
-            <Reveal delay={100} className="space-y-7">
-              <p className="text-lead text-paper">
-                IES began in April 2023 as a student-led initiative in Korea, focused on
-                ethics, education, and youth service.
-              </p>
-              <p className="leading-relaxed text-mist">
-                It grew into a network across dozens of schools and several countries. Growth
-                was never the aim; it followed from the model working — students kept showing
-                up, then wanted the same thing at their own schools.
-              </p>
-              <p className="leading-relaxed text-mist">
-                As IES grew beyond Korea, the Global Foundation was established to connect the
-                branches under one identity — it coordinates, it does not centralise. IES Korea
-                remains the original branch and operational headquarters.
-              </p>
-            </Reveal>
-          </div>
-        </Container>
-      </Section>
-
-      {/* ====================================================== WHY IES EXISTS */}
-      <Section>
-        <Container size="wide">
-          <div className="grid gap-14 lg:grid-cols-2 lg:gap-24">
+          <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
             <Reveal>
               <Eyebrow>Why IES Exists</Eyebrow>
-              <h2 className="text-h2 mt-6">
+              <h2 className="text-h2 mt-6 max-w-[18ch]">
                 Students are taught to succeed. They are rarely asked to decide what success is
                 for.
               </h2>
             </Reveal>
 
-            <Reveal delay={120} className="space-y-6">
-              <p className="leading-relaxed text-mist">
-                Schools are good at encouraging academic achievement. IES was founded for
-                the rest of it — and for putting what a student concludes to work in their
+            <Reveal delay={120} className="space-y-7">
+              <p className="text-lead text-paper">
+                Schools are good at encouraging academic achievement. IES was founded for the
+                rest of it — and for putting what a student concludes to work in their
                 community.
+              </p>
+              <p className="leading-relaxed text-mist">
+                It began in April 2023 as a student-led initiative in Korea, and grew into a
+                network across dozens of schools and several countries. Growth was never the
+                aim; it followed from the model working — students kept showing up, then
+                wanted the same thing at their own schools.
+              </p>
+              <p className="leading-relaxed text-mist">
+                As IES grew beyond Korea, the Global Foundation was established to connect the
+                branches under one identity — it coordinates, it does not centralise. IES Korea
+                remains the original branch and operational headquarters.
               </p>
             </Reveal>
           </div>
@@ -160,93 +156,87 @@ export default function About() {
        * get rid of.
        */}
 
-      {/* ========================================================== VALUES */}
-      {/* Dark rather than the bright `paper` interlude this used to be — see the
-          note on the matching section in Home.tsx. */}
-      {/* ========================================================== VALUES */}
+      {/* ================================================= WHAT WE STAND FOR */}
       {/*
-       * The reading ground, and the asymmetric split the site uses for a
-       * "one thing that organises the others" relationship. The eight
-       * supporting values were an eight-cell grid, which gave every one of
-       * them the same weight as Equity — the value that is supposed to
-       * organise the rest.
+       * THE THREE A'S AND THE VALUES, IN ONE SECTION.
+       *
+       * The Three A's are the organisation's own framework — the test every
+       * programme is held to, unchanged since 2023 — and they used to be a
+       * three-panel pinned scene on the home page, three screens of sideways
+       * scroll for three sentences. They belong here, where a reader has come
+       * to find out what IES actually believes, and they belong on the reading
+       * ground rather than in a scene.
+       *
+       * The nine values follow as a register beneath them rather than as their
+       * own section. That is the relationship they actually have: the A's are
+       * the framework, the values are the vocabulary, and running them as two
+       * separate movements of the page made a reader compare two lists instead
+       * of reading one idea.
        */}
       <Section tone="paper" className="overflow-hidden">
         <Container size="wide" className="relative">
-          <GhostTitle>Values</GhostTitle>
+          <GhostTitle>Ethics</GhostTitle>
           <div className="relative z-10">
             <Split
               aside={
                 <Reveal>
-                  <Eyebrow tone="navy">Core Values</Eyebrow>
-                  <p className="mt-8 font-serif text-[clamp(3rem,7vw,5.5rem)] leading-none font-medium tracking-[-0.035em] text-navy">
-                    {values.primary.title}
+                  <Eyebrow tone="navy">What We Stand For</Eyebrow>
+                  <p className="mt-8 font-serif text-[clamp(2.5rem,6vw,4.5rem)] leading-none font-medium tracking-[-0.035em] text-navy">
+                    The Three A’s
                   </p>
                   <p className="mt-8 max-w-[36ch] leading-relaxed text-navy-600">
-                    {values.primary.body}
+                    The test every IES programme is held to — unchanged since 2023, applied
+                    the same way in every branch.
                   </p>
                 </Reveal>
               }
             >
-              <Reveal delay={140}>
-                <p className="text-label font-semibold text-navy/55 uppercase">
-                  Supporting Values
-                </p>
-              </Reveal>
-              <ul className="mt-8 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
-                {values.supporting.map((value, i) => (
-                  <Reveal
-                    key={value.title}
-                    as="li"
-                    delay={Math.min(i, 7) * 60}
-                    className="border-t py-4"
-                  >
-                    <h3 className="font-serif text-[1.25rem] text-navy">{value.title}</h3>
+              {/* `dt`/`dd`, so each pair is a described term rather than two
+                  stacked paragraphs that only look related. Separated by a
+                  hairline on the top edge — no boxes, as everywhere else. */}
+              <dl>
+                {threeAs.map((item, i) => (
+                  <Reveal key={item.title} delay={Math.min(i, 3) * 80}>
+                    <div
+                      className="grid gap-x-10 gap-y-3 border-t py-8 sm:grid-cols-[minmax(0,15rem)_1fr]"
+                      style={{ borderColor: 'var(--rule)' }}
+                    >
+                      <div>
+                        <dt className="font-serif text-[1.5rem] leading-snug text-navy">
+                          {item.title}
+                        </dt>
+                        <p className="text-label-sm mt-2 font-semibold text-[var(--accent)] uppercase">
+                          {item.subtitle}
+                        </p>
+                      </div>
+                      <dd className="leading-relaxed text-navy-600">{item.body}</dd>
+                    </div>
                   </Reveal>
                 ))}
-              </ul>
-            </Split>
-          </div>
-        </Container>
-      </Section>
+              </dl>
 
-      <Section>
-        <Container size="wide">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Organizational Pillars"
-              title="Three areas of work, held together."
-              lead="Every IES program sits within one of these pillars."
-            />
-          </Reveal>
-
-          <div className="mt-16 space-y-px">
-            {pillars.map((pillar, i) => (
-              <Reveal key={pillar.id} delay={i * 110}>
-                <div className="grid gap-8 border-t border-mist/15 py-10 lg:grid-cols-[auto_1fr_1fr] lg:gap-16">
-                  <span className="font-serif text-sm text-[var(--accent)]">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <div>
-                    <h3 className="text-h3">{pillar.title}</h3>
-                  </div>
-                  <div>
-                    <p className="leading-relaxed text-paper">{pillar.body}</p>
-                    <ul className="mt-6 space-y-2">
-                      {pillar.points.map((point) => (
-                        <li
-                          key={point}
-                          className="flex gap-3 text-[0.9375rem] text-mist"
-                        >
-                          <span aria-hidden className="mt-2.5 h-px w-3 shrink-0 bg-[var(--accent)]/60" />
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+              {/*
+               * The values, as one register under the framework.
+               *
+               * Equity is set first and named as the one that organises the
+               * rest — it is the value the third A is built on — and the other
+               * eight follow as a plain tracked list. Eight equally-weighted
+               * cells said all nine mattered the same amount, which is not
+               * what the organisation says about them.
+               */}
+              <Reveal delay={240}>
+                <div className="mt-16 border-t pt-8" style={{ borderColor: 'var(--rule)' }}>
+                  <p className="text-label font-semibold text-navy/55 uppercase">Core Values</p>
+                  <p className="mt-6 max-w-[52ch] leading-relaxed text-navy-600">
+                    <strong className="font-semibold text-navy">{values.primary.title}</strong>{' '}
+                    — {values.primary.body}
+                  </p>
+                  <p className="mt-6 max-w-[62ch] text-[0.9375rem] leading-relaxed text-navy-600">
+                    {values.supporting.map((value) => value.title).join(' · ')}
+                  </p>
                 </div>
               </Reveal>
-            ))}
+            </Split>
           </div>
         </Container>
       </Section>

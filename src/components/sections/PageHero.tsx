@@ -61,7 +61,7 @@ export function PageHero({
      * `overflow-hidden` is safe here — there is no sticky child anywhere in
      * this subtree. See the note in HorizontalStory for where it is not.
      */
-    <section className="relative overflow-hidden pt-44 pb-24 sm:pt-52 sm:pb-32">
+    <section className="relative overflow-hidden pt-36 pb-24 sm:pt-44 sm:pb-32">
       {/* Sits against the section rather than the container, so it can run past
           the text column's left edge and be cropped by the viewport. */}
       {ghost && <GhostTitle className="!top-32 left-6 sm:left-8">{ghost}</GhostTitle>}

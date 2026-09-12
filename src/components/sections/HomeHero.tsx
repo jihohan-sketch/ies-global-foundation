@@ -3,7 +3,6 @@ import { Globe, type GlobeMarker } from '@/components/Globe'
 import { Button, Container, Eyebrow } from '@/components/ui/Primitives'
 import { Seam, Vignette } from '@/components/ui/Cinematic'
 import { branches } from '@/content/branches'
-import { headlineStats } from '@/content/impact'
 import { image } from '@/lib/images'
 import { cx } from '@/lib/utils'
 
@@ -34,10 +33,13 @@ import { cx } from '@/lib/utils'
                      it. A hover that reveals a venue is a nice detail on a
                      gallery tile and a distraction on the first screen; it also
                      meant the venue did not exist at all for a touch reader.
-     THE FIGURES     4 → 3. Members, chapters, branches — scale, reach, and
-                     spread, with nothing that repeats another. "Schools
-                     represented" and "people reached" are on the Impact page,
-                     which is where a visitor who wants the fuller count goes.
+     THE FIGURES     Gone from the first screen entirely. Three figures under
+                     the buttons put a claim of scale in front of a visitor who
+                     has not yet been told what is being counted, and the same
+                     numbers arrived again as a five-row ledger further down the
+                     page. The home page now makes the scale argument once, in
+                     a section of its own, after the work has been described.
+                     The first screen carries one message and one photograph.
 
    What did not change: the slogan, the globe, the ground, and the two actions.
    The globe is still the identity and still the ground rather than the subject
@@ -78,13 +80,6 @@ const shot = {
   caption: 'Environmental Ethics Forum',
   place: 'Nowon-gu Council, Seoul',
 } as const
-
-/** The three figures the first screen carries. Order is the order shown. */
-const HERO_STATS: readonly string[] = ['Members', 'Chapters', 'National branches']
-
-const stats = HERO_STATS.map((label) => headlineStats.find((s) => s.label === label)).filter(
-  (s): s is (typeof headlineStats)[number] => Boolean(s),
-)
 
 /* --------------------------------------------------------------- Enter */
 
@@ -170,20 +165,22 @@ export function HomeHero() {
         size="wide"
         className={cx(
           'relative z-10 flex min-h-dvh flex-col justify-center',
-          /* Clears the header at every width. At xl the bar is two rows — the
-             6rem primary row plus the nav rail under it — which comes to about
-             9.5rem before the rail collapses on scroll. */
-          'pt-28 pb-14 sm:pt-32 sm:pb-16 xl:pt-40',
+          /* Clears the header at every width. The bar is one row now — 5.5rem
+             at rest, 4.5rem once scrolled — so the old xl step for a second
+             nav row is gone. */
+          'pt-28 pb-16 sm:pt-32 sm:pb-20',
         )}
       >
         <div className="grid items-center gap-y-12 lg:grid-cols-[1.04fr_0.96fr] lg:gap-x-14 xl:gap-x-20">
           {/* ------------------------------------------------- the argument */}
           <div className="max-w-2xl lg:max-w-none">
             <Enter>
-              {/* "Founded 20 April 2023 · Seoul" — the exact date is a fact for
-                  the About page, not for a label above a slogan. City and year
-                  say the same thing in half the width. */}
-              <Eyebrow>Seoul · 2023</Eyebrow>
+              {/* The three countries, which is the fact the wordmark's
+                  "Global Foundation" is claiming and the one thing the
+                  headline below it does not say. The founding city and year
+                  moved into the mission section, where the sentence around
+                  them makes them mean something. */}
+              <Eyebrow>Korea · United States · United Kingdom</Eyebrow>
             </Enter>
 
             <Enter delay={80}>
@@ -224,10 +221,9 @@ export function HomeHero() {
                * society" is the single fact everything else on the site depends
                * on.
                */}
-              <p className="text-lead mt-6 max-w-[42ch] text-paper">
-                A <strong className="font-semibold text-paper">student-run ethics society</strong>{' '}
-                in Korea, the United States, and the United Kingdom. Students argue hard
-                questions in public — then act on what they decide.
+              <p className="text-lead mt-6 max-w-[40ch] text-paper">
+                A <strong className="font-semibold text-paper">student-run ethics society</strong>.
+                Students argue hard questions in public — then act on what they decide.
               </p>
             </Enter>
 
@@ -291,34 +287,6 @@ export function HomeHero() {
           </Enter>
         </div>
 
-        {/* ----------------------------------------------------- the scale */}
-        {/*
-         * Three figures, on screen from the first frame.
-         *
-         * A visitor deciding whether a student organisation is serious is
-         * asking a question of scale, and the answer costs 90px. Three rather
-         * than four because each of these says something the others do not —
-         * how many students, how many chapters, how many countries — where the
-         * fourth was another way of saying "a lot". The label is the readable
-         * half: `1,200+` above `MEMBERS` at a legible size beats a display
-         * figure over a 9px tracked caption a reader meets with no idea what it
-         * counts.
-         */}
-        <Enter delay={260}>
-          <dl className="mt-12 grid grid-cols-3 gap-x-6 border-t border-mist/20 pt-7 sm:gap-x-10 lg:mt-14">
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <dd className="font-serif text-[1.75rem] leading-none font-medium text-paper tabular-nums lining-nums sm:text-[2.125rem]">
-                  {stat.value.toLocaleString('en-US')}
-                  <span className="text-[var(--accent)]">{stat.suffix}</span>
-                </dd>
-                <dt className="text-label-sm mt-2.5 font-semibold text-mist uppercase">
-                  {stat.label}
-                </dt>
-              </div>
-            ))}
-          </dl>
-        </Enter>
       </Container>
 
       <Seam edge="bottom" />
