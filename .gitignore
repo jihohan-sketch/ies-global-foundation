@@ -25,3 +25,7 @@ dist-ssr
 
 # Natural Earth source cached by scripts/generate-coastlines.mjs
 .cache
+
+# Stray local scratch files, not part of the site
+Untitled
+session_memory.json
