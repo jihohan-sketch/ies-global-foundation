@@ -81,21 +81,6 @@ export const people: Person[] = [
       'Publication approval workflow',
     ],
   },
-  {
-    id: 'jaehoo-lee',
-    name: 'Jaehoo Lee',
-    title: 'Business Analyst',
-    tier: 'global',
-    spotlight: true,
-    photo: '/leadership/jaehoo-lee.jpg',
-    bio: 'Business Analyst for the Global Foundation. His work is the Foundation itself rather than the branches: what its own records show, what its programmes take to run, and whether a figure it puts in front of a school or a partner is backed by something. He turns that into the analysis the President works from — where the Foundation’s effort is actually going, what it has the capacity to commit to, and what it should hold off on until the numbers say otherwise.',
-    responsibilities: [
-      'Analysis and reporting for the Global Foundation',
-      'Review of the Foundation’s figures before they are published',
-      'Cost and capacity analysis for Foundation programmes',
-      'Analysis supporting the President’s decisions',
-    ],
-  },
 
   /* ---------------------------------------------------- National — IES Korea */
   {
@@ -311,19 +296,6 @@ export const globalOffices: {
       'Cross-border programming logistics',
     ],
     holder: 'joseph-hahmmin-kang',
-  },
-  {
-    title: 'Business Analyst',
-    scope: 'Reporting and analysis',
-    responsibilities: [
-      'Analysis and reporting for the Global Foundation',
-      'Review of the Foundation’s figures before they are published',
-      'Cost and capacity analysis for Foundation programmes',
-      'Analysis supporting the President’s decisions',
-    ],
-    holder: 'jaehoo-lee',
-    holderNote:
-      'Every figure the Foundation publishes has to be traceable to what a branch actually reported. This office does that checking before anything is stated publicly, and turns the same records into what the President plans from: what a programme takes to run, and what the Foundation has the capacity to commit to.',
   },
 ]
 
