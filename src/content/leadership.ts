@@ -82,6 +82,22 @@ export const people: Person[] = [
     ],
   },
 
+  {
+    id: 'yuchan-park',
+    name: 'Yuchan Park',
+    title: 'Director of Technology',
+    tier: 'global',
+    spotlight: true,
+    photo: '/leadership/yuchan-park.jpg',
+    bio: 'Director of Technology for the Global Foundation. Responsible for the systems IES runs on — this website, the tools branches and chapters use to coordinate and report, and the accounts and data those depend on. His work is keeping that infrastructure reliable and secure, so that a branch in any country can do its work without the technology getting in the way.',
+    responsibilities: [
+      'Website and technical infrastructure',
+      'Digital tools for branches and chapters',
+      'Data security and account management',
+      'Technical support for the Foundation’s offices',
+    ],
+  },
+
   /* ---------------------------------------------------- National — IES Korea */
   {
     id: 'ryan-cha',
@@ -297,11 +313,22 @@ export const globalOffices: {
     ],
     holder: 'joseph-hahmmin-kang',
   },
+  {
+    title: 'Director of Technology',
+    scope: 'Technology and infrastructure',
+    responsibilities: [
+      'Website and technical infrastructure',
+      'Digital tools for branches and chapters',
+      'Data security and account management',
+      'Technical support for the Foundation’s offices',
+    ],
+    holder: 'yuchan-park',
+  },
 ]
 
 export const leadershipIntro = {
   foundation:
-    'The officers who run the Foundation day to day — governance, international operations, outreach, and analysis.',
+    'The officers who run the Foundation day to day — governance, international operations, outreach, and technology.',
   board:
     'The board reviews governance and advises. It does not take over the work.',
   founding:
