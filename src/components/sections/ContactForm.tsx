@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button } from '@/components/ui/Primitives'
 import {
   Field,
   FieldError,
@@ -11,10 +10,8 @@ import { mailtoFallback, submitForm } from '@/lib/forms'
 
 const TOPICS = [
   { value: 'general', label: 'General inquiry' },
-  { value: 'membership', label: 'Membership' },
-  { value: 'chapter', label: 'School chapter' },
-  { value: 'branch', label: 'National branch role' },
-  { value: 'partnership', label: 'Partnership' },
+  { value: 'council', label: 'IES Leadership Council' },
+  { value: 'branch', label: 'Branch support' },
   { value: 'media', label: 'Media' },
 ] as const
 
@@ -163,10 +160,10 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
 
   if (status === 'success') {
     return (
-      <div className="border border-[var(--accent)]/40 bg-[var(--accent)]/6 p-10 text-center" role="status">
-        <p className="font-serif text-h3 text-[var(--accent)]">Message sent</p>
-        <p className="mx-auto mt-5 max-w-md leading-relaxed text-mist">
-          Your message goes to the relevant branch or team. We reply within a few working days.
+      <div className="border bg-bone p-10 text-center" role="status">
+        <p className="text-h3 font-serif text-navy">Message sent</p>
+        <p className="mx-auto mt-4 max-w-md text-ink-soft">
+          Thank you. We will reply by email.
         </p>
         <button
           type="button"
@@ -174,7 +171,7 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
             mountedAt.current = Date.now()
             setStatus('idle')
           }}
-          className="mt-8 text-[0.75rem] font-medium tracking-[0.14em] text-paper uppercase underline underline-offset-8 transition-colors hover:text-[var(--accent)]"
+          className="link mt-6 text-[0.9375rem] font-medium text-navy"
         >
           Send another message
         </button>
@@ -223,12 +220,12 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
       />
 
       {error && (
-        <div role="alert" className="border border-red-400/40 bg-red-400/8 px-5 py-4">
+        <div role="alert" className="border border-red-700/40 bg-red-50 px-5 py-4">
           <FieldError id="contact-form-error">{error}</FieldError>
           {fallbackHref && (
             <a
               href={fallbackHref}
-              className="mt-3 inline-block text-[0.8125rem] text-paper underline underline-offset-4 transition-colors hover:text-[var(--accent)]"
+              className="link mt-3 inline-block text-[0.875rem] text-navy"
             >
               Send as an email instead — your answers are already filled in
             </a>
@@ -237,10 +234,14 @@ export function ContactForm({ defaultTopic = 'general' }: { defaultTopic?: strin
       )}
 
       <div className="flex flex-wrap items-center gap-6 pt-2">
-        <Button type="submit" variant="primary" disabled={status === 'submitting'} arrow>
+        <button
+          type="submit"
+          disabled={status === 'submitting'}
+          className="rounded-sm bg-navy px-6 py-3.5 text-[0.9375rem] font-medium text-paper transition-colors hover:bg-navy-600 disabled:opacity-60"
+        >
           {status === 'submitting' ? 'Sending…' : 'Send message'}
-        </Button>
-        <p className="text-xs text-mist">
+        </button>
+        <p className="text-[0.8125rem] text-slate">
           Your details are used only to reply.
         </p>
       </div>

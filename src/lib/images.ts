@@ -39,14 +39,14 @@
  */
 
 /** The generated WebP ladder for each asset, as a ready-made `srcset` string. */
-const srcsets = import.meta.glob<string>('../assets/**/*.{jpg,jpeg,png}', {
+const srcsets = import.meta.glob<string>('../assets/leadership/*.{jpg,jpeg,png}', {
   eager: true,
   query: '?w=480;960;1600&format=webp&as=srcset',
   import: 'default',
 })
 
 /** The middle rung on its own, for `src`. */
-const fallbacks = import.meta.glob<string>('../assets/**/*.{jpg,jpeg,png}', {
+const fallbacks = import.meta.glob<string>('../assets/leadership/*.{jpg,jpeg,png}', {
   eager: true,
   query: '?w=960&format=webp',
   import: 'default',

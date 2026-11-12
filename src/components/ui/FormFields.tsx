@@ -2,28 +2,25 @@ import type { ReactNode } from 'react'
 import { cx } from '@/lib/utils'
 
 /*
- * Shared field styling for every form on the site. Extracted so the contact and
- * join forms cannot drift apart, and — more to the point — so the contrast of a
- * field's border is decided once. See the mist ladder in index.css: `mist/55`
- * is the floor at which a border still marks out an interactive control under
- * WCAG 1.4.11, and these fields sit at exactly that.
+ * Shared field styling. The #7d8796 border clears the 3:1 that WCAG 1.4.11
+ * asks of a control's only visible boundary, on white and on paper.
  */
 
-export const labelClass = 'block text-xs font-medium tracking-[0.18em] text-mist uppercase mb-3'
+export const labelClass = 'block text-[0.8125rem] font-medium text-navy mb-2'
 
 /* No `focus:outline-none` here: a 1px border tint is too quiet to serve as the
    only focus indicator, so the gold ring from index.css is left in place.
    Placeholder sits at /75 — /45 measured 2.67:1 against the field, under AA,
    and /70 still fell short against the lighter focused background. */
 export const inputClass =
-  'w-full border border-mist/55 bg-navy-700/30 px-5 py-3.5 text-[0.9375rem] text-paper placeholder:text-slate transition-colors duration-300 focus:border-[var(--accent)]/70 focus:bg-navy-700/50'
+  'w-full rounded-sm border border-[#7d8796] bg-white px-4 py-3 text-[0.9375rem] text-navy placeholder:text-slate transition-colors duration-200 focus:border-navy'
 
-export const invalidInputClass = 'border-red-400/70 bg-red-400/5'
+export const invalidInputClass = 'border-red-700 bg-red-50'
 
 /** Error text pairs an icon with the colour, so the state survives colour blindness. */
 export function FieldError({ id, children }: { id: string; children: ReactNode }) {
   return (
-    <p id={id} className="mt-2.5 flex items-start gap-2 text-[0.8125rem] text-red-300">
+    <p id={id} className="mt-2.5 flex items-start gap-2 text-[0.8125rem] text-red-800">
       <svg aria-hidden viewBox="0 0 16 16" fill="none" className="mt-0.5 h-4 w-4 shrink-0">
         <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5" />
         <path d="M8 5v3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -153,10 +150,10 @@ export function SelectField({
           name={name}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={cx(inputClass, 'appearance-none bg-navy-700/40 pr-12')}
+          className={cx(inputClass, 'appearance-none pr-12')}
         >
           {options.map((option) => (
-            <option key={option.value} value={option.value} className="bg-navy text-paper">
+            <option key={option.value} value={option.value} >
               {option.label}
             </option>
           ))}
@@ -165,7 +162,7 @@ export function SelectField({
           aria-hidden
           viewBox="0 0 16 16"
           fill="none"
-          className="pointer-events-none absolute top-1/2 right-5 h-4 w-4 -translate-y-1/2 text-mist"
+          className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-slate"
         >
           <path
             d="M4 6.5 8 10.5 12 6.5"

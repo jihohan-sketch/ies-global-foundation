@@ -7,9 +7,18 @@
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.web3forms.com; frame-src https://www.youtube-nocookie.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
         },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
         {
           "key": "Permissions-Policy",
           "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
@@ -17,5 +26,77 @@
       ]
     }
   ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/about",
+      "destination": "/#purpose",
+      "permanent": false
+    },
+    {
+      "source": "/leadership",
+      "destination": "/#council",
+      "permanent": false
+    },
+    {
+      "source": "/governance",
+      "destination": "/#continuity",
+      "permanent": false
+    },
+    {
+      "source": "/global-network",
+      "destination": "/#branches",
+      "permanent": false
+    },
+    {
+      "source": "/global-network/:slug",
+      "destination": "/#branches",
+      "permanent": false
+    },
+    {
+      "source": "/our-work",
+      "destination": "/#branches",
+      "permanent": false
+    },
+    {
+      "source": "/impact",
+      "destination": "/#branches",
+      "permanent": false
+    },
+    {
+      "source": "/gallery",
+      "destination": "/#branches",
+      "permanent": false
+    },
+    {
+      "source": "/partners",
+      "destination": "/#branches",
+      "permanent": false
+    },
+    {
+      "source": "/news",
+      "destination": "/#branches",
+      "permanent": false
+    },
+    {
+      "source": "/news/:slug",
+      "destination": "/#branches",
+      "permanent": false
+    },
+    {
+      "source": "/join",
+      "destination": "/#branches",
+      "permanent": false
+    },
+    {
+      "source": "/start-a-chapter",
+      "destination": "/#branches",
+      "permanent": false
+    }
+  ]
 }

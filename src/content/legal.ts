@@ -37,7 +37,7 @@ export const privacyPolicy: LegalDocument = {
     {
       heading: 'Information we collect',
       paragraphs: [
-        'We collect information you give us directly — your name, email address, school or organization, and the content of your message — when you submit the contact or application form, or email us.',
+        'We collect information you give us directly — your name, email address, school or organization, and the content of your message — when you submit the contact form or email us.',
         'We do not require an account to use this website, and we do not ask for personal information beyond what is needed to answer your inquiry.',
       ],
     },
@@ -51,7 +51,6 @@ export const privacyPolicy: LegalDocument = {
       heading: 'How we use it',
       list: [
         'To respond to your inquiry and route it to the relevant branch or team',
-        'To process applications for membership, chapter, or branch roles',
         'To maintain records of partnerships and organizational correspondence',
       ],
     },
@@ -198,44 +197,3 @@ export const participantSafety: LegalDocument = {
 }
 
 export const legalDocuments = [privacyPolicy, termsOfUse, participantSafety]
-
-export const governance = {
-  intro:
-    'How IES is organized, and what each part of it is and is not. Clarity about structure is part of operating credibly.',
-  entities: [
-    {
-      title: 'IES Global Foundation',
-      body: 'The international body coordinating the IES network: cross-border initiatives, global partnerships, branding, standards, branch development, and expansion. It does not run local programming.',
-    },
-    {
-      title: 'National branches',
-      body: 'IES Korea, IES United States, and IES UK Society. Each is a unit of the same network, led by students in that country and responsible for local programming, chapters, and outreach. They are not independent legal entities.',
-    },
-    {
-      title: 'School chapters',
-      body: 'Student-led groups at individual schools, approved and supported by their national branch. They run under shared guidelines and may use IES branding only as issued.',
-    },
-    {
-      title: 'External partners',
-      body: 'Schools, universities, nonprofits, community centers, and public institutions that work with IES. Partnership implies no endorsement, accreditation, or affiliation beyond what is agreed in writing.',
-    },
-  ],
-  principles: [
-    {
-      title: 'Accurate representation',
-      body: 'IES is a student-led nonprofit founded in South Korea. It claims no registered charitable or NGO status in any other country, and nothing here should be read as such a claim.',
-    },
-    {
-      title: 'Defined authority',
-      body: 'A title carries the responsibilities described for that role and no authority beyond them. Branch leadership does not speak for the Foundation, and the Foundation does not run branch programming.',
-    },
-    {
-      title: 'Verifiable reporting',
-      body: 'Published figures come from branch reporting, consolidated by the Foundation. A figure we cannot support from records is not published.',
-    },
-    {
-      title: 'Reviewed publication',
-      body: 'Substantive changes to this site — leadership, statistics, branch information, organizational claims — are reviewed by founding leadership and the relevant branch president before publication.',
-    },
-  ],
-}

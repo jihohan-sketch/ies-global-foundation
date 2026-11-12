@@ -1,13 +1,15 @@
 # IES Global Foundation — Website
 
-The international website of the **IES Global Foundation**, the body coordinating
-the national branches of the Interscholastic Ethics Society in Korea, the United
-States, and the United Kingdom.
+A single-page introduction to IES Global Foundation: why it exists, how it
+relates to IES Korea and IES United States, the IES Leadership Council, and how
+leadership continues from one generation of students to the next.
 
-> **Read [REVIEW.md](./REVIEW.md) before publishing.** It lists every factual
-> claim on the site and who has to sign it off.
+Program catalogs, events, chapters, membership, and impact live on the branch
+sites ([ie-society.com](https://ie-society.com/), [iesusa.space](https://iesusa.space/)).
+This site links to them and does not repeat them.
 
----
+> **Read [REVIEW.md](./REVIEW.md) before publishing.** It lists the facts that
+> still need confirmation from the project owner.
 
 ## Running it
 
@@ -23,353 +25,64 @@ npm run dev
 | `npm run preview` | Serves the production build locally |
 | `npm run typecheck` | TypeScript only |
 | `npm run lint` | oxlint |
-| `npm run sitemap` | Rewrites `public/sitemap.xml` from routes + content |
 
 Stack: React 19, TypeScript, Vite, Tailwind CSS v4, React Router.
 
----
+## Editing content
 
-## Editing content — start here
-
-**No component contains copy.** Everything editable lives in `src/content/`, so
-updating the site does not mean touching layout code.
-
-| File | What it controls |
+| What | Where |
 | --- | --- |
-| `site.ts` | Name, mission, vision, values, Three A's, navigation, contacts, socials |
-| `branches.ts` | The three national branches — facts, sections, contacts |
-| `leadership.ts` | People, biographies, Foundation offices |
-| `work.ts` | The three pillars and the five programme areas |
-| `activities.ts` | Documented programme activity, with photography and footage |
-| `videos.ts` | Film from the organization's YouTube channel |
-| `impact.ts` | Statistics, impact stories, timeline |
-| `news.ts` | News articles |
-| `partners.ts` | Partner categories, named partners, logos |
-| `join.ts` | Join pathways, chapter process, expectations, FAQs |
-| `legal.ts` | Privacy, Terms, Participant Safety, Governance |
+| Home page wording | `src/content/home.ts` |
+| People (Council, founders, branch presidents) | `src/content/leadership.ts` |
+| Branches, contact address, navigation, page title/description | `src/content/site.ts` |
+| Policy pages | `src/content/legal.ts` |
+| Retired routes and where they redirect | `src/content/redirects.json` (mirror changes into `vercel.json`) |
 
-`types.ts` defines the shape of everything. If TypeScript is happy, the site will
-render.
+### People
 
-### Common tasks
+Each person is one record in `src/content/leadership.ts`. A record renders only
+when `approved: true`, and each field renders only when it is filled in, so a
+missing fact never leaves a broken layout.
 
-**Add a news article** — append to `articles` in `news.ts`. Sorting, filtering,
-the article page, and the sitemap all update automatically.
+- `category` decides where a person appears: `council-active` and
+  `council-alumni` (the Council roster), `founding` (Founding leadership row),
+  `branch-representative` (Current branch leadership row under Branches).
+- While there is no confirmed `council-active` member, the Council section shows
+  "Council formation in progress" and the Founding leadership row only.
+- `formerRoles[].years` is for **verified** service years only. Never derive
+  them from graduation years.
+- Portraits go in `src/assets/leadership/` and are referenced as
+  `photo: '/leadership/<file>.jpg'`. Only use a photo whose identity is
+  confirmed. Portraits from the previous site that are not in use are kept in
+  `assets-archive/` (outside the build).
 
-```ts
-{
-  slug: 'a-url-safe-slug',
-  title: 'Headline',
-  date: '2026-08-14',          // ISO; the site sorts on this
-  category: 'Announcement',    // see NewsCategory in types.ts
-  branch: 'IES Korea',
-  summary: 'One or two sentences.',
-  body: [
-    { type: 'paragraph', text: '…' },
-    { type: 'heading', text: '…' },
-    { type: 'list', items: ['…'] },
-    { type: 'quote', text: '…', attribution: '…' },
-  ],
-}
+## Structure
+
 ```
-
-Without a `cover` image the site generates a deterministic patterned cover, so
-the news index never looks broken.
-
-**Add an activity** — append to `activities` in `activities.ts`, newest first.
-The entry appears on Our Work (whole network) and on its branch page, and the
-`workCategory` field files it under one of the five programme areas.
-
-```ts
-{
-  id: 'a-url-safe-slug',       // also the anchor: /our-work#a-url-safe-slug
-  title: 'As the branch itself titles it',
-  kind: 'Ethics Forum',        // see ActivityKind in types.ts
-  branch: 'korea',
-  date: 'March 14, 2026',      // omit rather than invent one
-  location: 'Where it happened',
-  participants: 'Guests, partners, institutions',
-  summary: 'One or two sentences.',
-  body: ['A paragraph.', 'Another.'],
-  photos: [{ src: '/activities/<id>/lead.jpg', alt: 'What is in the frame.' }],
-  workCategory: 'civic-responsibility',
-}
+src/
+  pages/Home.tsx              Hero → Purpose → Branches → Council → Continuity
+  components/home/            One file per home-page section, plus PersonCard
+  components/layout/          Header (four anchors), Footer, Layout
+  pages/Contact.tsx           Contact form (Web3Forms) + email + branch links
+  pages/LegalPage.tsx         Privacy, Terms, Participant Safety
 ```
-
-Photographs live in `public/activities/<id>/`. Resize to 1600px on the long edge
-before committing — the originals off the branch sites run to 5 MB each. `alt` is
-required, not optional: these images are records of events, and a caption that
-overstates what a photograph shows is a factual claim like any other. The first
-photo in the array is the wide lead image; the rest form the grid beneath it —
-the column count adapts, and four photos lay out 2×2 rather than 3+1.
-
-Where the branch publishes the guest's own portrait, set `portrait` as well. It
-renders beside the event details rather than in the grid, because a supplied
-studio portrait is not a record of the event.
-
-**Add a video** — put the YouTube id in `videos.ts` (`organizationVideos`) for
-film about the organization, or on the `videos` field of an `activities.ts` entry
-for footage of a specific event. Videos are **embedded, never re-hosted**: the
-file stays on the channel, and `VideoEmbed` in `components/sections/Media.tsx`
-makes no request to YouTube — not even for a thumbnail — until a visitor presses
-play. That is what lets this site carry no third-party scripts and no cookie
-banner, so keep it that way rather than switching to a plain `<iframe>`.
-
-**The home page gallery** needs no editing. `galleryItems` in `activities.ts`
-takes the lead photograph of every activity, so the rail covers each programme,
-grows on its own when an activity is added, and cannot drift out of step with the
-entries it links to. `GallerySection` in `components/sections/Media.tsx` renders
-it on `ScrollRail` with `autoAdvance`.
-
-Four things about that rail are load-bearing, not stylistic:
-
-- It runs in `autoAdvance="continuous"` mode — a constant slow drift rather than
-  a card-at-a-time jump, which spends most of its life motionless and then
-  lurches. Manual horizontal scrolling still works throughout: drag, trackpad,
-  arrow keys on the focused track, and the two arrow buttons.
-- **The children are rendered twice.** The loop works by subtracting one copy's
-  width, which is seamless only because the second half repeats the first. The
-  copies are `aria-hidden` with `tabIndex={-1}` and empty `alt`, so a screen
-  reader hears thirteen programmes rather than twenty-six. That wrap distance is
-  `(scrollWidth + gap) / 2`, **not** `scrollWidth / 2`: the scroll width spans
-  2N cards but only 2N−1 gaps, so plain half of it falls half a gap short and the
-  rail hitches backwards every time round — measured at 12px on the live rail.
-- Continuous mode **accumulates position in a float** instead of reading
-  `scrollLeft` back each frame. At 38px/s a frame moves about 0.6px, which rounds
-  to the device pixel grid on write; using the rounded value as the next frame's
-  base loses the remainder every time. Measured, the naive version covers ~30px
-  where it should cover 36.5px — and at slower speeds it stalls completely.
-  Scroll snapping is off for the same class of reason: it drags `scrollLeft` back
-  to the nearest card on every frame.
-- Stopping and starting are **eased, not switched**. The drift holds a fraction
-  of full speed that is ramped toward its target rather than set to it, so a
-  cursor landing on the rail glides it to a halt over ~420ms instead of cutting
-  the motion dead, which read as a stutter. `RAMP_MS` is a time *constant*, not a
-  duration — the ramp settles after roughly four or five of it, so 90 gives a
-  ~420ms stop. Note the loop keeps running while easing down and only parks once
-  it is fully stopped, which is why `wanted` is separate from `drifting`.
-- It has a **pause button**, because WCAG 2.2.2 gives anyone the right to stop
-  motion running longer than five seconds. It also holds on hover, on keyboard
-  focus inside the track, and while scrolled off screen. It **does** keep moving
-  under `prefers-reduced-motion` — the site owner's call, the same one already
-  made for the scroll reveals and the globe. That is a real trade-off, not an
-  oversight: continuous drift is the motion most likely to affect someone with
-  vestibular sensitivity, and the pause button is the whole of their mitigation.
-  To reverse it, initialise `playing` from `!prefersReducedMotion()`.
-- Its cards are **not** wrapped in `Reveal`. A scroll reveal keys off intersection
-  with the viewport, which is the wrong signal for a card arriving by sideways
-  scroll: cards that had never been in view sat at opacity 0 and their fade-in
-  stalled when the rail brought them in. The rail's own movement is the animation.
-
-### Photograph presentation
-
-`GalleryImage` in `components/sections/Media.tsx` is the only way photographs
-should be rendered in galleries. It fades, unblurs and settles each image on its
-own `load` event, which is a deliberate choice over a scroll observer: because the
-images are lazily loaded, the load event *is* the moment they scroll into view, so
-the effect arrives with the scroll — and it cannot strand a photograph at opacity
-0 if an observer callback goes missing, which is what made the first home rail
-render blank. It also settles on `error`, so a broken path shows its alt text
-instead of an invisible box that reads as a layout bug. Until a photograph
-arrives its frame breathes on the `ies-placeholder` keyframe — the gallery holds
-67 full-size originals arriving over several seconds, and flat rectangles read as
-images that failed rather than images that are coming.
-
-`Lightbox` is the full-size viewer behind the Gallery grid. It is **rendered
-through a portal into `document.body`**, and that is load-bearing: `position:
-fixed` with `z-index: 100` was not enough, because the section containing the grid
-establishes a stacking context, so the whole subtree paints as one layer and the
-site header at `z-50` still covered the lightbox controls. A portal is the only
-reliable escape. Focus moves in on open and returns to the thumbnail that opened
-it, Escape closes, the arrow keys step through the set, and the page behind cannot
-scroll.
-
-Three things about it are load-bearing:
-
-- **Opening is one effect, stepping is another.** They were one, and because the
-  combined effect depended on the index and on callbacks the page rebuilt each
-  render, every arrow press tore the modal down and rebuilt it: body scroll
-  unlocked and re-locked, and focus was handed back to the thumbnail *behind* the
-  overlay before being pulled in again — which scrolls the page underneath. Keep
-  the focus and scroll-lock effect keyed on `open` alone.
-- **The neighbouring photographs are preloaded.** These are 1600px originals, so
-  stepping to a `src` that had never been requested left the frame empty until it
-  arrived. `Gallery.tsx` memoises `shots` and `onClose` for this effect's benefit,
-  not its own — fresh identities re-run the preload on every render.
-- **The `<img>` is deliberately not keyed by `src`.** Keying it remounted the
-  element on every step and replayed a fade from nothing, which reads as a blink:
-  the photograph you left vanishes instantly and the next takes half a second to
-  become legible. Swapping `src` on one element lets the browser hold the current
-  frame until the next has decoded. The caption below it *is* keyed, so the words
-  cross-fade while the image cuts.
-
-`ScrollRail` masks its own left and right edges with a gradient when it overflows,
-so cards fade in and out rather than being sliced at the container.
-
-**Show photographs on Impact** — `fieldPhotos` in `impact.ts` drives the "In the
-Field" strip. Point entries at files already under `public/activities/`; the
-captions are the photographs' own alt text, so a caption cannot drift from what
-the image is recorded as showing. Note the strip crops to 4/3 — a wide document
-screenshot will lose its text, so put those where they render uncropped.
-
-Two directories hold media that nothing renders yet, and REVIEW.md says why:
-`public/brand/` (the historical IES marks) and the video files under
-`public/media/` and `public/activities/ymun-korea-community-fair/`. Delete them
-rather than leave them if the review decides against using them — they are the
-largest files in the repository.
-
-**Give a work area a photograph** — set `image` and `imageAlt` on the entry in
-`work.ts`. Pointing it at a file already under `public/activities/` avoids
-shipping the same photograph twice. The examples list moves alongside the prose
-rather than disappearing.
-
-**Add a leader** — append to `people` in `leadership.ts` with `tier` set to
-`founding`, `global`, or `national` (and `branch` for national roles). Drop a
-headshot in `public/leadership/` and set `photo: '/leadership/name.jpg'`; without
-one, a monogram is used.
-
-**Fill a Foundation office** — set `holder` on the entry in `globalOffices` to a
-person's `id`. Offices with no holder render as "Appointment to be confirmed"
-rather than being quietly hidden — deliberate, so the page never invents titles.
-
-**Add a fourth branch** — append to `branches` in `branches.ts`. The globe, the
-network page, the org chart, the footer, and the sitemap all pick it up; only
-`BranchSlug` in `types.ts` needs the new slug added.
-
-**Change statistics** — `headlineStats` and `impactStats` in `impact.ts`. The
-count-up animation reads the `value` field.
-
----
-
-## Design system
-
-Tokens live at the top of `src/index.css` under `@theme`. Change them there and
-the whole site follows.
-
-| Token | Value |
-| --- | --- |
-| `--color-navy` | `#071A33` primary |
-| `--color-navy-700` | `#0D294D` secondary |
-| `--color-paper` | `#F7F9FC` |
-| `--color-gold` | `#C8A96B` accent — used sparingly |
-| `--color-mist` | `#AAB4C2` muted |
-| `--color-sky` | `#8EB8E8` |
-
-Type: Cormorant Garamond (headings) + Inter (body). Sizes are fluid via
-`clamp()` — `text-display`, `text-h1`, `text-h2`, `text-h3`, `text-lead`.
-
-Reusable pieces: `Container`, `Section`, `Eyebrow`, `SectionHeading`, `Button`,
-`Card`, `Rule` in `components/ui/Primitives.tsx`; `Reveal` for scroll-in;
-`Counter`/`StatBlock` for animated figures; `PageHero`, `Cards`, `CallToAction`,
-`OrgChart`, `ContactForm` in `components/sections/`.
-
-### The globe
-
-`components/Globe.tsx` draws an orthographic wireframe globe on canvas —
-graticule, schematic continents, branch markers, and animated great-circle arcs
-between them. It is interactive on the Global Network page (hover, click,
-rotate-to-marker) and decorative in the hero.
-
-Two things worth knowing:
-
-- The continent outlines are **deliberately coarse**. The globe is a brand
-  element, not a map; no borders are drawn.
-- The render loop pauses when the canvas scrolls off screen. It is *not* gated on
-  `document.hidden` — some embedding contexts report a document as permanently
-  hidden, which would leave the globe blank.
-
-All motion respects `prefers-reduced-motion`.
-
----
 
 ## Forms
 
-Two of them — `components/sections/ContactForm.tsx` and `JoinForm.tsx` — sharing
-their fields (`components/ui/FormFields.tsx`) and their delivery (`lib/forms.ts`)
-so the two cannot drift apart.
-
-Both POST to **Web3Forms**, which forwards the submission as email to the
-addresses the access key is registered against. There is no backend of our own.
-If that call fails the visitor is handed a `mailto:` draft with everything they
-typed already in it, so a message is never silently dropped.
-
-The access key in `lib/forms.ts` is not a secret — Web3Forms keys are public
-identifiers, and they authorise nothing but "send mail to the inbox this key
-belongs to". Set `VITE_WEB3FORMS_KEY` to rotate it or point at a test inbox
-without a code change.
-
-Spam protection is a hidden honeypot field plus a minimum time-on-form check —
-no third-party script, no CAPTCHA.
-
----
-
-## SEO
-
-Per-page titles, descriptions, canonicals, and Open Graph tags come from the
-`useSeo` hook (`src/lib/seo.ts`) called at the top of each page. Organization
-JSON-LD is in `index.html`. `public/sitemap.xml` is generated by
-`scripts/generate-sitemap.mjs`, which reads slugs out of the content files.
-
----
+`src/components/sections/ContactForm.tsx` posts to **Web3Forms**, which emails
+the submission to the inbox the access key belongs to. If that fails, the
+visitor gets a pre-filled `mailto:` draft. The key in `src/lib/forms.ts` is a
+public identifier, not a secret; set `VITE_WEB3FORMS_KEY` to rotate it.
 
 ## Deploying
 
-Static build — `dist/` works on Vercel, Netlify, Cloudflare Pages, or GitHub
-Pages. Because routing is client-side, **all paths must rewrite to
-`/index.html`** or deep links will 404.
+Static build, hosted on Vercel. `vercel.json` rewrites every path to
+`/index.html` (client-side routing), sends the security headers, and redirects
+the previous site's routes to the matching home-page section. The redirects are
+currently temporary (`permanent: false`); switch them to permanent once the
+redesign is approved.
 
-Netlify (`public/_redirects`):
-
-```
-/*  /index.html  200
-```
-
-Vercel (`vercel.json`):
-
-```json
-{ "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }] }
-```
-
-### Site origin
-
-The canonical link, `og:url`, `og:image`, JSON-LD, `sitemap.xml` and
-`robots.txt` all need an absolute URL. That origin is resolved once, at build
-time, by `scripts/site-origin.mjs`:
-
-| Source | When it applies |
-|---|---|
-| `SITE_ORIGIN` | Explicit override — set this once the real domain is live |
-| `VERCEL_PROJECT_PRODUCTION_URL` | Vercel production builds |
-| `VERCEL_URL` | Vercel preview builds |
-| `https://iesglobalfoundation.org` | Local builds, which are never crawled |
-
-So a Vercel deploy advertises its own URL with no configuration. Once
-`iesglobalfoundation.org` is registered and pointed at the deployment, set
-`SITE_ORIGIN` in the Vercel project's environment variables and redeploy.
-
-This matters because the failure is silent: a canonical pointing at a domain
-that does not resolve tells search engines the real page lives elsewhere, and an
-unreachable `og:image` means no preview card when the link is shared. The site
-itself looks perfectly fine either way.
-
-Note that the origin must always be absolute — Vite resolves URLs in
-`index.html` as build assets, so a root-relative `/` makes it try to read the
-project directory and the build fails.
-
-### Forms
-
-`VITE_WEB3FORMS_KEY` overrides the Web3Forms access key both forms submit with.
-It is optional: the key is committed in `lib/forms.ts`, and the variable exists
-so the key can be rotated or pointed at a test inbox without a code change.
-`VITE_`-prefixed variables are **baked into the client bundle and publicly
-readable** — fine for a Web3Forms key, which is a public identifier by design,
-never for a secret.
-
----
-
-## Accessibility
-
-Skip link, semantic landmarks, labelled form fields, visible gold focus rings,
-`aria-pressed` on filters and selectors, and a decorative-vs-interactive
-distinction on the globe (`aria-hidden` in the hero, labelled `img` role when
-interactive). Colour pairings hold WCAG AA against the navy background.
+The absolute origin used by the canonical link, Open Graph tags, sitemap, and
+robots.txt is resolved at build time by `scripts/site-origin.mjs`
+(`SITE_ORIGIN` → `VERCEL_PROJECT_PRODUCTION_URL` → `VERCEL_URL` → fallback).
+Set `SITE_ORIGIN` once a custom domain is live.

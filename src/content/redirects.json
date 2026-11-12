@@ -1,0 +1,18 @@
+{
+  "//": "Retired routes from the previous site and the home-page section each now points to. Used by both App.tsx and vercel.json — keep them in step.",
+  "routes": [
+    { "from": "/about", "to": "purpose" },
+    { "from": "/leadership", "to": "council" },
+    { "from": "/governance", "to": "continuity" },
+    { "from": "/global-network", "to": "branches" },
+    { "from": "/global-network/:slug", "to": "branches" },
+    { "from": "/our-work", "to": "branches" },
+    { "from": "/impact", "to": "branches" },
+    { "from": "/gallery", "to": "branches" },
+    { "from": "/partners", "to": "branches" },
+    { "from": "/news", "to": "branches" },
+    { "from": "/news/:slug", "to": "branches" },
+    { "from": "/join", "to": "branches" },
+    { "from": "/start-a-chapter", "to": "branches" }
+  ]
+}
