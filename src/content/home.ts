@@ -31,7 +31,7 @@ export const branchesCopy = {
 
 export const council = {
   heading: 'IES Leadership Council',
-  subtitle: 'Founders and former IES leaders',
+  subtitle: 'The founders and senior IES leaders',
   status: 'Council formation in progress',
   intro:
     'The Council is designed to bring together people who have helped lead IES and want to keep contributing after their terms end. As successive generations complete their service, the community of experience available to new leaders can grow.',
@@ -40,6 +40,7 @@ export const council = {
   foundingLabel: 'Founding leadership',
   membersLabel: 'Council members',
   alumniLabel: 'Alumni members',
+  executiveLabel: 'Executive Leadership Team',
   closing:
     'A term in office can end while a person’s contribution continues. Each new generation can add its experience to the community supporting those who follow.',
 }

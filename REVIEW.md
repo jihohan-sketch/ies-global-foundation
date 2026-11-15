@@ -47,21 +47,24 @@ Sources checked (November 2026): this repository's previous content,
 
 None of the three is labelled as a former leader or a Council member.
 
+## IES Leadership Council — first formation (shown)
+
+Confirmed November 2026: Joseph Hahmmin Kang, Jaesuh Joshua Shin, Sean Han,
+Yura Shin. Yuchan Park and future officers go in the Executive Leadership Team
+(`category: 'executive'`), not the Council.
+
+- [ ] **Sean Han**: role shown as *President and Director of Global Marketing,
+      IES Global Foundation* (the previous site's title). Confirm.
+- [ ] **Yura Shin**: role shown as *Director of Global Outreach, IES Global
+      Foundation*. Her Vice Chair title is not shown, because the sources
+      conflict ("Vice Chairman" vs "Student Vice Chair").
+- [ ] **Yuchan Park**: role shown as *Director of Technology, IES Global
+      Foundation*. Confirm.
+
 ## Not shown until confirmed
 
-- [ ] **Yura**: full display name and actual role. iesusa.space lists "Yura
-      Shin, Student Vice Chair, IES Global Foundation · Director of Global
-      Outreach"; the previous site said "Vice Chairman". A record exists in
-      `src/content/leadership.ts` with `approved: false`.
-- [ ] **IES Leadership Council roster.** No appointments are published. The
-      section shows "Council formation in progress" until at least one member is
-      confirmed (`category: 'council-active'`, `membershipStatus: 'confirmed'`,
-      `approved: true`).
-- [ ] **Foundation officers from the previous site** (Sean Han, President ·
-      Director of Global Marketing; Yuchan Park, Director of Technology) and the
-      **Board of Directors** (Hyundoo Cho). The brief's structure has no place
-      for these, so they're not shown. Decide whether any belong on the page,
-      and in which category. Their portraits are kept in `assets-archive/`.
+- [ ] **Board of Directors** (Hyundoo Cho). Not shown. Decide whether it
+      belongs on the page. The portrait is kept in `assets-archive/`.
 - [ ] **IES UK Society.** The previous site listed a UK branch
       (iesunitedkingdom.lovable.app), and iesusa.space mentions the UK, but
       ie-society.com doesn't, and the brief lists only Korea and the United

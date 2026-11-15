@@ -46,6 +46,8 @@ missing fact never leaves a broken layout.
 
 - `category` decides where a person appears: `council-active` and
   `council-alumni` (the Council roster), `founding` (Founding leadership row),
+  `executive` (Executive Leadership Team row, below the Council: officers
+  who support the organization but aren't Council members), and
   `branch-representative` (Current branch leadership row under Branches).
 - While there is no confirmed `council-active` member, the Council section shows
   "Council formation in progress" and the Founding leadership row only.

@@ -3,6 +3,7 @@ import {
   councilAlumni,
   councilConfirmed,
   councilMembers,
+  executiveTeam,
   foundingLeaders,
   type LeadershipProfile,
 } from '@/content/leadership'
@@ -48,6 +49,7 @@ export function Council() {
           <Group label={council.membersLabel} people={councilMembers} />
           <Group label={council.foundingLabel} people={foundingLeaders} />
           <Group label={council.alumniLabel} people={councilAlumni} />
+          <Group label={council.executiveLabel} people={executiveTeam} />
         </div>
         <aside className="lg:pt-12">
           <p className="border-l-2 border-gold-600 pl-6 font-serif text-[1.5rem] leading-snug text-navy lg:sticky lg:top-32">

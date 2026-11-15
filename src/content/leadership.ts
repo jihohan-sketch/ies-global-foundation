@@ -12,8 +12,9 @@
  *   - `years` on a service record is filled only when the dates are verified.
  *   - Current branch presidents are `branch-representative`. They are not
  *     former leaders and not Council members unless separately appointed.
- *   - Council categories (`council-active`, `council-alumni`) stay empty until
- *     leadership formally confirms appointments.
+ *   - Council categories (`council-active`, `council-alumni`) hold only
+ *     appointments leadership has formally confirmed. Other Foundation
+ *     officers go in `executive` (the Executive Leadership Team).
  *
  * Open confirmations for each person are tracked in
  * REVIEW.md, not in this file or on the page.
@@ -30,6 +31,8 @@ export type LeadershipCategory =
   | 'council-alumni'
   /** Co-founders, shown in the Founding leadership row. */
   | 'founding'
+  /** Foundation officers who support the organization; not Council members. */
+  | 'executive'
   /** Current student leaders of a national branch. */
   | 'branch-representative'
 
@@ -67,7 +70,7 @@ export interface LeadershipProfile {
 }
 
 export const leadership: LeadershipProfile[] = [
-  /* ------------------------------------------------------------ Founding */
+  /* ---------------------------- IES Leadership Council (first formation) */
   {
     id: 'joseph-hahmmin-kang',
     name: 'Joseph Hahmmin Kang',
@@ -79,7 +82,7 @@ export const leadership: LeadershipProfile[] = [
     ],
     contribution: 'Coordinates the work that runs between the national branches.',
     branch: 'foundation',
-    category: 'founding',
+    category: 'council-active',
     membershipStatus: 'confirmed',
     order: 1,
     approved: true,
@@ -93,7 +96,7 @@ export const leadership: LeadershipProfile[] = [
       { role: 'Co-founder', organization: 'IES', years: '2023' },
     ],
     branch: 'foundation',
-    category: 'founding',
+    category: 'council-active',
     membershipStatus: 'confirmed',
     order: 2,
     approved: true,
@@ -137,17 +140,43 @@ export const leadership: LeadershipProfile[] = [
     approved: true,
   },
 
-  /* ------------------------------------------- Awaiting confirmation */
   {
-    // Full display name and actual role to be confirmed before publishing.
-    id: 'yura',
-    name: 'Yura Shin',
+    id: 'sean-han',
+    name: 'Sean Han',
+    photo: '/leadership/sean-han.jpg',
+    currentRole: 'President and Director of Global Marketing, IES Global Foundation',
     formerRoles: [],
     branch: 'foundation',
-    category: 'founding',
-    membershipStatus: 'pending',
+    category: 'council-active',
+    membershipStatus: 'confirmed',
     order: 3,
-    approved: false,
+    approved: true,
+  },
+  {
+    id: 'yura-shin',
+    name: 'Yura Shin',
+    photo: '/leadership/yura-shin.jpg',
+    currentRole: 'Director of Global Outreach, IES Global Foundation',
+    formerRoles: [],
+    branch: 'foundation',
+    category: 'council-active',
+    membershipStatus: 'confirmed',
+    order: 4,
+    approved: true,
+  },
+
+  /* ---------------------------------------- Executive Leadership Team */
+  {
+    id: 'yuchan-park',
+    name: 'Yuchan Park',
+    photo: '/leadership/yuchan-park.jpg',
+    currentRole: 'Director of Technology, IES Global Foundation',
+    formerRoles: [],
+    branch: 'foundation',
+    category: 'executive',
+    membershipStatus: 'confirmed',
+    order: 1,
+    approved: true,
   },
 ]
 
@@ -163,6 +192,7 @@ const published = (category: LeadershipCategory) =>
 export const councilMembers = published('council-active')
 export const councilAlumni = published('council-alumni')
 export const foundingLeaders = published('founding')
+export const executiveTeam = published('executive')
 export const branchRepresentatives = published('branch-representative')
 
 /**
